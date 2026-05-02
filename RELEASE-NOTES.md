@@ -1,5 +1,18 @@
 # Staff Engineer Mode Release Notes
 
+## 0.3.0 - 2026-05-02
+
+Skill expansion release.
+
+- Adds nine specialist skills covering accessibility release gates, AI-assisted
+  coding governance, configuration safety, certificate lifecycle, data
+  contracts, documentation lifecycle, experimentation guardrails, fleet upgrade
+  version skew, and LLM evaluation harnesses.
+- Adds reusable templates for the new skill surfaces and expands sample prompts
+  so users can exercise the added routing paths.
+- Updates shared references, synthesis notes, router fixtures, and README
+  positioning for the expanded skill pack.
+
 ## 0.2.0 - 2026-05-02
 
 Documentation and metadata update.
