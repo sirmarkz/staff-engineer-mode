@@ -217,8 +217,13 @@ def validate_version_metadata() -> None:
     notes = ROOT / "RELEASE-NOTES.md"
     if not notes.exists():
         fail("missing RELEASE-NOTES.md")
-    if "No public release history yet." not in notes.read_text():
-        fail("RELEASE-NOTES.md must describe initial state without public release history")
+    version = package_version()
+    notes_text = notes.read_text()
+    if version == "0.0.0":
+        if "No public release history yet." not in notes_text:
+            fail("RELEASE-NOTES.md must describe initial state without public release history")
+    elif f"## {version} -" not in notes_text:
+        fail(f"RELEASE-NOTES.md must include a release entry for {version}")
 
 
 def validate_ci_workflow() -> None:
