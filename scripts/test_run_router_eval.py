@@ -65,7 +65,7 @@ class RouterEvalHarnessTests(unittest.TestCase):
         result = runner.score_case(
             case,
             "Do you want observability-and-alerting work or SLO policy?",
-            ["observability-and-alerting", "slo-error-budget-engineering"],
+            ["observability-and-alerting", "slo-and-error-budgets"],
         )
 
         self.assertFalse(result.passed)
@@ -75,16 +75,16 @@ class RouterEvalHarnessTests(unittest.TestCase):
         runner = load_runner()
         case = {
             "prompt": "Configure Istio retry policy for checkout calls.",
-            "expected_primary": "dependency-resilience-and-overload",
+            "expected_primary": "dependency-resilience",
             "expected_behavior": "translate tool name into dependency controls",
             "category": "paraphrase",
             "expected_gates": ["single_primary", "capability_translation", "intent_inference"],
         }
         response = """```routing
-{"primary":"dependency-resilience-and-overload","secondary":null,"confidence":"high","artifact":"Istio retry policy","surface":"dependency resilience","phase":"design","rationale":"Istio retry settings are the requested control."}
+{"primary":"dependency-resilience","secondary":null,"confidence":"high","artifact":"Istio retry policy","surface":"dependency resilience","phase":"design","rationale":"Istio retry settings are the requested control."}
 ```"""
 
-        result = runner.score_case(case, response, ["dependency-resilience-and-overload"])
+        result = runner.score_case(case, response, ["dependency-resilience"])
 
         self.assertFalse(result.passed)
         self.assertIn("capability_translation gate failed: repeated tool term 'istio'", result.failures)
