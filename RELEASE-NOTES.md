@@ -1,5 +1,15 @@
 # Staff Engineer Mode Release Notes
 
+## 0.2.0 - 2026-05-02
+
+Documentation and metadata update.
+
+- Adds sample prompts and compact skill metadata to make routing behavior easier
+  to inspect and try.
+- Improves README guidance for contribution, installation, and footer
+  organization.
+- Reorganizes shared source references by owner for easier maintenance.
+
 ## 0.1.0 - 2026-05-02
 
 First public release.
