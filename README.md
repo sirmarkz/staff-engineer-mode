@@ -4,14 +4,14 @@
 
 Turn your coding agent into a staff engineer.
 
-Your agent is already fast at writing code. It is less fast at noticing that
-the migration will lock production, the endpoint breaks an old client, the
-rollout has no rollback, the dashboard has no alert, and the postmortem is
-about to start with "we should have caught this in review."
+Base models are fast at writing code. Staff Engineer Mode keeps production
+engineering practice in the loop as the agent plans changes, edits safely,
+reviews risk, migrates data, releases, debugs, and leaves reviewable evidence.
 
-Staff Engineer Mode makes agents think where it matters: compatibility, failure
-modes, rollout risk, ownership, observability, security, recovery, and evidence
-before they touch the keyboard.
+It orients the agent toward practices drawn from Big Tech engineering
+organizations and public standards, so compatibility, failure modes, rollout
+risk, ownership, observability, security, recovery, and reversibility stay in
+view. Ideally fewer vibes, more engineering.
 
 It is synthesized from more than 200 authoritative public sources: Google SRE
 and engineering practices, Amazon and AWS engineering writing, Microsoft and
@@ -21,27 +21,13 @@ practitioner patterns.
 It is not affiliated with or endorsed by any company, standards body, or project
 it draws on.
 
-You should not have to memorize skill names. Ask a normal engineering question.
-The router selects the smallest useful specialist set, then the agent answers
-with concrete risks, gates, owners, evidence, and next steps. Ideally fewer
-vibes, more engineering.
+You should not have to memorize skill names. Ask a normal engineering question
+or hand the agent a development task. The router selects the smallest useful
+specialist set, then the agent works through concrete risks, gates, owners,
+evidence, and next steps.
 
 See [sample prompts](SAMPLE-PROMPTS.md) for practical examples across every
 skill.
-
-## Why Use It During Development
-
-Staff Engineer Mode keeps production engineering habits active across the whole
-development loop while the agent plans, edits, reviews, migrates, releases, and
-debugs.
-
-Base models can generate working code, but they do not reliably sustain those
-habits through every step.
-
-Use it when you want your agent to follow practices drawn from Big Tech
-engineering organizations and public standards: protect compatibility, check
-failure modes, make production changes reversible, instrument what matters,
-preserve recovery paths, and leave reviewable evidence behind.
 
 ## How It Works
 
