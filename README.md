@@ -4,14 +4,10 @@
 
 Turn your coding agent into a staff engineer.
 
-Staff Engineer Mode keeps production engineering practice in the loop as the
-agent plans changes, edits safely, reviews risk, migrates data, releases,
-debugs, and leaves reviewable evidence.
-
-It orients the agent toward practices drawn from Big Tech engineering
-organizations and public standards, so compatibility, failure modes, rollout
-risk, ownership, observability, security, recovery, and reversibility stay in
-view. Ideally fewer vibes, more engineering.
+Staff Engineer Mode steers coding agents toward production-grade engineering
+judgment as they plan, edit, review risk, migrate data, release, debug, and
+leave reviewable evidence, using practices drawn from Big Tech engineering
+organizations and public standards. Fewer vibes, more engineering.
 
 It is synthesized from more than 200 authoritative public sources: Google SRE
 and engineering practices, Amazon and AWS engineering writing, Microsoft and
