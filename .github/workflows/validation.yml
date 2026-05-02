@@ -31,8 +31,13 @@ jobs:
             scripts/validate_source_quality.py \
             scripts/validate_skill_pack.py \
             scripts/validate_router_eval.py \
-            scripts/validate_platform_support.py
+            scripts/validate_platform_support.py \
+            scripts/run_router_eval.py \
+            scripts/test_run_router_eval.py
           bash -n scripts/bump-version.sh
+
+      - name: Test router eval harness
+        run: python3 -m unittest scripts/test_run_router_eval.py
 
       - name: Validate version metadata
         run: |
