@@ -4,9 +4,9 @@
 
 Turn your coding agent into a staff engineer.
 
-Base models are fast at writing code. Staff Engineer Mode keeps production
-engineering practice in the loop as the agent plans changes, edits safely,
-reviews risk, migrates data, releases, debugs, and leaves reviewable evidence.
+Staff Engineer Mode keeps production engineering practice in the loop as the
+agent plans changes, edits safely, reviews risk, migrates data, releases,
+debugs, and leaves reviewable evidence.
 
 It orients the agent toward practices drawn from Big Tech engineering
 organizations and public standards, so compatibility, failure modes, rollout
