@@ -38,14 +38,11 @@ scope. It picks one primary specialist by default, adds at most one secondary
 when clearly needed, and asks a single clarifying question when routing would
 otherwise be noisy.
 
-Forty specialist skills then push the agent toward useful artifacts: ADRs, API
+Forty specialist skills push the agent toward judgment, not verbosity: ADRs,
 compatibility reviews, rollout plans, SLOs, incident timelines, threat models,
-production-readiness checks, migration plans, dependency matrices, control
-evidence, and client or model release gates.
-
-The goal is judgment, not verbosity. Skills move the agent toward compatibility,
-safety, reliability, security, operability, ownership, rollout, and evidence
-before it changes anything.
+readiness checks, migration plans, dependency matrices, control evidence, and
+release gates that keep compatibility, safety, reliability, security,
+operability, ownership, rollout, and evidence in view before changes land.
 
 ## Installation
 
@@ -115,59 +112,10 @@ For the authoritative source list behind the skills, see the
 
 ## What's Inside
 
-Forty specialist skills, grouped by engineering surface.
-
-**Architecture and interfaces**
-- `api-design-and-compatibility`
-- `architecture-review-and-decision-records`
-
-**Reliability and resilience**
-- `slo-error-budget-engineering`
-- `high-availability-design-and-validation`
-- `dependency-resilience-and-overload`
-- `capacity-performance-and-tail-latency`
-- `backup-restore-and-disaster-recovery`
-- `resilience-experiments-and-chaos-engineering`
-- `systems-correctness-and-formal-validation`
-
-**Delivery and quality**
-- `testing-and-quality-gates`
-- `release-build-reproducibility`
-- `progressive-delivery-and-safe-change`
-- `production-readiness-review`
-- `large-scale-change-and-service-deprecation`
-- `engineering-productivity-and-code-review`
-- `dependency-hygiene-and-code-health`
-
-**Operations and observability**
-- `observability-and-alerting`
-- `incident-response-and-postmortems`
-- `oncall-health-and-toil-reduction`
-
-**Security and privacy**
-- `secure-sdlc-and-threat-modeling`
-- `zero-trust-identity-and-secrets`
-- `software-supply-chain-security`
-- `vulnerability-management-and-patch-sla`
-- `tenant-isolation-and-data-protection`
-- `privacy-engineering-and-data-lifecycle`
-- `engineering-control-evidence`
-- `llm-application-security`
-
-**Data, platform, and client systems**
-- `distributed-data-and-consistency`
-- `event-driven-systems-and-workflows`
-- `caching-and-derived-data`
-- `database-operations-and-schema-changes`
-- `data-pipeline-reliability`
-- `ml-systems-reliability-and-evaluation`
-- `platform-engineering-and-golden-paths`
-- `infrastructure-gitops-and-policy-as-code`
-- `internal-networking-and-service-mesh`
-- `edge-traffic-and-ddos-defense`
-- `finops-and-cost-aware-reliability`
-- `mobile-release-engineering-and-crash-budgets`
-- `frontend-performance-release-gates`
+Forty specialist skills across six engineering surfaces: architecture and
+interfaces (2), reliability and resilience (7), delivery and quality (7),
+operations and observability (3), security and privacy (8), and data, platform,
+and client systems (13).
 
 Marketplace installs update through the target platform's plugin or extension
 update flow.
@@ -191,7 +139,5 @@ MIT - see `LICENSE`.
 
 ## Notice
 
-This is an independent TNI Labs project. It is not endorsed by or affiliated
-with any company, standards body, or open-source project it draws on. Read
-`NOTICE.md` before publishing, redistributing, quoting, or adding source
-material.
+This is an independent project. It is not endorsed by or affiliated with any
+company, standards body, or open-source project it draws on.
