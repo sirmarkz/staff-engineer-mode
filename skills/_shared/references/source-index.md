@@ -45,6 +45,10 @@ publisher, or named author. They are not grouped by skill topic.
 - [S151] DynamoDB partition key best practices: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html
 - [S182] AWS Best Practices for DDoS Resiliency: https://docs.aws.amazon.com/whitepapers/latest/aws-best-practices-ddos-resiliency/aws-best-practices-ddos-resiliency.html
 - [S213] Amazon Science - How Amazon Web Services Uses Formal Methods: https://www.amazon.science/publications/how-amazon-web-services-uses-formal-methods
+- [S261] Amazon EKS - Kubernetes Versions: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
+
+### Anthropic
+- [S259] Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
 
 ### Apache Cassandra
 - [S154] Cassandra Data Modeling: https://cassandra.apache.org/doc/latest/cassandra/developing/data-modeling/intro.html
@@ -60,22 +64,35 @@ publisher, or named author. They are not grouped by skill topic.
 ### Argo CD
 - [S122] Argo CD Documentation: https://argo-cd.readthedocs.io/
 
+### AsyncAPI Initiative
+- [S262] AsyncAPI Specification: https://www.asyncapi.com/docs/reference/specification/latest
+
 ### Backstage
 - [S123] Backstage Documentation: https://backstage.io/docs/
 
 ### Brendan Gregg
 - [S143] Brendan Gregg - USE Method and Flame Graphs: https://www.brendangregg.com/usemethod.html
 
+### CA/Browser Forum
+- [S263] CA/Browser Forum - Baseline Requirements for TLS Server Certificates: https://cabforum.org/working-groups/server/baseline-requirements/requirements/
+
 ### CISA
 - [S72] CISA Secure by Design: https://www.cisa.gov/resources-tools/resources/secure-by-design
 - [S82] CISA Zero Trust Maturity Model: https://www.cisa.gov/zero-trust-maturity-model
 - [S193] CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+- [S264] CISA - Joint Guidance on Deploying AI Systems Securely: https://www.cisa.gov/news-events/alerts/2024/04/15/joint-guidance-deploying-ai-systems-securely
+
+### CloudEvents
+- [S265] CloudEvents Specification: https://github.com/cloudevents/spec
 
 ### Cloudflare
 - [S184] Cloudflare DDoS Protection Documentation: https://developers.cloudflare.com/ddos-protection/
 
 ### Confluent
 - [S118] Confluent - Schema Registry: https://docs.confluent.io/platform/current/schema-registry/index.html
+
+### Diataxis
+- [S266] Diataxis Documentation Framework: https://diataxis.fr/
 
 ### Discord
 - [S152] Discord Engineering - How Discord Stores Trillions of Messages: https://discord.com/blog/how-discord-stores-trillions-of-messages
@@ -149,6 +166,9 @@ publisher, or named author. They are not grouped by skill topic.
 - [S201] Software Engineering at Google - Deprecation: https://abseil.io/resources/swe-book/html/ch15.html
 - [S202] Software Engineering at Google - Build Systems and Build Philosophy: https://abseil.io/resources/swe-book/html/ch18.html
 - [S209] Google Privacy & Terms - How Google Retains Data We Collect: https://policies.google.com/technologies/retention
+- [S267] Google Research - Overlapping Experiment Infrastructure: https://research.google.com/pubs/archive/36500.pdf
+- [S268] Google Cloud - Runtime Lifecycle: https://cloud.google.com/appengine/docs/standard/lifecycle/runtime-lifecycle
+- [S260] Android Developers - Test Your App's Accessibility: https://developer.android.com/guide/topics/ui/accessibility/testing
 
 ### Grafana
 - [S125] Grafana Documentation: https://grafana.com/docs/
@@ -167,6 +187,7 @@ publisher, or named author. They are not grouped by skill topic.
 - [S84] OAuth 2.1 Draft: https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1
 - [S85] RFC 8446 - TLS 1.3: https://datatracker.ietf.org/doc/html/rfc8446
 - [S104] RFC 9457 - Problem Details for HTTP APIs: https://www.rfc-editor.org/rfc/rfc9457.html
+- [S269] RFC 7696 - Guidelines for Cryptographic Algorithm Agility: https://www.rfc-editor.org/rfc/rfc7696
 
 ### Industrial Empathy
 - [S159] Industrial Empathy - Design Docs at Google: https://www.industrialempathy.com/posts/design-docs-at-google/
@@ -180,9 +201,13 @@ publisher, or named author. They are not grouped by skill topic.
 ### John D. C. Little
 - [S157] Little - A Proof for the Queuing Formula L = lambda W: https://pubsonline.informs.org/doi/10.1287/opre.9.3.383
 
+### JSON Schema
+- [S270] JSON Schema Specification: https://json-schema.org/specification
+
 ### Kubernetes
 - [S120] Kubernetes Documentation: https://kubernetes.io/docs/home/
 - [S196] Kubernetes Gateway API: https://kubernetes.io/docs/concepts/services-networking/gateway/
+- [S271] Kubernetes Version Skew Policy: https://kubernetes.io/releases/version-skew-policy
 
 ### Martin Fowler
 - [S108] Martin Fowler - What do you mean by Event-Driven?: https://martinfowler.com/articles/201701-event-driven.html
@@ -272,6 +297,7 @@ publisher, or named author. They are not grouped by skill topic.
 - [S256] Azure Well-Architected - Security Incident Response: https://learn.microsoft.com/en-us/azure/well-architected/security/incident-response
 - [S257] Azure Architecture Center - Tenancy Models for a Multitenant Solution: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/tenancy-models
 - [S258] Microsoft Cloud Security Benchmark v2 Preview - Overview: https://learn.microsoft.com/en-us/security/benchmark/azure/overview
+- [S272] Microsoft Research - Diagnosing Sample Ratio Mismatch in Online Controlled Experiments: https://www.microsoft.com/en-us/research/publication/diagnosing-sample-ratio-mismatch-in-online-controlled-experiments-a-taxonomy-and-rules-of-thumb-for-practitioners/
 
 ### MITRE
 - [S87] MITRE ATT&CK: https://attack.mitre.org/
@@ -290,6 +316,17 @@ publisher, or named author. They are not grouped by skill topic.
 - [S192] NIST FIPS 203 - Module-Lattice-Based Key-Encapsulation Mechanism Standard: https://csrc.nist.gov/pubs/fips/203/final
 - [S203] NIST Privacy Framework: https://www.nist.gov/privacy-framework/privacy-framework
 - [S204] NIST SP 800-53 Revision 5 - Security and Privacy Controls: https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
+- [S273] NIST SP 800-128 - Security-Focused Configuration Management: https://csrc.nist.gov/publications/detail/sp/800-128/final
+- [S274] NIST AI Risk Management Framework 1.0: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10
+- [S275] NIST AI 600-1 - Generative AI Profile: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence
+- [S276] NIST SP 800-57 Part 1 Revision 5 - Recommendation for Key Management: https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final
+- [S277] NIST SP 800-131A Revision 2 - Transitioning Cryptographic Algorithms and Key Lengths: https://csrc.nist.gov/pubs/sp/800/131/a/r2/final
+
+### OpenAI
+- [S278] OpenAI API - Agent Evals: https://platform.openai.com/docs/guides/agent-evals
+
+### OpenAPI Initiative
+- [S279] OpenAPI Specification: https://spec.openapis.org/oas/
 
 ### Open Policy Agent
 - [S126] Open Policy Agent Documentation: https://www.openpolicyagent.org/docs/latest/
@@ -297,6 +334,8 @@ publisher, or named author. They are not grouped by skill topic.
 ### OpenSSF
 - [S78] OpenSSF Scorecard: https://github.com/ossf/scorecard
 - [S79] OpenSSF Open Source Project Security Baseline: https://baseline.openssf.org/
+- [S280] OpenSSF - Security-Focused Guide for AI Code Assistant Instructions: https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions
+- [S281] OpenSSF - AI/ML Security Working Group: https://openssf.org/technical-initiatives/ai-ml-security/
 
 ### OpenTelemetry
 - [S89] OpenTelemetry Documentation: https://opentelemetry.io/docs/what-is-opentelemetry/
@@ -325,6 +364,9 @@ publisher, or named author. They are not grouped by skill topic.
 
 ### Richard Cook
 - [S142] Richard Cook - How Complex Systems Fail: https://how.complexsystems.fail/
+
+### Semantic Versioning
+- [S282] Semantic Versioning Specification: https://semver.org/
 
 ### Shopify
 - [S112] Shopify Engineering - Deconstructing the Monolith: https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity
@@ -360,6 +402,7 @@ publisher, or named author. They are not grouped by skill topic.
 ### W3C
 - [S88] W3C Trace Context: https://www.w3.org/TR/trace-context/
 - [S181] W3C - Web Content Accessibility Guidelines 2.2: https://www.w3.org/TR/WCAG22/
+- [S283] W3C - Accessibility Conformance Testing Rules Format: https://www.w3.org/TR/act-rules-format/
 
 ### Werner Vogels
 - [S48] Werner Vogels - Eventually Consistent: https://www.allthingsdistributed.com/2008/12/eventually_consistent.html

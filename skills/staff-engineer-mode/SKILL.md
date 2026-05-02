@@ -34,9 +34,9 @@ Loading many plausible skills is a routing failure.
 
 ## Inputs To Collect
 
-- **Artifact:** decision, plan, gate, rollout, investigation, runbook, policy, migration, evidence pack, or review.
+- **Artifact:** decision, plan, gate, rollout, investigation, runbook, policy, migration, evaluation, evidence pack, or review.
 - **Phase:** design, before merge, launch, migration, active incident, post-incident, regression, audit/evidence, or maintenance.
-- **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, cost, or operator load.
+- **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, AI, accessibility, cost, or operator load.
 - **Risk and scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-region.
 
 ## Workflow
@@ -93,6 +93,7 @@ Use specialist descriptions as the primary map. Load `references/routing-matrix.
 - Single-domain evidence stays with the owner; cross-surface evidence packs use `engineering-control-evidence`.
 - Public edge traffic, internal service traffic, backend performance, client performance, cost tradeoffs, and data movement freshness should not be collapsed into one route.
 - Security routes by artifact: threat model, identity/secrets, supply-chain trust, deployed vulnerability remediation, tenant boundary, privacy lifecycle, or model/tool/retrieval app risk.
+- Newer narrow routes beat broad neighbors: config/automation safety, documentation lifecycle, data contracts, accessibility gates, AI coding governance, LLM eval harnesses, experimentation guardrails, fleet upgrades, and crypto lifecycle.
 
 ## Red Flags - Stop And Rework
 

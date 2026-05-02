@@ -55,6 +55,10 @@ cases:
     expected_primary: testing-and-quality-gates
     expected_behavior: "route to merge and quality gates"
     category: direct
+  - prompt: "This config change flips routing defaults for checkout, and we need validation, preview, owner approval, and a rollback path before it runs."
+    expected_primary: configuration-and-automation-safety
+    expected_behavior: "route to configuration and automation safety rather than generic rollout"
+    category: direct
   - prompt: "What should we require before this lands?"
     expected_primary: staff-engineer-mode
     expected_behavior: "ask which landing requirement is needed without naming skills"
@@ -75,9 +79,17 @@ cases:
     expected_primary: large-scale-change-and-service-deprecation
     expected_behavior: "route to broad migration and deprecation controls"
     category: direct
+  - prompt: "The runtime upgrade affects hundreds of services, and old and new versions must coexist until every owner moves."
+    expected_primary: fleet-upgrades-and-version-skew-management
+    expected_behavior: "route to fleet upgrade support windows and mixed-version compatibility"
+    category: direct
   - prompt: "Reviews sit idle for days, owners are unclear, and large changes keep landing late in the cycle."
     expected_primary: engineering-productivity-and-code-review
     expected_behavior: "route to review workflow and ownership"
+    category: direct
+  - prompt: "Our runbooks and design docs contradict each other; we need owners, source of truth, freshness rules, and archive criteria."
+    expected_primary: engineering-documentation-lifecycle
+    expected_behavior: "route to engineering documentation lifecycle instead of architecture decision review"
     category: direct
   - prompt: "Clean up stale libraries, remove dead feature paths, and keep the lockfile from drifting again."
     expected_primary: dependency-hygiene-and-code-health
@@ -90,6 +102,10 @@ cases:
   - prompt: "Audit service identities, key rotation, and who can read production secrets for this service."
     expected_primary: zero-trust-identity-and-secrets
     expected_behavior: "route to identity and secrets, not broad security review"
+    category: direct
+  - prompt: "Certificates expire next quarter, and the trust-chain change needs inventory, compatibility tests, renewal alerts, and revocation steps."
+    expected_primary: crypto-agility-and-cert-lifecycle
+    expected_behavior: "route to cryptographic lifecycle instead of general identity or secrets work"
     category: direct
   - prompt: "We need provenance, signing, and isolated builders so release artifacts can be trusted."
     expected_primary: software-supply-chain-security
@@ -118,6 +134,10 @@ cases:
   - prompt: "The order workflow uses events across payment, fulfillment, and email; we need replay, dead-letter handling, and schema evolution."
     expected_primary: event-driven-systems-and-workflows
     expected_behavior: "route to event workflow semantics"
+    category: direct
+  - prompt: "Several teams consume this shared customer dataset, and we need schema ownership, compatibility rules, and consumer tests before changing a field."
+    expected_primary: data-contracts-and-domain-interfaces
+    expected_behavior: "route to cross-consumer data contracts instead of pipeline freshness or one API review"
     category: direct
   - prompt: "The product page shows stale inventory after updates, and cache invalidation keeps breaking during traffic spikes."
     expected_primary: caching-and-derived-data
@@ -163,6 +183,14 @@ cases:
     expected_primary: llm-application-security
     expected_behavior: "route to LLM application security, not broad AI strategy"
     category: direct
+  - prompt: "The prompt change needs eval cases, graders, thresholds, slice results, and regression history before we ship it."
+    expected_primary: llm-evaluation-harness-engineering
+    expected_behavior: "route to LLM evaluation harnesses instead of LLM app security"
+    category: direct
+  - prompt: "We need repo instructions for coding agents: allowed actions, protected paths, data boundaries, required tests, and review evidence."
+    expected_primary: ai-assisted-coding-governance
+    expected_behavior: "route to AI-assisted development governance instead of deployed LLM app security"
+    category: direct
   - prompt: "The native mobile release should stop if crash-free users drop, startup regresses, or offline sync breaks during staged rollout."
     expected_primary: mobile-release-engineering-and-crash-budgets
     expected_behavior: "route to mobile release stability and crash budgets"
@@ -170,6 +198,14 @@ cases:
   - prompt: "Stop browser UI performance regressions from shipping when payload weight, interaction readiness, or visual stability gets worse."
     expected_primary: frontend-performance-release-gates
     expected_behavior: "route to technology-agnostic frontend performance release gates"
+    category: direct
+  - prompt: "The checkout form release needs keyboard completion, focus order, labels, contrast, and assistive-technology checks before launch."
+    expected_primary: accessibility-conformance-gates
+    expected_behavior: "route to accessibility conformance gates instead of frontend performance"
+    category: direct
+  - prompt: "The A/B test readout looks suspicious; check assignment balance, exposure logging, guardrail metrics, and sample-ratio mismatch before ramping."
+    expected_primary: experimentation-and-metric-guardrails
+    expected_behavior: "route to experiment validity and metric guardrails instead of rollout canary safety"
     category: direct
   - prompt: "Make alerts better for checkout."
     expected_primary: staff-engineer-mode
