@@ -34,6 +34,9 @@ scope. It picks one primary specialist by default, adds at most one secondary
 when clearly needed, and asks a single clarifying question when routing would
 otherwise be noisy.
 
+It composes with other skill packs, including Superpowers, by adding
+engineering-surface routing and risk checks without replacing other workflows.
+
 Forty specialist skills push the agent toward judgment, not verbosity: ADRs,
 compatibility reviews, rollout plans, SLOs, incident timelines, threat models,
 readiness checks, migration plans, dependency matrices, control evidence, and
