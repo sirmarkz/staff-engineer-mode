@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 0.4.0 - 2026-05-02
+
+Skill naming and router quality release.
+
+- Shortens specialist skill names to plainer slugs and updates sample prompts,
+  routing fixtures, and routing matrix references to match.
+- Adds the router evaluation harness for scoring routing responses across
+  direct, paraphrased, ambiguous, mixed-intent, and out-of-scope prompts.
+- Removes wording-only validation checks while preserving behavior and contract
+  gates for skill structure, evidence gates, install paths, and platform
+  support.
+
 ## 0.3.0 - 2026-05-02
 
 Skill expansion release.
