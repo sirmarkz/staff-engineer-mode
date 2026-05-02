@@ -67,6 +67,7 @@ Select exactly one primary specialist when the prompt has enough context. Recomm
 - For confident routing: confidence of high or medium.
 - For confident routing: inferred user intent, including requested artifact, dominant surface, and work phase.
 - For confident routing: routing rationale in one or two sentences.
+- For explicit eval-harness runs only: also include a fenced `routing` block containing a JSON object with `primary`, `secondary`, `confidence`, `artifact`, `surface`, `phase`, and `rationale`.
 - For low-confidence routing: questions only.
 - Do not include a primary, secondary, confidence label, routing draft, candidate list, or any specialist skill names.
 - Out-of-scope reframe when applicable.
