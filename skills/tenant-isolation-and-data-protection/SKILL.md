@@ -1,6 +1,6 @@
 ---
 name: tenant-isolation-and-data-protection
-description: "Use when the user asks about multi-tenancy, tenant isolation, cross-tenant data access, noisy neighbors, row-level security, tenant quotas, or tenant blast radius. Do not use for general privacy lifecycle work without tenant-boundary concerns."
+description: "Use when multi-tenancy, tenant isolation, cross-tenant access, noisy neighbors, quotas, or tenant blast radius are central."
 ---
 
 # Tenant Isolation And Data Protection

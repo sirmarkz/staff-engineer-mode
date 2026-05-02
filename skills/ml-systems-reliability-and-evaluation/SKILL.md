@@ -1,6 +1,6 @@
 ---
 name: ml-systems-reliability-and-evaluation
-description: "Use when the user asks about production ML systems, model serving, training pipelines, eval gates, data validation, training-serving skew, drift, model rollback, or ML production readiness. Do not use for generic non-ML data pipelines."
+description: "Use when production ML serving, training pipelines, eval gates, drift, skew, rollback, or readiness are central."
 ---
 
 # ML Systems Reliability And Evaluation

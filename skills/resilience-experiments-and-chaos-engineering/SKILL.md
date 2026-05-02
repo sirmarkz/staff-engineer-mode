@@ -1,6 +1,6 @@
 ---
 name: resilience-experiments-and-chaos-engineering
-description: "Use when the user asks about chaos engineering, fault injection, game days, disaster role play, failover drills, resilience experiments, controlled failure testing, or validating failure-mode assumptions. Do not use for HA topology design unless experiment design is the main deliverable."
+description: "Use when chaos tests, fault injection, game days, failover drills, or controlled failure experiments are central."
 ---
 
 # Resilience Experiments And Chaos Engineering

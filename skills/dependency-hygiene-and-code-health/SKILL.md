@@ -1,6 +1,6 @@
 ---
 name: dependency-hygiene-and-code-health
-description: "Use when the user asks about dependency updates, lockfiles, package deprecations, code cleanup, refactoring discipline, static-analysis backlog, codemods, or dead-code cleanup. Do not use for artifact provenance, signing, or CI/CD trust controls."
+description: "Use when dependency updates, lockfiles, cleanup, refactoring, static analysis, codemods, or dead code are central."
 ---
 
 # Dependency Hygiene And Code Health

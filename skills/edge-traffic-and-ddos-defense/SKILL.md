@@ -1,6 +1,6 @@
 ---
 name: edge-traffic-and-ddos-defense
-description: "Use when the user asks about public edge traffic, denial-of-service resilience, edge caching, application-layer filtering, rate-limit policy, bot or abuse throttling, origin protection, global traffic steering, or edge load shedding. Do not use for internal service retries unless public edge defense is central."
+description: "Use when public edge traffic, rate limits, bots, DDoS, origin protection, or edge load shedding are central."
 ---
 
 # Edge Traffic And Denial-Of-Service Defense

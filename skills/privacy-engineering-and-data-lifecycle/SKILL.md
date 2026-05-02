@@ -1,6 +1,6 @@
 ---
 name: privacy-engineering-and-data-lifecycle
-description: "Use when the user asks about data minimization, retention, deletion, privacy-safe telemetry, sensitive-data lifecycle, purpose limitation, consent enforcement as an engineering control, anonymization, pseudonymization, data export, or erasure workflows. Do not use for broad legal privacy policy or tenant isolation."
+description: "Use when data minimization, retention, deletion, privacy-safe telemetry, export, or erasure workflows are central."
 ---
 
 # Privacy Engineering And Data Lifecycle

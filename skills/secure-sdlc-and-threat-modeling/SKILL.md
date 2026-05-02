@@ -1,6 +1,6 @@
 ---
 name: secure-sdlc-and-threat-modeling
-description: "Use when the user asks for threat modeling, secure design, abuse cases, application security controls, input validation, security requirements, or secure SDLC review. Do not use for dependency provenance or artifact signing unless broader secure design is requested."
+description: "Use when threat modeling, secure design, abuse cases, app security controls, input validation, or security requirements are central."
 ---
 
 # Secure SDLC And Threat Modeling

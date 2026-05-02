@@ -1,6 +1,6 @@
 ---
 name: dependency-resilience-and-overload
-description: "Use when the user is changing or adding remote calls, queues, RPCs, retries, timeouts, idempotency, backpressure, circuit breakers, health checks, or load shedding. Do not use for in-process error handling or SLO definition."
+description: "Use when remote calls, queues, retries, timeouts, idempotency, overload, or circuit breakers are central."
 ---
 
 # Dependency Resilience And Overload

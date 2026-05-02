@@ -1,6 +1,6 @@
 ---
 name: systems-correctness-and-formal-validation
-description: "Use when the user asks about formal methods, model checking, invariants, property-based testing, fuzzing, deterministic simulation, state-machine validation, concurrency correctness, distributed locks, consensus, financial correctness, or security-critical protocol behavior. Do not use for ordinary CI test selection."
+description: "Use when invariants, property tests, fuzzing, simulation, concurrency, locks, consensus, or financial correctness are central."
 ---
 
 # Systems Correctness And Formal Validation

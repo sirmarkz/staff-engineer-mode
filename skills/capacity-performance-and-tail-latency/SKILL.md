@@ -1,6 +1,6 @@
 ---
 name: capacity-performance-and-tail-latency
-description: "Use when the user asks about p95/p99 latency, throughput, load tests, saturation, queues, capacity planning, scaling limits, hot paths, or performance regressions. Do not use for cost-only work unless cost is tied to capacity."
+description: "Use when latency, throughput, load tests, saturation, queues, capacity, or hot paths are central."
 ---
 
 # Capacity Performance And Tail Latency

@@ -1,6 +1,6 @@
 ---
 name: frontend-performance-release-gates
-description: "Use when browser-delivered or client-rendered changes may affect user-perceived loading, interaction readiness, visual stability, runtime errors, payload weight, client release safety, field telemetry, or automated accessibility smoke checks. Do not use for product UX strategy, SEO, broad accessibility programs, or backend latency unless client user experience is central."
+description: "Use when web releases affect loading, responsiveness, layout stability, runtime errors, payload, or telemetry."
 ---
 
 # Frontend Performance Release Gates

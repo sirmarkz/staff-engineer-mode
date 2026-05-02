@@ -1,6 +1,6 @@
 ---
 name: slo-error-budget-engineering
-description: "Use when the user asks to define SLIs, SLOs, SLAs, error budgets, burn-rate alerts, reliability targets, paging thresholds, or reliability policy. Do not use for generic monitoring setup without user-visible objectives."
+description: "Use when SLIs, SLOs, SLAs, error budgets, burn-rate alerts, paging thresholds, or reliability policy are central."
 ---
 
 # SLO Error Budget Engineering

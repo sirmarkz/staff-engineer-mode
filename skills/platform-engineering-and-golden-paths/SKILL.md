@@ -1,6 +1,6 @@
 ---
 name: platform-engineering-and-golden-paths
-description: "Use when the user asks for internal developer platforms, service catalogs, golden paths, templates, paved roads, scorecards, or standardized service creation. Do not use for one-off service architecture unless platform reuse is involved."
+description: "Use when developer platforms, service catalogs, golden paths, templates, paved roads, or scorecards are central."
 ---
 
 # Platform Engineering And Golden Paths

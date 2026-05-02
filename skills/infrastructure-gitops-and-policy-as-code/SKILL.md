@@ -1,6 +1,6 @@
 ---
 name: infrastructure-gitops-and-policy-as-code
-description: "Use when the user asks about infrastructure as code, declarative delivery, deployment admission, drift detection, reconciliation, environment promotion, or policy as code. Do not use for application logic policy unless platform enforcement is involved."
+description: "Use when infrastructure as code, drift, admission, promotion, reconciliation, or policy as code are central."
 ---
 
 # Infrastructure GitOps And Policy As Code

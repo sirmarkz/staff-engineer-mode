@@ -1,6 +1,6 @@
 ---
 name: engineering-productivity-and-code-review
-description: "Use when the user asks about code review, ownership, DORA metrics, change size, developer productivity, review latency, or engineering workflow quality. Do not use for production incident response."
+description: "Use when code review, ownership, change size, review latency, DORA, or workflow quality are central."
 ---
 
 # Engineering Productivity And Code Review

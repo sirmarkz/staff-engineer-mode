@@ -1,6 +1,6 @@
 ---
 name: api-design-and-compatibility
-description: "Use when the user asks for API design, versioning, compatibility, deprecation, error models, pagination, idempotent endpoints, external contracts, or client migration. Do not use for internal data modeling unless exposed as an API."
+description: "Use when API contracts, versioning, compatibility, deprecation, pagination, errors, or client migration are central."
 ---
 
 # API Design And Compatibility

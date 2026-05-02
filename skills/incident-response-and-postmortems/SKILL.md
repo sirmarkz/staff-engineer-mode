@@ -1,6 +1,6 @@
 ---
 name: incident-response-and-postmortems
-description: "Use when the user asks for incident command, outage handling, severity, status-update cadence, timelines, postmortems, follow-up actions, or blameless review. Do not use for pre-launch PRR unless an incident has occurred, or for brand/PR strategy beyond operational incident communications."
+description: "Use when active incidents, outages, severity, status updates, timelines, postmortems, or follow-ups are central."
 ---
 
 # Incident Response And Postmortems
