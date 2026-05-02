@@ -3,13 +3,14 @@
 [![Release](https://img.shields.io/github/package-json/v/tnilabs/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
 
 The checks staff engineers run before code ships at serious engineering orgs —
-turned into a skill your coding agent uses without being asked.
+turned into routing skills your coding agent can use without you naming the
+specific skill.
 
-Readiness reviews. Rollback plans. Threat models. SLO budgets. Compatibility
-checks. Migration playbooks. Runbooks. Blast-radius math. The forty-nine
-things a senior engineer walks through before hitting merge — now your agent
-walks them too, on the right change, at the right time, without you naming
-a single one.
+Readiness reviews. Rollback plans. Threat models. SLOs and error budgets.
+Compatibility checks. Migration playbooks. Runbooks. Blast-radius math. The
+forty-nine things a senior engineer walks through across design, merge, launch,
+incidents, and maintenance — now your agent walks them too, on the right change,
+at the right time.
 
 Drawn from public engineering practice at Google, Amazon, Meta, Microsoft,
 Apple, and Netflix, plus the standards bodies their teams cite (NIST, CISA,
@@ -48,11 +49,15 @@ Or search `staff-engineer-mode` in the plugin marketplace.
 
 ### Codex
 
+Works with Codex CLI and Codex App. Tell Codex:
+
 ```text
 Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/staff-engineer-mode/refs/heads/main/.codex/INSTALL.md
 ```
 
 ### OpenCode
+
+Tell OpenCode:
 
 ```text
 Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/staff-engineer-mode/refs/heads/main/.opencode/INSTALL.md
