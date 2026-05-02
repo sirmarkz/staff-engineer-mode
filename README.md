@@ -92,8 +92,7 @@ concrete risks, gates, owners, and evidence — not vibes.
 One router. Forty-nine specialists across eight surfaces: architecture and
 interfaces, reliability and resilience, delivery and change safety, operations
 and observability, security and privacy, data and workflow systems, platform
-and edge, and client/ML/AI/experimentation. Hundreds of sources cited in the
-[source index](skills/_shared/references/source-index.md).
+and edge, and client/ML/AI/experimentation.
 
 ## Contributing
 
