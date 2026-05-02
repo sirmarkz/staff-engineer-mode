@@ -6,7 +6,7 @@ securing, operating, and maintaining complex systems.
 
 ## Entrypoint
 
-Start at `skills/routing/staff-engineer-mode/SKILL.md` when the request is
+Start at `skills/staff-engineer-mode/SKILL.md` when the request is
 broad, ambiguous, multi-surface, or asks for staff-engineer-level engineering standards,
 architecture review, production readiness, reliability, resilience, DevOps,
 security, privacy, operations, platform, data, mobile, frontend, or cost-aware
@@ -20,9 +20,13 @@ infer intent from the request and choose the smallest useful skill set.
 - Pick one primary skill by default.
 - Add at most one secondary skill when the request clearly includes a separate
   engineering surface.
-- Ask one concise clarifying question when confidence is low.
+- Ask only focused intake questions when confidence is low. Do not expose
+  candidate skill names, confidence labels, or routing drafts while asking.
 - Translate vendor, tool, framework, or cloud names into capabilities before
   routing.
+- Keep guidance technology-agnostic by default. Do not introduce provider,
+  framework, database, monitoring product, protocol, or command examples unless
+  the user supplied them or explicitly asks for tool-specific guidance.
 - Keep non-engineering process work out of scope unless reframed as concrete
   engineering controls.
 

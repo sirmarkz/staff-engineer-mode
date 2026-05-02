@@ -71,6 +71,22 @@ Review this service for production readiness.
 The router should choose `production-readiness-review` as the primary skill, or
 ask one clarifying question if the request lacks a concrete engineering surface.
 
+## When Other Skill Packs Are Installed
+
+Codex native skills do not currently give this pack a session-start bootstrap
+hook. If another installed pack has very broad process skills, it can preempt
+vague prompts such as "troubleshoot a network issue." Add this project
+instruction when you want Staff Engineer Mode to route engineering-system work
+first:
+
+```markdown
+For engineering lifecycle, architecture, reliability, resilience, operations,
+security, delivery, data, platform, client, or cost-aware reliability requests,
+use Staff Engineer Mode before generic debugging or process skills. When the
+request is ambiguous, ask only the intake questions needed to route it; do not
+print skill names, routing drafts, confidence labels, or candidate lists.
+```
+
 ## Updating
 
 ```bash

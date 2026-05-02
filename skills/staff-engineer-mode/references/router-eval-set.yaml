@@ -1,0 +1,211 @@
+cases:
+  - prompt: "We are splitting billing from checkout and need a design review before we lock service boundaries, ownership, and failure behavior."
+    expected_primary: architecture-review-and-decision-records
+    expected_behavior: "infer architecture review from boundaries, ownership, and decision timing"
+    category: direct
+  - prompt: "A partner-facing endpoint needs to rename a response field and return a new error shape, but older clients cannot break."
+    expected_primary: api-design-and-compatibility
+    expected_behavior: "route to compatibility and client migration instead of generic architecture"
+    category: direct
+  - prompt: "We need to decide which customer-facing failures count against checkout reliability and when they should page someone."
+    expected_primary: slo-error-budget-engineering
+    expected_behavior: "route to reliability objectives and paging policy"
+    category: direct
+  - prompt: "The service has to keep serving traffic if an entire availability fault domain disappears during peak traffic."
+    expected_primary: high-availability-design-and-validation
+    expected_behavior: "route to fault-domain topology, not disaster recovery"
+    category: paraphrase
+  - prompt: "The order flow melts whenever the fraud service slows down, and retries seem to make the queue worse."
+    expected_primary: dependency-resilience-and-overload
+    expected_behavior: "infer dependency overload from prose without relying on product names"
+    category: paraphrase
+  - prompt: "The ticket keeps blaming the cache product, but the actual failure is slow cache reads causing checkout retries and queue buildup."
+    expected_primary: dependency-resilience-and-overload
+    expected_behavior: "translate named infrastructure into dependency overload behavior instead of routing by tool class"
+    category: paraphrase
+  - prompt: "After the last release, tail latency doubled and the worker pool sits saturated during the evening spike."
+    expected_primary: capacity-performance-and-tail-latency
+    expected_behavior: "route to performance and capacity regression analysis"
+    category: direct
+  - prompt: "A bad maintenance job corrupted rows, and we need to prove restore works before reopening writes."
+    expected_primary: backup-restore-and-disaster-recovery
+    expected_behavior: "route to restore and corruption recovery; suggest incident response only if impact is active"
+    category: direct
+  - prompt: "Plan a controlled failover exercise for the regional checkout path, including abort criteria and blast-radius limits."
+    expected_primary: resilience-experiments-and-chaos-engineering
+    expected_behavior: "route to experiment design, not topology design"
+    category: direct
+  - prompt: "Before shipping the distributed lock, we want invariants and counterexamples for split-brain behavior."
+    expected_primary: systems-correctness-and-formal-validation
+    expected_behavior: "route to high-assurance validation instead of ordinary tests"
+    category: direct
+  - prompt: "During incidents the team cannot tell whether failures start in checkout, payment, or fulfillment from the telemetry we have."
+    expected_primary: observability-and-alerting
+    expected_behavior: "route to observability because debuggability evidence is the artifact"
+    category: paraphrase
+  - prompt: "The incident is still ongoing, customers see failed checkouts, and we need a commander, status cadence, and timeline."
+    expected_primary: incident-response-and-postmortems
+    expected_behavior: "active incident handling takes priority over suspected root cause"
+    category: direct
+  - prompt: "The team gets paged dozens of times a night for self-healing failures, and the runbook work is mostly manual."
+    expected_primary: oncall-health-and-toil-reduction
+    expected_behavior: "route to page and toil reduction, not staffing policy"
+    category: direct
+  - prompt: "Before merge, what tests and checks should block this payment workflow change from landing?"
+    expected_primary: testing-and-quality-gates
+    expected_behavior: "route to merge and quality gates"
+    category: direct
+  - prompt: "What should we require before this lands?"
+    expected_primary: staff-engineer-mode
+    expected_behavior: "ask which landing requirement is needed without naming skills"
+    category: ambiguous
+  - prompt: "Release builds are not reproducible across machines, and the artifact we promote is not always the one we tested."
+    expected_primary: release-build-reproducibility
+    expected_behavior: "route to build and artifact discipline, not rollout"
+    category: direct
+  - prompt: "We need to expose the new checkout path to one percent of traffic, watch guardrails, and roll back quickly if errors climb."
+    expected_primary: progressive-delivery-and-safe-change
+    expected_behavior: "route to production exposure strategy"
+    category: direct
+  - prompt: "The new payments service is supposed to take full production traffic tomorrow, and leadership wants a readiness call."
+    expected_primary: production-readiness-review
+    expected_behavior: "use production readiness as an aggregator because launch readiness is explicit"
+    category: direct
+  - prompt: "We are retiring the old account service over two quarters and need to move callers without backsliding."
+    expected_primary: large-scale-change-and-service-deprecation
+    expected_behavior: "route to broad migration and deprecation controls"
+    category: direct
+  - prompt: "Reviews sit idle for days, owners are unclear, and large changes keep landing late in the cycle."
+    expected_primary: engineering-productivity-and-code-review
+    expected_behavior: "route to review workflow and ownership"
+    category: direct
+  - prompt: "Clean up stale libraries, remove dead feature paths, and keep the lockfile from drifting again."
+    expected_primary: dependency-hygiene-and-code-health
+    expected_behavior: "route to dependency and code health, not supply-chain trust"
+    category: direct
+  - prompt: "Threat model the new admin approval flow, including abuse cases and security requirements before implementation."
+    expected_primary: secure-sdlc-and-threat-modeling
+    expected_behavior: "route to secure design and abuse-case review"
+    category: direct
+  - prompt: "Audit service identities, key rotation, and who can read production secrets for this service."
+    expected_primary: zero-trust-identity-and-secrets
+    expected_behavior: "route to identity and secrets, not broad security review"
+    category: direct
+  - prompt: "We need provenance, signing, and isolated builders so release artifacts can be trusted."
+    expected_primary: software-supply-chain-security
+    expected_behavior: "route to build and deploy trust controls"
+    category: direct
+  - prompt: "A known exploited vulnerability is deployed in production, and we need prioritization, exception rules, and a fix deadline."
+    expected_primary: vulnerability-management-and-patch-sla
+    expected_behavior: "route to vulnerability triage and patch SLA"
+    category: direct
+  - prompt: "A tenant should never be able to read another tenant's data, and noisy neighbors must not exhaust shared capacity."
+    expected_primary: tenant-isolation-and-data-protection
+    expected_behavior: "route to tenant boundaries and blast-radius control"
+    category: direct
+  - prompt: "Design deletion, retention, export, and minimization controls for user activity events."
+    expected_primary: privacy-engineering-and-data-lifecycle
+    expected_behavior: "route to privacy data lifecycle, not tenant isolation"
+    category: direct
+  - prompt: "Map our engineering controls to evidence artifacts for several standards without turning it into a legal policy exercise."
+    expected_primary: engineering-control-evidence
+    expected_behavior: "route only because multi-control engineering evidence mapping is explicit"
+    category: direct
+  - prompt: "We need to choose the write model for account balances, including consistency, shard growth, and hot-key behavior."
+    expected_primary: distributed-data-and-consistency
+    expected_behavior: "route to storage and consistency design"
+    category: direct
+  - prompt: "The order workflow uses events across payment, fulfillment, and email; we need replay, dead-letter handling, and schema evolution."
+    expected_primary: event-driven-systems-and-workflows
+    expected_behavior: "route to event workflow semantics"
+    category: direct
+  - prompt: "The product page shows stale inventory after updates, and cache invalidation keeps breaking during traffic spikes."
+    expected_primary: caching-and-derived-data
+    expected_behavior: "route to cache and derived-state operations"
+    category: direct
+  - prompt: "Backfill a production table with no long locks, no replica lag surprise, and a rollback plan."
+    expected_primary: database-operations-and-schema-changes
+    expected_behavior: "route to production database execution"
+    category: direct
+  - prompt: "The daily revenue pipeline missed its freshness target, and reprocessing can double-count late events."
+    expected_primary: data-pipeline-reliability
+    expected_behavior: "route to pipeline freshness and idempotent reprocessing"
+    category: direct
+  - prompt: "The recommendation model needs release gates for drift, training-serving skew, rollback, and bad prediction spikes."
+    expected_primary: ml-systems-reliability-and-evaluation
+    expected_behavior: "route to production ML reliability and evaluation"
+    category: direct
+  - prompt: "New teams keep hand-rolling service setup; we need a golden path, catalog entry, scorecard, and default templates."
+    expected_primary: platform-engineering-and-golden-paths
+    expected_behavior: "route to internal platform standardization"
+    category: direct
+  - prompt: "Infrastructure changes should be reconciled from declarative definitions, blocked by policy before deploy, and checked for drift."
+    expected_primary: infrastructure-gitops-and-policy-as-code
+    expected_behavior: "route to declarative infrastructure and policy enforcement"
+    category: direct
+  - prompt: "Public traffic spikes and abusive clients are exhausting origin capacity before requests reach the application."
+    expected_primary: edge-traffic-and-ddos-defense
+    expected_behavior: "route to public edge defense and origin protection"
+    category: paraphrase
+  - prompt: "Internal services need safer service discovery, authenticated service-to-service transport, and locality-aware routing."
+    expected_primary: internal-networking-and-service-mesh
+    expected_behavior: "route to internal networking and traffic policy"
+    category: direct
+  - prompt: "Reduce infrastructure spend while preserving the current reliability target and enough headroom for peak traffic."
+    expected_primary: finops-and-cost-aware-reliability
+    expected_behavior: "route because cost and reliability tradeoff are both explicit"
+    category: direct
+  - prompt: "Scale checkout for ten times normal traffic during a promotion without adding customer-visible latency."
+    expected_primary: capacity-performance-and-tail-latency
+    expected_behavior: "do not route to cost work unless spend or allocation tradeoffs are explicit"
+    category: direct
+  - prompt: "Secure the LLM agent before launch, especially tool permissions, prompt injection, retrieval boundaries, and unsafe output handling."
+    expected_primary: llm-application-security
+    expected_behavior: "route to LLM application security, not broad AI strategy"
+    category: direct
+  - prompt: "The native mobile release should stop if crash-free users drop, startup regresses, or offline sync breaks during staged rollout."
+    expected_primary: mobile-release-engineering-and-crash-budgets
+    expected_behavior: "route to mobile release stability and crash budgets"
+    category: direct
+  - prompt: "Stop browser UI performance regressions from shipping when payload weight, interaction readiness, or visual stability gets worse."
+    expected_primary: frontend-performance-release-gates
+    expected_behavior: "route to technology-agnostic frontend performance release gates"
+    category: direct
+  - prompt: "Make alerts better for checkout."
+    expected_primary: staff-engineer-mode
+    expected_behavior: "ask what alert outcome and pain need fixing without naming skills"
+    category: ambiguous
+  - prompt: "Improve the mobile app."
+    expected_primary: staff-engineer-mode
+    expected_behavior: "ask what engineering outcome is needed without naming skills"
+    category: ambiguous
+  - prompt: "Use staff engineer mode to troubleshoot a network issue."
+    expected_primary: staff-engineer-mode
+    expected_behavior: "ask diagnostic intake questions about symptoms, path, scope, timing, changes, and evidence without naming skills"
+    category: ambiguous
+  - prompt: "Troubleshoot a network issue."
+    expected_primary: staff-engineer-mode
+    expected_behavior: "ask diagnostic intake questions about symptoms, path, scope, timing, changes, and evidence without naming skills"
+    category: ambiguous
+  - prompt: "Roll the database migration out safely while also adding checks that block future incompatible schema changes."
+    expected_primary: database-operations-and-schema-changes
+    expected_secondary: testing-and-quality-gates
+    expected_behavior: "choose database operations as primary because production schema execution owns the immediate risk"
+    category: mixed_intent
+  - prompt: "The streaming job is double-counting late events after replay, but the message contract and dead-letter workflow are also unclear."
+    expected_primary: data-pipeline-reliability
+    expected_secondary: event-driven-systems-and-workflows
+    expected_behavior: "choose pipeline reliability because freshness and idempotent reprocessing own the failure; suggest workflow semantics as secondary"
+    category: mixed_intent
+  - prompt: "Launch the new checkout service after we finish threat modeling, load testing, dashboards, rollback, and on-call docs."
+    expected_primary: production-readiness-review
+    expected_behavior: "use readiness review as the aggregator because launch readiness is the requested artifact"
+    category: mixed_intent
+  - prompt: "Write a marketing launch plan for the new checkout feature."
+    expected_primary: none
+    expected_behavior: "reframe as out of scope; ask whether the user wants engineering release controls"
+    category: out_of_scope
+  - prompt: "How much should we pay engineers for being on call?"
+    expected_primary: none
+    expected_behavior: "reframe as out of scope; ask whether the goal is technical page or toil reduction"
+    category: out_of_scope

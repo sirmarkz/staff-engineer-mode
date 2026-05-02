@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ROUTER_EVAL_CANDIDATES = [
-    ROOT / "skills" / "routing" / "staff-engineer-mode" / "references" / "router-eval-set.yaml",
+    ROOT / "skills" / "staff-engineer-mode" / "references" / "router-eval-set.yaml",
 ]
 REQUIRED_KEYS = {"prompt", "expected_primary", "expected_behavior", "category"}
 REQUIRED_CATEGORIES = {"direct", "paraphrase", "ambiguous", "mixed_intent", "out_of_scope"}
@@ -65,6 +65,10 @@ def main() -> int:
             fail(f"case {index} prompt is empty")
         if not case["expected_behavior"]:
             fail(f"case {index} expected_behavior is empty")
+        if case["expected_primary"] == "staff-engineer-mode" and "without naming skills" not in case["expected_behavior"]:
+            fail(
+                f"ambiguous case {index} must expect clarification questions without naming skills"
+            )
         categories.add(case["category"])
         primaries.add(case["expected_primary"])
 
