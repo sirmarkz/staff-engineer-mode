@@ -1,6 +1,6 @@
 ---
 name: testing-and-quality-gates
-description: "Use when the user asks for test strategy, quality gates, CI checks, test pyramid/trophy, static analysis, mutation testing, or release-blocking verification. Do not use for production chaos testing."
+description: "Use when test strategy, quality gates, CI checks, static analysis, mutation testing, or release-blocking verification are central."
 ---
 
 # Testing And Quality Gates

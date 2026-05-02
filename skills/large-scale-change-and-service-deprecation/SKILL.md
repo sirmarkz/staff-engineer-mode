@@ -1,6 +1,6 @@
 ---
 name: large-scale-change-and-service-deprecation
-description: "Use when the user asks about large-scale code changes, broad migrations, legacy system replacement, service retirement, service decommissioning, API/library deprecation beyond one endpoint, preventing backsliding, or sunsetting a capability. Do not use for routine dependency bumps or one-table backfills."
+description: "Use when broad migrations, service retirement, deprecation, backsliding prevention, or legacy replacement are central."
 ---
 
 # Large-Scale Change And Service Deprecation

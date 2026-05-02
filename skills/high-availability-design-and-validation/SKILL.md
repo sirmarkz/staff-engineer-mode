@@ -1,6 +1,6 @@
 ---
 name: high-availability-design-and-validation
-description: "Use when the user asks for high availability, redundancy, multi-zone, multi-region, fault-domain, cell, failover, static-stability, or blast-radius design. Do not use for retry/backoff details or chaos/game-day planning unless fault-domain design is central."
+description: "Use when high availability, redundancy, failover, fault domains, cells, or multi-region design are central."
 ---
 
 # High Availability Design And Validation

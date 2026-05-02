@@ -1,6 +1,6 @@
 ---
 name: zero-trust-identity-and-secrets
-description: "Use when the user asks about identity, access control, zero trust, service accounts, workload identity, federation, multi-factor access, secrets, keys, encryption, or cryptography. Do not use for general application security unless identity or secrets are central."
+description: "Use when identity, access control, zero trust, service accounts, workload identity, secrets, keys, or encryption are central."
 ---
 
 # Zero Trust Identity And Secrets

@@ -1,6 +1,6 @@
 ---
 name: distributed-data-and-consistency
-description: "Use when the user asks about storage choice, replication, transactions, consistency, sharding, migrations, hot keys, data correctness, or distributed locks. Do not use for cache-only questions."
+description: "Use when storage, replication, transactions, consistency, sharding, hot keys, or distributed locks are central."
 ---
 
 # Distributed Data And Consistency

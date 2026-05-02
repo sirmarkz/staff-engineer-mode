@@ -1,6 +1,6 @@
 ---
 name: architecture-review-and-decision-records
-description: "Use when the user asks for system design, architecture review, RFC/design-doc help, ADRs, tradeoff analysis, service boundaries, or technical decision records. Do not use for incident response or code-style-only review."
+description: "Use when system design, architecture review, ADRs, tradeoffs, or service boundaries are central."
 ---
 
 # Architecture Review And Decision Records

@@ -1,6 +1,6 @@
 ---
 name: progressive-delivery-and-safe-change
-description: "Use when the user asks for rollout, rollback, canary, feature flags, migration safety, config changes, deploy strategy, or production exposure of a change. Do not use for build/release reproducibility or incident response after a bad deploy."
+description: "Use when rollout, rollback, canary, feature flags, config changes, migration safety, or production exposure are central."
 ---
 
 # Progressive Delivery And Safe Change

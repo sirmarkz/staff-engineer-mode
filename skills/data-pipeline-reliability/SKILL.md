@@ -1,6 +1,6 @@
 ---
 name: data-pipeline-reliability
-description: "Use when the user asks about batch/streaming data pipeline freshness, correctness, lineage, idempotent reprocessing, warehouse/ETL SLAs, missed pipeline runs, or data-quality gates. Do not use for ML-specific training/serving skew unless model production is central."
+description: "Use when batch or streaming pipelines need freshness, correctness, reprocessing, lineage, or data-quality gates."
 ---
 
 # Data Pipeline Reliability

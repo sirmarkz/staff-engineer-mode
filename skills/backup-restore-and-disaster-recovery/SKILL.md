@@ -1,6 +1,6 @@
 ---
 name: backup-restore-and-disaster-recovery
-description: "Use when the user asks for DR, backups, restore tests, RTO/RPO, point-in-time recovery, immutable backups, regional recovery, or DR evidence. Do not use for normal unit/integration testing or general HA topology design."
+description: "Use when backups, restore tests, disaster recovery, RTO/RPO, or recovery evidence are central."
 ---
 
 # Backup Restore And Disaster Recovery

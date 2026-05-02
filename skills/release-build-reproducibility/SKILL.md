@@ -1,6 +1,6 @@
 ---
 name: release-build-reproducibility
-description: "Use when the user asks about build systems, release branches, release trains, hermetic builds, reproducible builds, build cache safety, packaging, versioning, artifact promotion, flaky builds, slow builds, or cutting a release. Do not use for rollout/canary behavior after an artifact is built."
+description: "Use when builds, release branches, release trains, reproducibility, caches, packaging, or artifact promotion are central."
 ---
 
 # Release Engineering And Build Reproducibility

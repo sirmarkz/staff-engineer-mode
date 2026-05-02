@@ -26,6 +26,9 @@ The router selects the smallest useful specialist set, then the agent answers
 with concrete risks, gates, owners, evidence, and next steps. Ideally fewer
 vibes, more engineering.
 
+See [sample prompts](SAMPLE-PROMPTS.md) for practical examples across every
+skill.
+
 ## How It Works
 
 Everything enters through `staff-engineer-mode`.
@@ -106,6 +109,9 @@ Review this checkout migration plan for production readiness.
 
 The agent should load the router, choose a specialist, and respond with
 concrete risks, gates, owners, and evidence, not just vibes.
+
+For the authoritative source list behind the skills, see the
+[source index](skills/_shared/references/source-index.md).
 
 ## What's Inside
 

@@ -1,6 +1,6 @@
 ---
 name: caching-and-derived-data
-description: "Use when the user asks about cache mechanics, invalidation, materialized views, index refresh, freshness enforcement, thundering herds, stale cache entries, or derived-state operations. Do not use when the primary question is whether reads may be stale at all."
+description: "Use when cache invalidation, freshness, derived data, materialized views, or stale reads are central."
 ---
 
 # Caching And Derived Data

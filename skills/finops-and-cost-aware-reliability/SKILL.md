@@ -1,6 +1,6 @@
 ---
 name: finops-and-cost-aware-reliability
-description: "Use when the user asks about cost, unit economics, tagging, capacity headroom, cost regressions, reserved/spot/on-demand mix, or reliability/cost tradeoffs. Do not use for pure billing questions."
+description: "Use when cost, unit economics, tagging, capacity headroom, or reliability/cost tradeoffs are central."
 ---
 
 # FinOps And Cost Aware Reliability

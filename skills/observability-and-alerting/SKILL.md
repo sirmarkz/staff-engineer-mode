@@ -1,6 +1,6 @@
 ---
 name: observability-and-alerting
-description: "Use when the user asks for dashboards, logs, metrics, traces, telemetry instrumentation, alerting, runbooks, correlation IDs, or production debugging. Do not use for SLO policy unless alerts are the main deliverable."
+description: "Use when dashboards, logs, metrics, traces, alerts, runbooks, correlation IDs, or production debugging are central."
 ---
 
 # Observability And Alerting

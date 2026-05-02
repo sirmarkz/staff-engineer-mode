@@ -1,6 +1,6 @@
 ---
 name: database-operations-and-schema-changes
-description: "Use when the user asks about online schema changes, production database migrations, backfills, query-plan regressions, index changes, locks, replicas, vacuum/compaction, or database maintenance risk. Do not use for abstract storage choice unless operational execution is central."
+description: "Use when production database migrations, backfills, indexes, locks, replicas, or query plans are central."
 ---
 
 # Database Operations And Schema Changes

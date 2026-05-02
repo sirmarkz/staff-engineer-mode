@@ -1,6 +1,6 @@
 ---
 name: oncall-health-and-toil-reduction
-description: "Use when the user asks to reduce pages, alert fatigue, toil, manual operations, runbook gaps, or operational burden. Do not use for rotation staffing, headcount, compensation, or generic productivity metrics without operational pain."
+description: "Use when pages, alert fatigue, toil, manual operations, runbook gaps, or operational burden are central."
 ---
 
 # Oncall Health And Toil Reduction

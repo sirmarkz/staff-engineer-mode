@@ -1,6 +1,6 @@
 ---
 name: staff-engineer-mode
-description: "Use to route broad, vague, or multi-surface engineering requests to the smallest useful Staff Engineer Mode skill set. Use before generic debugging for unclear engineering-system troubleshooting, including vague network issues. Do not use when one focused specialist skill clearly applies."
+description: "Use to route broad or multi-surface engineering requests to one Staff Engineer Mode specialist before answering."
 ---
 
 # Staff Engineer Mode

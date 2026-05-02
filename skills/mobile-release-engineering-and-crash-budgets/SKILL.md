@@ -1,6 +1,6 @@
 ---
 name: mobile-release-engineering-and-crash-budgets
-description: "Use when the user asks about native mobile release trains, staged mobile rollout, crash-free users, hang rates, app startup, offline behavior, app-store release risk, or mobile telemetry. Do not use for responsive web release work."
+description: "Use when native mobile rollout, crash-free users, hangs, startup, offline behavior, or app-store release risk are central."
 ---
 
 # Mobile Release Engineering And Crash Budgets

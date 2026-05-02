@@ -1,6 +1,6 @@
 ---
 name: production-readiness-review
-description: "Use when the user asks whether a service, feature, migration, or system is ready for production launch, major traffic shift, tier upgrade, or broad production audit. Do not use for small code changes with no production ownership or operational impact."
+description: "Use when a service, feature, migration, tier change, or traffic shift needs production launch readiness review."
 ---
 
 # Production Readiness Review

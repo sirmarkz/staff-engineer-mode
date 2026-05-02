@@ -1,6 +1,6 @@
 ---
 name: software-supply-chain-security
-description: "Use when the user asks about build/deploy security, provenance, dependency inventory, artifact signing, artifact supply chain, builder isolation, secret scanning, or build/deploy integrity. Do not use for routine dependency updates or runtime app authorization."
+description: "Use when build/deploy integrity, artifact signing, provenance, dependency inventory, builder isolation, or secret scanning are central."
 ---
 
 # Software Supply Chain Security

@@ -1,6 +1,6 @@
 ---
 name: engineering-control-evidence
-description: "Use when the user explicitly asks to map engineering standards or controls to repeatable artifacts, exception records, evidence packs, or scorecards across multiple engineering surfaces. Do not use for broad compliance program management, legal policy, vendor risk, procurement, auditor liaison work, or single-domain evidence that another skill should produce."
+description: "Use when engineering standards must become evidence packs, scorecards, controls, or exception records."
 ---
 
 # Engineering Control Evidence

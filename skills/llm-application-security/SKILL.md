@@ -1,6 +1,6 @@
 ---
 name: llm-application-security
-description: "Use when the user asks about LLM app security, prompt injection, tool permissions, retrieval data boundaries, insecure model output handling, eval regression gates, or model/prompt supply chain. Do not use for broad AI governance, model strategy, or classical ML model quality."
+description: "Use when LLM app security, prompt injection, tool access, retrieval boundaries, or eval gates are central."
 ---
 
 # LLM Application Security

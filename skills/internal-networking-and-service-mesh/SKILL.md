@@ -1,6 +1,6 @@
 ---
 name: internal-networking-and-service-mesh
-description: "Use when the user clearly describes internal service-to-service networking, service mesh, internal load balancing, service discovery, internal routing, east-west traffic policy, authenticated service-to-service transport, locality-aware routing, private network connectivity, or cross-region network cost. Do not use for vague network issues until the affected path is known."
+description: "Use when internal service networking, mesh, discovery, routing, private connectivity, or service access are central."
 ---
 
 # Internal Networking And Service Mesh

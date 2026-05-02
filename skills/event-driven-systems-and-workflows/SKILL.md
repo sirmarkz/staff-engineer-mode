@@ -1,6 +1,6 @@
 ---
 name: event-driven-systems-and-workflows
-description: "Use when the user asks about events, queues, streams, CDC, transactional outbox, sagas, DLQs, retries, message schemas, or workflow orchestration. Do not use for synchronous RPC-only designs."
+description: "Use when events, queues, streams, outbox, sagas, DLQs, retries, or workflow orchestration are central."
 ---
 
 # Event Driven Systems And Workflows
