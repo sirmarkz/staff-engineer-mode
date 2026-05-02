@@ -169,14 +169,6 @@ Forty specialist skills, grouped by engineering surface.
 - `mobile-release-engineering-and-crash-budgets`
 - `frontend-performance-release-gates`
 
-## Updating
-
-Git-based installs update with a pull and an agent restart:
-
-```bash
-git pull
-```
-
 Marketplace installs update through the target platform's plugin or extension
 update flow.
 

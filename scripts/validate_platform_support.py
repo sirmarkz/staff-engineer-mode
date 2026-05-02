@@ -258,7 +258,6 @@ def validate_docs() -> None:
         "How It Works",
         "Installation",
         "What's Inside",
-        "Updating",
         "Claude Code",
         "Codex CLI",
         "Codex App",
