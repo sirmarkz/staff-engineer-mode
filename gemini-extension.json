@@ -1,0 +1,7 @@
+{
+  "name": "staff-engineer-mode",
+  "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
+  "version": "0.0.0",
+  "contextFileName": "GEMINI.md",
+  "license": "MIT"
+}

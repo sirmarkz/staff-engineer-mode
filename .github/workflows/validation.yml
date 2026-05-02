@@ -1,0 +1,56 @@
+name: Validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate skill pack
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check script syntax
+        run: |
+          python3 -m py_compile \
+            scripts/validate_source_quality.py \
+            scripts/validate_skill_pack.py \
+            scripts/validate_router_eval.py \
+            scripts/validate_platform_support.py
+          bash -n scripts/bump-version.sh
+
+      - name: Validate version metadata
+        run: |
+          scripts/bump-version.sh --check
+          scripts/bump-version.sh --audit
+
+      - name: Validate repository contracts
+        run: |
+          python3 scripts/validate_source_quality.py
+          python3 scripts/validate_skill_pack.py
+          python3 scripts/validate_router_eval.py
+          python3 scripts/validate_platform_support.py
+
+      - name: Validate OpenCode plugin syntax
+        run: node --check .opencode/plugins/staff-engineer-mode.js
+
+      - name: Check diff whitespace
+        run: |
+          if git grep -nI '[[:blank:]]$' -- .; then
+            exit 1
+          fi

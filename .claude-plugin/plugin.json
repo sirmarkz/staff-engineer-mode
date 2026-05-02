@@ -1,0 +1,21 @@
+{
+  "name": "staff-engineer-mode",
+  "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
+  "version": "0.0.0",
+  "author": {
+    "name": "TNI Labs"
+  },
+  "homepage": "https://github.com/tnilabs/staff-engineer-mode",
+  "repository": "https://github.com/tnilabs/staff-engineer-mode",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "staff-engineer",
+    "engineering-lifecycle",
+    "devops",
+    "sre",
+    "reliability",
+    "security",
+    "architecture"
+  ]
+}

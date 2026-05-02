@@ -1,0 +1,41 @@
+{
+  "name": "staff-engineer-mode",
+  "version": "0.0.0",
+  "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
+  "author": {
+    "name": "TNI Labs",
+    "url": "https://github.com/tnilabs/staff-engineer-mode"
+  },
+  "homepage": "https://github.com/tnilabs/staff-engineer-mode",
+  "repository": "https://github.com/tnilabs/staff-engineer-mode",
+  "license": "MIT",
+  "keywords": [
+    "staff-engineer",
+    "engineering-lifecycle",
+    "devops",
+    "sre",
+    "reliability",
+    "security",
+    "architecture",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Staff Engineer Mode",
+    "shortDescription": "Staff Engineer Mode engineering lifecycle and operations skills",
+    "longDescription": "Technology-agnostic skills for applying large-scale engineering practices to architecture, reliability, resilience, delivery, operations, security, privacy, data, platform, client, and cost-aware reliability work. The router automatically selects the smallest useful specialist skill set from natural-language engineering requests.",
+    "developerName": "TNI Labs",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Review this service for production readiness.",
+      "Make this architecture reliable and operable.",
+      "Route this engineering problem to the right Staff Engineer Mode skill."
+    ],
+    "brandColor": "#1F6FEB"
+  }
+}
