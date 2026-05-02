@@ -1,0 +1,138 @@
+# AGENTS.md
+
+Operational rules for AI coding agents working in this repository. These
+instructions adapt the TNI Labs workspace practices to the Staff Engineer Mode
+skill-pack context.
+
+## What This Repo Is
+
+This repository publishes a set of Codex skills that route engineering lifecycle,
+DevOps, operations, reliability, security, stability, and architecture work toward
+high-quality practices drawn from large-scale engineering organizations and
+public standards.
+
+The repository is not a generic process handbook. Skills should stay focused on
+building, shipping, securing, operating, and maintaining complex software
+systems.
+
+## Layout
+
+| Path | Owns |
+| --- | --- |
+| `skills/<theme>/<skill-name>/SKILL.md` | One hand-authored skill under a coherent engineering theme. |
+| `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
+| `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. |
+| `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
+| `docs/` | Local research and planning notes. This directory is intentionally ignored and not published by default. |
+| `.claude-plugin/`, `.cursor-plugin/`, `.codex-plugin/`, `.codex/`, `.opencode/`, `gemini-extension.json`, `GEMINI.md` | Cross-tool plugin manifests and install docs. |
+
+## Skill Rules
+
+- Keep each skill narrow enough that the router can select it with low noise.
+- Skill descriptions must be trigger-focused and start with `Use when` unless a
+  specialized router format justifies otherwise.
+- Final skill prose must be hand-authored. Do not bulk-generate `SKILL.md`
+  bodies from templates, tables, scripts, LLM batch output, or search summaries.
+  Scripts may validate, move, package, or review skills, but must not be the
+  source of truth for skill content.
+- Each skill must synthesize its own references. Read the relevant source notes
+  and theme guidance, reconcile the tradeoffs, and write unambiguous operational
+  instructions a future agent can follow without guessing.
+- Organize skills by theme folders. Do not return to a flat skill namespace
+  unless the repository owner explicitly changes this rule.
+- Keep skills technology-agnostic unless the skill is explicitly for a
+  technology-bound surface such as frontend, mobile, ML, or LLM applications.
+  Write guidance in terms of capabilities, contracts, failure modes, evidence,
+  and artifacts. Do not prescribe a cloud provider, orchestration platform,
+  database, framework, vendor product, or tool as the default.
+- Individual skills should state when not to use them, required inputs, workflow,
+  synthesized defaults, exceptions, required outputs, evidence gates, red flags,
+  and common mistakes.
+- Normalize competing large-scale engineering practices into one blended default
+  unless the context clearly requires a named exception.
+- Do not force users to invoke individual skills by name. The router must choose
+  automatically from user intent, with conservative fallback behavior.
+- Avoid process-only guidance unless it directly supports engineering lifecycle,
+  DevOps, operations, reliability, security, stability, architecture, or
+  maintainability work.
+- Keep compliance, legal, procurement, staffing, compensation, product strategy,
+  and broad governance out of scope unless framed as engineering evidence or
+  controls for system delivery and operations.
+
+## Documentation
+
+- Write docs for someone who has never seen the repository.
+- Keep documentation plain, direct, and technically accurate.
+- Cite sources by stable source IDs from `skills/_shared/references/source-index.md`.
+- Use authoritative sources: first-party engineering publications, official
+  documentation, standards bodies, peer-reviewed papers, or widely cited
+  practitioner references that originated the named pattern. Do not cite
+  encyclopedias, Q&A/forum threads, scraped mirrors, SEO summaries, anonymous
+  content farms, or unofficial copies when a primary source exists.
+- Update references, templates, router fixtures, and validation scripts when
+  skill contracts or routing behavior changes.
+- Do not publish ignored research notes unless explicitly requested.
+
+## Tests And Validation
+
+- Validation protects supported skill contracts, routing behavior, references,
+  source IDs, templates, and artifact shape.
+- Avoid tests that only pin incidental wording, heading prose, or implementation
+  churn with no supported contract.
+- Run repo-local validation scripts before committing skill changes.
+- Run `python3 scripts/validate_source_quality.py` before committing source-index
+  or citation changes.
+- Run `python3 scripts/validate_platform_support.py` before committing plugin
+  manifest, install, README, NOTICE, or cross-tool packaging changes.
+- Router fixtures live with the router skill and should include direct,
+  paraphrased, ambiguous, mixed-intent, and out-of-scope prompts.
+
+## Code Quality
+
+- Do not use deterministic scripts or LLM batches to author final skill prose.
+- Keep scripts focused, readable, and repo-relative.
+- Validate inputs and fail with clear errors.
+- Do not log sensitive data.
+- Prefer simple standard-library tooling unless a dependency clearly improves the
+  repository contract.
+
+## Git And Commit Rules
+
+- Keep `main` buildable. Every commit is public history.
+- Prefer small, reviewable, production-safe commits.
+- Commit subjects use `type(scope): summary`.
+- Do not publish release notes, tags, or marketplace releases until the
+  repository owner explicitly asks to start releasing.
+- Versioned metadata may stay at the pre-release placeholder before public
+  release. When the owner asks to release, use `scripts/bump-version.sh --check`,
+  `scripts/bump-version.sh --audit`, then `scripts/bump-version.sh <new-version>`.
+- Only when the owner directly asks to make a release, update
+  `RELEASE-NOTES.md` with a concise summary of the user-facing delta since the
+  last release. Do not list every commit.
+- Do not add AI assistants, automation, or tools as co-authors or attribution in
+  commit messages, file headers, docs, or release notes.
+- Do not commit secrets, local `.env` files, private keys, machine-specific
+  config, editor state, caches, local Claude review outputs, or unintended
+  generated output.
+- Run a staged secret scan before committing when the hook is available:
+
+  ```bash
+  git diff --cached --name-only --diff-filter=ACMRTUXB -z | xargs -0r detect-secrets-hook --
+  ```
+
+- If `detect-secrets-hook` is not installed, run an explicit fallback scan over
+  staged content for obvious secret patterns and record the limitation in the
+  final handoff.
+- After pushing, check GitHub Actions when available and fix failures with
+  follow-up commits.
+
+## Bar A Change Must Clear
+
+1. Repo-local validation scripts pass.
+2. Skills, source IDs, templates, and router fixtures are internally consistent.
+3. Cross-tool manifests still support Claude Code, Codex, Cursor, OpenCode, and
+   Gemini CLI when packaging artifacts change.
+4. Relevant docs, references, templates, and router fixtures are updated.
+5. Staged secret scan passes before each commit, or a fallback scan is run when
+   the hook is unavailable.
+6. `git status` shows only intentional tracked changes before pushing.

@@ -1,0 +1,116 @@
+---
+name: slo-error-budget-engineering
+description: "Use when the user asks to define SLIs, SLOs, SLAs, error budgets, burn-rate alerts, reliability targets, paging thresholds, or reliability policy. Do not use for generic monitoring setup without user-visible objectives."
+---
+
+# SLO Error Budget Engineering
+
+## Overview
+
+Reliability is a user-visible contract, not an infrastructure feeling.
+
+**Core principle:** define the experience users are promised, measure it with SLIs, set an SLO that leaves an explicit error budget, and let that budget govern paging and release risk.
+
+## Iron Law
+
+```
+NO SLO WITHOUT A USER JOURNEY, ERROR-BUDGET MATH, AND POLICY CONSEQUENCE
+```
+
+If the journey, window, target, budget, owner, and response policy are missing, do not call the SLO complete.
+
+## When To Use
+
+- The user asks what reliability target, availability target, latency target, freshness target, correctness target, or durability target a service should meet.
+- The user asks what should page, how burn-rate alerts should work, or how to connect alerts to SLOs.
+- A launch, PRR, tier upgrade, or reliability review needs SLI/SLO evidence.
+- Existing alerts are noisy because they monitor causes instead of user-visible symptoms.
+
+## When Not To Use
+
+- The user only asks to build dashboards, traces, or logging without a user-visible objective; use observability.
+- The user asks to reduce existing page volume or on-call fatigue; use on-call health unless new SLO policy is the main work.
+- The user asks for cost optimization without reliability targets; use cost-aware reliability.
+- A live outage is underway; use incident response first.
+
+## Inputs To Collect
+
+- Critical user journeys, API operations, tenants, customer tiers, and owners.
+- Candidate SLIs for availability, latency, freshness, correctness, durability, and data loss.
+- Current metrics, logs, traces, dashboards, alerts, and incident history.
+- Traffic shape: request volume, batch cadence, peak/seasonal behavior, and dependency fanout.
+- External SLAs, support tier, business-critical periods, and known customer commitments.
+- Release process: canary gates, freeze rules, rollback authority, and reliability-work intake.
+
+## Workflow
+
+1. **Name the user journey.** Write the journey in user terms: "checkout succeeds", "message is delivered", "dataset is fresh", not "instances are healthy".
+2. **Choose the SLI.** Prefer direct measures of good events over proxy infrastructure health. If direct measurement is missing, mark telemetry work as a blocker or explicit proxy risk.
+3. **Define good and bad events.** Specify numerator, denominator, exclusion rules, sampling source, and data-retention limits.
+4. **Model health states.** Define healthy, degraded, unavailable, and recovering for the journey so partial failures and degraded quality do not disappear inside raw uptime.
+5. **Set the SLO target and window.** Pick a target users need and the system can plausibly meet. Include availability, latency, freshness, recovery, or correctness targets only when they match the journey. Avoid 100 percent unless failure is impossible by construction.
+6. **Calculate the budget.** Convert target and window into allowed bad events or bad minutes. Include low-traffic math so one event does not create nonsensical burn.
+7. **Design alerts from burn.** Page on fast and sustained budget burn. Ticket slow burns. As a starting point, page when short-window and longer-window burn both show urgent exhaustion risk, ticket when multi-hour or multi-day burn threatens the window, and recompute thresholds for low traffic.
+8. **Handle latency correctly.** State where latency is measured and how percentiles are aggregated. Do not average percentiles across services or windows; merge compatible distributions or measure at the user-journey boundary.
+9. **Attach policy.** State what happens when budget is healthy, threatened, exhausted, or repeatedly exhausted.
+10. **Route gaps.** Missing telemetry goes to observability; rollout policy goes to progressive delivery; launch aggregation goes to PRR.
+
+## Synthesized Default
+
+Use the standard SRE sequence as the default: user journey -> health model -> SLI -> SLO -> error budget -> multi-window burn-rate alert -> release and reliability policy. Treat reliability targets as design inputs and error budgets as a guardrail on change velocity rather than as a reason to stop delivery permanently.
+
+## Exceptions
+
+- Internal tools may use advisory SLOs, ticket alerts, and longer windows when paging would not protect users.
+- External SLAs may force stricter internal SLOs; state both and keep the engineering SLO tighter than the contractual breach point.
+- Low-volume services may need event-count thresholds or synthetic checks so one failed request does not create misleading burn.
+- Diagnostic cause alerts can page only when they are urgent, actionable, and reliably precede user-visible impact.
+- Planned maintenance, deliberate shedding, or abusive traffic may be excluded only with enumerable, time-bounded, and auditable rules.
+
+## Response Quality Bar
+
+- Lead with the SLO table, alert policy, budget-state decision, or telemetry blocker requested.
+- Cover user journeys, SLIs, health states, target/window math, burn alerts, dashboards, release policy, and observability gaps before optional SRE breadth.
+- Make recommendations actionable with owners, metric definitions, thresholds, windows, alert routes, budget consequences, and follow-up gates where relevant.
+- State required evidence such as request/event sources, numerator/denominator definitions, traffic volume, deployment markers, current burn, paging history, and dashboard links; do not claim unseen evidence.
+- Stay inside SLO and error-budget engineering. Route rollout policy, observability instrumentation, or PRR only when they are the central unresolved risk.
+- Be concise: avoid generic SRE exposition and prefer compact SLI/SLO and burn-policy tables.
+
+## Required Outputs
+
+- Critical journey inventory with owner and tier.
+- SLI/SLO table with target, window, source metric, numerator, denominator, and exclusions.
+- Health-state definitions for healthy, degraded, unavailable, and recovering conditions where partial degradation matters.
+- Error-budget calculation in bad events or bad minutes.
+- Burn-rate alert policy with paging and ticket thresholds, including windows, budget-consumption rate, low-traffic handling, and diagnostic non-page rules.
+- Dashboard requirements that show SLO state, burn, traffic, and recent deployments.
+- Budget-state release policy and reliability-work triggers.
+- Assumptions, proxy risks, blockers, and follow-up routes.
+
+## Evidence Gates
+
+- `journey_coverage`: every tier-1 or explicitly requested journey has an owner, SLI, and user-visible success definition.
+- `health_state`: the SLO can distinguish successful, degraded, unavailable, and excluded events where users experience partial failure.
+- `math_check`: every SLO has a target, window, denominator, allowed bad events or minutes, and low-traffic handling.
+- `alert_mapping`: every paging alert maps to SLO burn or has a documented urgent/actionable exception.
+- `policy_check`: exhausted-budget behavior is stated, including who can approve releases and what work is prioritized.
+- `telemetry_check`: every SLI names its metric/log/event source or marks observability work as a blocker.
+
+## Red Flags - Stop And Rework
+
+- The SLI measures CPU, memory, instance health, queue depth, or host availability without connecting to user success.
+- The SLO target is 100 percent because "this must never fail".
+- Burn-rate thresholds are copied from another service without traffic-window math.
+- The response recommends pages for every cause alert.
+- The policy says "improve reliability" without release, review, escalation, or work-intake consequences.
+- Latency SLOs average percentile values instead of measuring the journey or merging compatible distributions.
+- Journey SLOs are synthesized from component SLOs without an explicit dependency model.
+
+## Common Mistakes
+
+| Mistake | Correction |
+| --- | --- |
+| Starting with dashboards | Start with journeys, then metrics. |
+| Treating SLA and SLO as synonyms | SLA is external promise; SLO is engineering target; SLI is measurement. |
+| Making all alerts paging alerts | Page on urgent budget burn; ticket slow or diagnostic signals. |
+| Hiding missing telemetry | Mark telemetry as a blocker or proxy risk. |
