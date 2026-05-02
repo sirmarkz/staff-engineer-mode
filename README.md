@@ -107,17 +107,6 @@ Review this checkout migration plan for production readiness.
 The agent should load the router, choose a specialist, and respond with
 concrete risks, gates, owners, and evidence, not just vibes.
 
-## The Basic Workflow
-
-1. **`staff-engineer-mode`** - Classifies the request and picks one
-   primary specialist.
-2. **Specialist skill** - Produces the plan, review, gate, or artifact for the
-   selected engineering surface.
-3. **Evidence and action** - Names blockers, stop conditions, rollout paths,
-   owners, verification steps, or follow-up routes.
-
-The agent routes automatically. Do not memorize skill names.
-
 ## What's Inside
 
 Forty specialist skills, grouped by engineering surface.
@@ -195,3 +184,16 @@ This is an independent TNI Labs project. It is not endorsed by or affiliated
 with any company, standards body, or open-source project it draws on. Read
 `NOTICE.md` before publishing, redistributing, quoting, or adding source
 material.
+
+## Contributing
+
+Contributions are welcome, especially additional engineering practices from
+highly reliable, authoritative sources: first-party engineering publications,
+official documentation, standards bodies, peer-reviewed papers, or widely cited
+practitioner references that originated the pattern.
+
+Keep contributions focused on engineering lifecycle, DevOps, operations,
+reliability, security, stability, architecture, and maintainability. New skills
+or guidance should synthesize the source material into technology-agnostic
+operational instructions, cite stable source IDs from the shared references, and
+avoid vendor endorsement or process-only advice.
