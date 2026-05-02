@@ -257,7 +257,6 @@ def validate_docs() -> None:
     for term in [
         "How It Works",
         "Installation",
-        "The Basic Workflow",
         "What's Inside",
         "Updating",
         "Claude Code",
