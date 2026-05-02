@@ -2,54 +2,36 @@
 
 [![Release](https://img.shields.io/github/package-json/v/tnilabs/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
 
-Turn your coding agent into a staff engineer.
+The checks staff engineers run before code ships at serious engineering orgs —
+turned into a skill your coding agent uses without being asked.
 
-Staff Engineer Mode steers coding agents toward production-grade engineering
-judgment as they plan, edit, review risk, migrate data, release, debug, and
-leave reviewable evidence, using practices drawn from Big Tech engineering
-organizations and public standards. Fewer vibes, more engineering.
+Readiness reviews. Rollback plans. Threat models. SLO budgets. Compatibility
+checks. Migration playbooks. Runbooks. Blast-radius math. The forty-nine
+things a senior engineer walks through before hitting merge — now your agent
+walks them too, on the right change, at the right time, without you naming
+a single one.
 
-It is synthesized from hundreds of authoritative public sources: Google SRE
-and engineering practices, Amazon and AWS engineering writing, Microsoft and
-Azure guidance, Meta and Netflix engineering publications, Apple platform
-material, NIST, CISA, OWASP, OpenSSF, IETF/W3C standards, and widely adopted
-practitioner patterns.
-It is not affiliated with or endorsed by any company, standards body, or project
-it draws on.
+Drawn from public engineering practice at Google, Amazon, Meta, Microsoft,
+Apple, and Netflix, plus the standards bodies their teams cite (NIST, CISA,
+OWASP, OpenSSF, IETF, W3C). Independent project. Not affiliated.
 
-You should not have to memorize skill names. Ask a normal engineering question
-or hand the agent a development task. The router selects the smallest useful
-specialist set, then the agent works through concrete risks, gates, owners,
-evidence, and next steps.
-
-See [sample prompts](SAMPLE-PROMPTS.md) for practical examples across every
-skill.
+**Fewer vibes. More engineering.**
 
 ## How It Works
 
-Everything enters through `staff-engineer-mode`.
+Ask a normal engineering question. Hand the agent a task. The router picks
+the smallest useful specialist set — one primary, occasionally one secondary —
+and the agent works through concrete risks, gates, owners, evidence, and
+next steps. You never name a skill.
 
-The router classifies the request by engineering surface, event type, risk, and
-scope. It picks one primary specialist by default, adds at most one secondary
-when clearly needed, and asks a single clarifying question when routing would
-otherwise be noisy.
+Composes with other skill packs (including Superpowers) without replacing
+their workflows.
 
-It composes with other skill packs, including Superpowers, by adding
-engineering-surface routing and risk checks without replacing other workflows.
-
-Forty-nine specialist skills push the agent toward judgment, not verbosity: ADRs,
-compatibility reviews, rollout plans, SLOs, incident timelines, threat models,
-readiness checks, migration plans, dependency matrices, control evidence, and
-release gates that keep compatibility, safety, reliability, security,
-operability, ownership, rollout, and evidence in view before changes land.
+See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for examples across every skill.
 
 ## Installation
 
-Installation differs by platform.
-
-### Claude Code Marketplace
-
-Run these as separate slash commands:
+### Claude Code
 
 ```text
 /plugin marketplace add https://github.com/tnilabs/staff-engineer-mode
@@ -57,8 +39,6 @@ Run these as separate slash commands:
 ```
 
 ### Cursor
-
-In Cursor Agent chat:
 
 ```text
 /add-plugin staff-engineer-mode
@@ -68,15 +48,11 @@ Or search `staff-engineer-mode` in the plugin marketplace.
 
 ### Codex
 
-Works with Codex CLI and Codex App. Tell Codex:
-
 ```text
 Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/staff-engineer-mode/refs/heads/main/.codex/INSTALL.md
 ```
 
 ### OpenCode
-
-Tell OpenCode:
 
 ```text
 Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/staff-engineer-mode/refs/heads/main/.opencode/INSTALL.md
@@ -95,49 +71,39 @@ copilot plugin install staff-engineer-mode@staff-engineer-mode
 gemini extensions install https://github.com/tnilabs/staff-engineer-mode
 ```
 
-## Verify Installation
+## Verify
 
-Start a fresh session and ask for something that requires engineering judgment:
+Start a fresh session and ask:
 
 ```text
 Review this checkout migration plan for production readiness.
 ```
 
 The agent should load the router, choose a specialist, and respond with
-concrete risks, gates, owners, and evidence, not just vibes.
-
-For the authoritative source list behind the skills, see the
-[source index](skills/_shared/references/source-index.md).
+concrete risks, gates, owners, and evidence — not vibes.
 
 ## What's Inside
 
-One router, 49 specialist skills, hundreds of authoritative public sources, and shared
-templates for repeatable engineering artifacts.
-
-Specialist skills are organized across eight engineering surfaces: architecture
-and interfaces (3), reliability and resilience (7), delivery and change safety
-(10), operations, observability, and control evidence (4), security, privacy,
-and crypto (8), data and workflow systems (5), platform, edge, and cost (5),
-and client, ML, AI, and experimentation systems (7).
+One router. Forty-nine specialists across eight surfaces: architecture and
+interfaces, reliability and resilience, delivery and change safety, operations
+and observability, security and privacy, data and workflow systems, platform
+and edge, and client/ML/AI/experimentation. Hundreds of sources cited in the
+[source index](skills/_shared/references/source-index.md).
 
 ## Contributing
 
-Contributions are welcome, especially additional engineering practices from
-highly reliable, authoritative sources: first-party engineering publications,
-official documentation, standards bodies, peer-reviewed papers, or widely cited
-practitioner references that originated the pattern.
+Contributions welcome — especially additional practices from authoritative
+sources: first-party engineering publications, official docs, standards
+bodies, peer-reviewed papers, or widely cited practitioner references.
 
-Keep contributions focused on engineering lifecycle, DevOps, operations,
-reliability, security, stability, architecture, and maintainability. New skills
-or guidance should synthesize the source material into technology-agnostic
-operational instructions, cite stable source IDs from the shared references, and
-avoid vendor endorsement or process-only advice.
+Keep contributions focused on engineering lifecycle work. New guidance should
+be technology-agnostic, cite stable source IDs, and avoid vendor endorsement.
 
 ## License
 
-MIT - see `LICENSE`.
+MIT — see [LICENSE](LICENSE).
 
 ## Notice
 
-This is an independent project. It is not endorsed by or affiliated with any
-company, standards body, or open-source project it draws on.
+Independent project. Not endorsed by or affiliated with any company,
+standards body, or open-source project it draws on.
