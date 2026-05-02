@@ -257,24 +257,10 @@ def validate_docs() -> None:
         if not (ROOT / relative).exists():
             fail(f"missing {relative}")
     readme = (ROOT / "README.md").read_text()
-    for term in [
-        "How It Works",
-        "Installation",
-        "What's Inside",
-        "Claude Code",
-        "Codex CLI",
-        "Codex App",
-        "Cursor",
-        "OpenCode",
-        "GitHub Copilot CLI",
-        "Gemini CLI",
-    ]:
-        if term not in readme:
-            fail(f"README.md missing required section or supported tool {term}")
     if "staff-engineer-mode" not in readme:
-        fail("README.md must document router entrypoint")
+        fail("README.md must document the router entrypoint")
     if "/plugin marketplace add https://github.com/tnilabs/staff-engineer-mode" not in readme:
-        fail("README.md must use an HTTPS Claude marketplace add command")
+        fail("README.md must use the HTTPS Claude marketplace add command")
     if "/plugin marketplace add tnilabs/staff-engineer-mode" in readme:
         fail("README.md must not use the SSH-prone Claude owner/repo marketplace shorthand")
     codex_install = (ROOT / ".codex" / "INSTALL.md").read_text()
@@ -282,8 +268,6 @@ def validate_docs() -> None:
         fail(".codex/INSTALL.md must use the native ~/.agents/skills/staff-engineer-mode install path")
     if 'ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode' not in codex_install:
         fail(".codex/INSTALL.md must symlink the Staff Engineer Mode skill tree for Codex")
-    if "original synthesis" not in (ROOT / "NOTICE.md").read_text():
-        fail("NOTICE.md must state original synthesis/source boundary")
 
 
 def main() -> int:

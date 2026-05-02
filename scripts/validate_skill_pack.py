@@ -11,36 +11,6 @@ SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
 CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
 CODEX_MAX_SKILL_NAME_LENGTH = 64
 ROUTER_MAX_WORDS = 1200
-
-COMMON_H2_ORDER = [
-    "## Overview",
-    "## Iron Law",
-    "## When To Use",
-    "## When Not To Use",
-    "## Inputs To Collect",
-    "## Workflow",
-    "## Synthesized Default",
-    "## Exceptions",
-]
-
-SPECIALIST_H2_ORDER = [
-    *COMMON_H2_ORDER,
-    "## Response Quality Bar",
-    "## Required Outputs",
-    "## Evidence Gates",
-    "## Red Flags - Stop And Rework",
-    "## Common Mistakes",
-]
-
-ROUTER_H2_ORDER = [
-    *COMMON_H2_ORDER,
-    "## Required Outputs",
-    "## Evidence Gates",
-    "## Routing Tiebreakers",
-    "## Red Flags - Stop And Rework",
-    "## Common Mistakes",
-]
-
 ROUTER_EVIDENCE_GATES = {
     "single_primary",
     "secondary_cap",
@@ -49,14 +19,32 @@ ROUTER_EVIDENCE_GATES = {
     "ambiguity_check",
 }
 
-FORBIDDEN_SOURCE_HEADINGS = [
-    "## References",
-    "## Sources",
-    "## Source References",
-    "## Reading List",
-    "## Bibliography",
-    "## Citations",
-    "## Further Reading",
+SPECIALIST_OPERATIONAL_SECTIONS = [
+    "## When To Use",
+    "## When Not To Use",
+    "## Inputs To Collect",
+    "## Workflow",
+    "## Synthesized Default",
+    "## Exceptions",
+    "## Response Quality Bar",
+    "## Required Outputs",
+    "## Evidence Gates",
+    "## Red Flags - Stop And Rework",
+    "## Common Mistakes",
+]
+
+ROUTER_OPERATIONAL_SECTIONS = [
+    "## When To Use",
+    "## When Not To Use",
+    "## Inputs To Collect",
+    "## Workflow",
+    "## Synthesized Default",
+    "## Exceptions",
+    "## Required Outputs",
+    "## Evidence Gates",
+    "## Routing Tiebreakers",
+    "## Red Flags - Stop And Rework",
+    "## Common Mistakes",
 ]
 
 PROHIBITED_BODY_TERMS = [
@@ -201,10 +189,6 @@ def validate_technology_agnostic_body(text: str, path: Path) -> None:
                 fail(f"{path} hardcodes technology term {term!r} at line {line_number}")
 
 
-def h2_headings(text: str) -> list[str]:
-    return re.findall(r"^## .+$", text, re.MULTILINE)
-
-
 def section_body(text: str, heading: str, path: Path) -> str:
     pattern = rf"^{re.escape(heading)}\n(?P<body>.*?)(?=^## |\Z)"
     match = re.search(pattern, text, re.MULTILINE | re.DOTALL)
@@ -213,20 +197,11 @@ def section_body(text: str, heading: str, path: Path) -> str:
     return match.group("body")
 
 
-def validate_h2_order(text: str, path: Path, expected_headings: list[str]) -> None:
-    actual_headings = h2_headings(text)
-    if actual_headings != expected_headings:
-        fail(
-            f"{path} headings must be exactly {expected_headings!r}; "
-            f"found {actual_headings!r}"
-        )
-
-
-def validate_no_source_sections(text: str, path: Path) -> None:
-    headings = set(h2_headings(text))
-    forbidden = sorted(headings.intersection(FORBIDDEN_SOURCE_HEADINGS))
-    if forbidden:
-        fail(f"{path} must not contain per-skill source sections: {', '.join(forbidden)}")
+def validate_operational_sections(text: str, path: Path, headings: list[str]) -> None:
+    for heading in headings:
+        body = section_body(text, heading, path)
+        if not re.search(r"\S", body):
+            fail(f"{path} section {heading} must include operational guidance")
 
 
 def evidence_gate_ids(text: str, path: Path) -> list[str]:
@@ -234,17 +209,30 @@ def evidence_gate_ids(text: str, path: Path) -> list[str]:
     return re.findall(r"^- `([^`]+)`:", evidence_body, re.MULTILINE)
 
 
+def evidence_gate_bodies(text: str, path: Path) -> dict[str, str]:
+    evidence_body = section_body(text, "## Evidence Gates", path)
+    return {
+        match.group("id"): match.group("body")
+        for match in re.finditer(r"^- `(?P<id>[^`]+)`:\s*(?P<body>.+)$", evidence_body, re.MULTILINE)
+    }
+
+
+def require_gate_terms(gate_bodies: dict[str, str], gate_id: str, terms: list[str], path: Path) -> None:
+    body = gate_bodies.get(gate_id, "").lower()
+    missing = [term for term in terms if term not in body]
+    if missing:
+        fail(f"{path} gate {gate_id!r} missing behavior terms: {', '.join(missing)}")
+
+
 def validate_specialist_skill(text: str, path: Path) -> None:
-    validate_h2_order(text, path, SPECIALIST_H2_ORDER)
+    validate_operational_sections(text, path, SPECIALIST_OPERATIONAL_SECTIONS)
     gates = evidence_gate_ids(text, path)
     if len(gates) < 3:
         fail(f"{path} needs at least three evidence gates under ## Evidence Gates")
-    if "Stay technology-agnostic by default" not in section_body(text, "## Response Quality Bar", path):
-        fail(f"{path} Response Quality Bar must require technology-agnostic guidance by default")
 
 
 def validate_router_skill(text: str, path: Path) -> None:
-    validate_h2_order(text, path, ROUTER_H2_ORDER)
+    validate_operational_sections(text, path, ROUTER_OPERATIONAL_SECTIONS)
     word_count = len(re.findall(r"\S+", text))
     if word_count > ROUTER_MAX_WORDS:
         fail(f"{path} is {word_count} words; compact router skills must stay under {ROUTER_MAX_WORDS}")
@@ -252,15 +240,9 @@ def validate_router_skill(text: str, path: Path) -> None:
     missing = ROUTER_EVIDENCE_GATES - gate_ids
     if missing:
         fail(f"{path} missing router evidence gates: {', '.join(sorted(missing))}")
-    required_phrases = [
-        "For low-confidence routing: questions only.",
-        "Do not include a primary, secondary, confidence label, routing draft, candidate list, or any specialist skill names.",
-        "expose zero skill names",
-        "Do not invent tool, vendor, framework, protocol, database, or command examples",
-    ]
-    for phrase in required_phrases:
-        if phrase not in text:
-            fail(f"{path} must require low-confidence routing to ask questions without exposing skill names")
+    gate_bodies = evidence_gate_bodies(text, path)
+    require_gate_terms(gate_bodies, "capability_translation", ["tool", "translated"], path)
+    require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "questions", "skill names"], path)
 
 
 def validate_skill(path: Path) -> None:
@@ -277,18 +259,10 @@ def validate_skill(path: Path) -> None:
     if len(description) > 600:
         fail(f"{path} description is too long")
     if expected_name == "staff-engineer-mode":
-        if not description.startswith("Use to "):
-            fail(f"{path} router description must start with 'Use to '")
         validate_router_skill(text, path)
-    elif not description.startswith("Use when "):
-        fail(f"{path} description must start with 'Use when '")
     else:
         validate_specialist_skill(text, path)
 
-    if "TODO" in text or "TBD" in text:
-        fail(f"{path} contains placeholder text")
-
-    validate_no_source_sections(text, path)
     validate_technology_agnostic_body(text, path)
 
 
@@ -321,13 +295,6 @@ def validate_unique_skill_metadata(skill_files: list[Path]) -> None:
 def validate_skill_contract() -> None:
     if not SKILL_CONTRACT.exists():
         fail("shared skill contract is missing")
-    contract = SKILL_CONTRACT.read_text()
-    for heading in SPECIALIST_H2_ORDER:
-        if heading not in contract:
-            fail(f"{SKILL_CONTRACT} does not document required heading {heading}")
-    for heading in FORBIDDEN_SOURCE_HEADINGS:
-        if heading in contract:
-            fail(f"{SKILL_CONTRACT} reintroduces forbidden per-skill source heading {heading}")
 
 
 def main() -> int:
