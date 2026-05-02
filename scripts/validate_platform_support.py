@@ -267,6 +267,10 @@ def validate_docs() -> None:
             fail(f"README.md missing required section or supported tool {term}")
     if "staff-engineer-mode" not in readme:
         fail("README.md must document router entrypoint")
+    if "/plugin marketplace add https://github.com/tnilabs/staff-engineer-mode" not in readme:
+        fail("README.md must use an HTTPS Claude marketplace add command")
+    if "/plugin marketplace add tnilabs/staff-engineer-mode" in readme:
+        fail("README.md must not use the SSH-prone Claude owner/repo marketplace shorthand")
     codex_install = (ROOT / ".codex" / "INSTALL.md").read_text()
     if "~/.agents/skills/staff-engineer-mode" not in codex_install:
         fail(".codex/INSTALL.md must use the native ~/.agents/skills/staff-engineer-mode install path")

@@ -50,8 +50,10 @@ Installation differs by platform.
 
 ### Claude Code Marketplace
 
-```bash
-/plugin marketplace add tnilabs/staff-engineer-mode
+Run these as separate slash commands:
+
+```text
+/plugin marketplace add https://github.com/tnilabs/staff-engineer-mode
 /plugin install staff-engineer-mode@staff-engineer-mode
 ```
 
