@@ -172,17 +172,6 @@ Forty specialist skills, grouped by engineering surface.
 Marketplace installs update through the target platform's plugin or extension
 update flow.
 
-## License
-
-MIT - see `LICENSE`.
-
-## Notice
-
-This is an independent TNI Labs project. It is not endorsed by or affiliated
-with any company, standards body, or open-source project it draws on. Read
-`NOTICE.md` before publishing, redistributing, quoting, or adding source
-material.
-
 ## Contributing
 
 Contributions are welcome, especially additional engineering practices from
@@ -195,3 +184,14 @@ reliability, security, stability, architecture, and maintainability. New skills
 or guidance should synthesize the source material into technology-agnostic
 operational instructions, cite stable source IDs from the shared references, and
 avoid vendor endorsement or process-only advice.
+
+## License
+
+MIT - see `LICENSE`.
+
+## Notice
+
+This is an independent TNI Labs project. It is not endorsed by or affiliated
+with any company, standards body, or open-source project it draws on. Read
+`NOTICE.md` before publishing, redistributing, quoting, or adding source
+material.
