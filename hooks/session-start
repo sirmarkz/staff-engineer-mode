@@ -5,7 +5,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-ROUTER_PATH="${PLUGIN_ROOT}/skills/routing/staff-engineer-mode/SKILL.md"
+ROUTER_PATH="${PLUGIN_ROOT}/skills/staff-engineer-mode/SKILL.md"
 
 if [ -r "$ROUTER_PATH" ]; then
   router_content="$(cat "$ROUTER_PATH")"
@@ -24,7 +24,7 @@ escape_for_json() {
 }
 
 router_escaped="$(escape_for_json "$router_content")"
-session_context="<EXTREMELY_IMPORTANT>\nYou have staff-engineer-mode.\n\nUsers are not expected to know or invoke individual Staff Engineer Mode skill names. For engineering lifecycle, DevOps, operations, reliability, resilience, security, architecture, data, platform, client, and cost-aware reliability requests, start by applying the staff-engineer-mode instructions below. After routing, use the native skill tool to load the selected specialist skill before giving detailed guidance.\n\nBelow is the full content of the router entrypoint skill:\n\n${router_escaped}\n</EXTREMELY_IMPORTANT>"
+session_context="<EXTREMELY_IMPORTANT>\nYou have staff-engineer-mode.\n\nUsers are not expected to know or invoke individual Staff Engineer Mode skill names. For engineering lifecycle, DevOps, operations, reliability, resilience, security, architecture, data, platform, client, and cost-aware reliability requests, start by applying the staff-engineer-mode instructions below. After routing, use the native skill tool to load the selected specialist skill before giving detailed guidance.\n\nKeep guidance technology-agnostic by default. Do not introduce cloud providers, frameworks, databases, monitoring products, protocols, or command examples unless the user supplied them or explicitly asks for tool-specific guidance.\n\nBelow is the full content of the router entrypoint skill:\n\n${router_escaped}\n</EXTREMELY_IMPORTANT>"
 
 if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
   printf '{\n  "additional_context": "%s"\n}\n' "$session_context"

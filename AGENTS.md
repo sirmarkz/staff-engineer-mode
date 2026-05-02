@@ -19,7 +19,7 @@ systems.
 
 | Path | Owns |
 | --- | --- |
-| `skills/<theme>/<skill-name>/SKILL.md` | One hand-authored skill under a coherent engineering theme. |
+| `skills/<skill-name>/SKILL.md` | One hand-authored skill in the flat plugin discovery namespace. |
 | `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
 | `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
@@ -38,8 +38,10 @@ systems.
 - Each skill must synthesize its own references. Read the relevant source notes
   and theme guidance, reconcile the tradeoffs, and write unambiguous operational
   instructions a future agent can follow without guessing.
-- Organize skills by theme folders. Do not return to a flat skill namespace
-  unless the repository owner explicitly changes this rule.
+- Keep skills in a flat `skills/<skill-name>/SKILL.md` namespace so plugin
+  registries can discover them directly. Preserve thematic grouping through
+  names, router language, docs, and shared references rather than nested
+  directories.
 - Keep skills technology-agnostic unless the skill is explicitly for a
   technology-bound surface such as frontend, mobile, ML, or LLM applications.
   Write guidance in terms of capabilities, contracts, failure modes, evidence,

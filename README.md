@@ -135,7 +135,7 @@ Forty specialist skills, grouped by engineering surface.
 
 **Delivery and quality**
 - `testing-and-quality-gates`
-- `release-engineering-and-build-reproducibility`
+- `release-build-reproducibility`
 - `progressive-delivery-and-safe-change`
 - `production-readiness-review`
 - `large-scale-change-and-service-deprecation`

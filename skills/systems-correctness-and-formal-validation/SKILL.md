@@ -1,0 +1,110 @@
+---
+name: systems-correctness-and-formal-validation
+description: "Use when the user asks about formal methods, model checking, invariants, property-based testing, fuzzing, deterministic simulation, state-machine validation, concurrency correctness, distributed locks, consensus, financial correctness, or security-critical protocol behavior. Do not use for ordinary CI test selection."
+---
+
+# Systems Correctness And Formal Validation
+
+## Overview
+
+Some bugs are too subtle for example-based tests and too expensive to discover in production.
+
+**Core principle:** express critical correctness properties as invariants, then validate them with the strongest practical combination of model checking, property tests, simulation, fuzzing, runtime checks, and review.
+
+## Iron Law
+
+```
+NO HIGH-STAKES STATE MACHINE WITHOUT EXPLICIT INVARIANTS AND COUNTEREXAMPLE-DRIVEN VALIDATION
+```
+
+If the team cannot state what must never happen, it cannot prove that the design avoids it.
+
+## When To Use
+
+- The user asks about formal methods, model checking, invariants, property-based testing, fuzzing, deterministic simulation, or high-assurance validation.
+- A design includes distributed locks, leader election, consensus, replication, retries with mutation, workflows, money movement, authorization state, or irreversible actions.
+- A bug would cause data loss, double execution, cross-tenant access, financial inconsistency, or security boundary failure.
+- Tests pass for examples, but concurrency, ordering, timing, crash, or retry interleavings remain uncertain.
+
+## When Not To Use
+
+- The request is normal unit, integration, or CI gate design; use testing and quality gates.
+- The main question is storage choice or consistency semantics; use distributed data unless high-assurance validation is central.
+- The main question is retry/backoff policy rather than correctness proof; use dependency resilience.
+- The system is low-risk and ordinary example-based testing is proportional.
+
+## Inputs To Collect
+
+- State machine, actors, operations, messages, retries, timers, crashes, recovery, and concurrency points.
+- Safety properties: what must never happen.
+- Liveness properties: what must eventually happen, and under which assumptions.
+- Consistency, idempotency, ordering, durability, authorization, and isolation invariants.
+- Existing tests, fuzzers, simulations, model specs, incident examples, and known counterexamples.
+- Mapping from model behavior to implementation code, logs, metrics, and runtime monitors.
+
+## Workflow
+
+1. **Name the critical property.** Write invariants in plain language before choosing tools.
+2. **Bound the model.** Include only state, actors, timing, failures, and nondeterminism needed to test the property.
+3. **Choose validation strength.** Use this skill for concurrency/protocol invariants, model checking, deterministic simulation, state-machine validation, and counterexample-driven proof. Route bounded property tests on pure logic and ordinary fuzzing to testing and quality gates when no high-stakes state machine is involved.
+4. **Search for counterexamples.** Treat each failing trace as design feedback, not as a tool nuisance.
+5. **Connect model to code.** Record which code paths implement each transition and which tests or monitors prove the mapping.
+6. **Verify recovery paths.** Include crash, retry, duplicate, reorder, timeout, partial write, and restart behavior.
+7. **Add runtime evidence.** Monitor invariants that can be checked in production without leaking sensitive data or harming users.
+8. **Re-run on design changes.** Update specs, properties, and generated cases when the protocol or state machine changes.
+
+## Synthesized Default
+
+Use lightweight formal or semi-formal validation for high-stakes stateful behavior. Start with plain-language invariants and counterexample search, then select tools proportional to risk. Do not require formal proof everywhere; require explicit properties where ordinary tests cannot cover the state space.
+
+## Exceptions
+
+- Full proof may be justified for cryptographic, consensus, safety-critical, or cross-tenant isolation mechanisms.
+- Property-based tests may be enough when the state space is implementation-local and failure impact is bounded.
+- Deterministic simulation is preferable when implementation timing, scheduling, or crash recovery is the main uncertainty.
+- Runtime invariant checks may be sampled or delayed when full checking would harm privacy, cost, or latency.
+
+## Response Quality Bar
+
+- Lead with the invariant set, model boundary, counterexample, validation method, or blocker requested.
+- Cover safety/liveness properties, state actors, messages, timing, failures, retries, recovery, code mapping, and runtime checks before optional formal-methods breadth.
+- Make recommendations actionable with owners, model scope, properties to test, counterexample handling, recovery cases, gates, and stop criteria where relevant.
+- State required evidence such as protocol states, transition rules, failure assumptions, trace logs, property-test results, simulation output, model checker traces, and code links; do not claim unseen evidence.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
+- Stay inside correctness validation. Route distributed-data consistency, tenant isolation, or cryptography only when those are the central unresolved risk.
+- Be concise: avoid generic formal-methods advocacy and prefer compact property lists, model boundaries, and counterexample tables.
+
+## Required Outputs
+
+- Correctness property list with safety and liveness split.
+- State-machine or protocol model boundary.
+- Validation method selection and rationale.
+- Counterexample log and design changes.
+- Code-to-model mapping.
+- Recovery/interleaving test plan.
+- Runtime invariant or reconciliation plan.
+
+## Evidence Gates
+
+- `invariant_list`: critical safety and liveness properties are written in reviewable language.
+- `model_boundary`: actors, state, messages, timing, and failure assumptions are explicit.
+- `counterexample_search`: validation attempts to find failing traces, not just confirm expected cases.
+- `code_mapping`: each modeled transition maps to implementation code, tests, or runtime checks.
+- `recovery_cases`: duplicate, reorder, retry, crash, timeout, and partial-failure cases are covered or explicitly exempted.
+
+## Red Flags - Stop And Rework
+
+- "Exactly once", "no split brain", or "strong consistency" is asserted without invariants.
+- The model omits retries, duplicate messages, crash recovery, or clock assumptions that exist in production.
+- Property tests only replay hand-picked examples.
+- A counterexample is dismissed because it is unlikely rather than impossible or risk-accepted.
+- Runtime behavior cannot be traced back to the model.
+
+## Common Mistakes
+
+| Mistake | Correction |
+| --- | --- |
+| Modeling the whole system | Model the smallest state machine that owns the invariant. |
+| Confusing tests with properties | Write the rule first, then generate or search cases. |
+| Ignoring liveness assumptions | State what timing, retry, and failure assumptions allow progress. |
+| Letting specs drift | Update model and invariant checks when implementation changes. |

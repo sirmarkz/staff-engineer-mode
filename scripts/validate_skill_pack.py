@@ -8,6 +8,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
 SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
+CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
+CODEX_MAX_SKILL_NAME_LENGTH = 64
+ROUTER_MAX_WORDS = 1200
 
 COMMON_H2_ORDER = [
     "## Overview",
@@ -236,14 +239,28 @@ def validate_specialist_skill(text: str, path: Path) -> None:
     gates = evidence_gate_ids(text, path)
     if len(gates) < 3:
         fail(f"{path} needs at least three evidence gates under ## Evidence Gates")
+    if "Stay technology-agnostic by default" not in section_body(text, "## Response Quality Bar", path):
+        fail(f"{path} Response Quality Bar must require technology-agnostic guidance by default")
 
 
 def validate_router_skill(text: str, path: Path) -> None:
     validate_h2_order(text, path, ROUTER_H2_ORDER)
+    word_count = len(re.findall(r"\S+", text))
+    if word_count > ROUTER_MAX_WORDS:
+        fail(f"{path} is {word_count} words; compact router skills must stay under {ROUTER_MAX_WORDS}")
     gate_ids = set(evidence_gate_ids(text, path))
     missing = ROUTER_EVIDENCE_GATES - gate_ids
     if missing:
         fail(f"{path} missing router evidence gates: {', '.join(sorted(missing))}")
+    required_phrases = [
+        "For low-confidence routing: questions only.",
+        "Do not include a primary, secondary, confidence label, routing draft, candidate list, or any specialist skill names.",
+        "expose zero skill names",
+        "Do not invent tool, vendor, framework, protocol, database, or command examples",
+    ]
+    for phrase in required_phrases:
+        if phrase not in text:
+            fail(f"{path} must require low-confidence routing to ask questions without exposing skill names")
 
 
 def validate_skill(path: Path) -> None:
@@ -273,6 +290,17 @@ def validate_skill(path: Path) -> None:
 
     validate_no_source_sections(text, path)
     validate_technology_agnostic_body(text, path)
+
+
+def validate_codex_namespaced_length(skill_files: list[Path]) -> None:
+    for path in skill_files:
+        name = path.parent.name
+        namespaced = f"{CODEX_NAMESPACED_PREFIX}{name}"
+        if len(namespaced) > CODEX_MAX_SKILL_NAME_LENGTH:
+            fail(
+                f"{path} name is too long for Codex namespaced install: "
+                f"{namespaced!r} is {len(namespaced)} chars, max {CODEX_MAX_SKILL_NAME_LENGTH}"
+            )
 
 
 def validate_unique_skill_metadata(skill_files: list[Path]) -> None:
@@ -307,15 +335,16 @@ def main() -> int:
     if not skill_files:
         fail("no skills found")
 
+    validate_codex_namespaced_length(skill_files)
     validate_unique_skill_metadata(skill_files)
     for path in skill_files:
         relative = path.relative_to(SKILLS)
-        if len(relative.parts) != 3:
-            fail(f"{path} must live at skills/<theme>/<skill-name>/SKILL.md")
+        if len(relative.parts) != 2:
+            fail(f"{path} must live at skills/<skill-name>/SKILL.md")
         validate_skill(path)
 
-    router_eval = SKILLS / "routing" / "staff-engineer-mode" / "references" / "router-eval-set.yaml"
-    routing_matrix = SKILLS / "routing" / "staff-engineer-mode" / "references" / "routing-matrix.md"
+    router_eval = SKILLS / "staff-engineer-mode" / "references" / "router-eval-set.yaml"
+    routing_matrix = SKILLS / "staff-engineer-mode" / "references" / "routing-matrix.md"
     if not router_eval.exists():
         fail("router eval fixture is missing")
     if not routing_matrix.exists():

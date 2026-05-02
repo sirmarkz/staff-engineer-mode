@@ -90,12 +90,20 @@ def validate_codex() -> None:
 
 def validate_claude() -> None:
     plugin = ROOT / ".claude-plugin" / "plugin.json"
-    require_name_version(plugin)
+    value = require_name_version(plugin)
+    if "skills" in value:
+        fail(".claude-plugin/plugin.json must rely on flat skills/ auto-discovery, not explicit nested skill paths")
+    router = ROOT / "skills" / "staff-engineer-mode" / "SKILL.md"
+    if not router.exists():
+        fail("missing skills/staff-engineer-mode/SKILL.md")
     claude = ROOT / "CLAUDE.md"
     if not claude.exists():
         fail("missing CLAUDE.md")
-    if "staff-engineer-mode" not in claude.read_text():
-        fail("CLAUDE.md must name the router entrypoint")
+    claude_text = claude.read_text()
+    if "@./skills/staff-engineer-mode/SKILL.md" not in claude_text:
+        fail("CLAUDE.md must name the flat router entrypoint")
+    if "Keep guidance technology-agnostic by default" not in claude_text:
+        fail("CLAUDE.md must require technology-agnostic guidance by default")
     marketplace = ROOT / ".claude-plugin" / "marketplace.json"
     value = read_json(marketplace)
     if value.get("name") != NAME:
@@ -134,6 +142,10 @@ def validate_gemini() -> None:
     text = gemini.read_text()
     if "staff-engineer-mode" not in text:
         fail("GEMINI.md must name the router entrypoint")
+    if "skills/routing/staff-engineer-mode" in text:
+        fail("GEMINI.md must not reference the old nested router path")
+    if "Keep guidance technology-agnostic by default" not in text:
+        fail("GEMINI.md must require technology-agnostic guidance by default")
 
 
 def validate_opencode() -> None:
@@ -150,6 +162,8 @@ def validate_opencode() -> None:
         fail("OpenCode plugin must register skillsDir in config.skills.paths")
     if "experimental.chat.messages.transform" not in text or "staff-engineer-mode" not in text:
         fail("OpenCode plugin must inject the router bootstrap")
+    if "Keep guidance technology-agnostic by default" not in text:
+        fail("OpenCode plugin must require technology-agnostic guidance by default")
     if not (ROOT / ".opencode" / "INSTALL.md").exists():
         fail("missing .opencode/INSTALL.md")
 
@@ -171,6 +185,8 @@ def validate_hooks() -> None:
         "additionalContext",
         "additional_context",
         "staff-engineer-mode",
+        "skills/staff-engineer-mode/SKILL.md",
+        "Keep guidance technology-agnostic by default",
     ]:
         if term not in session_start:
             fail(f"hooks/session-start missing {term}")
@@ -254,6 +270,8 @@ def validate_docs() -> None:
     codex_install = (ROOT / ".codex" / "INSTALL.md").read_text()
     if "~/.agents/skills/staff-engineer-mode" not in codex_install:
         fail(".codex/INSTALL.md must use the native ~/.agents/skills/staff-engineer-mode install path")
+    if 'ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode' not in codex_install:
+        fail(".codex/INSTALL.md must symlink the Staff Engineer Mode skill tree for Codex")
     if "original synthesis" not in (ROOT / "NOTICE.md").read_text():
         fail("NOTICE.md must state original synthesis/source boundary")
 
