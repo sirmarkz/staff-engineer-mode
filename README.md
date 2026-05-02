@@ -29,6 +29,20 @@ vibes, more engineering.
 See [sample prompts](SAMPLE-PROMPTS.md) for practical examples across every
 skill.
 
+## Why Use It During Development
+
+Staff Engineer Mode keeps production engineering habits active across the whole
+development loop while the agent plans, edits, reviews, migrates, releases, and
+debugs.
+
+Base models can generate working code, but they do not reliably sustain those
+habits through every step.
+
+Use it when you want your agent to follow practices drawn from Big Tech
+engineering organizations and public standards: protect compatibility, check
+failure modes, make production changes reversible, instrument what matters,
+preserve recovery paths, and leave reviewable evidence behind.
+
 ## How It Works
 
 Everything enters through `staff-engineer-mode`.
