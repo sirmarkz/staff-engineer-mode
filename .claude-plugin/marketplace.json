@@ -8,7 +8,7 @@
     {
       "name": "staff-engineer-mode",
       "description": "Staff Engineer Mode engineering lifecycle and operations skills with automatic routing.",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "source": "./",
       "author": {
         "name": "TNI Labs"

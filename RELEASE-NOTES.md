@@ -1,15 +1,10 @@
-# Staff Engineer Mode Notes
+# Staff Engineer Mode Release Notes
 
-Initial repository state:
+## 0.1.0 - 2026-05-02
 
-- Cross-tool skill pack for Claude Code, Codex, Cursor, OpenCode, GitHub
-  Copilot CLI, and Gemini CLI.
-- Automatic router entrypoint at `skills/staff-engineer-mode/`.
-- Forty specialist engineering skills across architecture, reliability,
-  delivery, operations, security, privacy, data, platform, client, ML, LLM
-  application, and cost-aware reliability work.
-- Technology-agnostic skill guidance with required outputs, evidence gates,
-  red flags, common mistakes, shared source index, and theme synthesis.
-- Deterministic validation for source quality, skill contracts, router fixtures,
-  platform support, metadata consistency, plugin syntax, and whitespace.
-- No public release history yet.
+First public release.
+
+- Adds the Staff Engineer Mode router and 40 specialist engineering skills across architecture, reliability, delivery, operations, security, privacy, data, platform, client, ML, LLM application, and cost-aware reliability work.
+- Supports Claude Code, Codex, Cursor, OpenCode, GitHub Copilot CLI, and Gemini CLI plugin or skill installation paths.
+- Includes deterministic validation for source quality, skill contracts, router fixtures, platform support, version metadata, plugin syntax, and whitespace.
+- Publishes shared references, templates, and evidence-gate conventions for technology-agnostic engineering guidance.

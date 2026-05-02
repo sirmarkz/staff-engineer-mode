@@ -1,6 +1,6 @@
 {
   "name": "staff-engineer-mode",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "main": ".opencode/plugins/staff-engineer-mode.js",
   "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
