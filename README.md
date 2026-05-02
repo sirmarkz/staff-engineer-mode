@@ -117,9 +117,6 @@ interfaces (2), reliability and resilience (7), delivery and quality (7),
 operations and observability (3), security and privacy (8), and data, platform,
 and client systems (13).
 
-Marketplace installs update through the target platform's plugin or extension
-update flow.
-
 ## Contributing
 
 Contributions are welcome, especially additional engineering practices from
