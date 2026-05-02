@@ -21,6 +21,12 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Turn the decision in this PR into a short ADR with tradeoffs and revisit conditions."
 - "Compare these two implementation branches and tell me which design is easier to operate and change later."
 
+### `data-contracts-and-domain-interfaces`
+
+- "Review this shared dataset change for producer and consumer compatibility before we merge."
+- "Inspect the schema and downstream usage, then define the contract and removal gates for this field."
+- "Find where teams depend on this data shape and build a migration plan that will not break consumers."
+
 ## Reliability And Resilience
 
 ### `slo-error-budget-engineering`
@@ -73,6 +79,12 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the CI config and test layout, then find weak signals that could let a bad release through."
 - "Build a practical test plan for this feature using the code that changed in this branch."
 
+### `configuration-and-automation-safety`
+
+- "Review this config change for validation, preview, blast radius, and rollback before it runs."
+- "Inspect this automation script and tell me how it can safely mutate production state."
+- "Find configuration drift and temporary overrides that need owners, expiry, or removal."
+
 ### `release-build-reproducibility`
 
 - "Review the build scripts and release workflow to see whether we can rebuild last week's artifact."
@@ -97,11 +109,23 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Review the deprecation PR and tell me how to prevent new usage from being added."
 - "Inspect this service retirement plan against the codebase and identify anything that could strand users or teams."
 
+### `fleet-upgrades-and-version-skew-management`
+
+- "Build an upgrade plan for this runtime across all services, including support windows and allowed version skew."
+- "Review this platform upgrade and identify mixed-version combinations we need to prove before rollout."
+- "Inspect the fleet inventory and find unsupported versions, owners, exceptions, and cleanup gates."
+
 ### `engineering-productivity-and-code-review`
 
 - "Review this large PR and suggest how to split it without losing review context."
 - "Inspect ownership files and recent changes to find why reviews are slow."
 - "Look at this shared repo and propose ownership boundaries that match how the code actually changes."
+
+### `engineering-documentation-lifecycle`
+
+- "Audit these runbooks and design docs for owner, source of truth, freshness, and archive rules."
+- "Inspect the docs touched by this release and identify stale or missing operational guidance."
+- "Turn this undocumented maintenance workflow into a lifecycle-managed runbook with review triggers."
 
 ### `dependency-hygiene-and-code-health`
 
@@ -143,6 +167,12 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect how secrets are loaded in this repo and design rotation that will not break production."
 - "Review the encryption and key-management code path and call out risky assumptions."
 
+### `crypto-agility-and-cert-lifecycle`
+
+- "Inventory certificates, keys, trust roots, owners, expiry dates, and renewal paths for this service."
+- "Plan a certificate rotation that proves old and new clients work before the old path is removed."
+- "Review this algorithm transition for compatibility, monitoring, exceptions, and retirement gates."
+
 ### `software-supply-chain-security`
 
 - "Review this repo's build and deploy workflow for places an untrusted artifact could slip in."
@@ -178,6 +208,18 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Review this LLM feature PR for prompt injection, unsafe tool access, and data leakage."
 - "Inspect the retrieval code and prove users cannot access documents they should not see."
 - "Design evals that would catch insecure model output before this feature ships."
+
+### `ai-assisted-coding-governance`
+
+- "Review our repo instructions for coding agents and add rules for protected paths, tests, and data boundaries."
+- "Inspect this AI-generated PR and tell me what evidence is missing before a human should approve it."
+- "Define acceptance gates for agent-written code in this repo without replacing normal review."
+
+### `llm-evaluation-harness-engineering`
+
+- "Design an eval harness for this prompt change with cases, graders, thresholds, and regression history."
+- "Inspect these model-backed workflow evals and find where the scoring or slice coverage is weak."
+- "Turn recent bad outputs into release-blocking eval cases with owners and failure triage."
 
 ## Data, Platform, And Client Systems
 
@@ -258,3 +300,15 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Review this UI PR for loading, responsiveness, layout stability, runtime errors, and payload growth."
 - "Inspect field and lab performance signals before rolling out this frontend change."
 - "Add release gates and telemetry for this client-side change using the files in this repo."
+
+### `accessibility-conformance-gates`
+
+- "Review this checkout flow for keyboard completion, focus order, labels, contrast, and release blockers."
+- "Inspect this UI change and build the accessibility gate we need before launch."
+- "Turn these accessibility bugs into journey-based regression checks with owners and retest dates."
+
+### `experimentation-and-metric-guardrails`
+
+- "Review this experiment design for assignment, exposure logging, guardrail metrics, and readout rules."
+- "The A/B test result looks suspicious; inspect sample balance, missing telemetry, and metric definitions."
+- "Decide whether this ramp should continue using experiment validity checks and operational guardrails."

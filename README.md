@@ -9,7 +9,7 @@ judgment as they plan, edit, review risk, migrate data, release, debug, and
 leave reviewable evidence, using practices drawn from Big Tech engineering
 organizations and public standards. Fewer vibes, more engineering.
 
-It is synthesized from more than 200 authoritative public sources: Google SRE
+It is synthesized from hundreds of authoritative public sources: Google SRE
 and engineering practices, Amazon and AWS engineering writing, Microsoft and
 Azure guidance, Meta and Netflix engineering publications, Apple platform
 material, NIST, CISA, OWASP, OpenSSF, IETF/W3C standards, and widely adopted
@@ -37,7 +37,7 @@ otherwise be noisy.
 It composes with other skill packs, including Superpowers, by adding
 engineering-surface routing and risk checks without replacing other workflows.
 
-Forty specialist skills push the agent toward judgment, not verbosity: ADRs,
+Forty-nine specialist skills push the agent toward judgment, not verbosity: ADRs,
 compatibility reviews, rollout plans, SLOs, incident timelines, threat models,
 readiness checks, migration plans, dependency matrices, control evidence, and
 release gates that keep compatibility, safety, reliability, security,
@@ -111,10 +111,14 @@ For the authoritative source list behind the skills, see the
 
 ## What's Inside
 
-Forty specialist skills across six engineering surfaces: architecture and
-interfaces (2), reliability and resilience (7), delivery and quality (7),
-operations and observability (3), security and privacy (8), and data, platform,
-and client systems (13).
+One router, 49 specialist skills, hundreds of authoritative public sources, and shared
+templates for repeatable engineering artifacts.
+
+Specialist skills are organized across eight engineering surfaces: architecture
+and interfaces (3), reliability and resilience (7), delivery and change safety
+(10), operations, observability, and control evidence (4), security, privacy,
+and crypto (8), data and workflow systems (5), platform, edge, and cost (5),
+and client, ML, AI, and experimentation systems (7).
 
 ## Contributing
 
