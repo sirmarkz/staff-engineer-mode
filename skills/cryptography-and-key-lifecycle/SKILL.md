@@ -1,5 +1,5 @@
 ---
-name: crypto-lifecycle
+name: cryptography-and-key-lifecycle
 description: "Use when cryptographic agility, certificate expiry, key rotation, trust chains, or algorithm transition are central."
 ---
 
@@ -28,9 +28,9 @@ If a certificate, key, algorithm, or trust root cannot be replaced safely, the s
 
 ## When Not To Use
 
-- The main topic is identity authorization, secret storage, or service access policy; use zero-trust identity and secrets.
-- The main topic is artifact provenance or release signing; use supply-chain security.
-- The main topic is secure design broadly; use secure SDLC.
+- The main topic is identity authorization, secret storage, or service access policy; defer to `identity-and-secrets`.
+- The main topic is artifact provenance or release signing; defer to `software-supply-chain-security`.
+- The main topic is secure design broadly; defer to `secure-sdlc-and-threat-modeling`.
 - The request is abstract cryptographic research with no engineering lifecycle decision.
 
 ## Inputs To Collect
