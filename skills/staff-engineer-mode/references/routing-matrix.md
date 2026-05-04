@@ -20,7 +20,7 @@ This file records the highest-risk routing boundaries to preserve during future 
 - Fault-domain topology routes to `high-availability-design`; restore capability routes to `backup-and-recovery`; controlled failure tests route to `resilience-experiments`.
 - Build and artifact creation route to `release-build-reproducibility`; production exposure and rollback route to `progressive-delivery`.
 - Config, feature settings, generated operations, and automation mutation route to `configuration-and-automation-safety`; production exposure still routes to `progressive-delivery`.
-- Engineering docs, runbooks, design docs, and freshness/source-of-truth work route to `documentation-lifecycle`; architecture decisions still route to `architecture-decisions`.
+- Engineering docs route to `documentation-lifecycle` only when ownership, source of truth, freshness, operational accuracy, lifecycle gates, or stale/missing guidance are the artifact. Routine editorial or mechanical documentation maintenance should be handled directly without a Staff Engineer Mode specialist. Architecture decisions still route to `architecture-decisions`.
 - Normal merge/release checks route to `testing-and-quality-gates`; protocol, state-machine, or concurrency assurance routes to `correctness-and-formal-methods`.
 - Accessibility conformance for user-facing flows routes to `accessibility-gates`; client performance still routes to `web-release-gates` or `mobile-release-engineering`.
 - Broad migrations, legacy retirement, and capability sunset route to `migration-and-deprecation`; routine cleanup routes to `dependency-and-code-hygiene`; exposed contract compatibility routes to `api-design-and-compatibility`.

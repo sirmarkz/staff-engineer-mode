@@ -115,6 +115,12 @@ cases:
     expected_behavior: "route to engineering documentation lifecycle instead of architecture decision review"
     category: direct
     expected_gates: [single_primary, intent_inference]
+  - prompt: "Make a small mechanical correction in one documentation file and commit it."
+    expected_primary: none
+    expected_behavior: "handle as routine docs maintenance without routing to a Staff Engineer Mode specialist"
+    category: out_of_scope
+    expected_gates: [scope_check]
+    forbidden_in_response: [all_specialist_names]
   - prompt: "Clean up stale libraries, remove dead feature paths, and keep the lockfile from drifting again."
     expected_primary: dependency-and-code-hygiene
     expected_behavior: "route to dependency and code health, not supply-chain trust"

@@ -1,13 +1,13 @@
 ---
 name: documentation-lifecycle
-description: "Use when engineering docs, runbooks, design docs, or decision records need ownership, freshness, or lifecycle gates."
+description: "Use when engineering docs need ownership, source of truth, freshness, or lifecycle gates; not for routine editorial or mechanical edits."
 ---
 
 # Engineering Documentation Lifecycle
 
 ## Overview
 
-Engineering documentation is useful only when it is findable, owned, current, and tied to the system it describes.
+Engineering documentation is useful only when it is findable, owned, current, authoritative, and tied to the system it describes.
 
 **Core principle:** make docs part of the delivery system, with audience, owner, freshness signal, source of truth, and review trigger.
 
@@ -21,7 +21,7 @@ If a doc can mislead an operator, reviewer, or maintainer, stale documentation i
 
 ## When To Use
 
-- The user asks about docs, runbooks, design docs, decision records, onboarding guides, operational references, or documentation standards.
+- The user asks to audit, design, govern, restructure, or lifecycle-manage engineering docs, runbooks, design docs, decision records, onboarding guides, operational references, or documentation standards.
 - Documentation is stale, duplicated, missing owners, hard to find, or disconnected from code and operations.
 - A launch, migration, incident, or deprecation needs docs that remain accurate after the change lands.
 - A team needs a doc lifecycle, not just copy editing.
@@ -31,7 +31,7 @@ If a doc can mislead an operator, reviewer, or maintainer, stale documentation i
 - The main artifact is an architecture decision; use architecture review and decision records.
 - The main artifact is an incident timeline or postmortem; use incident response.
 - The request is marketing, sales, or public positioning copy.
-- The request is only grammar cleanup with no engineering risk.
+- The request is routine editorial or mechanical documentation maintenance with no source-of-truth dispute, operational guidance gap, stale-doc risk, or lifecycle decision.
 
 ## Inputs To Collect
 
