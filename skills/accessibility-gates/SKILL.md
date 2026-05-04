@@ -28,8 +28,8 @@ If a user cannot complete the critical flow with required accessibility support,
 
 ## When Not To Use
 
-- The main issue is loading speed, responsiveness, visual stability, or runtime errors; use frontend performance.
-- The main issue is native crash, startup, offline, or app-store rollout risk; use mobile release engineering.
+- The main issue is loading speed, responsiveness, visual stability, or runtime errors; defer to `web-release-gates`.
+- The main issue is native crash, startup, offline, or app-store rollout risk; defer to `mobile-release-engineering`.
 - The request is brand design or marketing copy without accessibility engineering risk.
 - The work is a legal policy discussion without concrete engineering gates.
 

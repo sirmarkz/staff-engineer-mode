@@ -28,9 +28,9 @@ Breaking things without a learning objective is not engineering.
 
 ## When Not To Use
 
-- The main deliverable is fault-domain topology, static stability, or multi-region design; use HA design.
-- The main deliverable is backup restore testing or RTO/RPO proof; use backup/DR unless broader experiments are central.
-- The main deliverable is timeout, retry, queue, or overload policy; use dependency resilience.
+- The main deliverable is fault-domain topology, static stability, or multi-region design; defer to `high-availability-design`.
+- The main deliverable is backup restore testing or RTO/RPO proof; defer to `backup-and-recovery` unless broader experiments are central.
+- The main deliverable is timeout, retry, queue, or overload policy; defer to `dependency-resilience`.
 - The work is only unit/integration testing without runtime failure injection.
 
 ## Inputs To Collect

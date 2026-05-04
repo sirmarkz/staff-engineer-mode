@@ -28,10 +28,10 @@ If reads, writes, conflicts, retries, failover, and repair behavior are undefine
 
 ## When Not To Use
 
-- The request is only cache TTL, invalidation, stampede, or materialized-view operation; use caching.
-- The question is online schema/backfill execution; use database operations.
-- The work is service event choreography; use event-driven systems.
-- The request is warehouse/ETL freshness rather than application data correctness; use data pipeline reliability.
+- The request is only cache TTL, invalidation, stampede, or materialized-view operation; defer to `caching-and-derived-data`.
+- The question is online schema/backfill execution; defer to `database-operations`.
+- The work is service event choreography; defer to `event-workflows`.
+- The request is warehouse/ETL freshness rather than application data correctness; defer to `data-pipeline-reliability`.
 
 ## Inputs To Collect
 

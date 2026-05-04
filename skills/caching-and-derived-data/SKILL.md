@@ -28,10 +28,10 @@ If writers, invalidators, readers, and downstream systems are not modeled, the c
 
 ## When Not To Use
 
-- The primary question is whether stale reads are semantically acceptable; use distributed data.
+- The primary question is whether stale reads are semantically acceptable; defer to `distributed-data-and-consistency`.
 - The work is primary storage choice or transaction design.
-- The issue is warehouse/ETL pipeline freshness; use data pipeline reliability.
-- The problem is generic dependency overload without cache mechanics; use dependency resilience.
+- The issue is warehouse/ETL pipeline freshness; defer to `data-pipeline-reliability`.
+- The problem is generic dependency overload without cache mechanics; defer to `dependency-resilience`.
 
 ## Inputs To Collect
 

@@ -28,10 +28,10 @@ If a team cannot tell exactly what was built, how it was built, and where it was
 
 ## When Not To Use
 
-- The main topic is rollout stages, canaries, feature flags, rollback, or production exposure; use progressive delivery.
-- The main topic is artifact signing, provenance maturity, dependency inventory, builder trust, or deploy admission; use supply-chain security.
-- The main topic is code review latency or developer workflow policy; use engineering productivity.
-- The main topic is an actively vulnerable deployed artifact; use vulnerability management.
+- The main topic is rollout stages, canaries, feature flags, rollback, or production exposure; defer to `progressive-delivery`.
+- The main topic is artifact signing, provenance maturity, dependency inventory, builder trust, or deploy admission; defer to `software-supply-chain-security`.
+- The main topic is code review latency or developer workflow policy; defer to `code-review-and-workflow`.
+- The main topic is an actively vulnerable deployed artifact; defer to `vulnerability-management`.
 
 ## Inputs To Collect
 

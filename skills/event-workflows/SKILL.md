@@ -28,10 +28,10 @@ If consumers cannot safely see a message twice or late, the workflow is not prod
 
 ## When Not To Use
 
-- The design is only synchronous RPC or HTTP call policy; use dependency resilience.
-- The main question is storage consistency or transaction semantics; use distributed data.
-- The work is batch/warehouse freshness and lineage; use data pipeline reliability.
-- The issue is cache invalidation only; use caching.
+- The design is only synchronous RPC or HTTP call policy; defer to `dependency-resilience`.
+- The main question is storage consistency or transaction semantics; defer to `distributed-data-and-consistency`.
+- The work is batch/warehouse freshness and lineage; defer to `data-pipeline-reliability`.
+- The issue is cache invalidation only; defer to `caching-and-derived-data`.
 
 ## Inputs To Collect
 

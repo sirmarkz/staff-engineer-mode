@@ -28,10 +28,10 @@ If consumers cannot tell whether data is fresh and correct, the pipeline is not 
 
 ## When Not To Use
 
-- The main issue is model training/serving skew, model evaluation, or model rollback; use ML systems reliability.
-- The request is service-to-service event workflow design; use event-driven systems.
-- The work is application database backfill execution; use database operations.
-- The question is primary data consistency semantics; use distributed data.
+- The main issue is model training/serving skew, model evaluation, or model rollback; defer to `ml-reliability-and-evaluation`.
+- The request is service-to-service event workflow design; defer to `event-workflows`.
+- The work is application database backfill execution; defer to `database-operations`.
+- The question is primary data consistency semantics; defer to `distributed-data-and-consistency`.
 
 ## Inputs To Collect
 

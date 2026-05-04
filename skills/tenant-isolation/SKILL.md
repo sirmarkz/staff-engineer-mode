@@ -28,10 +28,10 @@ If a request or query can lose tenant context, cross-tenant leakage or impact is
 
 ## When Not To Use
 
-- The request is general authentication/authorization without tenant or data boundary concerns; use zero-trust identity.
-- The request is broad privacy lifecycle, minimization, retention, deletion, or privacy-safe telemetry without tenant-boundary concerns; use privacy engineering.
-- The main issue is public abuse or DDoS at the edge; use edge traffic defense.
-- The work is only supply-chain or artifact integrity; use supply-chain security.
+- The request is general authentication/authorization without tenant or data boundary concerns; defer to `identity-and-secrets`.
+- The request is broad privacy lifecycle, minimization, retention, deletion, or privacy-safe telemetry without tenant-boundary concerns; defer to `privacy-and-data-lifecycle`.
+- The main issue is public abuse or DDoS at the edge; defer to `edge-traffic-and-ddos-defense`.
+- The work is only supply-chain or artifact integrity; defer to `software-supply-chain-security`.
 
 ## Inputs To Collect
 

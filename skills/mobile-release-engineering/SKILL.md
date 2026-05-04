@@ -28,10 +28,10 @@ If the release cannot be halted or repaired under app-store/client constraints, 
 
 ## When Not To Use
 
-- The request is responsive web or browser performance; use frontend performance gates.
-- The issue is backend-only latency or availability; use capacity/performance or SLO skills.
+- The request is responsive web or browser performance; defer to `web-release-gates`.
+- The issue is backend-only latency or availability; defer to `performance-and-capacity` or `slo-and-error-budgets`.
 - The work is mobile product strategy, acquisition, store listing optimization, or UX roadmap.
-- The question is general CI gate policy without mobile release constraints.
+- The question is general CI gate policy without mobile release constraints; defer to `testing-and-quality-gates`.
 
 ## Inputs To Collect
 

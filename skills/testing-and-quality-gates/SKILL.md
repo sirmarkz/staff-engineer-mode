@@ -28,9 +28,9 @@ If nobody knows what risk a gate protects or what to do when it fails, it should
 
 ## When Not To Use
 
-- The user asks about reviewer behavior, ownership routing, or review latency; use engineering productivity.
-- The user asks for canary or production rollout gates; use progressive delivery.
-- The request is production chaos or failover testing; use HA.
+- The user asks about reviewer behavior, ownership routing, or review latency; defer to `code-review-and-workflow`.
+- The user asks for canary or production rollout gates; defer to `progressive-delivery`.
+- The request is production chaos or failover testing; defer to `resilience-experiments` or `high-availability-design`.
 - The question is pure formatting/style enforcement; automate it and keep this skill focused on risk.
 
 ## Inputs To Collect

@@ -28,9 +28,9 @@ If the team cannot say what got better, what got worse, and which failures block
 
 ## When Not To Use
 
-- The main risk is prompt injection, tool misuse, data leakage, or unsafe actions; use LLM application security.
-- The main work is classical ML drift, training-serving skew, or model-serving readiness; use ML systems reliability.
-- The request is broad AI coding-agent governance; use AI-assisted coding governance.
+- The main risk is prompt injection, tool misuse, data leakage, or unsafe actions; defer to `llm-application-security`.
+- The main work is classical ML drift, training-serving skew, or model-serving readiness; defer to `ml-reliability-and-evaluation`.
+- The request is broad AI coding-agent governance; defer to `ai-coding-governance`.
 - The request is product strategy for which model to choose with no engineering gate.
 
 ## Inputs To Collect

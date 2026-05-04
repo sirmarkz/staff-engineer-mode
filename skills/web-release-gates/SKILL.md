@@ -28,9 +28,9 @@ If a release can make the client experience worse without tripping a gate, the g
 ## When Not To Use
 
 - The request is product UX strategy, visual design, SEO strategy, or broad accessibility-program management.
-- Backend latency is the only issue and client user experience is not central; use capacity/performance.
-- The request is general CI gate policy; use testing and quality gates.
-- The issue is mobile native release stability; use mobile release engineering.
+- Backend latency is the only issue and client user experience is not central; defer to `performance-and-capacity`.
+- The request is general CI gate policy; defer to `testing-and-quality-gates`.
+- The issue is mobile native release stability; defer to `mobile-release-engineering`.
 
 ## Inputs To Collect
 

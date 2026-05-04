@@ -28,9 +28,9 @@ If producers cannot prove who depends on the shape and meaning of data, they can
 
 ## When Not To Use
 
-- One exposed service API contract is the whole problem; use API design and compatibility.
-- Workflow ordering, retries, or dead-letter handling is central; use event-driven systems.
-- Pipeline freshness, reprocessing, or lineage is central; use data-pipeline reliability.
+- One exposed service API contract is the whole problem; defer to `api-design-and-compatibility`.
+- Workflow ordering, retries, or dead-letter handling is central; defer to `event-workflows`.
+- Pipeline freshness, reprocessing, or lineage is central; defer to `data-pipeline-reliability`.
 - The data model is fully private to one component and has no external consumers.
 
 ## Inputs To Collect

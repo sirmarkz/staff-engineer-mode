@@ -7,7 +7,7 @@ description: "Use when active incidents, outages, severity, status updates, time
 
 ## Overview
 
-Incident response protects users first and learns from the system after.
+Produces incident roles and severity, a live timeline, a status-update cadence, a handoff packet for shift changes, and a blameless postmortem whose action items have owners, due dates, and observable verification signals. Refuses "human error" as a conclusion and refuses action items that read "be more careful".
 
 **Core principle:** coordinate clear roles, mitigate impact, preserve a timeline, communicate predictably, and convert learning into verified engineering improvements.
 
@@ -28,10 +28,10 @@ If the postmortem only names a root cause or a person, it has not explained the 
 
 ## When Not To Use
 
-- The work is pre-launch readiness with no incident; use PRR.
+- The work is pre-launch readiness with no incident; defer to `production-readiness-review`.
 - The request is brand, PR, legal strategy, or customer-support policy beyond operational status communication.
-- The user asks only to define telemetry; use observability.
-- The user asks only to reduce alert fatigue; use on-call health.
+- The user asks only to define telemetry; defer to `observability-and-alerting`.
+- The user asks only to reduce alert fatigue; defer to `oncall-health`.
 
 ## Inputs To Collect
 

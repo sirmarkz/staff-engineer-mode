@@ -28,11 +28,11 @@ NO HA CLAIM WITHOUT A FAULT DOMAIN, SURVIVABILITY TARGET, CAPACITY MODEL, AND TE
 
 ## When Not To Use
 
-- The main question is per-call retries, timeouts, backpressure, or circuit breaking; use dependency resilience.
-- The main question is restoring corrupted or lost data; use backup/DR.
-- The main question is planning a chaos experiment, game day, or fault injection drill; use resilience experiments.
+- The main question is per-call retries, timeouts, backpressure, or circuit breaking; defer to `dependency-resilience`.
+- The main question is restoring corrupted or lost data; defer to `backup-and-recovery`.
+- The main question is planning a chaos experiment, game day, or fault injection drill; defer to `resilience-experiments`.
 - The work is only unit, integration, or CI testing.
-- The request is about generic uptime targets; define SLOs first.
+- The request is about generic uptime targets; define SLOs first via `slo-and-error-budgets`.
 
 ## Inputs To Collect
 

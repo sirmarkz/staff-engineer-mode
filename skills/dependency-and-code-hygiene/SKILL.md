@@ -28,10 +28,10 @@ If a cleanup cannot be reviewed, tested, rolled back, or bounded, it is not hygi
 
 ## When Not To Use
 
-- The main topic is build provenance, artifact signing, dependency inventory, builder isolation, or deployment admission; use supply-chain security.
-- The issue is an actively exploitable deployed vulnerability with SLA; use vulnerability management.
-- The refactor changes architecture boundaries; use architecture review.
-- The question is CI gate design; use testing and quality gates.
+- The main topic is build provenance, artifact signing, dependency inventory, builder isolation, or deployment admission; defer to `software-supply-chain-security`.
+- The issue is an actively exploitable deployed vulnerability with SLA; defer to `vulnerability-management`.
+- The refactor changes architecture boundaries; defer to `architecture-decisions`.
+- The question is CI gate design; defer to `testing-and-quality-gates`.
 
 ## Inputs To Collect
 

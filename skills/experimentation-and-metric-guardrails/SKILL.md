@@ -28,9 +28,9 @@ If the experiment cannot prove who saw what and which metric decides the outcome
 
 ## When Not To Use
 
-- The main question is blast radius, rollback, canary, or operational rollout; use progressive delivery.
-- The main question is service reliability objectives or alerting policy; use SLO engineering.
-- The main question is LLM evals or model release gates; use the relevant AI or ML evaluation skill.
+- The main question is blast radius, rollback, canary, or operational rollout; defer to `progressive-delivery`.
+- The main question is service reliability objectives or alerting policy; defer to `slo-and-error-budgets`.
+- The main question is LLM evals or model release gates; defer to `llm-evaluation` or `ml-reliability-and-evaluation`.
 - The request is product strategy with no engineering measurement artifact.
 
 ## Inputs To Collect
