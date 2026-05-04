@@ -14,10 +14,10 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 ## Iron Law
 
 ```
-NO PAGE WITHOUT USER IMPACT, URGENCY, ACTIONABILITY, AND A RUNBOOK
+TELEMETRY STARTS FROM USER SYMPTOMS; A PAGE NEEDS USER IMPACT, URGENCY, ACTIONABILITY, AND A RUNBOOK
 ```
 
-If an alert is not urgent, actionable, user-visible, and novel, it should not page by default.
+Telemetry that does not map to a user-visible symptom is decoration. An alert that lacks impact, urgency, actionability, or a runbook should not page by default. The two halves are co-designed: signals exist so that someone can act on them, and pages fire only on signals that prove user-felt impact.
 
 ## When To Use
 
