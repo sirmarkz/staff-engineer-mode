@@ -52,7 +52,7 @@ Or search `staff-engineer-mode` in the plugin marketplace.
 Works with Codex CLI and Codex App. Tell Codex:
 
 ```text
-Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/staff-engineer-mode/refs/heads/main/.codex/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/staff-engineer-mode/main/.codex/INSTALL.md
 ```
 
 ### OpenCode
