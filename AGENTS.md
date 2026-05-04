@@ -1,8 +1,6 @@
 # AGENTS.md
 
-Operational rules for AI coding agents working in this repository. These
-instructions adapt the TNI Labs workspace practices to the Staff Engineer Mode
-skill-pack context.
+Operational rules for AI coding agents working in this repository.
 
 ## What This Repo Is
 

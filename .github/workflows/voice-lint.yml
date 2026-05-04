@@ -1,0 +1,33 @@
+name: Voice Lint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  voice-lint:
+    name: Brand voice linter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check linter syntax
+        run: |
+          python3 -m py_compile \
+            scripts/lint_brand_voice.py \
+            scripts/test_lint_brand_voice.py
+
+      - name: Run linter unit tests
+        run: python3 -m unittest scripts.test_lint_brand_voice
+
+      - name: Run brand voice linter
+        run: python3 scripts/lint_brand_voice.py

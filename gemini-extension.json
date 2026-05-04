@@ -1,6 +1,6 @@
 {
   "name": "staff-engineer-mode",
-  "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
+  "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer.",
   "version": "0.4.0",
   "contextFileName": "GEMINI.md",
   "license": "MIT"

@@ -3,11 +3,11 @@
   "version": "0.4.0",
   "type": "module",
   "main": ".opencode/plugins/staff-engineer-mode.js",
-  "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
+  "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer and produces the artifact a careful staff engineer would insist on.",
   "license": "MIT",
   "repository": "https://github.com/tnilabs/staff-engineer-mode",
   "homepage": "https://github.com/tnilabs/staff-engineer-mode",
-  "author": "TNI Labs",
+  "author": "Mark Z.",
   "keywords": [
     "skills",
     "staff-engineer",
