@@ -94,7 +94,13 @@ Use specialist descriptions as the primary map. Load `references/routing-matrix.
 - Single-domain evidence stays with the owner; cross-surface evidence packs use `engineering-control-evidence`.
 - Public edge traffic, internal service traffic, backend performance, client performance, cost tradeoffs, and data movement freshness should not be collapsed into one route.
 - Security routes by artifact: threat model, identity/secrets, supply-chain trust, deployed vulnerability remediation, tenant boundary, privacy lifecycle, or model/tool/retrieval app risk.
-- Newer narrow routes beat broad neighbors: config/automation safety, documentation lifecycle, data contracts, accessibility gates, AI coding governance, LLM eval harnesses, experimentation guardrails, fleet upgrades, and crypto lifecycle.
+- Newer narrow routes beat broad neighbors: config/automation safety, documentation lifecycle, data contracts, accessibility gates, AI coding governance, agent PR review, LLM eval harnesses, experimentation guardrails, fleet upgrades, cryptography and key lifecycle, feature flag lifecycle, LLM serving cost and latency, code readability for agents, test data engineering, and dev environment parity.
+- An AI-agent-produced diff that needs a senior pre-merge review routes to `agent-pr-review`; org-level AI-assisted coding policy still routes to `ai-coding-governance`; reviewer routing, change size, and workflow metrics stay with `code-review-and-workflow`.
+- Post-rollout flag life, owners, expiry, and removal route to `feature-flag-lifecycle`; introducing the flag during rollout stays with `progressive-delivery`; generic dead-code cleanup stays with `dependency-and-code-hygiene`.
+- LLM-route token budget, tail latency, prompt/response cache, and provider-failure degradation route to `llm-serving-cost-and-latency`; generic spend/reliability tradeoffs route to `cost-aware-reliability`; generic backend latency to `performance-and-capacity`; generic remote-call resilience to `dependency-resilience`.
+- Repo-as-artifact for AI comprehension, name collisions, function/file-size budgets, and one-tool-call locatability route to `code-readability-for-agents`; macro service boundaries stay with `architecture-decisions`; per-diff agent review stays with `agent-pr-review`.
+- Fixture inventory, anonymization policy, fixture freshness, and production/test data drift route to `test-data-engineering`; overall test strategy and merge gates stay with `testing-and-quality-gates`.
+- Local/CI/staging/production parity matrices, drift budgets, and environment-only fixes route to `dev-environment-parity`; reproducible release artifacts stay with `release-build-reproducibility`.
 
 ## Red Flags - Stop And Rework
 

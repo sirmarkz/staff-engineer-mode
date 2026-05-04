@@ -45,7 +45,7 @@ cases:
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Before shipping the distributed lock, we want invariants and counterexamples for split-brain behavior."
-    expected_primary: correctness-and-formal-methods
+    expected_primary: state-machine-correctness
     expected_behavior: "route to high-assurance validation instead of ordinary tests"
     category: direct
     expected_gates: [single_primary, intent_inference]
@@ -137,7 +137,7 @@ cases:
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Certificates expire next quarter, and the trust-chain change needs inventory, compatibility tests, renewal alerts, and revocation steps."
-    expected_primary: crypto-lifecycle
+    expected_primary: cryptography-and-key-lifecycle
     expected_behavior: "route to cryptographic lifecycle instead of general identity or secrets work"
     category: direct
     expected_gates: [single_primary, intent_inference]
@@ -405,3 +405,68 @@ cases:
     category: out_of_scope
     expected_gates: [scope_check, ambiguity_check]
     forbidden_in_response: [all_specialist_names]
+  - prompt: "Review this AI-generated diff and tell me what a senior reviewer would catch before we merge it."
+    expected_primary: agent-pr-review
+    expected_behavior: "route per-diff senior pre-merge review of agent output to agent PR review"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "What did my agent miss in this branch — silent assumptions, hallucinated APIs, deleted-but-used code?"
+    expected_primary: agent-pr-review
+    expected_behavior: "route AI-failure-mode pre-merge check on a specific diff to agent PR review instead of org policy"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Is this branch from an AI run safe to merge once the tests pass?"
+    expected_primary: agent-pr-review
+    expected_behavior: "route per-diff agent-output review to agent PR review instead of generic code review workflow"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "The rollout is finished; build me an inventory of every live flag with owner, expiry, and removal plan."
+    expected_primary: feature-flag-lifecycle
+    expected_behavior: "route post-rollout flag inventory and removal planning to feature flag lifecycle"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Find the orphan flags in this repo whose feature shipped or whose owner left and propose a safe removal sequence."
+    expected_primary: feature-flag-lifecycle
+    expected_behavior: "route orphan flag detection and removal planning to feature flag lifecycle instead of generic code hygiene"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Set token and p95 latency budgets for this LLM-backed route and define the fallback when the provider degrades."
+    expected_primary: llm-serving-cost-and-latency
+    expected_behavior: "route per-route LLM token and latency budgeting plus degradation path to LLM serving cost and latency"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Map per-call LLM spend to route, feature, and tenant, then design the prompt and response caches."
+    expected_primary: llm-serving-cost-and-latency
+    expected_behavior: "route LLM cost attribution and prompt/response cache design to LLM serving cost and latency instead of generic FinOps"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Audit this repo's module boundaries, names, and file sizes so an AI agent can locate the canonical implementation in one tool call."
+    expected_primary: code-readability-for-agents
+    expected_behavior: "route repo-as-artifact legibility audit for AI comprehension to code readability for agents"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Find names in this codebase that collide or mislead code search and propose renames an agent can rely on."
+    expected_primary: code-readability-for-agents
+    expected_behavior: "route name-collision and code-search-misleading audits to code readability for agents instead of architecture review"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Inventory the fixtures this suite depends on, prove the anonymization policy holds, and define when each fixture must refresh."
+    expected_primary: test-data-engineering
+    expected_behavior: "route fixture inventory, anonymization policy, and freshness decisions to test data engineering"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Find where production data shape has drifted from the data the tests run on and design a drift-detection check."
+    expected_primary: test-data-engineering
+    expected_behavior: "route production/test data drift detection to test data engineering instead of generic test strategy"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Build a parity matrix across local, CI, staging, and production for this service and find divergences nobody named."
+    expected_primary: dev-environment-parity
+    expected_behavior: "route environment parity matrix and unnamed divergence discovery to dev environment parity"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "This fix worked locally and failed in CI; trace the environment dimensions that differ and tell me which one hid the bug."
+    expected_primary: dev-environment-parity
+    expected_behavior: "route 'works only in one environment' failures to dev environment parity instead of build reproducibility"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
