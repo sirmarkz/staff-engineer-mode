@@ -28,7 +28,7 @@ If a metric can be improved by making the system worse, it is not a safe product
 
 ## When Not To Use
 
-- The diff under review was produced by an AI coding agent and the request is "review this AI-generated diff," "what did my agent miss," "is this safe to merge from an AI run," or any per-PR pre-merge pass on agent output; use `agent-pr-review`.
+- The request is a per-diff pre-merge review pass — "review this PR before merge," "did the agent miss anything," "is this safe to merge," "find risks in this diff" — for any diff regardless of who or what produced it; use `agent-pr-review`. This skill owns the SYSTEM of code review (routing, change size, ownership, DORA metrics); `agent-pr-review` owns the ACT of reviewing a specific diff.
 - The user asks which CI checks should block merge; use `testing-and-quality-gates`.
 - The user asks about live incidents, on-call, or operational toil; use `incident-response-and-postmortems` or `oncall-health`.
 - The request is org-level policy for AI-assisted coding (repo instructions, allowed/forbidden actions, protected paths, secret boundaries, audit trails) rather than reviewer routing or workflow metrics; use `ai-coding-governance`.

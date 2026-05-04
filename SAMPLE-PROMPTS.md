@@ -141,9 +141,9 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `agent-pr-review`
 
-- "Review this AI-generated diff and tell me what a senior reviewer would catch before merge."
-- "Find risks in the diff my agent just produced — silent assumptions, hallucinated APIs, scope creep, deleted-but-used code."
-- "What did my agent miss in this branch that I'd be embarrassed to ship?"
+- "Review this PR before merge and tell me what a senior reviewer would catch — intent match, behavior evidence, missing edge cases."
+- "Find risks in the diff I'm about to push — silent assumptions, hallucinated APIs, scope creep, deleted-but-used code."
+- "What did the agent (or I) miss in this branch that we'd be embarrassed to ship?"
 
 ### `code-readability-for-agents`
 

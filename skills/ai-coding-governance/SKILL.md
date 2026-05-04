@@ -28,7 +28,7 @@ If a coding agent cannot explain what it changed, why, how it was verified, and 
 
 ## When Not To Use
 
-- The request is per-PR, per-diff, or per-change pre-merge review of an AI-generated change set ("review this AI diff," "what did my agent miss here," "is this branch safe to merge"); use `agent-pr-review`. This skill owns org-level and repo-level policy — allowed and forbidden actions, protected paths, secret and data boundaries, audit trails, and the rules a single agent diff must satisfy. `agent-pr-review` owns the senior-reviewer pass on a specific diff against those rules.
+- The request is per-PR, per-diff, or per-change pre-merge review ("review this PR before merge," "what did my agent miss here," "is this branch safe to merge") for any diff regardless of authorship; use `agent-pr-review`. This skill owns org-level and repo-level policy — allowed and forbidden actions, protected paths, secret and data boundaries, audit trails, and the rules any diff must satisfy. `agent-pr-review` owns the senior-reviewer pass on a specific diff against those rules.
 - The main risk is prompt injection, tool access, retrieval, or deployed LLM app behavior; use `llm-application-security`.
 - The main issue is model eval harness design, graders, or regression gates for an LLM workflow; use `llm-evaluation`.
 - The request is reviewer routing, ownership, change-size policy, or DORA-style workflow metrics for human and agent code together; use `code-review-and-workflow`.
