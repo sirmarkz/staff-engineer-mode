@@ -7,7 +7,7 @@ description: "Use when AI coding agents or assistants need repo instructions, re
 
 ## Overview
 
-AI-assisted coding is useful when it accelerates engineering without bypassing ownership, review, security, or evidence.
+Produces a repo-local rule set for coding agents: allowed and forbidden actions, protected paths, sensitive-data and secret boundaries, required verification evidence, and an audit trail tied to a human owner. Catches the moment when an agent rewrites twelve files at 11pm with no test run, no scope statement, and no one accountable for the diff.
 
 **Core principle:** give coding agents explicit repo rules, constrain sensitive data and actions, require human-reviewable evidence, and make generated changes meet the same bar as human changes.
 
@@ -28,10 +28,12 @@ If a coding agent cannot explain what it changed, why, how it was verified, and 
 
 ## When Not To Use
 
-- The main risk is prompt injection, tool access, retrieval, or deployed LLM app behavior; use LLM application security.
-- The main issue is model eval harness design; use LLM evaluation harness engineering.
-- The request is broad AI ethics, legal policy, procurement, or staffing.
-- The task is ordinary code review with no AI-assisted workflow concern.
+- The request is per-PR, per-diff, or per-change pre-merge review of an AI-generated change set ("review this AI diff," "what did my agent miss here," "is this branch safe to merge"); use `agent-pr-review`. This skill owns org-level and repo-level policy — allowed and forbidden actions, protected paths, secret and data boundaries, audit trails, and the rules a single agent diff must satisfy. `agent-pr-review` owns the senior-reviewer pass on a specific diff against those rules.
+- The main risk is prompt injection, tool access, retrieval, or deployed LLM app behavior; use `llm-application-security`.
+- The main issue is model eval harness design, graders, or regression gates for an LLM workflow; use `llm-evaluation`.
+- The request is reviewer routing, ownership, change-size policy, or DORA-style workflow metrics for human and agent code together; use `code-review-and-workflow`.
+- The request is broad AI ethics, legal policy, procurement, or staffing; out of scope.
+- The task is ordinary code review with no AI-assisted workflow concern; use `code-review-and-workflow`.
 
 ## Inputs To Collect
 

@@ -28,9 +28,9 @@ If a template creates a service but not an operable service, it is not a golden 
 
 ## When Not To Use
 
-- The work is one-off architecture for one service; use architecture review.
-- The request is only infrastructure policy mechanics; use infrastructure GitOps/policy.
-- The request is compliance program management rather than engineering controls; use engineering control evidence only when in scope.
+- The work is one-off architecture for one service; defer to `architecture-decisions`.
+- The request is only infrastructure policy mechanics; defer to `infrastructure-and-policy-as-code`.
+- The request is compliance program management rather than engineering controls; defer to `engineering-control-evidence` only when in scope.
 - The work is vendor selection or procurement; out of scope.
 
 ## Inputs To Collect

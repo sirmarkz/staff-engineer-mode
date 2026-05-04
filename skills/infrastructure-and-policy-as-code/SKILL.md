@@ -29,8 +29,8 @@ If production infrastructure can change outside review with no reconciliation, t
 ## When Not To Use
 
 - The request is application business logic policy.
-- The work is broad platform product design; use platform/golden paths.
-- The main topic is artifact provenance or signing; use supply-chain security.
+- The work is broad platform product design; defer to `platform-golden-paths`.
+- The main topic is artifact provenance or signing; defer to `software-supply-chain-security`.
 - The request is one-off architecture without reusable infrastructure policy.
 
 ## Inputs To Collect

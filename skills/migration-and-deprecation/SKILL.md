@@ -28,10 +28,10 @@ Warnings without migration machinery are just noise.
 
 ## When Not To Use
 
-- The work is a routine dependency update, package bump, or small codemod; use dependency hygiene.
-- The work is API versioning for one service contract; use API design unless cross-system migration dominates.
-- The work is database schema/backfill execution; use database operations.
-- The work is rollout sequencing for an already built change; use progressive delivery.
+- The work is a routine dependency update, package bump, or small codemod; defer to `dependency-and-code-hygiene`.
+- The work is API versioning for one service contract; defer to `api-design-and-compatibility` unless cross-system migration dominates.
+- The work is database schema/backfill execution; defer to `database-operations`.
+- The work is rollout sequencing for an already built change; defer to `progressive-delivery`.
 
 ## Inputs To Collect
 

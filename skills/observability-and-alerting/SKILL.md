@@ -7,7 +7,7 @@ description: "Use when dashboards, logs, metrics, traces, alerts, runbooks, corr
 
 ## Overview
 
-Observability is the ability to explain new failures from production evidence, not the act of collecting every metric.
+Produces telemetry requirements tied to user journeys, a dashboard specification that answers impact and recent change, and an alert policy where every page has user impact, urgency, actionability, and a runbook. Refuses host-health pages, unowned alerts, and dashboards built from whatever the platform happened to emit.
 
 **Core principle:** instrument user-visible symptoms first, then add enough causal context to debug without guessing.
 
@@ -28,9 +28,9 @@ If an alert is not urgent, actionable, user-visible, and novel, it should not pa
 
 ## When Not To Use
 
-- The user needs reliability targets, SLO math, or budget policy; use SLO engineering.
-- The user needs to reduce existing page volume or toil; use on-call health unless new telemetry is central.
-- The user is in a live incident; use incident response first.
+- The user needs reliability targets, SLO math, or budget policy; defer to `slo-and-error-budgets`.
+- The user needs to reduce existing page volume or toil; defer to `oncall-health` unless new telemetry is central.
+- The user is in a live incident; route to `incident-response-and-postmortems` first.
 - The work is only local development logging without production operations impact.
 
 ## Inputs To Collect

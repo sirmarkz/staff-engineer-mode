@@ -28,10 +28,10 @@ If you cannot pause, measure, and verify the change, it should not run against p
 
 ## When Not To Use
 
-- The question is abstract storage or consistency choice; use distributed data.
-- The request is general rollout sequencing without database risk; use progressive delivery.
-- The primary concern is recovery after corruption or destructive change; use backup/DR.
-- The work is warehouse/ETL freshness; use data pipeline reliability.
+- The question is abstract storage or consistency choice; defer to `distributed-data-and-consistency`.
+- The request is general rollout sequencing without database risk; defer to `progressive-delivery`.
+- The primary concern is recovery after corruption or destructive change; defer to `backup-and-recovery`.
+- The work is warehouse/ETL freshness; defer to `data-pipeline-reliability`.
 
 ## Inputs To Collect
 

@@ -7,7 +7,7 @@ description: "Use when code review, ownership, change size, review latency, DORA
 
 ## Overview
 
-Engineering productivity is the ability to make small, correct, understandable changes without eroding code health or production safety.
+Produces a code review policy, a reviewer-routing plan tied to ownership, and a metrics plan where every velocity number is paired with a quality or reliability guardrail. Catches the moment when an oversized agent-generated diff lands on a random reviewer with no decomposition plan and no defect signal behind the speed metric.
 
 **Core principle:** optimize the review system for fast understanding, clear ownership, automated checks, and quality guardrails rather than raw activity counts.
 
@@ -28,10 +28,12 @@ If a metric can be improved by making the system worse, it is not a safe product
 
 ## When Not To Use
 
-- The user asks which CI checks should block merge; use testing and quality gates.
-- The user asks about live incidents, on-call, or operational toil; use operations skills.
+- The diff under review was produced by an AI coding agent and the request is "review this AI-generated diff," "what did my agent miss," "is this safe to merge from an AI run," or any per-PR pre-merge pass on agent output; use `agent-pr-review`.
+- The user asks which CI checks should block merge; use `testing-and-quality-gates`.
+- The user asks about live incidents, on-call, or operational toil; use `incident-response-and-postmortems` or `oncall-health`.
+- The request is org-level policy for AI-assisted coding (repo instructions, allowed/forbidden actions, protected paths, secret boundaries, audit trails) rather than reviewer routing or workflow metrics; use `ai-coding-governance`.
 - The request is staffing, compensation, performance management, or headcount planning; out of scope.
-- The question is broad architecture ownership; use architecture review if boundaries are the issue.
+- The question is broad architecture ownership; use `architecture-decisions` if boundaries are the issue.
 
 ## Inputs To Collect
 

@@ -29,8 +29,8 @@ If a saving silently consumes reliability margin, it is a risk decision, not an 
 ## When Not To Use
 
 - The user asks pure billing support, procurement, contracts, or vendor negotiation; out of scope.
-- The main topic is performance/capacity with no cost tradeoff; use capacity/tail latency.
-- The issue is public abuse causing cost; use edge traffic defense too.
+- The main topic is performance/capacity with no cost tradeoff; defer to `performance-and-capacity`.
+- The issue is public abuse causing cost; defer to `edge-traffic-and-ddos-defense` too.
 - The request is financial reporting not tied to engineering decisions.
 
 ## Inputs To Collect
@@ -64,7 +64,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 - Non-critical batch or preemptible workloads may use cheaper interruptible capacity if retries, deadlines, and data correctness are safe.
 - Emergency cost controls can temporarily degrade non-critical features if user impact and rollback are explicit.
 - Regulated, safety-critical, or tier-1 systems may keep high headroom even when utilization looks inefficient.
-- Public abuse cost spikes should route to edge defense or abuse controls.
+- Public abuse cost spikes should defer to `edge-traffic-and-ddos-defense`.
 - Small estates may not justify heavy allocation pipelines; use coarse owner/unit tracking until savings exceed instrumentation cost.
 
 ## Response Quality Bar

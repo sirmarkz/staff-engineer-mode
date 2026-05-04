@@ -28,9 +28,9 @@ If the change cannot be checked before execution and reversed or contained after
 
 ## When Not To Use
 
-- The main question is production rollout sequencing; use progressive delivery.
-- The main question is declarative infrastructure, admission, or drift reconciliation; use infrastructure policy.
-- The main question is dependency cleanup or package updates; use dependency hygiene.
+- The main question is production rollout sequencing; defer to `progressive-delivery`.
+- The main question is declarative infrastructure, admission, or drift reconciliation; defer to `infrastructure-and-policy-as-code`.
+- The main question is dependency cleanup or package updates; defer to `dependency-and-code-hygiene`.
 - The request is one-off local scripting with no production or shared-state risk.
 
 ## Inputs To Collect

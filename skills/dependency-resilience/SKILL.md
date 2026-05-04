@@ -29,9 +29,9 @@ If any dependency can wait forever, retry forever, queue forever, or fail ambigu
 ## When Not To Use
 
 - The request is only about in-process exceptions or validation.
-- The main question is SLO target policy; use SLO engineering.
-- The main issue is topology and zone/region survival; use HA.
-- The problem is p99 optimization without dependency safety changes; use capacity/tail latency.
+- The main question is SLO target policy; defer to `slo-and-error-budgets`.
+- The main issue is topology and zone/region survival; defer to `high-availability-design`.
+- The problem is p99 optimization without dependency safety changes; defer to `performance-and-capacity`.
 
 ## Inputs To Collect
 

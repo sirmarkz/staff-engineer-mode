@@ -28,10 +28,10 @@ If the team cannot see what versions exist and what combinations are supported, 
 
 ## When Not To Use
 
-- The work is a routine library update inside one repo; use dependency hygiene.
-- The main risk is build artifact reproducibility; use release engineering.
-- The main risk is exposed API compatibility; use API design.
-- The main task is broad service retirement; use large-scale change and deprecation.
+- The work is a routine library update inside one repo; defer to `dependency-and-code-hygiene`.
+- The main risk is build artifact reproducibility; defer to `release-build-reproducibility`.
+- The main risk is exposed API compatibility; defer to `api-design-and-compatibility`.
+- The main task is broad service retirement; defer to `migration-and-deprecation`.
 
 ## Inputs To Collect
 

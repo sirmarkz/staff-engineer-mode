@@ -29,9 +29,9 @@ If clients cannot tell what changed, how errors behave, whether retries are safe
 ## When Not To Use
 
 - The data model is purely internal and not exposed through an interface.
-- The main issue is per-call timeout/retry behavior rather than API contract; use dependency resilience.
-- The request is broad secure design; use secure SDLC unless API contract is central.
-- The request is event schema evolution inside an asynchronous workflow; use event-driven systems unless the external API contract is the main surface.
+- The main issue is per-call timeout/retry behavior rather than API contract; defer to `dependency-resilience`.
+- The request is broad secure design; defer to `secure-sdlc-and-threat-modeling` unless API contract is central.
+- The request is event schema evolution inside an asynchronous workflow; defer to `event-workflows` unless the external API contract is the main surface.
 
 ## Inputs To Collect
 

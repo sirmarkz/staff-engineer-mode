@@ -7,7 +7,7 @@ description: "Use when SLIs, SLOs, SLAs, error budgets, burn-rate alerts, paging
 
 ## Overview
 
-Reliability is a user-visible contract, not an infrastructure feeling.
+Produces an SLI/SLO table tied to named user journeys, an error-budget calculation, a multi-window burn-rate alert policy, and a budget-state release rule. Refuses 100-percent targets, host-health proxies, and pages that do not name a user.
 
 **Core principle:** define the experience users are promised, measure it with SLIs, set an SLO that leaves an explicit error budget, and let that budget govern paging and release risk.
 
@@ -28,10 +28,10 @@ If the journey, window, target, budget, owner, and response policy are missing, 
 
 ## When Not To Use
 
-- The user only asks to build dashboards, traces, or logging without a user-visible objective; use observability.
-- The user asks to reduce existing page volume or on-call fatigue; use on-call health unless new SLO policy is the main work.
-- The user asks for cost optimization without reliability targets; use cost-aware reliability.
-- A live outage is underway; use incident response first.
+- The user only asks to build dashboards, traces, or logging without a user-visible objective; defer to `observability-and-alerting`.
+- The user asks to reduce existing page volume or on-call fatigue; defer to `oncall-health` unless new SLO policy is the main work.
+- The user asks for cost optimization without reliability targets; defer to `cost-aware-reliability`.
+- A live outage is underway; route to `incident-response-and-postmortems` first.
 
 ## Inputs To Collect
 

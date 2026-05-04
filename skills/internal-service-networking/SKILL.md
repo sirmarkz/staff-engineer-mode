@@ -29,11 +29,11 @@ If the platform cannot debug and upgrade it, it should not sit in every request 
 
 ## When Not To Use
 
-- The request is public edge abuse or denial-of-service defense; use edge traffic defense.
+- The request is public edge abuse or denial-of-service defense; defer to `edge-traffic-and-ddos-defense`.
 - The request is a vague network issue without a known affected path, surface, or symptom; use the router first.
-- The issue is per-call retry/timeout/backpressure policy without networking architecture; use dependency resilience.
-- The main topic is API contract design; use API compatibility.
-- The work is broad identity/secrets beyond network identity; use zero-trust identity.
+- The issue is per-call retry/timeout/backpressure policy without networking architecture; defer to `dependency-resilience`.
+- The main topic is API contract design; defer to `api-design-and-compatibility`.
+- The work is broad identity/secrets beyond network identity; defer to `identity-and-secrets`.
 
 ## Inputs To Collect
 

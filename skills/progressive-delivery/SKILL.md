@@ -7,7 +7,7 @@ description: "Use when rollout, rollback, canary, feature flags, config changes,
 
 ## Overview
 
-Production changes fail safely when they are gradual, observable, reversible, and bounded.
+Produces a staged rollout plan with named blast radius per stage, predeclared canary metrics with baseline and observation windows, stop and rollback criteria, and a cleanup owner for every temporary flag or compatibility path. Refuses rollouts whose rollback only reverts code while config, schema, data, or clients stay forward.
 
 **Core principle:** treat code, configuration, flags, schemas, data, infrastructure, and model artifacts as production changes with the same blast-radius discipline.
 
@@ -28,10 +28,10 @@ If the rollout cannot be stopped or reversed when evidence degrades, it is not s
 
 ## When Not To Use
 
-- A live incident needs immediate command and mitigation; use incident response first.
-- The question is only code review or merge gates; use testing/quality or productivity.
-- The question is build systems, release branches, packaging, or reproducible artifacts; use release engineering.
-- The main risk is database lock/backfill execution; use database operations for that detail and this skill for rollout sequencing.
+- A live incident needs immediate command and mitigation; route to `incident-response-and-postmortems` first.
+- The question is only code review or merge gates; defer to `testing-and-quality-gates` or `code-review-and-workflow`.
+- The question is build systems, release branches, packaging, or reproducible artifacts; defer to `release-build-reproducibility`.
+- The main risk is database lock/backfill execution; defer to `database-operations` for that detail and use this skill for rollout sequencing.
 - The request is product launch messaging or marketing; out of scope.
 
 ## Inputs To Collect

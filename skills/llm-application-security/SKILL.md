@@ -29,9 +29,9 @@ If the model can cause an action, that action needs authorization, constraints, 
 ## When Not To Use
 
 - The request is broad AI governance, model strategy, or ethics policy outside engineering controls.
-- The work is classical ML evaluation or drift; use ML systems reliability.
-- The request is general application threat modeling without LLM-specific boundaries; use secure SDLC.
-- The issue is generic artifact provenance with no model/prompt/tool supply chain concern; use supply-chain security.
+- The work is classical ML evaluation or drift; defer to `ml-reliability-and-evaluation`.
+- The request is general application threat modeling without LLM-specific boundaries; defer to `secure-sdlc-and-threat-modeling`.
+- The issue is generic artifact provenance with no model/prompt/tool supply chain concern; defer to `software-supply-chain-security`.
 
 ## Inputs To Collect
 
