@@ -1,5 +1,5 @@
 ---
-name: correctness-and-formal-methods
+name: state-machine-correctness
 description: "Use when invariants, property tests, fuzzing, simulation, concurrency, locks, consensus, or financial correctness are central."
 ---
 
@@ -21,16 +21,18 @@ If the team cannot state what must never happen, it cannot prove that the design
 
 ## When To Use
 
-- The user asks about formal methods, model checking, invariants, property-based testing, fuzzing, deterministic simulation, or high-assurance validation.
+- The user asks about state-machine correctness, protocol invariants, model checking, deterministic simulation, or high-assurance validation.
+- The user asks about property-based testing or fuzzing of behavior that crosses a state machine, protocol, concurrency boundary, or trust boundary, where examples cannot cover the input or interleaving space.
 - A design includes distributed locks, leader election, consensus, replication, retries with mutation, workflows, money movement, authorization state, or irreversible actions.
 - A bug would cause data loss, double execution, cross-tenant access, financial inconsistency, or security boundary failure.
 - Tests pass for examples, but concurrency, ordering, timing, crash, or retry interleavings remain uncertain.
 
 ## When Not To Use
 
-- The request is normal unit, integration, or CI gate design; use testing and quality gates.
-- The main question is storage choice or consistency semantics; use distributed data unless high-assurance validation is central.
-- The main question is retry/backoff policy rather than correctness proof; use dependency resilience.
+- The request is normal unit, integration, end-to-end, or CI merge-gate design with no state-machine or invariant under test; use `testing-and-quality-gates`.
+- The fuzz target is purely a parser, format decoder, or input validator with no protocol or state-machine surface; use `testing-and-quality-gates`.
+- The main question is storage choice or consistency semantics; use `distributed-data-and-consistency` unless high-assurance validation of the storage protocol itself is central.
+- The main question is retry, timeout, circuit-breaker, or backoff policy rather than correctness of the underlying state machine; use `dependency-resilience`.
 - The system is low-risk and ordinary example-based testing is proportional.
 
 ## Inputs To Collect
@@ -46,7 +48,7 @@ If the team cannot state what must never happen, it cannot prove that the design
 
 1. **Name the critical property.** Write invariants in plain language before choosing tools.
 2. **Bound the model.** Include only state, actors, timing, failures, and nondeterminism needed to test the property.
-3. **Choose validation strength.** Use this skill for concurrency/protocol invariants, model checking, deterministic simulation, state-machine validation, and counterexample-driven proof. Route bounded property tests on pure logic and ordinary fuzzing to testing and quality gates when no high-stakes state machine is involved.
+3. **Choose validation strength.** Match the technique to the invariant. Use property-based testing and fuzzing when the invariant is local and the input or interleaving space exceeds what examples cover; use deterministic simulation when timing, scheduling, crash, or retry interleavings dominate; use model checking when the protocol or concurrency interleaving is the source of risk; reserve full proof for cryptographic, consensus, or safety-critical mechanisms. Escalate up the ladder when the lower technique cannot cover the state space; do not stop at examples for high-stakes invariants. Bounded property tests on pure logic and parser-only fuzzing with no state-machine or invariant under test belong in `testing-and-quality-gates`.
 4. **Search for counterexamples.** Treat each failing trace as design feedback, not as a tool nuisance.
 5. **Connect model to code.** Record which code paths implement each transition and which tests or monitors prove the mapping.
 6. **Verify recovery paths.** Include crash, retry, duplicate, reorder, timeout, partial write, and restart behavior.
