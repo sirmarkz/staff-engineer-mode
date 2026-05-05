@@ -1,6 +1,6 @@
 ---
 name: secure-sdlc-and-threat-modeling
-description: "Use when threat modeling, secure design, abuse cases, app security controls, input validation, or security requirements are central."
+description: "Use to threat-model a feature or system — trust boundaries, data flows, abuse cases, controls mapped to tests, residual risk register — before implementation crosses a sensitive boundary."
 ---
 
 # Secure SDLC And Threat Modeling

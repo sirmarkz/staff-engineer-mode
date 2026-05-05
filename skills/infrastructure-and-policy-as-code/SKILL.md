@@ -1,6 +1,6 @@
 ---
 name: infrastructure-and-policy-as-code
-description: "Use when infrastructure as code, drift, admission, promotion, reconciliation, or policy as code are central."
+description: "Use to make infrastructure declarative — desired state, policy checks, drift detection and reconciliation, environment promotion, and emergency change paths."
 ---
 
 # Infrastructure GitOps And Policy As Code

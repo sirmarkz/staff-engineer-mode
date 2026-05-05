@@ -1,6 +1,6 @@
 ---
 name: oncall-health
-description: "Use when pages, alert fatigue, toil, manual operations, runbook gaps, or operational burden are central."
+description: "Use to cut page volume, eliminate toil, fix runbook gaps, or convert recurring manual operations into engineering work — when responders are interrupted by noisy or unactionable alerts."
 ---
 
 # Oncall Health And Toil Reduction

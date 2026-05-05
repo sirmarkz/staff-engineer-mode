@@ -1,6 +1,6 @@
 ---
 name: dependency-and-code-hygiene
-description: "Use when dependency updates, lockfiles, cleanup, refactoring, static analysis, codemods, or dead code are central."
+description: "Use to plan dependency updates, dead-code removal, lockfile sweeps, codemods, or static-analysis ratchets in small reversible batches."
 ---
 
 # Dependency Hygiene And Code Health

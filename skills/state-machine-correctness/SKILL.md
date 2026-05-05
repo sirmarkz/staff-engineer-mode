@@ -1,6 +1,6 @@
 ---
 name: state-machine-correctness
-description: "Use when invariants, property tests, fuzzing, simulation, concurrency, locks, consensus, or financial correctness are central."
+description: "Use to validate a high-stakes state machine, protocol, or concurrency boundary — explicit invariants plus property tests, fuzzing, simulation, or model checking — when example-based tests cannot cover the input or interleaving space."
 ---
 
 # Systems Correctness And Formal Validation

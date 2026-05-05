@@ -1,6 +1,6 @@
 ---
 name: cost-aware-reliability
-description: "Use when cost, unit economics, tagging, capacity headroom, or reliability/cost tradeoffs are central."
+description: "Use to investigate a cost spike, decide a cost-vs-reliability tradeoff, set unit economics, or cut spend without quietly eating SLO headroom."
 ---
 
 # FinOps And Cost Aware Reliability

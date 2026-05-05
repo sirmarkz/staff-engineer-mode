@@ -1,6 +1,6 @@
 ---
 name: high-availability-design
-description: "Use when high availability, redundancy, failover, fault domains, cells, or multi-region design are central."
+description: "Use to claim or validate that a system survives zone, region, cell, shard, or dependency loss — fault domains, static capacity, blast radius, and failover behavior."
 ---
 
 # High Availability Design And Validation

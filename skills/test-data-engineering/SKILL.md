@@ -1,6 +1,6 @@
 ---
 name: test-data-engineering
-description: "Use when fixtures, golden files, anonymized production captures, fixture freshness, or drift between production data and test data are central to a test failure, a flake, or a data-shape regression."
+description: "Use to inventory and govern test data — fixtures, golden files, captured production snapshots — with anonymization policy, scope per fixture, freshness vs determinism rule, and drift detection against production shape."
 ---
 
 # Test Data Engineering

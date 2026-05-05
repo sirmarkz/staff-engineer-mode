@@ -1,6 +1,6 @@
 ---
 name: ml-reliability-and-evaluation
-description: "Use when production ML serving, training pipelines, eval gates, drift, skew, rollback, or readiness are central."
+description: "Use to gate a production ML model promotion on data validation, eval thresholds, training-serving skew, drift monitoring, and rollback path — before a new artifact replaces the live one."
 ---
 
 # ML Systems Reliability And Evaluation

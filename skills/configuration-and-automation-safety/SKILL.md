@@ -1,6 +1,6 @@
 ---
 name: configuration-and-automation-safety
-description: "Use when configuration, feature settings, generated operations, or automation changes need safety gates."
+description: "Use before running a config change, bulk script, or automation that touches production state — to add validation, preview, blast-radius limits, and a recovery path."
 ---
 
 # Configuration And Automation Safety

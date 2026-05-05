@@ -1,6 +1,6 @@
 ---
 name: llm-evaluation
-description: "Use when LLM prompts, agents, or model-backed workflows need eval datasets, graders, thresholds, or regression gates."
+description: "Use to build an eval harness for a model-backed change — datasets, graders, thresholds, slice coverage, regression history — before merging a prompt edit, model swap, or tool-policy change."
 ---
 
 # LLM Evaluation Harness Engineering

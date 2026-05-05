@@ -1,6 +1,6 @@
 ---
 name: architecture-decisions
-description: "Use when system design, architecture review, ADRs, tradeoffs, or service boundaries are central."
+description: "Use to design or review a system, write an ADR, or decide between competing service boundaries before code lands."
 ---
 
 # Architecture Review And Decision Records

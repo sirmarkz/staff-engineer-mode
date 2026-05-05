@@ -1,6 +1,6 @@
 ---
 name: software-supply-chain-security
-description: "Use when build/deploy integrity, artifact signing, provenance, dependency inventory, builder isolation, or secret scanning are central."
+description: "Use to harden the source-to-deploy chain — protected source, isolated builders, artifact provenance and signing, dependency inventory, deployment admission, and least-privilege automation credentials."
 ---
 
 # Software Supply Chain Security

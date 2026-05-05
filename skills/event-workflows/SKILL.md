@@ -1,6 +1,6 @@
 ---
 name: event-workflows
-description: "Use when events, queues, streams, outbox, sagas, DLQs, retries, or workflow orchestration are central."
+description: "Use to design an event, queue, stream, saga, or workflow — and define idempotency, retry, DLQ, ordering, and replay before async messages start landing twice or out of order."
 ---
 
 # Event Driven Systems And Workflows

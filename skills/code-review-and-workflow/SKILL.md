@@ -1,6 +1,6 @@
 ---
 name: code-review-and-workflow
-description: "Use when code review, ownership, change size, review latency, DORA, or workflow quality are central."
+description: "Use to set the system-level rules for code review — who reviews what, change-size limits, review-latency targets, and the productivity metrics paired with quality guardrails. Not for reviewing one specific PR; that is agent-pr-review."
 ---
 
 # Engineering Productivity And Code Review
@@ -14,10 +14,10 @@ Produces a code review policy, a reviewer-routing plan tied to ownership, and a 
 ## Iron Law
 
 ```
-NO PRODUCTIVITY METRIC WITHOUT A QUALITY OR RELIABILITY GUARDRAIL
+NO REVIEW POLICY WITHOUT OWNERS, CHANGE-SIZE LIMITS, AND METRICS PAIRED WITH QUALITY GUARDRAILS
 ```
 
-If a metric can be improved by making the system worse, it is not a safe productivity metric.
+The policy must say who reviews what, cap how big a single diff can grow before it must be decomposed, and pair every productivity metric with a quality or reliability guardrail. A metric that improves when the system gets worse is not a safe productivity metric. For a solo developer "owners" collapses to "you" and the policy still has to declare it; the change-size cap and guardrail-paired metrics still apply because they exist to catch sloppy diffs and misleading speed numbers.
 
 ## When To Use
 

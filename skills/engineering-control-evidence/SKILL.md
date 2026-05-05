@@ -1,6 +1,6 @@
 ---
 name: engineering-control-evidence
-description: "Use when engineering standards must become evidence packs, scorecards, controls, or exception records."
+description: "Use to build a cross-surface evidence pack, scorecard, or exception register that maps engineering standards to artifacts teams already produce — for audits, governance reviews, or program-level reporting that spans two or more specialist surfaces."
 ---
 
 # Engineering Control Evidence
@@ -18,6 +18,8 @@ NO CROSS-SURFACE CONTROL MAP WITHOUT OWNER, REPEATABLE EVIDENCE SOURCE, CADENCE,
 ```
 
 If a control cannot be inspected against an owned, repeatable artifact on a defined cadence, it is not an engineering control. Single-surface evidence stays with the surface owner.
+
+> This skill assumes a multi-team or enterprise context. The artifacts it produces (cross-surface control maps, scorecards, exception registers) exist to coordinate evidence across teams that own different surfaces. A solo developer or single-team product does not produce these — single-domain evidence stays with the owning specialist.
 
 ## When To Use
 

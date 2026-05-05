@@ -1,6 +1,6 @@
 ---
 name: api-design-and-compatibility
-description: "Use when API contracts, versioning, compatibility, deprecation, pagination, errors, or client migration are central."
+description: "Use to design or evolve an API — versioning, compatibility, deprecation windows, error models, idempotency, and pagination — before clients depend on the shape."
 ---
 
 # API Design And Compatibility

@@ -1,6 +1,6 @@
 ---
 name: dev-environment-parity
-description: "Use when local, CI, staging, and production environments diverge in dependencies, configuration, data shape, time, network policy, or secret handling and a fix that worked in one environment fails in another."
+description: "Use to diagnose or prevent a 'works on my machine' failure by building a parity matrix across local, CI, staging, and production for dependencies, config, data shape, time, network policy, and secrets — with a drift budget and named action when breached."
 ---
 
 # Dev Environment Parity

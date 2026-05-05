@@ -1,6 +1,6 @@
 ---
 name: production-readiness-review
-description: "Use when a service, feature, migration, tier change, or traffic shift needs production launch readiness review."
+description: "Use to run a launch-readiness review on a service, feature, migration, tier change, or major traffic shift — produces an evidence matrix, blockers, exceptions, and a tier classification, but does not give go/no-go authority."
 ---
 
 # Production Readiness Review
