@@ -1,5 +1,37 @@
 # Staff Engineer Mode Release Notes
 
+## 0.5.0 - 2026-05-04
+
+Repositioning and quality release.
+
+- Repositions the pack around "the senior reviewer your AI coding agent is
+  missing." New README hero, supporting line, and category framing
+  (`COMPARISON.md`) against neighboring skill packs.
+- Adds six specialist skills: `agent-pr-review` (default pre-merge review for
+  any diff, human or AI), `feature-flag-lifecycle`, `llm-serving-cost-and-latency`,
+  `code-readability-for-agents`, `test-data-engineering`, `dev-environment-parity`.
+- Renames two skills for discoverability: `crypto-lifecycle` →
+  `cryptography-and-key-lifecycle`; `correctness-and-formal-methods` →
+  `state-machine-correctness`.
+- Solo-dev usability pass across 54 specialist `SKILL.md` files. Every skill
+  now scales from a single developer up; multi-team-required skills carry
+  explicit enterprise-context annotations rather than being scaled past
+  usefulness.
+- Prescriptive frontmatter pass: 54 description fields rewritten from
+  descriptive ("Use when X is central") to prescriptive ("Use to do Y") in
+  plain language with concrete trigger phrases that disambiguate from neighbors.
+- Sharper Iron Laws across the pack, with two-clause coverage on skills that
+  bundle distinct concerns (incident response + postmortem; telemetry +
+  alerting; review policy + productivity metrics).
+- Adds top-level `MAINTAINERS.md` with named human attribution, `STYLE.md`
+  voice principles, and `docs/screencast-script.md` recording plan.
+- Adds brand-voice CI linter (`scripts/lint_brand_voice.py`) with 29 unit
+  tests and a GitHub Actions workflow that fails PRs on FAANG name-drops in
+  openings, marketing adjectives in headlines, hedging in headlines, vendor
+  names in specialist prose, and missing Iron Laws.
+- Repository moved from `tnilabs/staff-engineer-mode` to
+  `sirmarkz/staff-engineer-mode`. Install URLs updated everywhere.
+
 ## 0.4.0 - 2026-05-02
 
 Skill naming and router quality release.

@@ -1,6 +1,6 @@
 {
   "name": "staff-engineer-mode",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "main": ".opencode/plugins/staff-engineer-mode.js",
   "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer and produces the artifact a careful staff engineer would insist on.",
