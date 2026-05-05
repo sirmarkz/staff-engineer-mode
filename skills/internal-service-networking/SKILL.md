@@ -1,6 +1,6 @@
 ---
 name: internal-service-networking
-description: "Use when internal service networking, mesh, discovery, routing, private connectivity, or service access are central."
+description: "Use to design internal service-to-service traffic — discovery, routing, identity, encrypted transport, mesh adoption, and per-hop failure behavior. Not for public-edge or DDoS work."
 ---
 
 # Internal Networking And Service Mesh
@@ -14,10 +14,12 @@ Internal networking should solve concrete traffic, identity, policy, and observa
 ## Iron Law
 
 ```
-NO SERVICE MESH OR ROUTING LAYER WITHOUT A SPECIFIC PROBLEM, OWNER, FAILURE MODEL, AND OPERATIONS PLAN
+NO INTERNAL SERVICE PATH WITHOUT IDENTITY, FAILURE MODE, OBSERVABILITY, AND AN OPERATIONS PLAN FOR EVERY HOP
 ```
 
-If the platform cannot debug and upgrade it, it should not sit in every request path.
+Every hop on a service-to-service path needs a workload identity, a documented failure mode, telemetry that explains what happened, and a named operator path for debugging and upgrades. "We added a mesh" or "we use DNS" is not an answer to any of those four. For a solo or two-service deployment the rule still applies — just at a smaller scale.
+
+> This skill assumes a multi-service deployment. A single-process app does not have internal service hops; route to `dependency-resilience` for remote-call policy or `architecture-decisions` if the question is whether to split.
 
 ## When To Use
 
@@ -29,11 +31,11 @@ If the platform cannot debug and upgrade it, it should not sit in every request 
 
 ## When Not To Use
 
-- The request is public edge abuse or denial-of-service defense; use edge traffic defense.
+- The request is public edge abuse or denial-of-service defense; defer to `edge-traffic-and-ddos-defense`.
 - The request is a vague network issue without a known affected path, surface, or symptom; use the router first.
-- The issue is per-call retry/timeout/backpressure policy without networking architecture; use dependency resilience.
-- The main topic is API contract design; use API compatibility.
-- The work is broad identity/secrets beyond network identity; use zero-trust identity.
+- The issue is per-call retry/timeout/backpressure policy without networking architecture; defer to `dependency-resilience`.
+- The main topic is API contract design; defer to `api-design-and-compatibility`.
+- The work is broad identity/secrets beyond network identity; defer to `identity-and-secrets`.
 
 ## Inputs To Collect
 

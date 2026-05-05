@@ -1,6 +1,6 @@
 ---
 name: privacy-and-data-lifecycle
-description: "Use when data minimization, retention, deletion, privacy-safe telemetry, export, or erasure workflows are central."
+description: "Use to engineer privacy controls — data minimization, classification, retention, deletion propagation, privacy-safe telemetry, export and erasure — for any field carrying personal or sensitive data."
 ---
 
 # Privacy Engineering And Data Lifecycle
@@ -28,10 +28,10 @@ If a team cannot find and delete or justify every copy, it does not control the 
 
 ## When Not To Use
 
-- The main issue is tenant boundary enforcement or noisy-neighbor isolation; use tenant isolation.
-- The main issue is authentication, authorization, secrets, or cryptography; use zero-trust identity.
+- The main issue is tenant boundary enforcement or noisy-neighbor isolation; defer to `tenant-isolation`.
+- The main issue is authentication, authorization, secrets, or cryptography; defer to `identity-and-secrets`.
 - The request is broad legal privacy policy, notice drafting, or regulator/auditor liaison; out of scope unless converted to concrete engineering controls.
-- The work is only control mapping; use engineering control evidence.
+- The work is only control mapping; defer to `engineering-control-evidence`.
 
 ## Inputs To Collect
 

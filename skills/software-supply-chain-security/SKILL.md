@@ -1,6 +1,6 @@
 ---
 name: software-supply-chain-security
-description: "Use when build/deploy integrity, artifact signing, provenance, dependency inventory, builder isolation, or secret scanning are central."
+description: "Use to harden the source-to-deploy chain — protected source, isolated builders, artifact provenance and signing, dependency inventory, deployment admission, and least-privilege automation credentials."
 ---
 
 # Software Supply Chain Security
@@ -28,9 +28,9 @@ If an artifact cannot be traced back to reviewed source and a trusted build path
 
 ## When Not To Use
 
-- The work is routine package updates or dead-code cleanup; use dependency hygiene.
-- The issue is a deployed vulnerability with patch SLA; use vulnerability management.
-- The question is runtime authorization or service access; use zero-trust identity.
+- The work is routine package updates or dead-code cleanup; defer to `dependency-and-code-hygiene`.
+- The issue is a deployed vulnerability with patch SLA; defer to `vulnerability-management`.
+- The question is runtime authorization or service access; defer to `identity-and-secrets`.
 - The request is broad compliance program management; out of scope unless framed as engineering evidence.
 
 ## Inputs To Collect

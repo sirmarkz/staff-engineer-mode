@@ -1,8 +1,8 @@
 # Notice
 
-This repository is an independent TNI Labs skill pack. It is not endorsed by,
-affiliated with, sponsored by, or approved by Google, Amazon, AWS, Meta, Apple,
-Netflix, Microsoft, NIST, OWASP, CISA, OpenSSF, or any other cited organization.
+This is an independent skill pack. It is not endorsed by, affiliated with,
+sponsored by, or approved by Google, Amazon, AWS, Meta, Apple, Netflix,
+Microsoft, NIST, OWASP, CISA, OpenSSF, or any other cited organization.
 All trademarks, service marks, product names, and organization names belong to
 their respective owners.
 

@@ -1,13 +1,13 @@
 ---
 name: secure-sdlc-and-threat-modeling
-description: "Use when threat modeling, secure design, abuse cases, app security controls, input validation, or security requirements are central."
+description: "Use to threat-model a feature or system — trust boundaries, data flows, abuse cases, controls mapped to tests, residual risk register — before implementation crosses a sensitive boundary."
 ---
 
 # Secure SDLC And Threat Modeling
 
 ## Overview
 
-Security work is useful when it changes design, code, tests, release gates, or operations.
+Produces a trust-boundary and data-flow map, an abuse-case table, a control mapping with verification for each high-risk control, and a residual-risk register with named owners and expiry. Refuses to accept controls that cannot be tested, gated, or observed.
 
 **Core principle:** model trust boundaries and abuse cases early, then turn threats into testable controls with owners.
 
@@ -28,9 +28,9 @@ If threats do not map to controls and verification, the review is not actionable
 
 ## When Not To Use
 
-- The main topic is build provenance, artifact signing, dependency inventory, or deployment admission; use supply-chain security.
-- The main topic is identity, secrets, cryptography, or access lifecycle; use zero-trust identity and secrets.
-- The main topic is LLM prompt, tool, or retrieval abuse; use LLM application security.
+- The main topic is build provenance, artifact signing, dependency inventory, or deployment admission; defer to `software-supply-chain-security`.
+- The main topic is identity, secrets, cryptography lifecycle, or access lifecycle; defer to `identity-and-secrets` or `cryptography-and-key-lifecycle`.
+- The main topic is LLM prompt, tool, or retrieval abuse; defer to `llm-application-security`.
 - The request is broad legal/compliance program management; out of scope unless reframed as engineering controls.
 
 ## Inputs To Collect

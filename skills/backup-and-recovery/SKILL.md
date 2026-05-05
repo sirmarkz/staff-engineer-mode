@@ -1,6 +1,6 @@
 ---
 name: backup-and-recovery
-description: "Use when backups, restore tests, disaster recovery, RTO/RPO, or recovery evidence are central."
+description: "Use to set RTO/RPO, design backups, run a restore test, or prove a stateful system can recover from corruption, accidental deletion, or regional loss."
 ---
 
 # Backup Restore And Disaster Recovery
@@ -28,10 +28,10 @@ A successful backup job is not DR evidence. Replication is not a backup. Multi-r
 
 ## When Not To Use
 
-- The main goal is serving through zone/cell loss without restoring data; use HA.
+- The main goal is serving through zone/cell loss without restoring data; defer to `high-availability-design`.
 - The request is normal unit/integration testing.
-- The issue is online schema/backfill execution before disaster occurs; use database operations.
-- A live outage needs command, communications, and mitigation; use incident response alongside this skill.
+- The issue is online schema/backfill execution before disaster occurs; defer to `database-operations`.
+- A live outage needs command, communications, and mitigation; route to `incident-response-and-postmortems` alongside this skill.
 
 ## Inputs To Collect
 

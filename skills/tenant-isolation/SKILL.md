@@ -1,6 +1,6 @@
 ---
 name: tenant-isolation
-description: "Use when multi-tenancy, tenant isolation, cross-tenant access, noisy neighbors, quotas, or tenant blast radius are central."
+description: "Use to enforce multi-tenant boundaries — tenant context propagation, data partitioning, quotas, cross-tenant tests, and privacy-safe telemetry — anywhere shared infrastructure serves multiple customers or organizations. Assumes a multi-tenant deployment."
 ---
 
 # Tenant Isolation And Data Protection
@@ -19,6 +19,8 @@ NO TENANT-SENSITIVE PATH WITHOUT TENANT CONTEXT, ACCESS BOUNDARY, QUOTA, AUDIT, 
 
 If a request or query can lose tenant context, cross-tenant leakage or impact is only a matter of time.
 
+> This skill assumes a multi-tenant deployment serving more than one customer or organization on shared infrastructure. A single-tenant deployment may still need it if PII or privacy domains create internal boundaries; otherwise route privacy work to `privacy-and-data-lifecycle`.
+
 ## When To Use
 
 - The user asks about multi-tenancy, tenant isolation, PII, privacy, noisy neighbors, cross-tenant blast radius, tenant quotas, or tenant-aware logging.
@@ -28,10 +30,10 @@ If a request or query can lose tenant context, cross-tenant leakage or impact is
 
 ## When Not To Use
 
-- The request is general authentication/authorization without tenant or data boundary concerns; use zero-trust identity.
-- The request is broad privacy lifecycle, minimization, retention, deletion, or privacy-safe telemetry without tenant-boundary concerns; use privacy engineering.
-- The main issue is public abuse or DDoS at the edge; use edge traffic defense.
-- The work is only supply-chain or artifact integrity; use supply-chain security.
+- The request is general authentication/authorization without tenant or data boundary concerns; defer to `identity-and-secrets`.
+- The request is broad privacy lifecycle, minimization, retention, deletion, or privacy-safe telemetry without tenant-boundary concerns; defer to `privacy-and-data-lifecycle`.
+- The main issue is public abuse or DDoS at the edge; defer to `edge-traffic-and-ddos-defense`.
+- The work is only supply-chain or artifact integrity; defer to `software-supply-chain-security`.
 
 ## Inputs To Collect
 

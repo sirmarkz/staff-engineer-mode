@@ -1,6 +1,6 @@
 ---
 name: caching-and-derived-data
-description: "Use when cache invalidation, freshness, derived data, materialized views, or stale reads are central."
+description: "Use to add, fix, or audit a cache or materialized view — TTL, invalidation order, miss-storm protection, and what users see when the cache is cold or stale."
 ---
 
 # Caching And Derived Data
@@ -28,10 +28,10 @@ If writers, invalidators, readers, and downstream systems are not modeled, the c
 
 ## When Not To Use
 
-- The primary question is whether stale reads are semantically acceptable; use distributed data.
+- The primary question is whether stale reads are semantically acceptable; defer to `distributed-data-and-consistency`.
 - The work is primary storage choice or transaction design.
-- The issue is warehouse/ETL pipeline freshness; use data pipeline reliability.
-- The problem is generic dependency overload without cache mechanics; use dependency resilience.
+- The issue is warehouse/ETL pipeline freshness; defer to `data-pipeline-reliability`.
+- The problem is generic dependency overload without cache mechanics; defer to `dependency-resilience`.
 
 ## Inputs To Collect
 

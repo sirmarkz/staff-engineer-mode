@@ -1,6 +1,6 @@
 ---
 name: migration-and-deprecation
-description: "Use when broad migrations, service retirement, deprecation, backsliding prevention, or legacy replacement are central."
+description: "Use to retire a service, sunset an API family, replace a legacy library, or run a broad migration across many call sites — usage telemetry, replacement readiness, batched migration, and no-new-usage controls."
 ---
 
 # Large-Scale Change And Service Deprecation
@@ -28,10 +28,10 @@ Warnings without migration machinery are just noise.
 
 ## When Not To Use
 
-- The work is a routine dependency update, package bump, or small codemod; use dependency hygiene.
-- The work is API versioning for one service contract; use API design unless cross-system migration dominates.
-- The work is database schema/backfill execution; use database operations.
-- The work is rollout sequencing for an already built change; use progressive delivery.
+- The work is a routine dependency update, package bump, or small codemod; defer to `dependency-and-code-hygiene`.
+- The work is API versioning for one service contract; defer to `api-design-and-compatibility` unless cross-system migration dominates.
+- The work is database schema/backfill execution; defer to `database-operations`.
+- The work is rollout sequencing for an already built change; defer to `progressive-delivery`.
 
 ## Inputs To Collect
 

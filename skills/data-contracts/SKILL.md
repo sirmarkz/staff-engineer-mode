@@ -1,6 +1,6 @@
 ---
 name: data-contracts
-description: "Use when data contracts, schemas, producer/consumer compatibility, or domain interface ownership are central."
+description: "Use to write or evolve a shared data interface — a schema, event, dataset, file, or stream that another component reads — and decide which changes are safe to ship."
 ---
 
 # Data Contracts And Domain Interfaces
@@ -14,10 +14,12 @@ Data contracts let teams change independently without guessing what consumers de
 ## Iron Law
 
 ```
-NO SHARED DATA INTERFACE WITHOUT OWNER, CONTRACT, COMPATIBILITY RULES, CONSUMER EVIDENCE, AND CHANGE GATES
+NO SHARED DATA INTERFACE WITHOUT AN OWNER, A WRITTEN CONTRACT, COMPATIBILITY RULES, AND A KNOWN CONSUMER LIST
 ```
 
-If producers cannot prove who depends on the shape and meaning of data, they cannot change it safely.
+A "shared interface" is anything another component reads — a peer service, a downstream job, a different repo, even a future-you script. The contract states field meanings, types, and validity. Compatibility rules state what counts as additive vs breaking. The consumer list can be a one-line `# consumed by: jobs/nightly_export.py` for solo work, or a full registry for larger orgs; the invariant is that the producer can name who breaks if the shape changes.
+
+> This skill assumes the data crosses a component or repo boundary. If the data model is fully private to one component with no external readers, route to `architecture-decisions` instead.
 
 ## When To Use
 
@@ -28,9 +30,9 @@ If producers cannot prove who depends on the shape and meaning of data, they can
 
 ## When Not To Use
 
-- One exposed service API contract is the whole problem; use API design and compatibility.
-- Workflow ordering, retries, or dead-letter handling is central; use event-driven systems.
-- Pipeline freshness, reprocessing, or lineage is central; use data-pipeline reliability.
+- One exposed service API contract is the whole problem; defer to `api-design-and-compatibility`.
+- Workflow ordering, retries, or dead-letter handling is central; defer to `event-workflows`.
+- Pipeline freshness, reprocessing, or lineage is central; defer to `data-pipeline-reliability`.
 - The data model is fully private to one component and has no external consumers.
 
 ## Inputs To Collect

@@ -1,6 +1,6 @@
 ---
 name: documentation-lifecycle
-description: "Use when engineering docs need ownership, source of truth, freshness, or lifecycle gates; not for routine editorial or mechanical edits."
+description: "Use to assign owner, source of truth, freshness rule, and review trigger to engineering docs — runbooks, design docs, ADRs, onboarding — when staleness is a production risk. Not for editorial polish."
 ---
 
 # Engineering Documentation Lifecycle
@@ -28,8 +28,8 @@ If a doc can mislead an operator, reviewer, or maintainer, stale documentation i
 
 ## When Not To Use
 
-- The main artifact is an architecture decision; use architecture review and decision records.
-- The main artifact is an incident timeline or postmortem; use incident response.
+- The main artifact is an architecture decision; use `architecture-decisions`.
+- The main artifact is an incident timeline or postmortem; use `incident-response-and-postmortems`.
 - The request is marketing, sales, or public positioning copy.
 - The request is routine editorial or mechanical documentation maintenance with no source-of-truth dispute, operational guidance gap, stale-doc risk, or lifecycle decision.
 
@@ -43,9 +43,9 @@ If a doc can mislead an operator, reviewer, or maintainer, stale documentation i
 
 ## Workflow
 
-1. **Classify docs by job.** Separate tutorials, how-to guides, references, explanations, runbooks, and decisions.
+1. **Classify docs by job.** Place every doc asset into exactly one quadrant: tutorial (learning-oriented), how-to (task-oriented), reference (information-oriented), or explanation (understanding-oriented). Tag runbooks and decision records separately as operational and architectural artifacts. Split or rewrite any doc that mixes quadrants until each piece sits in one.
 2. **Name the audience.** State who uses the doc and what decision or task it supports.
-3. **Assign ownership.** Give every critical doc an owner and update trigger tied to the system lifecycle.
+3. **Assign ownership.** Give every critical doc an owner (a team in larger orgs, a person in small ones, you if solo) and an update trigger tied to the system lifecycle. Anonymous docs become stale silently.
 4. **Pick the source of truth.** Remove or mark duplicates so readers know where authority lives.
 5. **Add freshness signals.** Include last-reviewed state, lifecycle stage, review trigger, and archive rule.
 6. **Connect docs to delivery.** Link docs to code, alerts, dashboards, runbooks, release gates, or decision records where they are used.
@@ -74,7 +74,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign owner, d
 
 ## Required Outputs
 
-- Documentation inventory by audience and job.
+- Documentation inventory by audience, job, and quadrant (tutorial, how-to, reference, explanation), with runbooks and decision records tagged separately.
 - Owner, source-of-truth, freshness, and archive map.
 - Required docs for launch, operations, migration, or maintenance.
 - Update triggers tied to code, operations, and release events.
@@ -85,6 +85,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign owner, d
 
 - `audience_job`: each critical doc names its reader and supported task.
 - `owner_source`: owner and source of truth are explicit.
+- `quadrant_classification`: every doc asset is classified into exactly one of tutorial, how-to, reference, or explanation; runbooks and decision records are tagged separately as operational or architectural artifacts. A doc that mixes two or more quadrants is rejected and split or rewritten until each piece sits in one quadrant.
 - `freshness_rule`: review trigger, lifecycle state, and archive rule exist.
 - `delivery_link`: docs required for operation or launch are tied to delivery gates.
 - `usability_check`: someone can find and use the doc without tribal knowledge.

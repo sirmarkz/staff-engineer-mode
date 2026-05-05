@@ -65,7 +65,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Review the failover script and monitoring, then plan a game day that proves it works."
 - "Look at this experiment PR and define stop conditions, impact limits, and rollback steps."
 
-### `correctness-and-formal-methods`
+### `state-machine-correctness`
 
 - "Trace this stateful workflow and write the rules it must never break."
 - "Review this locking code and tests for races, impossible states, or missed edge cases."
@@ -79,6 +79,12 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the CI config and test layout, then find weak signals that could let a bad release through."
 - "Build a practical test plan for this feature using the code that changed in this branch."
 
+### `test-data-engineering`
+
+- "Inventory the fixtures this suite depends on and tell me which ones cannot be regenerated."
+- "Review this golden file and the production sample it came from, then prove the anonymization actually holds."
+- "Find where production data shape has drifted from the data the tests run on and design a drift-detection check."
+
 ### `configuration-and-automation-safety`
 
 - "Review this config change for validation, preview, blast radius, and rollback before it runs."
@@ -91,11 +97,23 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the packaging config and design a build-once, promote-many release path."
 - "Find why this repo's builds are flaky or cache-sensitive and rank the fixes."
 
+### `dev-environment-parity`
+
+- "Build a parity matrix across local, CI, staging, and production for this service and find the divergences nobody named."
+- "This fix worked locally and failed in CI; trace the environment dimensions that differ and tell me which one hid the bug."
+- "Define a drift budget for these environments with action triggers, allowed divergence, and required parity."
+
 ### `progressive-delivery`
 
 - "Build a rollout and rollback plan for the config change in this PR."
 - "Review this feature-toggle implementation and tell me what safety checks and cleanup are missing."
 - "Use the deploy workflow and metrics files to define when we should stop a small first rollout."
+
+### `feature-flag-lifecycle`
+
+- "The rollout is done; now build me an inventory of every live flag with owner, expiry, and removal plan."
+- "Find orphan flags whose feature shipped or whose owner left, and propose a safe removal sequence."
+- "Review this flag-debt scorecard and tell me which flags will become contradictory defaults if we leave them in."
 
 ### `production-readiness-review`
 
@@ -120,6 +138,18 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Review this large PR and suggest how to split it without losing review context."
 - "Inspect ownership files and recent changes to find why reviews are slow."
 - "Look at this shared repo and propose ownership boundaries that match how the code actually changes."
+
+### `agent-pr-review`
+
+- "Review this PR before merge and tell me what a senior reviewer would catch — intent match, behavior evidence, missing edge cases."
+- "Find risks in the diff I'm about to push — silent assumptions, hallucinated APIs, scope creep, deleted-but-used code."
+- "What did the agent (or I) miss in this branch that we'd be embarrassed to ship?"
+
+### `code-readability-for-agents`
+
+- "Audit this repo's module boundaries, names, and file sizes for whether an AI agent can find the canonical implementation in one tool call."
+- "Find names in this codebase that collide or mislead code search and propose renames that make the canonical version unambiguous."
+- "Review function and file sizes against a budget and tell me which files an agent will silently misread."
 
 ### `documentation-lifecycle`
 
@@ -167,7 +197,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect how secrets are loaded in this repo and design rotation that will not break production."
 - "Review the encryption and key-management code path and call out risky assumptions."
 
-### `crypto-lifecycle`
+### `cryptography-and-key-lifecycle`
 
 - "Inventory certificates, keys, trust roots, owners, expiry dates, and renewal paths for this service."
 - "Plan a certificate rotation that proves old and new clients work before the old path is removed."
@@ -220,6 +250,12 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Design an eval harness for this prompt change with cases, graders, thresholds, and regression history."
 - "Inspect these model-backed workflow evals and find where the scoring or slice coverage is weak."
 - "Turn recent bad outputs into release-blocking eval cases with owners and failure triage."
+
+### `llm-serving-cost-and-latency`
+
+- "Set token and p50/p95/p99 latency budgets for this LLM-backed route and tell me which calls already blow them."
+- "Design the prompt, embedding, and response cache strategy for this feature, and define when a cache miss has to fall back to a smaller model."
+- "Map per-call LLM spend to route, feature, and tenant, then draft a degradation path for the next provider outage."
 
 ## Data, Platform, And Client Systems
 

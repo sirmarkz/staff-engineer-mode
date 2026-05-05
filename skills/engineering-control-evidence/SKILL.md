@@ -1,6 +1,6 @@
 ---
 name: engineering-control-evidence
-description: "Use when engineering standards must become evidence packs, scorecards, controls, or exception records."
+description: "Use to build a cross-surface evidence pack, scorecard, or exception register that maps engineering standards to artifacts teams already produce — for audits, governance reviews, or program-level reporting that spans two or more specialist surfaces."
 ---
 
 # Engineering Control Evidence
@@ -14,24 +14,28 @@ Engineering controls are useful when they are close to the work and produce evid
 ## Iron Law
 
 ```
-NO CONTROL WITHOUT OWNER, EVIDENCE SOURCES, CADENCE, EXCEPTION PATH, AND REVIEW TRIGGER
+NO CROSS-SURFACE CONTROL MAP WITHOUT OWNER, REPEATABLE EVIDENCE SOURCE, CADENCE, EXCEPTION PATH, AND REVIEW TRIGGER PER CONTROL
 ```
 
-If evidence is not repeatable and owned, it is not an engineering control.
+If a control cannot be inspected against an owned, repeatable artifact on a defined cadence, it is not an engineering control. Single-surface evidence stays with the surface owner.
+
+> This skill assumes a multi-team or enterprise context. The artifacts it produces (cross-surface control maps, scorecards, exception registers) exist to coordinate evidence across teams that own different surfaces. A solo developer or single-team product does not produce these — single-domain evidence stays with the owning specialist.
 
 ## When To Use
 
-- The user explicitly asks to map engineering standards or controls to evidence, scorecards, exception records, or repeatable artifacts across multiple engineering surfaces.
-- A team needs one control map spanning SDLC, reliability, supply chain, access, vulnerability, observability, or operations.
-- The user asks how to prove standards are followed without manual audit theater.
-- Exceptions need owner, expiry, compensating controls, and re-review triggers.
+- The request explicitly spans two or more engineering surfaces and asks for a single cross-surface control map, evidence pack, scorecard, or exception register.
+- A team needs one normalized control inventory across SDLC, reliability, supply chain, access, vulnerability, observability, data, or operations because overlapping standards would otherwise produce duplicate paperwork.
+- The user asks how to prove engineering standards are followed across the organization without per-surface manual audit theater.
+- Cross-surface exceptions need owner, expiry, compensating controls, residual risk, and re-review triggers in one register.
+- A multi-surface audit-evidence pack is required and no single specialist owns the full surface set.
 
 ## When Not To Use
 
-- The request is broad compliance, legal, procurement, vendor risk, or auditor-liaison program management.
-- A single domain skill can produce the needed evidence directly.
-- The user only says "audit" but actually needs identity, supply-chain, vulnerability, or PRR evidence.
-- The request is business governance outside engineering lifecycle and operations.
+- The request is single-launch, single-traffic-shift, or tier-change readiness; use `production-readiness-review`.
+- The request is reviewer routing, change size, ownership routing, or workflow metrics; use `code-review-and-workflow`.
+- A single specialist owns the needed evidence directly: deployed vulnerability evidence belongs to `vulnerability-management`; build-path provenance belongs to `software-supply-chain-security`; identity, secrets, and access evidence belongs to `identity-and-secrets`; reliability target evidence belongs to `slo-and-error-budgets`; alert and telemetry evidence belongs to `observability-and-alerting`; backup and restore evidence belongs to `backup-and-recovery`; tenant boundary evidence belongs to `tenant-isolation`; data lifecycle evidence belongs to `privacy-and-data-lifecycle`; data pipeline evidence belongs to `data-pipeline-reliability`; threat-model evidence belongs to `secure-sdlc-and-threat-modeling`; AI-assisted change evidence belongs to `ai-coding-governance`.
+- The user says "audit" but actually wants single-domain evidence; route to the owning specialist above.
+- The request is broad compliance, legal, procurement, vendor risk, auditor-liaison program management, or business governance outside engineering lifecycle and operations.
 
 ## Inputs To Collect
 
@@ -43,7 +47,7 @@ If evidence is not repeatable and owned, it is not an engineering control.
 
 ## Workflow
 
-1. **Scope engineering controls.** Confirm the work spans at least two specialist engineering surfaces and is not broader compliance program management.
+1. **Gate on cross-surface scope.** Confirm the work spans at least two specialist engineering surfaces and that no single specialist owns the full evidence set. If the request is single-launch readiness, route to `production-readiness-review`. If the request is single-domain evidence, route to the owning specialist and stop.
 2. **Map control to behavior.** Express each control as something engineers do, prevent, detect, approve, test, or review.
 3. **Locate evidence near workflow.** Prefer generated records from code review, CI, deploys, access systems, scanners, runbooks, and incidents.
 4. **Assign ownership and cadence.** Every control needs owner, review frequency, and failure response.
@@ -84,7 +88,7 @@ Keep evidence close to engineering workflows and automate collection where possi
 
 ## Evidence Gates
 
-- `scope_check`: request spans multiple engineering controls and excludes non-engineering program management.
+- `scope_check`: request explicitly spans two or more engineering surfaces, no single specialist owns the full evidence set, and non-engineering program management is excluded.
 - `evidence_source`: every control maps to a repeatable artifact source.
 - `owner_cadence`: every control has owner, review cadence, and failure response.
 - `exception_check`: exceptions have owner, expiry, compensating control, and review trigger.

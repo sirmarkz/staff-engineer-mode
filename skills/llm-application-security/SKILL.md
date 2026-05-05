@@ -1,6 +1,6 @@
 ---
 name: llm-application-security
-description: "Use when LLM app security, prompt injection, tool access, retrieval boundaries, or eval gates are central."
+description: "Use to harden an LLM-backed feature against prompt injection, tool misuse, retrieval-boundary leaks, and unsafe output sinks before users or tools touch the model."
 ---
 
 # LLM Application Security
@@ -14,10 +14,10 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 ## Iron Law
 
 ```
-NO LLM TOOL OR DATA ACCESS WITHOUT BOUNDARY MAP, LEAST PRIVILEGE, EVALS, AUDIT, AND OUTPUT HANDLING
+NO LLM TOOL OR DATA ACCESS WITHOUT A BOUNDARY MAP, LEAST PRIVILEGE, ABUSE-CASE EVALS, AUDIT, AND OUTPUT HANDLING
 ```
 
-If the model can cause an action, that action needs authorization, constraints, and tests.
+If the model can cause an action, that action needs an explicit boundary, least-privilege scoping, abuse-case tests (prompt injection, exfiltration, jailbreak, unsafe action), an audit trail, and contextual handling of the output before any sink consumes it. "Evals" here are adversarial cases, not happy-path quality checks.
 
 ## When To Use
 
@@ -29,9 +29,9 @@ If the model can cause an action, that action needs authorization, constraints, 
 ## When Not To Use
 
 - The request is broad AI governance, model strategy, or ethics policy outside engineering controls.
-- The work is classical ML evaluation or drift; use ML systems reliability.
-- The request is general application threat modeling without LLM-specific boundaries; use secure SDLC.
-- The issue is generic artifact provenance with no model/prompt/tool supply chain concern; use supply-chain security.
+- The work is classical ML evaluation or drift; defer to `ml-reliability-and-evaluation`.
+- The request is general application threat modeling without LLM-specific boundaries; defer to `secure-sdlc-and-threat-modeling`.
+- The issue is generic artifact provenance with no model/prompt/tool supply chain concern; defer to `software-supply-chain-security`.
 
 ## Inputs To Collect
 

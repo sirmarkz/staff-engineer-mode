@@ -1,6 +1,6 @@
 ---
 name: performance-and-capacity
-description: "Use when latency, throughput, load tests, saturation, queues, capacity, or hot paths are central."
+description: "Use to investigate tail latency, plan a load test, find a saturation point, or claim capacity for peak or failover — anything where the answer must be tail percentiles, not averages."
 ---
 
 # Capacity Performance And Tail Latency
@@ -29,10 +29,10 @@ If the answer only says "scale horizontally" or reports averages, it is not enou
 
 ## When Not To Use
 
-- The main problem is retries, timeouts, or dependency failure safety; use dependency resilience.
-- The main request is public edge abuse, denial-of-service defense, or application-layer filtering; use edge traffic defense.
+- The main problem is retries, timeouts, or dependency failure safety; defer to `dependency-resilience`.
+- The main request is public edge abuse, denial-of-service defense, or application-layer filtering; defer to `edge-traffic-and-ddos-defense`.
 - The user asks pure billing/procurement questions; out of scope.
-- The work is SLO target selection without performance investigation; use SLO engineering.
+- The work is SLO target selection without performance investigation; defer to `slo-and-error-budgets`.
 
 ## Inputs To Collect
 

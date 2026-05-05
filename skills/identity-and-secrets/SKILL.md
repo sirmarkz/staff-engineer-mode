@@ -1,6 +1,6 @@
 ---
 name: identity-and-secrets
-description: "Use when identity, access control, zero trust, service accounts, workload identity, secrets, keys, or encryption are central."
+description: "Use to design human or workload access — identities, scopes, credential lifetime, secret storage, break-glass, and audit — before granting a new permission or rotating a long-lived secret."
 ---
 
 # Zero Trust Identity And Secrets
@@ -28,8 +28,8 @@ If credentials cannot be scoped, rotated, audited, or revoked, they should not p
 
 ## When Not To Use
 
-- The request is general app threat modeling without identity/secrets focus; use secure SDLC.
-- The main issue is artifact signing or build provenance; use supply-chain security.
+- The request is general app threat modeling without identity/secrets focus; defer to `secure-sdlc-and-threat-modeling`.
+- The main issue is artifact signing or build provenance; defer to `software-supply-chain-security`.
 - The main issue is tenant data isolation; use tenant isolation.
 - The request is staffing or policy-only access governance without engineering implementation; out of scope.
 

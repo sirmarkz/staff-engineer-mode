@@ -1,15 +1,15 @@
 ---
 name: production-readiness-review
-description: "Use when a service, feature, migration, tier change, or traffic shift needs production launch readiness review."
+description: "Use to run a launch-readiness review on a service, feature, migration, tier change, or major traffic shift — produces an evidence matrix, blockers, exceptions, and a tier classification, but does not give go/no-go authority."
 ---
 
 # Production Readiness Review
 
 ## Overview
 
-PRR is an evidence aggregator, not a checklist theater.
+Produces a tier-classified launch posture with an evidence matrix, a blocker list with named owners, and an exception register with expiry dates. Stops launches that confuse intentions for evidence. Unknown is not green.
 
-**Core principle:** before launch or major traffic shift, prove that ownership, reliability, observability, safe change, security, capacity, recovery, and incident paths are good enough for the declared tier.
+**Core principle:** before launch or major traffic shift, prove — with artifacts, not intentions — that ownership, reliability, observability, safe change, security, capacity, recovery, and incident paths are good enough for the declared tier.
 
 ## Iron Law
 
@@ -29,8 +29,8 @@ Unknown is not green. Missing evidence is a blocker, a follow-up route, or an ex
 ## When Not To Use
 
 - A small code change has no production ownership, operational, security, or reliability impact.
-- The user needs one narrow artifact, such as only an SLO table or threat model; use the specialist skill.
-- A live incident is underway; use incident response.
+- The user needs one narrow artifact, such as only an SLO table (defer to `slo-and-error-budgets`) or only a threat model (defer to `secure-sdlc-and-threat-modeling`).
+- A live incident is underway; route to `incident-response-and-postmortems` first.
 - The question is business approval, marketing launch, legal signoff, or procurement; out of scope.
 
 ## Inputs To Collect

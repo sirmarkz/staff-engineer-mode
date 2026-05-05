@@ -1,23 +1,23 @@
 ---
 name: incident-response-and-postmortems
-description: "Use when active incidents, outages, severity, status updates, timelines, postmortems, or follow-ups are central."
+description: "Use to run an active incident, write a postmortem, or set status-update cadence — anything from 'we have an outage right now' to 'we need a writeup with action items'."
 ---
 
 # Incident Response And Postmortems
 
 ## Overview
 
-Incident response protects users first and learns from the system after.
+Produces incident roles and severity, a live timeline, a status-update cadence, a handoff packet for shift changes, and a blameless postmortem whose action items have owners, due dates, and observable verification signals. Refuses "human error" as a conclusion and refuses action items that read "be more careful".
 
 **Core principle:** coordinate clear roles, mitigate impact, preserve a timeline, communicate predictably, and convert learning into verified engineering improvements.
 
 ## Iron Law
 
 ```
-NO INCIDENT REVIEW WITHOUT TIMELINE, IMPACT, CONTRIBUTING FACTORS, AND VERIFIED ACTIONS
+NO INCIDENT WITHOUT ROLES, IMPACT, AND STATUS CADENCE; NO POSTMORTEM WITHOUT TIMELINE, CONTRIBUTING FACTORS, AND VERIFIED ACTIONS
 ```
 
-If the postmortem only names a root cause or a person, it has not explained the system.
+The two halves are co-designed: live response is unsafe without named responders, declared impact, and a predictable next-update time; a postmortem that only names a root cause or a person has not explained the system. For a solo developer the responder roles collapse onto one person, but the role labels still have to be claimed explicitly so nothing falls between them.
 
 ## When To Use
 
@@ -28,10 +28,10 @@ If the postmortem only names a root cause or a person, it has not explained the 
 
 ## When Not To Use
 
-- The work is pre-launch readiness with no incident; use PRR.
+- The work is pre-launch readiness with no incident; defer to `production-readiness-review`.
 - The request is brand, PR, legal strategy, or customer-support policy beyond operational status communication.
-- The user asks only to define telemetry; use observability.
-- The user asks only to reduce alert fatigue; use on-call health.
+- The user asks only to define telemetry; defer to `observability-and-alerting`.
+- The user asks only to reduce alert fatigue; defer to `oncall-health`.
 
 ## Inputs To Collect
 

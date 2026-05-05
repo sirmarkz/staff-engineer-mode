@@ -1,6 +1,6 @@
 ---
 name: testing-and-quality-gates
-description: "Use when test strategy, quality gates, CI checks, static analysis, mutation testing, or release-blocking verification are central."
+description: "Use to design the test strategy and decide which checks block merge or release — pre-merge gates, CI runtime budgets, static analysis, mutation testing, flake policy, and legacy ratchets."
 ---
 
 # Testing And Quality Gates
@@ -14,10 +14,10 @@ Quality gates should catch real risk early without turning delivery into ritual.
 ## Iron Law
 
 ```
-NO BLOCKING QUALITY GATE WITHOUT A CLEAR RISK, OWNER, AND FAILURE RESPONSE
+EVERY TEST PROVES A NAMED RISK; EVERY BLOCKING GATE HAS AN OWNER AND A FAILURE RESPONSE
 ```
 
-If nobody knows what risk a gate protects or what to do when it fails, it should not block.
+Tests exist to exercise a specific risk; "we have tests" without naming the risk each test exercises is faith, not evidence. A blocking gate without an owner and a written failure response teaches people to ignore it. For a solo developer the owner is you and the failure response is a written sentence — the discipline is naming both, not creating a roster.
 
 ## When To Use
 
@@ -28,9 +28,9 @@ If nobody knows what risk a gate protects or what to do when it fails, it should
 
 ## When Not To Use
 
-- The user asks about reviewer behavior, ownership routing, or review latency; use engineering productivity.
-- The user asks for canary or production rollout gates; use progressive delivery.
-- The request is production chaos or failover testing; use HA.
+- The user asks about reviewer behavior, ownership routing, or review latency; defer to `code-review-and-workflow`.
+- The user asks for canary or production rollout gates; defer to `progressive-delivery`.
+- The request is production chaos or failover testing; defer to `resilience-experiments` or `high-availability-design`.
 - The question is pure formatting/style enforcement; automate it and keep this skill focused on risk.
 
 ## Inputs To Collect

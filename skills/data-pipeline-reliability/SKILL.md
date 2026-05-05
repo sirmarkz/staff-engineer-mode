@@ -1,6 +1,6 @@
 ---
 name: data-pipeline-reliability
-description: "Use when batch or streaming pipelines need freshness, correctness, reprocessing, lineage, or data-quality gates."
+description: "Use to set freshness SLIs, validation gates, lineage, and replay paths for a batch or streaming pipeline whose consumers care that the data is on time and correct."
 ---
 
 # Data Pipeline Reliability
@@ -28,10 +28,10 @@ If consumers cannot tell whether data is fresh and correct, the pipeline is not 
 
 ## When Not To Use
 
-- The main issue is model training/serving skew, model evaluation, or model rollback; use ML systems reliability.
-- The request is service-to-service event workflow design; use event-driven systems.
-- The work is application database backfill execution; use database operations.
-- The question is primary data consistency semantics; use distributed data.
+- The main issue is model training/serving skew, model evaluation, or model rollback; defer to `ml-reliability-and-evaluation`.
+- The request is service-to-service event workflow design; defer to `event-workflows`.
+- The work is application database backfill execution; defer to `database-operations`.
+- The question is primary data consistency semantics; defer to `distributed-data-and-consistency`.
 
 ## Inputs To Collect
 
@@ -44,7 +44,7 @@ If consumers cannot tell whether data is fresh and correct, the pipeline is not 
 
 ## Workflow
 
-1. **Identify critical datasets.** Name owners, consumers, business use, and consequence of stale or wrong data.
+1. **Identify critical datasets.** Name owners (a team in larger orgs, a person in small ones), consumers, business use, and consequence of stale or wrong data.
 2. **Define data SLIs.** Use freshness, completeness, correctness, latency, backlog age, and processing errors where relevant.
 3. **Map lineage.** Record source, transform version, schedule/watermark, publish step, and downstream consumers.
 4. **Gate publication.** Validate schema, required fields, ranges, referential integrity, duplicates, and business invariants before publish.

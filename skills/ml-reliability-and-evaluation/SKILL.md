@@ -1,6 +1,6 @@
 ---
 name: ml-reliability-and-evaluation
-description: "Use when production ML serving, training pipelines, eval gates, drift, skew, rollback, or readiness are central."
+description: "Use to gate a production ML model promotion on data validation, eval thresholds, training-serving skew, drift monitoring, and rollback path — before a new artifact replaces the live one."
 ---
 
 # ML Systems Reliability And Evaluation
@@ -28,9 +28,9 @@ Offline accuracy alone is not production readiness.
 
 ## When Not To Use
 
-- The work is generic warehouse/ETL reliability with no model production concern; use data pipeline reliability.
+- The work is generic warehouse/ETL reliability with no model production concern; defer to `data-pipeline-reliability`.
 - The request is broad AI policy or model strategy; out of scope unless framed as production engineering.
-- The system is an LLM or agent app with prompt/tool security risk; use LLM application security.
+- The system is an LLM or agent app with prompt/tool security risk; defer to `llm-application-security`.
 - The work is offline experimentation only and will not affect production.
 
 ## Inputs To Collect

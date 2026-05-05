@@ -1,9 +1,9 @@
 {
   "name": "staff-engineer-mode",
-  "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
+  "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer and produces the artifact a careful staff engineer would insist on — rollback plan, missing-owner flag, backwards-compatibility note, blast-radius summary.",
   "version": "0.4.0",
   "author": {
-    "name": "TNI Labs"
+    "name": "sirmarkz"
   },
   "homepage": "https://github.com/tnilabs/staff-engineer-mode",
   "repository": "https://github.com/tnilabs/staff-engineer-mode",

@@ -1,17 +1,17 @@
 {
   "name": "staff-engineer-mode",
-  "description": "Marketplace for Staff Engineer Mode.",
+  "description": "The senior reviewer your AI coding agent is missing.",
   "owner": {
-    "name": "TNI Labs"
+    "name": "sirmarkz"
   },
   "plugins": [
     {
       "name": "staff-engineer-mode",
-      "description": "Staff Engineer Mode engineering lifecycle and operations skills with automatic routing.",
+      "description": "The senior reviewer your AI coding agent is missing. An engineering review pack with auto-routing.",
       "version": "0.4.0",
       "source": "./",
       "author": {
-        "name": "TNI Labs"
+        "name": "sirmarkz"
       }
     }
   ]

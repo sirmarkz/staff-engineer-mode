@@ -1,6 +1,6 @@
 ---
 name: distributed-data-and-consistency
-description: "Use when storage, replication, transactions, consistency, sharding, hot keys, or distributed locks are central."
+description: "Use to choose storage, decide consistency per operation, pick a shard or partition key, or write down what happens during failover, conflict, and replication lag — before code or schema lands."
 ---
 
 # Distributed Data And Consistency
@@ -14,10 +14,10 @@ Data architecture starts with semantics, not storage brands.
 ## Iron Law
 
 ```
-NO DATA DESIGN WITHOUT OPERATION-LEVEL CONSISTENCY AND FAILURE SEMANTICS
+NO READ OR WRITE PATH WITHOUT NAMED CONSISTENCY, CONFLICT, AND FAILOVER BEHAVIOR
 ```
 
-If reads, writes, conflicts, retries, failover, and repair behavior are undefined, the data design is incomplete.
+For each read path and each write path, the design must say which consistency guarantee holds, what happens to a conflicting concurrent write, and what users observe during failover or replication lag. "Eventually consistent" without saying what users see between events, or "transactional" without saying which operations span the boundary, is not a design.
 
 ## When To Use
 
@@ -28,10 +28,10 @@ If reads, writes, conflicts, retries, failover, and repair behavior are undefine
 
 ## When Not To Use
 
-- The request is only cache TTL, invalidation, stampede, or materialized-view operation; use caching.
-- The question is online schema/backfill execution; use database operations.
-- The work is service event choreography; use event-driven systems.
-- The request is warehouse/ETL freshness rather than application data correctness; use data pipeline reliability.
+- The request is only cache TTL, invalidation, stampede, or materialized-view operation; defer to `caching-and-derived-data`.
+- The question is online schema/backfill execution; defer to `database-operations`.
+- The work is service event choreography; defer to `event-workflows`.
+- The request is warehouse/ETL freshness rather than application data correctness; defer to `data-pipeline-reliability`.
 
 ## Inputs To Collect
 

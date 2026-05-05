@@ -1,6 +1,6 @@
 ---
 name: experimentation-and-metric-guardrails
-description: "Use when experiments, A/B tests, holdouts, guardrail metrics, exposure logging, or metric trust are central."
+description: "Use to design or read out an A/B test, holdout, or ramp where the team plans to make a decision from the result — including hand-rolled experiments without an experimentation platform."
 ---
 
 # Experimentation And Metric Guardrails
@@ -14,10 +14,10 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 ## Iron Law
 
 ```
-NO EXPERIMENT DECISION WITHOUT HYPOTHESIS, ASSIGNMENT CHECKS, EXPOSURE LOGGING, GUARDRAILS, AND READOUT RULES
+NO EXPERIMENT CALL WITHOUT A HYPOTHESIS, A KNOWN EXPOSED POPULATION, GUARDRAIL METRICS, AND A PRE-COMMITTED READOUT RULE
 ```
 
-If the experiment cannot prove who saw what and which metric decides the outcome, it should not drive the decision.
+The experiment must say what it predicts, prove who actually saw the change (not just who was assigned), name the safety/quality metrics that can block a positive primary result, and commit to the decision rule before reading the result. For a small-team or hand-rolled experiment "known exposed population" can be as simple as "logged-in users on build SHA X after timestamp Y" — the invariant is that you can answer who was affected, not that you have an experimentation platform.
 
 ## When To Use
 
@@ -28,9 +28,9 @@ If the experiment cannot prove who saw what and which metric decides the outcome
 
 ## When Not To Use
 
-- The main question is blast radius, rollback, canary, or operational rollout; use progressive delivery.
-- The main question is service reliability objectives or alerting policy; use SLO engineering.
-- The main question is LLM evals or model release gates; use the relevant AI or ML evaluation skill.
+- The main question is blast radius, rollback, canary, or operational rollout; defer to `progressive-delivery`.
+- The main question is service reliability objectives or alerting policy; defer to `slo-and-error-budgets`.
+- The main question is LLM evals or model release gates; defer to `llm-evaluation` or `ml-reliability-and-evaluation`.
 - The request is product strategy with no engineering measurement artifact.
 
 ## Inputs To Collect

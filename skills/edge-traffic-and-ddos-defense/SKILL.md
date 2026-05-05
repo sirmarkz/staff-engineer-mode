@@ -1,6 +1,6 @@
 ---
 name: edge-traffic-and-ddos-defense
-description: "Use when public edge traffic, rate limits, bots, DDoS, origin protection, or edge load shedding are central."
+description: "Use to design public-edge defense — rate limits, bot controls, origin isolation, DDoS response — when abusive traffic could overwhelm origins or cost."
 ---
 
 # Edge Traffic And Denial-Of-Service Defense
@@ -28,10 +28,10 @@ If attackers can bypass the edge and hit origin directly, edge defense is incomp
 
 ## When Not To Use
 
-- The issue is internal service retry/backpressure; use dependency resilience.
-- The request is normal capacity growth without abusive traffic; use capacity/tail latency.
-- The main topic is application authorization; use secure SDLC or identity.
-- The work is internal service mesh/routing; use internal networking.
+- The issue is internal service retry/backpressure; defer to `dependency-resilience`.
+- The request is normal capacity growth without abusive traffic; defer to `performance-and-capacity`.
+- The main topic is application authorization; defer to `secure-sdlc-and-threat-modeling` or `identity-and-secrets`.
+- The work is internal service mesh/routing; defer to `internal-service-networking`.
 
 ## Inputs To Collect
 

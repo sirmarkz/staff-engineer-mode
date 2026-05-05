@@ -1,23 +1,23 @@
 ---
 name: observability-and-alerting
-description: "Use when dashboards, logs, metrics, traces, alerts, runbooks, correlation IDs, or production debugging are central."
+description: "Use to design telemetry, dashboards, alert rules, or runbooks tied to user journeys — and to decide what should page versus ticket. Not for SLO math; that is slo-and-error-budgets."
 ---
 
 # Observability And Alerting
 
 ## Overview
 
-Observability is the ability to explain new failures from production evidence, not the act of collecting every metric.
+Produces telemetry requirements tied to user journeys, a dashboard specification that answers impact and recent change, and an alert policy where every page has user impact, urgency, actionability, and a runbook. Refuses host-health pages, unowned alerts, and dashboards built from whatever the platform happened to emit.
 
 **Core principle:** instrument user-visible symptoms first, then add enough causal context to debug without guessing.
 
 ## Iron Law
 
 ```
-NO PAGE WITHOUT USER IMPACT, URGENCY, ACTIONABILITY, AND A RUNBOOK
+TELEMETRY STARTS FROM USER SYMPTOMS; A PAGE NEEDS USER IMPACT, URGENCY, ACTIONABILITY, AND A RUNBOOK
 ```
 
-If an alert is not urgent, actionable, user-visible, and novel, it should not page by default.
+Telemetry that does not map to a user-visible symptom is decoration. An alert that lacks impact, urgency, actionability, or a runbook should not page by default. The two halves are co-designed: signals exist so that someone can act on them, and pages fire only on signals that prove user-felt impact.
 
 ## When To Use
 
@@ -28,9 +28,9 @@ If an alert is not urgent, actionable, user-visible, and novel, it should not pa
 
 ## When Not To Use
 
-- The user needs reliability targets, SLO math, or budget policy; use SLO engineering.
-- The user needs to reduce existing page volume or toil; use on-call health unless new telemetry is central.
-- The user is in a live incident; use incident response first.
+- The user needs reliability targets, SLO math, or budget policy; defer to `slo-and-error-budgets`.
+- The user needs to reduce existing page volume or toil; defer to `oncall-health` unless new telemetry is central.
+- The user is in a live incident; route to `incident-response-and-postmortems` first.
 - The work is only local development logging without production operations impact.
 
 ## Inputs To Collect

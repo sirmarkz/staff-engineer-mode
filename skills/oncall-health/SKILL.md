@@ -1,6 +1,6 @@
 ---
 name: oncall-health
-description: "Use when pages, alert fatigue, toil, manual operations, runbook gaps, or operational burden are central."
+description: "Use to cut page volume, eliminate toil, fix runbook gaps, or convert recurring manual operations into engineering work — when responders are interrupted by noisy or unactionable alerts."
 ---
 
 # Oncall Health And Toil Reduction
@@ -29,9 +29,9 @@ If the same alert or manual operation keeps recurring, the system is asking for 
 ## When Not To Use
 
 - The user asks about staffing, compensation, rotation fairness, headcount, or HR process; out of scope unless reframed as technical toil reduction.
-- The main deliverable is new telemetry or alert construction; use observability.
-- The main work is defining SLOs or paging thresholds from scratch; use SLO engineering.
-- The request is generic developer productivity with no operational pain; use engineering productivity.
+- The main deliverable is new telemetry or alert construction; defer to `observability-and-alerting`.
+- The main work is defining SLOs or paging thresholds from scratch; defer to `slo-and-error-budgets`.
+- The request is generic developer productivity with no operational pain; defer to `code-review-and-workflow`.
 
 ## Inputs To Collect
 

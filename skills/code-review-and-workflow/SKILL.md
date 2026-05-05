@@ -1,23 +1,23 @@
 ---
 name: code-review-and-workflow
-description: "Use when code review, ownership, change size, review latency, DORA, or workflow quality are central."
+description: "Use to set the system-level rules for code review — who reviews what, change-size limits, review-latency targets, and the productivity metrics paired with quality guardrails. Not for reviewing one specific PR; that is agent-pr-review."
 ---
 
 # Engineering Productivity And Code Review
 
 ## Overview
 
-Engineering productivity is the ability to make small, correct, understandable changes without eroding code health or production safety.
+Produces a code review policy, a reviewer-routing plan tied to ownership, and a metrics plan where every velocity number is paired with a quality or reliability guardrail. Catches the moment when an oversized agent-generated diff lands on a random reviewer with no decomposition plan and no defect signal behind the speed metric.
 
 **Core principle:** optimize the review system for fast understanding, clear ownership, automated checks, and quality guardrails rather than raw activity counts.
 
 ## Iron Law
 
 ```
-NO PRODUCTIVITY METRIC WITHOUT A QUALITY OR RELIABILITY GUARDRAIL
+NO REVIEW POLICY WITHOUT OWNERS, CHANGE-SIZE LIMITS, AND METRICS PAIRED WITH QUALITY GUARDRAILS
 ```
 
-If a metric can be improved by making the system worse, it is not a safe productivity metric.
+The policy must say who reviews what, cap how big a single diff can grow before it must be decomposed, and pair every productivity metric with a quality or reliability guardrail. A metric that improves when the system gets worse is not a safe productivity metric. For a solo developer "owners" collapses to "you" and the policy still has to declare it; the change-size cap and guardrail-paired metrics still apply because they exist to catch sloppy diffs and misleading speed numbers.
 
 ## When To Use
 
@@ -28,10 +28,12 @@ If a metric can be improved by making the system worse, it is not a safe product
 
 ## When Not To Use
 
-- The user asks which CI checks should block merge; use testing and quality gates.
-- The user asks about live incidents, on-call, or operational toil; use operations skills.
+- The request is a per-diff pre-merge review pass — "review this PR before merge," "did the agent miss anything," "is this safe to merge," "find risks in this diff" — for any diff regardless of who or what produced it; use `agent-pr-review`. This skill owns the SYSTEM of code review (routing, change size, ownership, DORA metrics); `agent-pr-review` owns the ACT of reviewing a specific diff.
+- The user asks which CI checks should block merge; use `testing-and-quality-gates`.
+- The user asks about live incidents, on-call, or operational toil; use `incident-response-and-postmortems` or `oncall-health`.
+- The request is org-level policy for AI-assisted coding (repo instructions, allowed/forbidden actions, protected paths, secret boundaries, audit trails) rather than reviewer routing or workflow metrics; use `ai-coding-governance`.
 - The request is staffing, compensation, performance management, or headcount planning; out of scope.
-- The question is broad architecture ownership; use architecture review if boundaries are the issue.
+- The question is broad architecture ownership; use `architecture-decisions` if boundaries are the issue.
 
 ## Inputs To Collect
 
