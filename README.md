@@ -1,6 +1,6 @@
 # Staff Engineer Mode
 
-[![Release](https://img.shields.io/github/package-json/v/tnilabs/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
+[![Release](https://img.shields.io/github/package-json/v/sirmarkz/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
 
 **Your AI coding agent ships fast. This makes it ship careful.**
 
@@ -64,7 +64,7 @@ The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these
 ### Claude Code
 
 ```text
-/plugin marketplace add https://github.com/tnilabs/staff-engineer-mode
+/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode
 /plugin install staff-engineer-mode@staff-engineer-mode
 ```
 
@@ -81,7 +81,7 @@ Or search `staff-engineer-mode` in the plugin marketplace.
 Works with Codex CLI and Codex App. Tell Codex:
 
 ```text
-Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/staff-engineer-mode/main/.codex/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/main/.codex/INSTALL.md
 ```
 
 ### OpenCode
@@ -89,20 +89,20 @@ Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/sta
 Tell OpenCode:
 
 ```text
-Fetch and follow instructions from https://raw.githubusercontent.com/tnilabs/staff-engineer-mode/refs/heads/main/.opencode/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/refs/heads/main/.opencode/INSTALL.md
 ```
 
 ### GitHub Copilot CLI
 
 ```bash
-copilot plugin marketplace add tnilabs/staff-engineer-mode
+copilot plugin marketplace add sirmarkz/staff-engineer-mode
 copilot plugin install staff-engineer-mode@staff-engineer-mode
 ```
 
 ### Gemini CLI
 
 ```bash
-gemini extensions install https://github.com/tnilabs/staff-engineer-mode
+gemini extensions install https://github.com/sirmarkz/staff-engineer-mode
 ```
 
 ## Verify

@@ -10,7 +10,7 @@ Add Staff Engineer Mode to the `plugin` array in `opencode.json`:
 
 ```json
 {
-  "plugin": ["staff-engineer-mode@git+https://github.com/tnilabs/staff-engineer-mode.git"]
+  "plugin": ["staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git"]
 }
 ```
 
@@ -47,7 +47,7 @@ To pin a specific version:
 
 ```json
 {
-  "plugin": ["staff-engineer-mode@git+https://github.com/tnilabs/staff-engineer-mode.git#vX.Y.Z"]
+  "plugin": ["staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#vX.Y.Z"]
 }
 ```
 

@@ -27,7 +27,7 @@ install it from the Coding category when published.
 ### Linux / macOS
 
 ```bash
-git clone https://github.com/tnilabs/staff-engineer-mode.git ~/.codex/staff-engineer-mode
+git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.codex/staff-engineer-mode
 mkdir -p ~/.agents/skills
 ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode
 ```
@@ -37,7 +37,7 @@ ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode
 Use a junction instead of a symlink:
 
 ```powershell
-git clone https://github.com/tnilabs/staff-engineer-mode.git "$env:USERPROFILE\.codex\staff-engineer-mode"
+git clone https://github.com/sirmarkz/staff-engineer-mode.git "$env:USERPROFILE\.codex\staff-engineer-mode"
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
 cmd /c mklink /J "$env:USERPROFILE\.agents\skills\staff-engineer-mode" "$env:USERPROFILE\.codex\staff-engineer-mode\skills"
 ```

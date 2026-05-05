@@ -11,7 +11,7 @@ symlink the cloned repository into Cursor's per-user plugins directory.
 ## Installation (Linux / macOS)
 
 ```bash
-git clone https://github.com/tnilabs/staff-engineer-mode.git ~/.cursor/staff-engineer-mode-src
+git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.cursor/staff-engineer-mode-src
 mkdir -p ~/.cursor/plugins
 ln -s ~/.cursor/staff-engineer-mode-src ~/.cursor/plugins/staff-engineer-mode
 ```
@@ -24,7 +24,7 @@ the plugin manifest from
 ## Installation (Windows PowerShell)
 
 ```powershell
-git clone https://github.com/tnilabs/staff-engineer-mode.git "$env:USERPROFILE\.cursor\staff-engineer-mode-src"
+git clone https://github.com/sirmarkz/staff-engineer-mode.git "$env:USERPROFILE\.cursor\staff-engineer-mode-src"
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.cursor\plugins"
 cmd /c mklink /J "$env:USERPROFILE\.cursor\plugins\staff-engineer-mode" "$env:USERPROFILE\.cursor\staff-engineer-mode-src"
 ```

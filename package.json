@@ -5,8 +5,8 @@
   "main": ".opencode/plugins/staff-engineer-mode.js",
   "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer and produces the artifact a careful staff engineer would insist on.",
   "license": "MIT",
-  "repository": "https://github.com/tnilabs/staff-engineer-mode",
-  "homepage": "https://github.com/tnilabs/staff-engineer-mode",
+  "repository": "https://github.com/sirmarkz/staff-engineer-mode",
+  "homepage": "https://github.com/sirmarkz/staff-engineer-mode",
   "author": "sirmarkz",
   "keywords": [
     "skills",

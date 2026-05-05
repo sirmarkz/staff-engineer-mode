@@ -78,7 +78,7 @@ Total: 60 seconds. Eight beats.
 - **Caption:**
   - **Staff Engineer Mode**
   - *Fewer vibes. More engineering.*
-  - `github.com/tnilabs/staff-engineer-mode`
+  - `github.com/sirmarkz/staff-engineer-mode`
 - **Narrator:** *(silence)*
 - **Purpose:** brand-stamp and install path.
 

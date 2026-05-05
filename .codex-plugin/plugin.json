@@ -4,10 +4,10 @@
   "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
   "author": {
     "name": "sirmarkz",
-    "url": "https://github.com/tnilabs/staff-engineer-mode"
+    "url": "https://github.com/sirmarkz/staff-engineer-mode"
   },
-  "homepage": "https://github.com/tnilabs/staff-engineer-mode",
-  "repository": "https://github.com/tnilabs/staff-engineer-mode",
+  "homepage": "https://github.com/sirmarkz/staff-engineer-mode",
+  "repository": "https://github.com/sirmarkz/staff-engineer-mode",
   "license": "MIT",
   "keywords": [
     "staff-engineer",
