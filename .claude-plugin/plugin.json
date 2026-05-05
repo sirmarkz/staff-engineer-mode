@@ -1,7 +1,7 @@
 {
   "name": "staff-engineer-mode",
   "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer and produces the artifact a careful staff engineer would insist on \u2014 rollback plan, missing-owner flag, backwards-compatibility note, blast-radius summary.",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": {
     "name": "sirmarkz"
   },
