@@ -3,7 +3,7 @@
   "version": "0.4.0",
   "description": "Engineering lifecycle, DevOps, operations, reliability, security, architecture, and maintainability skills with automatic routing.",
   "author": {
-    "name": "Mark Z.",
+    "name": "sirmarkz",
     "url": "https://github.com/tnilabs/staff-engineer-mode"
   },
   "homepage": "https://github.com/tnilabs/staff-engineer-mode",
@@ -24,7 +24,7 @@
     "displayName": "Staff Engineer Mode",
     "shortDescription": "Staff Engineer Mode engineering lifecycle and operations skills",
     "longDescription": "Technology-agnostic skills for applying large-scale engineering practices to architecture, reliability, resilience, delivery, operations, security, privacy, data, platform, client, and cost-aware reliability work. The router automatically selects the smallest useful specialist skill set from natural-language engineering requests.",
-    "developerName": "Mark Z.",
+    "developerName": "sirmarkz",
     "category": "Coding",
     "capabilities": [
       "Interactive",
