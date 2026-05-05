@@ -6,41 +6,6 @@
 
 The senior reviewer your AI coding agent is missing.
 
-## See It Work
-
-```text
-Prompt: "Review the PR my agent just produced for /users pagination."
-
-Without Staff Engineer Mode →
-  "Looks good. Tests pass. LGTM — maybe add a comment on the cursor format."
-
-With Staff Engineer Mode →
-  Intent: add cursor pagination to GET /users.
-  Match: diff also modifies User.serialize() — scope creep, not justified by the task.
-
-  Blockers (must-fix before merge):
-    1. New index on users.created_at has no rollback in the migration.
-       → owner: db; route: database-operations.
-    2. page_size is unbounded; a request of size=10000000 hangs the API.
-       → owner: api; route: edge-traffic-and-ddos-defense.
-    3. Cursor decode trusts client input without validation; malformed cursor 500s.
-       → owner: api.
-
-  AI failure modes:
-    - Deleted users_helper.format_cursor — still imported in users_admin.py.
-    - Test only exercises happy path; no test for empty result, invalid cursor,
-      or page_size at boundary.
-
-  Missing artifacts:
-    - No SLO declared for the new endpoint.
-    - No telemetry on page_size distribution or cursor errors.
-    - No runbook update for the new index.
-
-  3 blockers, 2 must-fix-before-merge, 2 follow-up.
-```
-
-> *Same prompt. Same agent. One reviews; one ships.*
-
 ## Why Now
 
 AI coding agents now write material amounts of production code. The bottleneck is no longer how fast the agent writes — it is whether the agent reasoned about what happens when the code runs at 3am. Agents will happily ship a migration with no rollback, an endpoint with no SLO, an alert with no owner, a config change with no canary. This pack closes that gap.
