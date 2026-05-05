@@ -1,6 +1,6 @@
 ---
 name: accessibility-gates
-description: "Use when user-facing flows need accessibility conformance, assistive-technology checks, or release gates."
+description: "Use to set release gates on user-facing flows for keyboard, screen-reader, focus, contrast, and assistive-technology behavior — anything from a single critical journey on a small site to a full conformance program."
 ---
 
 # Accessibility Conformance Gates
@@ -14,10 +14,10 @@ Accessibility is a release quality property, not a post-launch polish pass.
 ## Iron Law
 
 ```
-NO CRITICAL USER FLOW RELEASE WITHOUT ACCESSIBILITY TARGET, TEST COVERAGE, OWNER, EXCEPTIONS, AND REGRESSION GATE
+NO CRITICAL USER FLOW SHIPS WITHOUT A NAMED CONFORMANCE LEVEL, ASSISTIVE-TECH TEST EVIDENCE, AND A REGRESSION GATE
 ```
 
-If a user cannot complete the critical flow with required accessibility support, the release is not ready.
+Pick the conformance level explicitly (for most public web work, WCAG 2.x AA is the named target). Run the critical flow with at least one assistive-technology path before release. Add a regression gate so the same defect cannot recur silently. For a solo developer or tiny team, "evidence" is your own keyboard-only and screen-reader walkthrough recorded once per release; the discipline is that the walkthrough happened, not that a separate accessibility team ran it.
 
 ## When To Use
 
@@ -54,7 +54,7 @@ If a user cannot complete the critical flow with required accessibility support,
 
 ## Synthesized Default
 
-Gate critical journeys with a named conformance target, automated checks, manual assistive-technology scripts, keyboard completion tests, owner-reviewed exceptions, and regression tests for known defects. Accessibility evidence should be part of launch readiness for user-facing changes.
+Gate critical journeys with a named conformance target, automated checks, manual assistive-technology scripts, keyboard completion tests, dated exceptions with a named owner (which can be you for solo work), and regression tests for known defects. Accessibility evidence should be part of launch readiness for user-facing changes.
 
 ## Exceptions
 

@@ -1,6 +1,6 @@
 ---
 name: documentation-lifecycle
-description: "Use when engineering docs need ownership, source of truth, freshness, or lifecycle gates; not for routine editorial or mechanical edits."
+description: "Use to assign owner, source of truth, freshness rule, and review trigger to engineering docs — runbooks, design docs, ADRs, onboarding — when staleness is a production risk. Not for editorial polish."
 ---
 
 # Engineering Documentation Lifecycle
@@ -45,7 +45,7 @@ If a doc can mislead an operator, reviewer, or maintainer, stale documentation i
 
 1. **Classify docs by job.** Place every doc asset into exactly one quadrant: tutorial (learning-oriented), how-to (task-oriented), reference (information-oriented), or explanation (understanding-oriented). Tag runbooks and decision records separately as operational and architectural artifacts. Split or rewrite any doc that mixes quadrants until each piece sits in one.
 2. **Name the audience.** State who uses the doc and what decision or task it supports.
-3. **Assign ownership.** Give every critical doc an owner and update trigger tied to the system lifecycle.
+3. **Assign ownership.** Give every critical doc an owner (a team in larger orgs, a person in small ones, you if solo) and an update trigger tied to the system lifecycle. Anonymous docs become stale silently.
 4. **Pick the source of truth.** Remove or mark duplicates so readers know where authority lives.
 5. **Add freshness signals.** Include last-reviewed state, lifecycle stage, review trigger, and archive rule.
 6. **Connect docs to delivery.** Link docs to code, alerts, dashboards, runbooks, release gates, or decision records where they are used.

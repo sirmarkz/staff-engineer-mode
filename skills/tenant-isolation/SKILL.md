@@ -1,6 +1,6 @@
 ---
 name: tenant-isolation
-description: "Use when multi-tenancy, tenant isolation, cross-tenant access, noisy neighbors, quotas, or tenant blast radius are central."
+description: "Use to enforce multi-tenant boundaries — tenant context propagation, data partitioning, quotas, cross-tenant tests, and privacy-safe telemetry — anywhere shared infrastructure serves multiple customers or organizations. Assumes a multi-tenant deployment."
 ---
 
 # Tenant Isolation And Data Protection
@@ -18,6 +18,8 @@ NO TENANT-SENSITIVE PATH WITHOUT TENANT CONTEXT, ACCESS BOUNDARY, QUOTA, AUDIT, 
 ```
 
 If a request or query can lose tenant context, cross-tenant leakage or impact is only a matter of time.
+
+> This skill assumes a multi-tenant deployment serving more than one customer or organization on shared infrastructure. A single-tenant deployment may still need it if PII or privacy domains create internal boundaries; otherwise route privacy work to `privacy-and-data-lifecycle`.
 
 ## When To Use
 

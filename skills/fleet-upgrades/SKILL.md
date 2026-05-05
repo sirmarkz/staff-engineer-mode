@@ -1,6 +1,6 @@
 ---
 name: fleet-upgrades
-description: "Use when fleet upgrades, support windows, version skew, runtime end-of-support, or mixed-version rollout are central."
+description: "Use to plan a runtime, platform, or framework upgrade across many services, clients, or hosts — version skew, support windows, mixed-version compatibility, and rollback path."
 ---
 
 # Fleet Upgrades And Version Skew Management

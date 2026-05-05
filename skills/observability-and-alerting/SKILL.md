@@ -1,6 +1,6 @@
 ---
 name: observability-and-alerting
-description: "Use when dashboards, logs, metrics, traces, alerts, runbooks, correlation IDs, or production debugging are central."
+description: "Use to design telemetry, dashboards, alert rules, or runbooks tied to user journeys — and to decide what should page versus ticket. Not for SLO math; that is slo-and-error-budgets."
 ---
 
 # Observability And Alerting

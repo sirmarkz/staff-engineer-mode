@@ -1,6 +1,6 @@
 ---
 name: dependency-resilience
-description: "Use when remote calls, queues, retries, timeouts, idempotency, overload, or circuit breakers are central."
+description: "Use to set timeouts, retries, idempotency, queue limits, and overload behavior on a remote call or queue — before a slow dependency cascades through the caller."
 ---
 
 # Dependency Resilience And Overload

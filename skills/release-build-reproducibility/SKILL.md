@@ -1,6 +1,6 @@
 ---
 name: release-build-reproducibility
-description: "Use when builds, release branches, release trains, reproducibility, caches, packaging, or artifact promotion are central."
+description: "Use to make a build reproducible and the artifact identifiable — pinned inputs, hermetic build environment, immutable artifact identity, and traceable promotion through environments."
 ---
 
 # Release Engineering And Build Reproducibility

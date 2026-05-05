@@ -1,6 +1,6 @@
 ---
 name: identity-and-secrets
-description: "Use when identity, access control, zero trust, service accounts, workload identity, secrets, keys, or encryption are central."
+description: "Use to design human or workload access — identities, scopes, credential lifetime, secret storage, break-glass, and audit — before granting a new permission or rotating a long-lived secret."
 ---
 
 # Zero Trust Identity And Secrets

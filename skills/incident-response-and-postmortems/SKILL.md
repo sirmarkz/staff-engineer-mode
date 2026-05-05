@@ -1,6 +1,6 @@
 ---
 name: incident-response-and-postmortems
-description: "Use when active incidents, outages, severity, status updates, timelines, postmortems, or follow-ups are central."
+description: "Use to run an active incident, write a postmortem, or set status-update cadence — anything from 'we have an outage right now' to 'we need a writeup with action items'."
 ---
 
 # Incident Response And Postmortems
@@ -14,10 +14,10 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 ## Iron Law
 
 ```
-NO INCIDENT REVIEW WITHOUT TIMELINE, IMPACT, CONTRIBUTING FACTORS, AND VERIFIED ACTIONS
+NO INCIDENT WITHOUT ROLES, IMPACT, AND STATUS CADENCE; NO POSTMORTEM WITHOUT TIMELINE, CONTRIBUTING FACTORS, AND VERIFIED ACTIONS
 ```
 
-If the postmortem only names a root cause or a person, it has not explained the system.
+The two halves are co-designed: live response is unsafe without named responders, declared impact, and a predictable next-update time; a postmortem that only names a root cause or a person has not explained the system. For a solo developer the responder roles collapse onto one person, but the role labels still have to be claimed explicitly so nothing falls between them.
 
 ## When To Use
 

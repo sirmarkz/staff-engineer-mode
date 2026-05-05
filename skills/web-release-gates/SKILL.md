@@ -1,6 +1,6 @@
 ---
 name: web-release-gates
-description: "Use when web releases affect loading, responsiveness, layout stability, runtime errors, payload, or telemetry."
+description: "Use to gate a browser or web client release on user-perceived loading, interaction readiness, visual stability, runtime errors, journey budgets, and accessibility smoke checks."
 ---
 
 # Frontend Performance Release Gates

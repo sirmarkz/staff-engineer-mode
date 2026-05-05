@@ -1,6 +1,6 @@
 ---
 name: mobile-release-engineering
-description: "Use when native mobile rollout, crash-free users, hangs, startup, offline behavior, or app-store release risk are central."
+description: "Use to plan a native mobile rollout — staged release, crash-free thresholds, startup, hang and offline behavior, segmented telemetry, kill switches, and forward-fix path."
 ---
 
 # Mobile Release Engineering And Crash Budgets

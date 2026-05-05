@@ -1,6 +1,6 @@
 ---
 name: platform-golden-paths
-description: "Use when developer platforms, service catalogs, golden paths, templates, paved roads, or scorecards are central."
+description: "Use to design or evolve a developer platform — golden paths, service templates, scorecards, paved roads — when many teams need the same safe defaults baked in. Assumes a multi-team or platform-team context."
 ---
 
 # Platform Engineering And Golden Paths
@@ -18,6 +18,8 @@ NO GOLDEN PATH WITHOUT OWNERSHIP, SECURITY, OBSERVABILITY, DEPLOYMENT, AND OPERA
 ```
 
 If a template creates a service but not an operable service, it is not a golden path.
+
+> This skill assumes a multi-team or platform-team context. Golden paths exist to remove repeated setup across many teams; for a solo developer or single team the same patterns apply but live as repo templates, not as a platform product. Route single-service architecture to `architecture-decisions`.
 
 ## When To Use
 

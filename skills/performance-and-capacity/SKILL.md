@@ -1,6 +1,6 @@
 ---
 name: performance-and-capacity
-description: "Use when latency, throughput, load tests, saturation, queues, capacity, or hot paths are central."
+description: "Use to investigate tail latency, plan a load test, find a saturation point, or claim capacity for peak or failover — anything where the answer must be tail percentiles, not averages."
 ---
 
 # Capacity Performance And Tail Latency

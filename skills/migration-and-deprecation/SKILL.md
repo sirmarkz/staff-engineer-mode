@@ -1,6 +1,6 @@
 ---
 name: migration-and-deprecation
-description: "Use when broad migrations, service retirement, deprecation, backsliding prevention, or legacy replacement are central."
+description: "Use to retire a service, sunset an API family, replace a legacy library, or run a broad migration across many call sites — usage telemetry, replacement readiness, batched migration, and no-new-usage controls."
 ---
 
 # Large-Scale Change And Service Deprecation

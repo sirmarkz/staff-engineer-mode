@@ -1,6 +1,6 @@
 ---
 name: slo-and-error-budgets
-description: "Use when SLIs, SLOs, SLAs, error budgets, burn-rate alerts, paging thresholds, or reliability policy are central."
+description: "Use to define an SLI or SLO tied to a user journey, calculate the error budget, set burn-rate alerts, or write the policy that consumes the budget when it is exhausted."
 ---
 
 # SLO Error Budget Engineering

@@ -1,6 +1,6 @@
 ---
 name: cryptography-and-key-lifecycle
-description: "Use when cryptographic agility, certificate expiry, key rotation, trust chains, or algorithm transition are central."
+description: "Use to plan certificate rotation, key replacement, or algorithm migration before expiry — anything from a single TLS cert to a fleet-wide signing key transition."
 ---
 
 # Crypto Agility And Cert Lifecycle
@@ -14,10 +14,10 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 ## Iron Law
 
 ```
-NO CRYPTOGRAPHIC DEPENDENCY WITHOUT INVENTORY, OWNER, ROTATION PATH, EXPIRY MONITORING, AND TRANSITION PLAN
+EVERY KEY, CERT, AND ALGORITHM HAS AN OWNER, AN EXPIRY DATE, AND A TESTED REPLACEMENT PATH
 ```
 
-If a certificate, key, algorithm, or trust root cannot be replaced safely, the system is brittle.
+If a certificate, key, algorithm, or trust root cannot be replaced safely on demand, the system is brittle. "Owner" is a named person or rotation, not "the team"; for solo work the owner is you. "Tested" means the replacement path has been exercised at least once outside an emergency, not just documented.
 
 ## When To Use
 

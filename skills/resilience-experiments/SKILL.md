@@ -1,6 +1,6 @@
 ---
 name: resilience-experiments
-description: "Use when chaos tests, fault injection, game days, failover drills, or controlled failure experiments are central."
+description: "Use to design or run a chaos test, game day, failover drill, or fault-injection experiment — with hypothesis, blast-radius bound, abort criteria, and a learning loop."
 ---
 
 # Resilience Experiments And Chaos Engineering

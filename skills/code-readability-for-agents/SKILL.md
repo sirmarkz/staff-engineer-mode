@@ -1,6 +1,6 @@
 ---
 name: code-readability-for-agents
-description: "Use when an AI coding agent needs to locate, edit, or extend a codebase whose module boundaries, file layout, naming, or function size make the canonical implementation hard to find in one tool call."
+description: "Use to audit a repo's legibility for AI coding agents — module boundaries, name collisions, god files, oversized functions, and the one-tool-call test for finding the canonical implementation of a behavior."
 ---
 
 # Code Readability For Agents

@@ -1,6 +1,6 @@
 ---
 name: llm-serving-cost-and-latency
-description: "Use when an LLM-backed route needs a token budget, p50/p95/p99 latency budget, prompt and response cache strategy, degradation path on provider failure, or per-feature cost attribution."
+description: "Use to set per-route token and latency budgets on an LLM-backed feature, design the cache strategy, write the degradation path on provider failure, or attribute spend per route, feature, or tenant."
 ---
 
 # LLM Serving Cost And Latency

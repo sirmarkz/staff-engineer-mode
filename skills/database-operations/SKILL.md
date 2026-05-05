@@ -1,6 +1,6 @@
 ---
 name: database-operations
-description: "Use when production database migrations, backfills, indexes, locks, replicas, or query plans are central."
+description: "Use before running a schema change, backfill, index build, or destructive query against a production datastore — to assess locks, lag, throttle, abort, and verification."
 ---
 
 # Database Operations And Schema Changes

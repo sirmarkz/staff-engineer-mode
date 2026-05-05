@@ -1,6 +1,6 @@
 ---
 name: edge-traffic-and-ddos-defense
-description: "Use when public edge traffic, rate limits, bots, DDoS, origin protection, or edge load shedding are central."
+description: "Use to design public-edge defense — rate limits, bot controls, origin isolation, DDoS response — when abusive traffic could overwhelm origins or cost."
 ---
 
 # Edge Traffic And Denial-Of-Service Defense

@@ -1,6 +1,6 @@
 ---
 name: progressive-delivery
-description: "Use when rollout, rollback, canary, feature flags, config changes, migration safety, or production exposure are central."
+description: "Use to plan a rollout — staged exposure, canary metrics, stop criteria, rollback or forward-fix path — for any change that affects production behavior, config, schema, data, or clients."
 ---
 
 # Progressive Delivery And Safe Change
