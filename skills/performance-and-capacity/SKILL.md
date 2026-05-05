@@ -5,12 +5,6 @@ description: "Use to investigate tail latency, plan a load test, find a saturati
 
 # Capacity Performance And Tail Latency
 
-## Overview
-
-Users experience tail latency, not averages.
-
-**Core principle:** model demand, concurrency, queueing, saturation, and fanout, then test to the knee of the curve before production finds it.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO CAPACITY OR PERFORMANCE CLAIM WITHOUT A TRAFFIC MODEL, TAIL METRIC, SATURATIO
 ```
 
 If the answer only says "scale horizontally" or reports averages, it is not enough.
+
+## Overview
+
+Users experience tail latency, not averages.
+
+**Core principle:** model demand, concurrency, queueing, saturation, and fanout, then test to the knee of the curve before production finds it.
 
 ## When To Use
 

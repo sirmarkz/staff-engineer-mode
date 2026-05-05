@@ -5,12 +5,6 @@ description: "Use to design or evolve a developer platform — golden paths, ser
 
 # Platform Engineering And Golden Paths
 
-## Overview
-
-A good platform makes the safe path the easy path.
-
-**Core principle:** encode standards as reusable workflows, templates, scorecards, and self-service capabilities that teams actually use.
-
 ## Iron Law
 
 ```
@@ -20,6 +14,12 @@ NO GOLDEN PATH WITHOUT OWNERSHIP, SECURITY, OBSERVABILITY, DEPLOYMENT, AND OPERA
 If a template creates a service but not an operable service, it is not a golden path.
 
 > This skill assumes a multi-team or platform-team context. Golden paths exist to remove repeated setup across many teams; for a solo developer or single team the same patterns apply but live as repo templates, not as a platform product. Route single-service architecture to `architecture-decisions`.
+
+## Overview
+
+A good platform makes the safe path the easy path.
+
+**Core principle:** encode standards as reusable workflows, templates, scorecards, and self-service capabilities that teams actually use.
 
 ## When To Use
 

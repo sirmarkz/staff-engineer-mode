@@ -5,12 +5,6 @@ description: "Use to diagnose 'works on my machine' failures or build a parity m
 
 # Dev Environment Parity
 
-## Overview
-
-Produces a parity matrix across local, CI, staging, and production for the dimensions that decide whether a fix carries: dependency versions, configuration, data shape, time and clock behavior, network policy, and secret handling. Produces a drift-detection plan, a defined drift budget with action triggers, and a required-parity-versus-allowed-divergence taxonomy. Refuses to call a change shipped when it works only in the environment it was written in.
-
-**Core principle:** environments are a contract. Allowed divergence is named, bounded, and monitored; unnamed divergence is the bug that hides until the worst possible moment.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO FIX THAT WORKS ONLY LOCALLY COUNTS AS FIXED
 ```
 
 A change that passes locally but fails in CI, passes in CI but fails in staging, or passes in staging but fails in production is unfinished work. The drift that hid the failure is the real defect.
+
+## Overview
+
+Produces a parity matrix across local, CI, staging, and production for the dimensions that decide whether a fix carries: dependency versions, configuration, data shape, time and clock behavior, network policy, and secret handling. Produces a drift-detection plan, a defined drift budget with action triggers, and a required-parity-versus-allowed-divergence taxonomy. Refuses to call a change shipped when it works only in the environment it was written in.
+
+**Core principle:** environments are a contract. Allowed divergence is named, bounded, and monitored; unnamed divergence is the bug that hides until the worst possible moment.
 
 ## When To Use
 

@@ -5,12 +5,6 @@ description: "Use to make infrastructure declarative — desired state, policy c
 
 # Infrastructure GitOps And Policy As Code
 
-## Overview
-
-Infrastructure is safer when desired state, review, policy, drift, and rollback are explicit.
-
-**Core principle:** make infrastructure changes declarative, reviewed, enforceable, auditable, and continuously reconciled.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO INFRASTRUCTURE CHANGE WITHOUT REVIEWABLE DESIRED STATE, POLICY CHECK, DRIFT P
 ```
 
 If production infrastructure can change outside review with no reconciliation, the platform is not controlled.
+
+## Overview
+
+Infrastructure is safer when desired state, review, policy, drift, and rollback are explicit.
+
+**Core principle:** make infrastructure changes declarative, reviewed, enforceable, auditable, and continuously reconciled.
 
 ## When To Use
 

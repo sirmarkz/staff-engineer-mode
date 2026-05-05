@@ -5,12 +5,6 @@ description: "Use to audit and retire feature flags after rollout — assign own
 
 # Feature Flag Lifecycle
 
-## Overview
-
-Produces a flag inventory with category, owner, and expiry per flag, an orphan report for flags whose owners or features no longer exist, and a removal plan with rollback for each retiring flag. Refuses to count a feature as shipped while a flag still gates it.
-
-**Core principle:** every live flag is unfinished work. After a rollout completes, the flag, its branches, and its config rows are decision debt that compounds until someone explicitly removes them.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ EVERY LIVE FLAG HAS AN OWNER, AN EXPIRY, AND A REMOVAL PLAN
 ```
 
 A flag without all three is orphan debt. Orphan flags become dead branches, contradictory defaults, and stale kill switches that nobody dares pull during an incident.
+
+## Overview
+
+Produces a flag inventory with category, owner, and expiry per flag, an orphan report for flags whose owners or features no longer exist, and a removal plan with rollback for each retiring flag. Refuses to count a feature as shipped while a flag still gates it.
+
+**Core principle:** every live flag is unfinished work. After a rollout completes, the flag, its branches, and its config rows are decision debt that compounds until someone explicitly removes them.
 
 ## When To Use
 

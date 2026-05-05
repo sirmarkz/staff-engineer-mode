@@ -5,12 +5,6 @@ description: "Use to set freshness SLIs, validation gates, lineage, and replay p
 
 # Data Pipeline Reliability
 
-## Overview
-
-Critical data pipelines are production systems whose users notice stale, missing, duplicated, or incorrect data.
-
-**Core principle:** define freshness, completeness, correctness, lineage, replay, and recovery as explicit service guarantees.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO CRITICAL DATASET WITHOUT OWNER, FRESHNESS SLI, VALIDATION, LINEAGE, AND REPLA
 ```
 
 If consumers cannot tell whether data is fresh and correct, the pipeline is not reliable.
+
+## Overview
+
+Critical data pipelines are production systems whose users notice stale, missing, duplicated, or incorrect data.
+
+**Core principle:** define freshness, completeness, correctness, lineage, replay, and recovery as explicit service guarantees.
 
 ## When To Use
 

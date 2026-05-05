@@ -5,12 +5,6 @@ description: "Use to apply a senior reviewer's pre-merge checklist to any diff b
 
 # Pre-Merge PR Review
 
-## Overview
-
-The default pre-merge review pass. Applies whether the diff was written by a human, by an AI coding agent, or by both. Modern diffs increasingly contain AI-assisted code the reviewer cannot tell apart from human-written code, so every review treats the diff as untrusted until intent, behavior evidence, ownership, and common failure modes (silent assumptions, plausible-but-wrong logic, hallucinated APIs, deleted-but-used code, scope creep, missing edge cases) have been checked against the actual change set.
-
-**Core principle:** review the diff against its originating task, not against the author's self-summary. The summary is a hypothesis; the diff is the evidence.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO DIFF MERGES WITHOUT VERIFIED INTENT, BEHAVIOR EVIDENCE, OWNED RISK, AND A FAI
 ```
 
 If the stated intent does not match the actual diff, or the diff cannot show that the changed behavior was exercised by a test that would fail without the change, the diff is not reviewable yet.
+
+## Overview
+
+The default pre-merge review pass. Applies whether the diff was written by a human, by an AI coding agent, or by both. Modern diffs increasingly contain AI-assisted code the reviewer cannot tell apart from human-written code, so every review treats the diff as untrusted until intent, behavior evidence, ownership, and common failure modes (silent assumptions, plausible-but-wrong logic, hallucinated APIs, deleted-but-used code, scope creep, missing edge cases) have been checked against the actual change set.
+
+**Core principle:** review the diff against its originating task, not against the author's self-summary. The summary is a hypothesis; the diff is the evidence.
 
 ## When To Use
 

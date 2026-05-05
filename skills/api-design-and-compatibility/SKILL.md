@@ -5,12 +5,6 @@ description: "Use to design or evolve an API — versioning, compatibility, depr
 
 # API Design And Compatibility
 
-## Overview
-
-An API is a long-lived contract with unknown clients, retries, partial failures, and migration lag.
-
-**Core principle:** make contracts explicit, evolvable, retry-safe, observable, and compatible by default.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO API CHANGE WITHOUT COMPATIBILITY, ERROR, IDEMPOTENCY, AND MIGRATION RULES
 ```
 
 If clients cannot tell what changed, how errors behave, whether retries are safe, or how to migrate, the API is not ready.
+
+## Overview
+
+An API is a long-lived contract with unknown clients, retries, partial failures, and migration lag.
+
+**Core principle:** make contracts explicit, evolvable, retry-safe, observable, and compatible by default.
 
 ## When To Use
 

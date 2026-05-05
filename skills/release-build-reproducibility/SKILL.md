@@ -5,12 +5,6 @@ description: "Use to make a build reproducible and the artifact identifiable —
 
 # Release Engineering And Build Reproducibility
 
-## Overview
-
-Release engineering turns source changes into trustworthy artifacts.
-
-**Core principle:** build from pinned inputs in a controlled environment, identify the artifact precisely, and promote that artifact through validation and release.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO RELEASE WITHOUT PINNED INPUTS, REPRODUCIBLE BUILD, IMMUTABLE ARTIFACT, AND TR
 ```
 
 If a team cannot tell exactly what was built, how it was built, and where it was promoted, it does not have a reliable release.
+
+## Overview
+
+Release engineering turns source changes into trustworthy artifacts.
+
+**Core principle:** build from pinned inputs in a controlled environment, identify the artifact precisely, and promote that artifact through validation and release.
 
 ## When To Use
 

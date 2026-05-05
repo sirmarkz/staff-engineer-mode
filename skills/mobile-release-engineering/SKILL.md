@@ -5,12 +5,6 @@ description: "Use to plan a native mobile rollout — staged release, crash-free
 
 # Mobile Release Engineering And Crash Budgets
 
-## Overview
-
-Mobile releases are hard to roll back, so stability gates must be conservative before broad rollout.
-
-**Core principle:** use staged rollout, crash/hang budgets, device/OS segmentation, startup/offline checks, privacy-safe telemetry, and forward-fix plans.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO BROAD MOBILE ROLLOUT WITHOUT STABILITY BUDGETS, SEGMENTED TELEMETRY, HALT CRI
 ```
 
 If the release cannot be halted or repaired under app-store/client constraints, do not widen exposure.
+
+## Overview
+
+Mobile releases are hard to roll back, so stability gates must be conservative before broad rollout.
+
+**Core principle:** use staged rollout, crash/hang budgets, device/OS segmentation, startup/offline checks, privacy-safe telemetry, and forward-fix plans.
 
 ## When To Use
 

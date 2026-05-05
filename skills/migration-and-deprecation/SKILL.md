@@ -5,12 +5,6 @@ description: "Use to retire a service, sunset an API family, replace a legacy li
 
 # Large-Scale Change And Service Deprecation
 
-## Overview
-
-Removing or replacing a widely used system is a production change spread across many dependents.
-
-**Core principle:** discover real usage, provide a safe replacement, migrate incrementally, prevent new usage, and remove only after evidence shows dependents are gone.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO DEPRECATION WITHOUT OWNER, REPLACEMENT, USAGE TELEMETRY, MIGRATION PATH, AND 
 ```
 
 Warnings without migration machinery are just noise.
+
+## Overview
+
+Removing or replacing a widely used system is a production change spread across many dependents.
+
+**Core principle:** discover real usage, provide a safe replacement, migrate incrementally, prevent new usage, and remove only after evidence shows dependents are gone.
 
 ## When To Use
 

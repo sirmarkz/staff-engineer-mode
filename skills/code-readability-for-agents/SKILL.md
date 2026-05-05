@@ -5,12 +5,6 @@ description: "Use to audit a repo's legibility for AI coding agents — module b
 
 # Code Readability For Agents
 
-## Overview
-
-Produces a legibility audit of a repository as an artifact for AI comprehension: a module-boundary map, a list of names that collide or mislead code search, a function-and-file size report against a defined budget, and a set of naming and layout patches that let an agent reach the canonical implementation in one tool call. Refuses to call code "clean" when an agent has to read three files to find where a behavior actually lives.
-
-**Core principle:** the repository is read by agents at least as often as by humans now. If the agent cannot find the canonical implementation deterministically, the structure is wrong, not the agent.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ IF AN AGENT CANNOT LOCATE THE CANONICAL IMPLEMENTATION IN ONE TOOL CALL, THE STR
 ```
 
 Indirection that humans tolerate because they remember where things live becomes silent failure when an agent edits the wrong file, recreates a function that already exists, or hallucinates a helper that almost-but-not-quite matches the real one.
+
+## Overview
+
+Produces a legibility audit of a repository as an artifact for AI comprehension: a module-boundary map, a list of names that collide or mislead code search, a function-and-file size report against a defined budget, and a set of naming and layout patches that let an agent reach the canonical implementation in one tool call. Refuses to call code "clean" when an agent has to read three files to find where a behavior actually lives.
+
+**Core principle:** the repository is read by agents at least as often as by humans now. If the agent cannot find the canonical implementation deterministically, the structure is wrong, not the agent.
 
 ## When To Use
 

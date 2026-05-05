@@ -5,12 +5,6 @@ description: "Use to plan a rollout — staged exposure, canary metrics, stop cr
 
 # Progressive Delivery And Safe Change
 
-## Overview
-
-Produces a staged rollout plan with named blast radius per stage, predeclared canary metrics with baseline and observation windows, stop and rollback criteria, and a cleanup owner for every temporary flag or compatibility path. Refuses rollouts whose rollback only reverts code while config, schema, data, or clients stay forward.
-
-**Core principle:** treat code, configuration, flags, schemas, data, infrastructure, and model artifacts as production changes with the same blast-radius discipline.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO PRODUCTION CHANGE WITHOUT A BLAST RADIUS, STOP CRITERIA, AND RECOVERY PATH
 ```
 
 If the rollout cannot be stopped or reversed when evidence degrades, it is not safe delivery.
+
+## Overview
+
+Produces a staged rollout plan with named blast radius per stage, predeclared canary metrics with baseline and observation windows, stop and rollback criteria, and a cleanup owner for every temporary flag or compatibility path. Refuses rollouts whose rollback only reverts code while config, schema, data, or clients stay forward.
+
+**Core principle:** treat code, configuration, flags, schemas, data, infrastructure, and model artifacts as production changes with the same blast-radius discipline.
 
 ## When To Use
 

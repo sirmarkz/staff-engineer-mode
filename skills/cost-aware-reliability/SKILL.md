@@ -5,12 +5,6 @@ description: "Use to investigate a cost spike, decide a cost-vs-reliability trad
 
 # FinOps And Cost Aware Reliability
 
-## Overview
-
-Cost is an operational signal, but reliability headroom is not waste by default.
-
-**Core principle:** optimize unit economics while preserving explicit reliability, capacity, recovery, and safety targets.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO COST CUT WITHOUT SLO, HEADROOM, BLAST-RADIUS, AND REGRESSION CHECK
 ```
 
 If a saving silently consumes reliability margin, it is a risk decision, not an optimization.
+
+## Overview
+
+Cost is an operational signal, but reliability headroom is not waste by default.
+
+**Core principle:** optimize unit economics while preserving explicit reliability, capacity, recovery, and safety targets.
 
 ## When To Use
 

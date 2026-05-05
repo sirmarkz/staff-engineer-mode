@@ -5,12 +5,6 @@ description: "Use to choose storage, decide consistency per operation, pick a sh
 
 # Distributed Data And Consistency
 
-## Overview
-
-Data architecture starts with semantics, not storage brands.
-
-**Core principle:** choose storage, replication, transactions, consistency, and sharding from the correctness guarantees each operation actually needs.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO READ OR WRITE PATH WITHOUT NAMED CONSISTENCY, CONFLICT, AND FAILOVER BEHAVIOR
 ```
 
 For each read path and each write path, the design must say which consistency guarantee holds, what happens to a conflicting concurrent write, and what users observe during failover or replication lag. "Eventually consistent" without saying what users see between events, or "transactional" without saying which operations span the boundary, is not a design.
+
+## Overview
+
+Data architecture starts with semantics, not storage brands.
+
+**Core principle:** choose storage, replication, transactions, consistency, and sharding from the correctness guarantees each operation actually needs.
 
 ## When To Use
 

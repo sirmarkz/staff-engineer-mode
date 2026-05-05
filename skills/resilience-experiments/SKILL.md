@@ -5,12 +5,6 @@ description: "Use to design or run a chaos test, game day, failover drill, or fa
 
 # Resilience Experiments And Chaos Engineering
 
-## Overview
-
-Resilience experiments test whether the system behaves the way the design claims it will behave.
-
-**Core principle:** run controlled experiments with a hypothesis, bounded blast radius, observable steady state, abort criteria, and follow-up fixes.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO FAILURE EXPERIMENT WITHOUT HYPOTHESIS, BLAST RADIUS, ABORT CRITERIA, TELEMETR
 ```
 
 Breaking things without a learning objective is not engineering.
+
+## Overview
+
+Resilience experiments test whether the system behaves the way the design claims it will behave.
+
+**Core principle:** run controlled experiments with a hypothesis, bounded blast radius, observable steady state, abort criteria, and follow-up fixes.
 
 ## When To Use
 

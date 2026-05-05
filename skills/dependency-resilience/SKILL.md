@@ -5,12 +5,6 @@ description: "Use to set timeouts, retries, idempotency, queue limits, and overl
 
 # Dependency Resilience And Overload
 
-## Overview
-
-Most cascading failures are dependency failures amplified by callers.
-
-**Core principle:** every remote interaction needs a deadline, retry budget, idempotency story, overload behavior, and observable failure mode.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO REMOTE CALL OR QUEUE WITHOUT TIMEOUT, RETRY, IDEMPOTENCY, AND OVERLOAD POLICY
 ```
 
 If any dependency can wait forever, retry forever, queue forever, or fail ambiguously, the design is not production-safe.
+
+## Overview
+
+Most cascading failures are dependency failures amplified by callers.
+
+**Core principle:** every remote interaction needs a deadline, retry budget, idempotency story, overload behavior, and observable failure mode.
 
 ## When To Use
 

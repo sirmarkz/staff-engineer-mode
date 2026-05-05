@@ -5,12 +5,6 @@ description: "Use to build an eval harness for a model-backed change — dataset
 
 # LLM Evaluation Harness Engineering
 
-## Overview
-
-LLM behavior is production behavior when prompts, tools, retrieval, or model outputs affect users or workflows.
-
-**Core principle:** build eval harnesses with representative cases, stable scoring, slice coverage, regression history, and release thresholds before trusting model-backed changes.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO MODEL-BACKED CHANGE WITHOUT EVAL CASES, SCORING RULES, THRESHOLDS, REGRESSION
 ```
 
 If the team cannot say what got better, what got worse, and which failures block release, the eval is not a gate.
+
+## Overview
+
+LLM behavior is production behavior when prompts, tools, retrieval, or model outputs affect users or workflows.
+
+**Core principle:** build eval harnesses with representative cases, stable scoring, slice coverage, regression history, and release thresholds before trusting model-backed changes.
 
 ## When To Use
 

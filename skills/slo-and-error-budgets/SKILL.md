@@ -5,12 +5,6 @@ description: "Use to define an SLI or SLO tied to a user journey, calculate the 
 
 # SLO Error Budget Engineering
 
-## Overview
-
-Produces an SLI/SLO table tied to named user journeys, an error-budget calculation, a multi-window burn-rate alert policy, and a budget-state release rule. Refuses 100-percent targets, host-health proxies, and pages that do not name a user.
-
-**Core principle:** define the experience users are promised, measure it with SLIs, set an SLO that leaves an explicit error budget, and let that budget govern paging and release risk.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO SLO WITHOUT A USER JOURNEY, ERROR-BUDGET MATH, AND POLICY CONSEQUENCE
 ```
 
 If the journey, window, target, budget, owner, and response policy are missing, do not call the SLO complete.
+
+## Overview
+
+Produces an SLI/SLO table tied to named user journeys, an error-budget calculation, a multi-window burn-rate alert policy, and a budget-state release rule. Refuses 100-percent targets, host-health proxies, and pages that do not name a user.
+
+**Core principle:** define the experience users are promised, measure it with SLIs, set an SLO that leaves an explicit error budget, and let that budget govern paging and release risk.
 
 ## When To Use
 

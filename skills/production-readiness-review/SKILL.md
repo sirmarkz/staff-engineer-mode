@@ -5,12 +5,6 @@ description: "Use to run a launch-readiness review on a service, feature, migrat
 
 # Production Readiness Review
 
-## Overview
-
-Produces a tier-classified launch posture with an evidence matrix, a blocker list with named owners, and an exception register with expiry dates. Stops launches that confuse intentions for evidence. Unknown is not green.
-
-**Core principle:** before launch or major traffic shift, prove — with artifacts, not intentions — that ownership, reliability, observability, safe change, security, capacity, recovery, and incident paths are good enough for the declared tier.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO LAUNCH READINESS CLAIM WITHOUT EVIDENCE OR A DATED EXCEPTION
 ```
 
 Unknown is not green. Missing evidence is a blocker, a follow-up route, or an explicit risk acceptance by the accountable owner.
+
+## Overview
+
+Produces a tier-classified launch posture with an evidence matrix, a blocker list with named owners, and an exception register with expiry dates. Stops launches that confuse intentions for evidence. Unknown is not green.
+
+**Core principle:** before launch or major traffic shift, prove — with artifacts, not intentions — that ownership, reliability, observability, safe change, security, capacity, recovery, and incident paths are good enough for the declared tier.
 
 ## When To Use
 

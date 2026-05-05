@@ -5,12 +5,6 @@ description: "Use to gate a browser or web client release on user-perceived load
 
 # Frontend Performance Release Gates
 
-## Overview
-
-Client-side quality is production reliability for the user's device and network.
-
-**Core principle:** gate client-facing releases on field-user experience, journey-level budgets, runtime errors, and accessibility smoke checks, not only build success.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO CLIENT RELEASE GATE WITHOUT USER-CENTRIC METRICS, JOURNEY BUDGETS, FIELD/LAB 
 ```
 
 If a release can make the client experience worse without tripping a gate, the gate is incomplete.
+
+## Overview
+
+Client-side quality is production reliability for the user's device and network.
+
+**Core principle:** gate client-facing releases on field-user experience, journey-level budgets, runtime errors, and accessibility smoke checks, not only build success.
 
 ## When To Use
 

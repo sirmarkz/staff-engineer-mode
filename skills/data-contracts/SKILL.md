@@ -5,12 +5,6 @@ description: "Use to write or evolve a shared data interface — a schema, event
 
 # Data Contracts And Domain Interfaces
 
-## Overview
-
-Data contracts let teams change independently without guessing what consumers depend on.
-
-**Core principle:** make producer and consumer expectations explicit, versioned, owned, compatibility-tested, and observable.
-
 ## Iron Law
 
 ```
@@ -20,6 +14,12 @@ NO SHARED DATA INTERFACE WITHOUT AN OWNER, A WRITTEN CONTRACT, COMPATIBILITY RUL
 A "shared interface" is anything another component reads — a peer service, a downstream job, a different repo, even a future-you script. The contract states field meanings, types, and validity. Compatibility rules state what counts as additive vs breaking. The consumer list can be a one-line `# consumed by: jobs/nightly_export.py` for solo work, or a full registry for larger orgs; the invariant is that the producer can name who breaks if the shape changes.
 
 > This skill assumes the data crosses a component or repo boundary. If the data model is fully private to one component with no external readers, route to `architecture-decisions` instead.
+
+## Overview
+
+Data contracts let teams change independently without guessing what consumers depend on.
+
+**Core principle:** make producer and consumer expectations explicit, versioned, owned, compatibility-tested, and observable.
 
 ## When To Use
 

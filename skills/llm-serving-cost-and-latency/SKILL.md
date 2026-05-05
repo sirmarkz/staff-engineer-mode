@@ -5,12 +5,6 @@ description: "Use to set per-route token and latency budgets on an LLM-backed fe
 
 # LLM Serving Cost And Latency
 
-## Overview
-
-Produces a per-route token and latency budget table, a cache strategy spec for prompts, embeddings, and responses, a degradation policy that names the fallback model and the degraded contract, and a cost-attribution model that maps spend to route, feature, and tenant. Refuses to ship an LLM-backed route whose tail latency, retry behavior, or per-call cost is not modeled.
-
-**Core principle:** an LLM call is a remote, expensive, tail-latency-dominated dependency whose unit cost is set per request by the prompt the caller assembles. Treat the prompt, the model tier, the cache, and the fallback as production design choices, not implementation details.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ EVERY LLM-BACKED ROUTE DECLARES A TOKEN BUDGET, A LATENCY BUDGET, AND A DEGRADAT
 ```
 
 A route without all three is uncontrolled spend and uncontrolled tail. The first cost spike, provider outage, or runaway retry will make that visible at the worst time.
+
+## Overview
+
+Produces a per-route token and latency budget table, a cache strategy spec for prompts, embeddings, and responses, a degradation policy that names the fallback model and the degraded contract, and a cost-attribution model that maps spend to route, feature, and tenant. Refuses to ship an LLM-backed route whose tail latency, retry behavior, or per-call cost is not modeled.
+
+**Core principle:** an LLM call is a remote, expensive, tail-latency-dominated dependency whose unit cost is set per request by the prompt the caller assembles. Treat the prompt, the model tier, the cache, and the fallback as production design choices, not implementation details.
 
 ## When To Use
 

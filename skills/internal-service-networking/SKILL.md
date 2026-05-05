@@ -5,12 +5,6 @@ description: "Use to design internal service-to-service traffic — discovery, r
 
 # Internal Networking And Service Mesh
 
-## Overview
-
-Internal networking should solve concrete traffic, identity, policy, and observability problems; mesh is not a default.
-
-**Core principle:** choose the simplest internal networking model that provides required routing, identity, reliability, observability, and operations guarantees.
-
 ## Iron Law
 
 ```
@@ -20,6 +14,12 @@ NO INTERNAL SERVICE PATH WITHOUT IDENTITY, FAILURE MODE, OBSERVABILITY, AND AN O
 Every hop on a service-to-service path needs a workload identity, a documented failure mode, telemetry that explains what happened, and a named operator path for debugging and upgrades. "We added a mesh" or "we use DNS" is not an answer to any of those four. For a solo or two-service deployment the rule still applies — just at a smaller scale.
 
 > This skill assumes a multi-service deployment. A single-process app does not have internal service hops; route to `dependency-resilience` for remote-call policy or `architecture-decisions` if the question is whether to split.
+
+## Overview
+
+Internal networking should solve concrete traffic, identity, policy, and observability problems; mesh is not a default.
+
+**Core principle:** choose the simplest internal networking model that provides required routing, identity, reliability, observability, and operations guarantees.
 
 ## When To Use
 

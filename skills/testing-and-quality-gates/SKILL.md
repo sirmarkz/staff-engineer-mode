@@ -5,12 +5,6 @@ description: "Use to design the test strategy and decide which checks block merg
 
 # Testing And Quality Gates
 
-## Overview
-
-Quality gates should catch real risk early without turning delivery into ritual.
-
-**Core principle:** place fast, deterministic, high-signal checks before merge; reserve slower or broader checks for the stage where they actually prove something.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ EVERY TEST PROVES A NAMED RISK; EVERY BLOCKING GATE HAS AN OWNER AND A FAILURE R
 ```
 
 Tests exist to exercise a specific risk; "we have tests" without naming the risk each test exercises is faith, not evidence. A blocking gate without an owner and a written failure response teaches people to ignore it. For a solo developer the owner is you and the failure response is a written sentence — the discipline is naming both, not creating a roster.
+
+## Overview
+
+Quality gates should catch real risk early without turning delivery into ritual.
+
+**Core principle:** place fast, deterministic, high-signal checks before merge; reserve slower or broader checks for the stage where they actually prove something.
 
 ## When To Use
 

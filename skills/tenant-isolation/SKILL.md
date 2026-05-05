@@ -5,12 +5,6 @@ description: "Use to enforce multi-tenant boundaries — tenant context propagat
 
 # Tenant Isolation And Data Protection
 
-## Overview
-
-Multi-tenancy fails when tenant context is optional.
-
-**Core principle:** carry tenant and data classification through every request, query, log, metric, trace, audit event, quota, and operational workflow.
-
 ## Iron Law
 
 ```
@@ -20,6 +14,12 @@ NO TENANT-SENSITIVE PATH WITHOUT TENANT CONTEXT, ACCESS BOUNDARY, QUOTA, AUDIT, 
 If a request or query can lose tenant context, cross-tenant leakage or impact is only a matter of time.
 
 > This skill assumes a multi-tenant deployment serving more than one customer or organization on shared infrastructure. A single-tenant deployment may still need it if PII or privacy domains create internal boundaries; otherwise route privacy work to `privacy-and-data-lifecycle`.
+
+## Overview
+
+Multi-tenancy fails when tenant context is optional.
+
+**Core principle:** carry tenant and data classification through every request, query, log, metric, trace, audit event, quota, and operational workflow.
 
 ## When To Use
 

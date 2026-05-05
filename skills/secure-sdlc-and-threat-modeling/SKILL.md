@@ -5,12 +5,6 @@ description: "Use to threat-model a feature or system — trust boundaries, data
 
 # Secure SDLC And Threat Modeling
 
-## Overview
-
-Produces a trust-boundary and data-flow map, an abuse-case table, a control mapping with verification for each high-risk control, and a residual-risk register with named owners and expiry. Refuses to accept controls that cannot be tested, gated, or observed.
-
-**Core principle:** model trust boundaries and abuse cases early, then turn threats into testable controls with owners.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO SECURITY REVIEW WITHOUT TRUST BOUNDARIES, DATA FLOWS, THREATS, CONTROLS, AND 
 ```
 
 If threats do not map to controls and verification, the review is not actionable.
+
+## Overview
+
+Produces a trust-boundary and data-flow map, an abuse-case table, a control mapping with verification for each high-risk control, and a residual-risk register with named owners and expiry. Refuses to accept controls that cannot be tested, gated, or observed.
+
+**Core principle:** model trust boundaries and abuse cases early, then turn threats into testable controls with owners.
 
 ## When To Use
 

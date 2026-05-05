@@ -5,12 +5,6 @@ description: "Use to plan certificate rotation, key replacement, or algorithm mi
 
 # Crypto Agility And Cert Lifecycle
 
-## Overview
-
-Cryptography fails operationally when keys, certificates, algorithms, and trust roots cannot be inventoried or changed before a deadline.
-
-**Core principle:** keep cryptographic dependencies discoverable, owned, renewable, replaceable, monitored, and tested before expiry or algorithm transition becomes an incident.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ EVERY KEY, CERT, AND ALGORITHM HAS AN OWNER, AN EXPIRY DATE, AND A TESTED REPLAC
 ```
 
 If a certificate, key, algorithm, or trust root cannot be replaced safely on demand, the system is brittle. "Owner" is a named person or rotation, not "the team"; for solo work the owner is you. "Tested" means the replacement path has been exercised at least once outside an emergency, not just documented.
+
+## Overview
+
+Cryptography fails operationally when keys, certificates, algorithms, and trust roots cannot be inventoried or changed before a deadline.
+
+**Core principle:** keep cryptographic dependencies discoverable, owned, renewable, replaceable, monitored, and tested before expiry or algorithm transition becomes an incident.
 
 ## When To Use
 

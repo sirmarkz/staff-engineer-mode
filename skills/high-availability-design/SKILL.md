@@ -5,12 +5,6 @@ description: "Use to claim or validate that a system survives zone, region, cell
 
 # High Availability Design And Validation
 
-## Overview
-
-High availability is the ability to keep serving through expected failures without inventing new operations during the failure.
-
-**Core principle:** identify fault domains, bound blast radius, provision enough steady-state capacity, and validate the failure mode before relying on it.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO HA CLAIM WITHOUT A FAULT DOMAIN, SURVIVABILITY TARGET, CAPACITY MODEL, AND TE
 ```
 
 "Multi-region", "multi-zone", and "redundant" are labels. They are not evidence.
+
+## Overview
+
+High availability is the ability to keep serving through expected failures without inventing new operations during the failure.
+
+**Core principle:** identify fault domains, bound blast radius, provision enough steady-state capacity, and validate the failure mode before relying on it.
 
 ## When To Use
 

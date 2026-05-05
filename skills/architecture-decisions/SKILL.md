@@ -5,10 +5,6 @@ description: "Use to design or review a system, write an ADR, or decide between 
 
 # Architecture Review And Decision Records
 
-## Overview
-
-Architecture review turns a design from "components and opinions" into explicit goals, tradeoffs, failure modes, and decisions future maintainers can understand. Works the same at any team size: the discipline is the forces-alternatives-reversal triple, not the org-chart artifact around it. Review decisions by the forces they must satisfy: user outcomes, constraints, data, reliability, security, operability, evolvability, and cost.
-
 ## Iron Law
 
 ```
@@ -16,6 +12,10 @@ NO ARCHITECTURE DECISION WITHOUT FORCES, ALTERNATIVES, AND A REVERSAL PLAN
 ```
 
 If the design lacks goals, constraints, alternatives considered, and an honest read on how hard the decision would be to undo, do not approve it as reviewed. Naming a maintainer matters too; for solo work the maintainer is you, and the rule is "no anonymous components," not "produce an org chart."
+
+## Overview
+
+Architecture review turns a design from "components and opinions" into explicit goals, tradeoffs, failure modes, and decisions future maintainers can understand. Works the same at any team size: the discipline is the forces-alternatives-reversal triple, not the org-chart artifact around it. Review decisions by the forces they must satisfy: user outcomes, constraints, data, reliability, security, operability, evolvability, and cost.
 
 ## When To Use
 

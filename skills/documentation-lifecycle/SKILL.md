@@ -5,12 +5,6 @@ description: "Use to assign owner, source of truth, freshness rule, and review t
 
 # Engineering Documentation Lifecycle
 
-## Overview
-
-Engineering documentation is useful only when it is findable, owned, current, authoritative, and tied to the system it describes.
-
-**Core principle:** make docs part of the delivery system, with audience, owner, freshness signal, source of truth, and review trigger.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO CRITICAL ENGINEERING DOC WITHOUT AUDIENCE, OWNER, SOURCE OF TRUTH, FRESHNESS 
 ```
 
 If a doc can mislead an operator, reviewer, or maintainer, stale documentation is a production risk.
+
+## Overview
+
+Engineering documentation is useful only when it is findable, owned, current, authoritative, and tied to the system it describes.
+
+**Core principle:** make docs part of the delivery system, with audience, owner, freshness signal, source of truth, and review trigger.
 
 ## When To Use
 

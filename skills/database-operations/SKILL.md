@@ -5,12 +5,6 @@ description: "Use before running a schema change, backfill, index build, or dest
 
 # Database Operations And Schema Changes
 
-## Overview
-
-Database changes are production releases with lock, lag, plan, and data-correction risk.
-
-**Core principle:** make schema, index, backfill, and maintenance changes observable, throttleable, verifiable, and reversible or forward-fixable.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO PRODUCTION DATASTORE CHANGE WITHOUT LOCK/LAG ASSESSMENT, THROTTLE, ABORT, AND
 ```
 
 If you cannot pause, measure, and verify the change, it should not run against production state.
+
+## Overview
+
+Database changes are production releases with lock, lag, plan, and data-correction risk.
+
+**Core principle:** make schema, index, backfill, and maintenance changes observable, throttleable, verifiable, and reversible or forward-fixable.
 
 ## When To Use
 

@@ -5,12 +5,6 @@ description: "Use to set the repo-level rules for AI coding agents — allowed a
 
 # AI-Assisted Coding Governance
 
-## Overview
-
-Produces a repo-local rule set for coding agents: allowed and forbidden actions, protected paths, sensitive-data and secret boundaries, required verification evidence, and an audit trail tied to a human owner. Catches the moment when an agent rewrites twelve files at 11pm with no test run, no scope statement, and no one accountable for the diff.
-
-**Core principle:** give coding agents explicit repo rules, constrain sensitive data and actions, require human-reviewable evidence, and make generated changes meet the same bar as human changes.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO AI-ASSISTED CHANGE WITHOUT SCOPE, OWNER, REVIEW, TEST EVIDENCE, AND DATA BOUN
 ```
 
 If a coding agent cannot explain what it changed, why, how it was verified, and what data it touched, the change is not reviewable.
+
+## Overview
+
+Produces a repo-local rule set for coding agents: allowed and forbidden actions, protected paths, sensitive-data and secret boundaries, required verification evidence, and an audit trail tied to a human owner. Catches the moment when an agent rewrites twelve files at 11pm with no test run, no scope statement, and no one accountable for the diff.
+
+**Core principle:** give coding agents explicit repo rules, constrain sensitive data and actions, require human-reviewable evidence, and make generated changes meet the same bar as human changes.
 
 ## When To Use
 

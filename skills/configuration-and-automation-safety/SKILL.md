@@ -5,12 +5,6 @@ description: "Use before running a config change, bulk script, or automation tha
 
 # Configuration And Automation Safety
 
-## Overview
-
-Configuration and automation can change production faster than code review can notice.
-
-**Core principle:** treat config, generated changes, and operational automation as production code with explicit schema, preview, owner, and recovery evidence.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO CONFIG OR AUTOMATION CHANGE WITHOUT VALIDATION, PREVIEW, BLAST RADIUS, OWNER,
 ```
 
 If the change cannot be checked before execution and reversed or contained after failure, it is not safe enough.
+
+## Overview
+
+Configuration and automation can change production faster than code review can notice.
+
+**Core principle:** treat config, generated changes, and operational automation as production code with explicit schema, preview, owner, and recovery evidence.
 
 ## When To Use
 

@@ -5,12 +5,6 @@ description: "Use to design or read out an A/B test, holdout, or ramp where the 
 
 # Experimentation And Metric Guardrails
 
-## Overview
-
-Experiments are only useful when assignment, exposure, metrics, and decision rules are trustworthy.
-
-**Core principle:** design experiments with clear hypotheses, stable assignment, reliable exposure logging, predeclared metrics, guardrails, and invalidation checks.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO EXPERIMENT CALL WITHOUT A HYPOTHESIS, A KNOWN EXPOSED POPULATION, GUARDRAIL M
 ```
 
 The experiment must say what it predicts, prove who actually saw the change (not just who was assigned), name the safety/quality metrics that can block a positive primary result, and commit to the decision rule before reading the result. For a small-team or hand-rolled experiment "known exposed population" can be as simple as "logged-in users on build SHA X after timestamp Y" — the invariant is that you can answer who was affected, not that you have an experimentation platform.
+
+## Overview
+
+Experiments are only useful when assignment, exposure, metrics, and decision rules are trustworthy.
+
+**Core principle:** design experiments with clear hypotheses, stable assignment, reliable exposure logging, predeclared metrics, guardrails, and invalidation checks.
 
 ## When To Use
 

@@ -5,12 +5,6 @@ description: "Use to set release gates on user-facing flows for keyboard, screen
 
 # Accessibility Conformance Gates
 
-## Overview
-
-Accessibility is a release quality property, not a post-launch polish pass.
-
-**Core principle:** gate critical user journeys on semantic structure, keyboard access, focus behavior, visual contrast, assistive-technology behavior, and regression evidence.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO CRITICAL USER FLOW SHIPS WITHOUT A NAMED CONFORMANCE LEVEL, ASSISTIVE-TECH TE
 ```
 
 Pick the conformance level explicitly (for most public web work, WCAG 2.x AA is the named target). Run the critical flow with at least one assistive-technology path before release. Add a regression gate so the same defect cannot recur silently. For a solo developer or tiny team, "evidence" is your own keyboard-only and screen-reader walkthrough recorded once per release; the discipline is that the walkthrough happened, not that a separate accessibility team ran it.
+
+## Overview
+
+Accessibility is a release quality property, not a post-launch polish pass.
+
+**Core principle:** gate critical user journeys on semantic structure, keyboard access, focus behavior, visual contrast, assistive-technology behavior, and regression evidence.
 
 ## When To Use
 

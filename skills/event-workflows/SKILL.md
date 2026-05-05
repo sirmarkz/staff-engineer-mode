@@ -5,12 +5,6 @@ description: "Use to design an event, queue, stream, saga, or workflow — and d
 
 # Event Driven Systems And Workflows
 
-## Overview
-
-Asynchronous systems trade call-time coupling for delivery, ordering, replay, and correction obligations.
-
-**Core principle:** assume duplicate, delayed, reordered, and replayed messages unless the design proves otherwise.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO EVENT OR WORKFLOW WITHOUT CONTRACT, IDEMPOTENCY, RETRY, DLQ, AND REPLAY POLIC
 ```
 
 If consumers cannot safely see a message twice or late, the workflow is not production-ready.
+
+## Overview
+
+Asynchronous systems trade call-time coupling for delivery, ordering, replay, and correction obligations.
+
+**Core principle:** assume duplicate, delayed, reordered, and replayed messages unless the design proves otherwise.
 
 ## When To Use
 

@@ -5,12 +5,6 @@ description: "Use to harden an LLM-backed feature against prompt injection, tool
 
 # LLM Application Security
 
-## Overview
-
-LLM applications move untrusted text across tool, data, and decision boundaries.
-
-**Core principle:** treat prompts, retrieved content, tool outputs, and model responses as untrusted inputs; constrain what the application can do with them.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO LLM TOOL OR DATA ACCESS WITHOUT A BOUNDARY MAP, LEAST PRIVILEGE, ABUSE-CASE E
 ```
 
 If the model can cause an action, that action needs an explicit boundary, least-privilege scoping, abuse-case tests (prompt injection, exfiltration, jailbreak, unsafe action), an audit trail, and contextual handling of the output before any sink consumes it. "Evals" here are adversarial cases, not happy-path quality checks.
+
+## Overview
+
+LLM applications move untrusted text across tool, data, and decision boundaries.
+
+**Core principle:** treat prompts, retrieved content, tool outputs, and model responses as untrusted inputs; constrain what the application can do with them.
 
 ## When To Use
 

@@ -5,12 +5,6 @@ description: "Use to add, fix, or audit a cache or materialized view — TTL, in
 
 # Caching And Derived Data
 
-## Overview
-
-Caching is a correctness path disguised as a performance optimization.
-
-**Core principle:** every cache or derived view needs explicit freshness, invalidation, stampede protection, failure behavior, and observability.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO CACHE WITHOUT FRESHNESS, INVALIDATION, AND MISS-STORM BEHAVIOR
 ```
 
 If writers, invalidators, readers, and downstream systems are not modeled, the cache can become an outage or data-corruption source.
+
+## Overview
+
+Caching is a correctness path disguised as a performance optimization.
+
+**Core principle:** every cache or derived view needs explicit freshness, invalidation, stampede protection, failure behavior, and observability.
 
 ## When To Use
 

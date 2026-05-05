@@ -5,12 +5,6 @@ description: "Use to harden the source-to-deploy chain — protected source, iso
 
 # Software Supply Chain Security
 
-## Overview
-
-Production should run artifacts whose source, build, dependencies, and approval path can be proven.
-
-**Core principle:** protect the source-to-deploy chain with reviewed changes, isolated builds, provenance, artifact integrity, least-privilege automation, and deployment verification.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO PRODUCTION ARTIFACT WITHOUT SOURCE, BUILD, PROVENANCE, INTEGRITY, AND ADMISSI
 ```
 
 If an artifact cannot be traced back to reviewed source and a trusted build path, it should not be trusted for production.
+
+## Overview
+
+Production should run artifacts whose source, build, dependencies, and approval path can be proven.
+
+**Core principle:** protect the source-to-deploy chain with reviewed changes, isolated builds, provenance, artifact integrity, least-privilege automation, and deployment verification.
 
 ## When To Use
 

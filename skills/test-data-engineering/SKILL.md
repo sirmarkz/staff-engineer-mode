@@ -5,12 +5,6 @@ description: "Use to inventory and govern test data — fixtures, golden files, 
 
 # Test Data Engineering
 
-## Overview
-
-Produces a fixture inventory with scope and owner per fixture, an anonymization policy for any test data sourced from production, a freshness-versus-determinism decision per fixture class, and a drift-detection plan that fires when production data shape diverges from the data the tests run on. Refuses to call a test passing when the data it relies on cannot be reproduced or restored.
-
-**Core principle:** test data is a production artifact. If a fixture cannot be regenerated, anonymized, or restored on demand, the tests that depend on it are an outage waiting for the next refresh.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO TEST RELIES ON DATA THE TEST CANNOT REPRODUCE OR RESTORE
 ```
 
 A green test backed by lost-provenance data is not evidence. The next refresh, the next anonymization sweep, or the next schema change will turn it red without any code change.
+
+## Overview
+
+Produces a fixture inventory with scope and owner per fixture, an anonymization policy for any test data sourced from production, a freshness-versus-determinism decision per fixture class, and a drift-detection plan that fires when production data shape diverges from the data the tests run on. Refuses to call a test passing when the data it relies on cannot be reproduced or restored.
+
+**Core principle:** test data is a production artifact. If a fixture cannot be regenerated, anonymized, or restored on demand, the tests that depend on it are an outage waiting for the next refresh.
 
 ## When To Use
 

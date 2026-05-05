@@ -5,12 +5,6 @@ description: "Use to gate a production ML model promotion on data validation, ev
 
 # ML Systems Reliability And Evaluation
 
-## Overview
-
-Production ML reliability is software reliability plus data reliability plus model behavior reliability.
-
-**Core principle:** promote models only when data, features, evals, serving behavior, rollout, monitoring, and rollback are all controlled.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO MODEL PROMOTION WITHOUT DATA VALIDATION, EVAL GATES, SERVING CHECKS, AND ROLL
 ```
 
 Offline accuracy alone is not production readiness.
+
+## Overview
+
+Production ML reliability is software reliability plus data reliability plus model behavior reliability.
+
+**Core principle:** promote models only when data, features, evals, serving behavior, rollout, monitoring, and rollback are all controlled.
 
 ## When To Use
 

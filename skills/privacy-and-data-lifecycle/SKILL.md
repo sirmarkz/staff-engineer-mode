@@ -5,12 +5,6 @@ description: "Use to engineer privacy controls — data minimization, classifica
 
 # Privacy Engineering And Data Lifecycle
 
-## Overview
-
-Privacy controls fail when personal data is collected, copied, logged, retained, or derived without a lifecycle.
-
-**Core principle:** collect the least sensitive data that satisfies the purpose, propagate classification through every copy, and make retention, deletion, export, and audit behavior testable.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO PERSONAL DATA FLOW WITHOUT PURPOSE, CLASSIFICATION, MINIMIZATION, RETENTION, 
 ```
 
 If a team cannot find and delete or justify every copy, it does not control the data lifecycle.
+
+## Overview
+
+Privacy controls fail when personal data is collected, copied, logged, retained, or derived without a lifecycle.
+
+**Core principle:** collect the least sensitive data that satisfies the purpose, propagate classification through every copy, and make retention, deletion, export, and audit behavior testable.
 
 ## When To Use
 

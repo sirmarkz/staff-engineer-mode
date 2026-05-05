@@ -5,12 +5,6 @@ description: "Use to run an active incident, write a postmortem, or set status-u
 
 # Incident Response And Postmortems
 
-## Overview
-
-Produces incident roles and severity, a live timeline, a status-update cadence, a handoff packet for shift changes, and a blameless postmortem whose action items have owners, due dates, and observable verification signals. Refuses "human error" as a conclusion and refuses action items that read "be more careful".
-
-**Core principle:** coordinate clear roles, mitigate impact, preserve a timeline, communicate predictably, and convert learning into verified engineering improvements.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO INCIDENT WITHOUT ROLES, IMPACT, AND STATUS CADENCE; NO POSTMORTEM WITHOUT TIM
 ```
 
 The two halves are co-designed: live response is unsafe without named responders, declared impact, and a predictable next-update time; a postmortem that only names a root cause or a person has not explained the system. For a solo developer the responder roles collapse onto one person, but the role labels still have to be claimed explicitly so nothing falls between them.
+
+## Overview
+
+Produces incident roles and severity, a live timeline, a status-update cadence, a handoff packet for shift changes, and a blameless postmortem whose action items have owners, due dates, and observable verification signals. Refuses "human error" as a conclusion and refuses action items that read "be more careful".
+
+**Core principle:** coordinate clear roles, mitigate impact, preserve a timeline, communicate predictably, and convert learning into verified engineering improvements.
 
 ## When To Use
 

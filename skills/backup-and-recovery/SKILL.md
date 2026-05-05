@@ -5,12 +5,6 @@ description: "Use to set RTO/RPO, design backups, run a restore test, or prove a
 
 # Backup Restore And Disaster Recovery
 
-## Overview
-
-Backups do not matter until a restore works.
-
-**Core principle:** define recoverability by RTO/RPO and prove it with restore evidence under realistic failure scenarios, including destructive operators and corrupted data.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO RECOVERY CLAIM WITHOUT A TESTED RESTORE AND RTO/RPO EVIDENCE
 ```
 
 A successful backup job is not DR evidence. Replication is not a backup. Multi-region serving is not proof of data recovery.
+
+## Overview
+
+Backups do not matter until a restore works.
+
+**Core principle:** define recoverability by RTO/RPO and prove it with restore evidence under realistic failure scenarios, including destructive operators and corrupted data.
 
 ## When To Use
 

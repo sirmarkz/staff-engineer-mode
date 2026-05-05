@@ -5,12 +5,6 @@ description: "Use to design public-edge defense — rate limits, bot controls, o
 
 # Edge Traffic And Denial-Of-Service Defense
 
-## Overview
-
-Public traffic must be filtered and shaped before abusive load reaches expensive systems.
-
-**Core principle:** layer volumetric, protocol, application, identity, and origin protections with telemetry and reversible rules.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO PUBLIC EDGE EXPOSURE WITHOUT ORIGIN PROTECTION, RATE POLICY, TELEMETRY, AND R
 ```
 
 If attackers can bypass the edge and hit origin directly, edge defense is incomplete.
+
+## Overview
+
+Public traffic must be filtered and shaped before abusive load reaches expensive systems.
+
+**Core principle:** layer volumetric, protocol, application, identity, and origin protections with telemetry and reversible rules.
 
 ## When To Use
 

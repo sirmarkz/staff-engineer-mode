@@ -5,12 +5,6 @@ description: "Use to design telemetry, dashboards, alert rules, or runbooks tied
 
 # Observability And Alerting
 
-## Overview
-
-Produces telemetry requirements tied to user journeys, a dashboard specification that answers impact and recent change, and an alert policy where every page has user impact, urgency, actionability, and a runbook. Refuses host-health pages, unowned alerts, and dashboards built from whatever the platform happened to emit.
-
-**Core principle:** instrument user-visible symptoms first, then add enough causal context to debug without guessing.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ TELEMETRY STARTS FROM USER SYMPTOMS; A PAGE NEEDS USER IMPACT, URGENCY, ACTIONAB
 ```
 
 Telemetry that does not map to a user-visible symptom is decoration. An alert that lacks impact, urgency, actionability, or a runbook should not page by default. The two halves are co-designed: signals exist so that someone can act on them, and pages fire only on signals that prove user-felt impact.
+
+## Overview
+
+Produces telemetry requirements tied to user journeys, a dashboard specification that answers impact and recent change, and an alert policy where every page has user impact, urgency, actionability, and a runbook. Refuses host-health pages, unowned alerts, and dashboards built from whatever the platform happened to emit.
+
+**Core principle:** instrument user-visible symptoms first, then add enough causal context to debug without guessing.
 
 ## When To Use
 

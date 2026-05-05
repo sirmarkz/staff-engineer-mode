@@ -5,12 +5,6 @@ description: "Use to set the system-level rules for code review — who reviews 
 
 # Engineering Productivity And Code Review
 
-## Overview
-
-Produces a code review policy, a reviewer-routing plan tied to ownership, and a metrics plan where every velocity number is paired with a quality or reliability guardrail. Catches the moment when an oversized agent-generated diff lands on a random reviewer with no decomposition plan and no defect signal behind the speed metric.
-
-**Core principle:** optimize the review system for fast understanding, clear ownership, automated checks, and quality guardrails rather than raw activity counts.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO REVIEW POLICY WITHOUT OWNERS, CHANGE-SIZE LIMITS, AND METRICS PAIRED WITH QUA
 ```
 
 The policy must say who reviews what, cap how big a single diff can grow before it must be decomposed, and pair every productivity metric with a quality or reliability guardrail. A metric that improves when the system gets worse is not a safe productivity metric. For a solo developer "owners" collapses to "you" and the policy still has to declare it; the change-size cap and guardrail-paired metrics still apply because they exist to catch sloppy diffs and misleading speed numbers.
+
+## Overview
+
+Produces a code review policy, a reviewer-routing plan tied to ownership, and a metrics plan where every velocity number is paired with a quality or reliability guardrail. Catches the moment when an oversized agent-generated diff lands on a random reviewer with no decomposition plan and no defect signal behind the speed metric.
+
+**Core principle:** optimize the review system for fast understanding, clear ownership, automated checks, and quality guardrails rather than raw activity counts.
 
 ## When To Use
 

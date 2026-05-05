@@ -5,12 +5,6 @@ description: "Use to build a cross-surface evidence pack, scorecard, or exceptio
 
 # Engineering Control Evidence
 
-## Overview
-
-Engineering controls are useful when they are close to the work and produce evidence automatically.
-
-**Core principle:** map standards to the artifacts teams already create: PRs, tests, build attestations, deployment records, runbooks, incidents, access reviews, scans, and exceptions.
-
 ## Iron Law
 
 ```
@@ -20,6 +14,12 @@ NO CROSS-SURFACE CONTROL MAP WITHOUT OWNER, REPEATABLE EVIDENCE SOURCE, CADENCE,
 If a control cannot be inspected against an owned, repeatable artifact on a defined cadence, it is not an engineering control. Single-surface evidence stays with the surface owner.
 
 > This skill assumes a multi-team or enterprise context. The artifacts it produces (cross-surface control maps, scorecards, exception registers) exist to coordinate evidence across teams that own different surfaces. A solo developer or single-team product does not produce these — single-domain evidence stays with the owning specialist.
+
+## Overview
+
+Engineering controls are useful when they are close to the work and produce evidence automatically.
+
+**Core principle:** map standards to the artifacts teams already create: PRs, tests, build attestations, deployment records, runbooks, incidents, access reviews, scans, and exceptions.
 
 ## When To Use
 

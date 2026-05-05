@@ -5,12 +5,6 @@ description: "Use to plan a runtime, platform, or framework upgrade across many 
 
 # Fleet Upgrades And Version Skew Management
 
-## Overview
-
-Fleet upgrades are compatibility projects spread across runtimes, control planes, clients, services, and operators.
-
-**Core principle:** inventory support windows, define allowed skew, prove mixed-version compatibility, stage rollout, and keep rollback or roll-forward paths ready.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO FLEET UPGRADE WITHOUT INVENTORY, SUPPORT WINDOW, SKEW POLICY, COMPATIBILITY T
 ```
 
 If the team cannot see what versions exist and what combinations are supported, the upgrade plan is guessing.
+
+## Overview
+
+Fleet upgrades are compatibility projects spread across runtimes, control planes, clients, services, and operators.
+
+**Core principle:** inventory support windows, define allowed skew, prove mixed-version compatibility, stage rollout, and keep rollback or roll-forward paths ready.
 
 ## When To Use
 

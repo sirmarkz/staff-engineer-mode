@@ -5,12 +5,6 @@ description: "Use to plan dependency updates, dead-code removal, lockfile sweeps
 
 # Dependency Hygiene And Code Health
 
-## Overview
-
-Code health is maintained by routine, reversible, low-drama maintenance, not by occasional heroic cleanup.
-
-**Core principle:** keep dependencies, static findings, dead code, and refactors in small owned batches with rollback, verification, and non-regression rules.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO MAINTENANCE CHANGE WITHOUT SCOPE, REVERSIBILITY, AND NON-REGRESSION CHECKS
 ```
 
 If a cleanup cannot be reviewed, tested, rolled back, or bounded, it is not hygiene; it is uncontrolled refactoring.
+
+## Overview
+
+Code health is maintained by routine, reversible, low-drama maintenance, not by occasional heroic cleanup.
+
+**Core principle:** keep dependencies, static findings, dead code, and refactors in small owned batches with rollback, verification, and non-regression rules.
 
 ## When To Use
 

@@ -5,12 +5,6 @@ description: "Use to cut page volume, eliminate toil, fix runbook gaps, or conve
 
 # Oncall Health And Toil Reduction
 
-## Overview
-
-Repeated pages and manual operations are engineering defects.
-
-**Core principle:** keep pages urgent and actionable, convert repeated manual work into durable fixes, and protect responders from avoidable operational load.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO RECURRING PAGE OR MANUAL RUNBOOK STEP WITHOUT AN OWNER AND ELIMINATION PLAN
 ```
 
 If the same alert or manual operation keeps recurring, the system is asking for engineering work.
+
+## Overview
+
+Repeated pages and manual operations are engineering defects.
+
+**Core principle:** keep pages urgent and actionable, convert repeated manual work into durable fixes, and protect responders from avoidable operational load.
 
 ## When To Use
 

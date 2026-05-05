@@ -5,12 +5,6 @@ description: "Use to design human or workload access — identities, scopes, cre
 
 # Zero Trust Identity And Secrets
 
-## Overview
-
-Identity is the control plane for human and workload power.
-
-**Core principle:** authenticate explicitly, authorize least privilege, prefer short-lived credentials, isolate secrets, and audit high-risk actions.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO ACCESS PATH WITHOUT IDENTITY, AUTHORIZATION, CREDENTIAL LIFETIME, AUDIT, AND 
 ```
 
 If credentials cannot be scoped, rotated, audited, or revoked, they should not protect production access.
+
+## Overview
+
+Identity is the control plane for human and workload power.
+
+**Core principle:** authenticate explicitly, authorize least privilege, prefer short-lived credentials, isolate secrets, and audit high-risk actions.
 
 ## When To Use
 

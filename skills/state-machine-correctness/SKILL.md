@@ -5,12 +5,6 @@ description: "Use to validate a high-stakes state machine, protocol, or concurre
 
 # Systems Correctness And Formal Validation
 
-## Overview
-
-Some bugs are too subtle for example-based tests and too expensive to discover in production.
-
-**Core principle:** express critical correctness properties as invariants, then validate them with the strongest practical combination of model checking, property tests, simulation, fuzzing, runtime checks, and review.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ NO HIGH-STAKES STATE MACHINE WITHOUT EXPLICIT INVARIANTS AND COUNTEREXAMPLE-DRIV
 ```
 
 If the team cannot state what must never happen, it cannot prove that the design avoids it.
+
+## Overview
+
+Some bugs are too subtle for example-based tests and too expensive to discover in production.
+
+**Core principle:** express critical correctness properties as invariants, then validate them with the strongest practical combination of model checking, property tests, simulation, fuzzing, runtime checks, and review.
 
 ## When To Use
 

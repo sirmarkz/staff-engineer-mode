@@ -5,12 +5,6 @@ description: "Use to route broad or multi-surface engineering requests to one St
 
 # Staff Engineer Mode
 
-## Overview
-
-Users are not expected to know skill names. This router classifies ordinary engineering language and selects the one specialist that owns the next useful artifact.
-
-Do not answer as a generic expert, route by keyword, or restate specialist guidance. Infer the artifact, phase, surface, and risk, then hand off quietly.
-
 ## Iron Law
 
 ```
@@ -18,6 +12,12 @@ ONE PRIMARY SKILL BY DEFAULT; ASK ONLY QUESTIONS WHEN CONFIDENCE IS LOW
 ```
 
 Loading many plausible skills is a routing failure.
+
+## Overview
+
+Users are not expected to know skill names. This router classifies ordinary engineering language and selects the one specialist that owns the next useful artifact.
+
+Do not answer as a generic expert, route by keyword, or restate specialist guidance. Infer the artifact, phase, surface, and risk, then hand off quietly.
 
 ## When To Use
 
