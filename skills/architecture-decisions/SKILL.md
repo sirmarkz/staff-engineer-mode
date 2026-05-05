@@ -42,6 +42,18 @@ If the design lacks goals, constraints, alternatives considered, and an honest r
 - Reliability, security, privacy, deploy, data consistency, migration, and operational risks.
 - Existing incidents, SLOs, costs, scale limits, compliance constraints, and roadmap pressures.
 
+## When Inputs Are Referenced But Not Visible
+
+If the user references an artifact (sketch, RFC, diff, diagram) that is not in
+the workspace or thread, do not stop at "please paste it." Produce a
+strawman ADR draft from the prompt's named subject (e.g., "split search
+service") with: (a) a Forces table listing ≥2 likely forces with rationale,
+(b) an Alternatives table with ≥2 named options and rejection reasons,
+(c) an explicit Decision line plus a Consequences table split into Positive /
+Negative columns, (d) a Reversibility row with cost-to-undo and the trigger
+that would force reconsideration, and (e) an Owner column. Mark every
+inferred field as ASSUMED so the user can correct it.
+
 ## Workflow
 
 1. **Frame the decision.** Write the decision as one clear question and list goals, non-goals, and constraints before evaluating solutions.
@@ -51,7 +63,7 @@ If the design lacks goals, constraints, alternatives considered, and an honest r
 5. **Compare alternatives.** Evaluate at least two real options plus the current state. Include consequences, rejected alternatives, and what would make the decision wrong later.
 6. **Specify fitness functions.** Write the architectural invariants the system must hold as testable checks. Each fitness function names: the property under test, the metric, the threshold or rule, the measurement source, the evaluation cadence, the failure response, and the owner. Cover at minimum the dependency-direction rules, the public-contract compatibility rules, the latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant the design relies on.
 7. **Review cross-cutting risks.** Cover reliability, overload, data correctness, security, observability, deployment safety, recovery, cost, and maintainability.
-8. **Record the decision.** Create an ADR or design-review summary with status, context, decision, consequences, owners, evidence, fitness-function references, and follow-up routes.
+8. **Record the decision.** Create an ADR or design-review summary with status, context (≥2 forces with rationale), decision, consequences (split positive and negative), owners, reversibility (cost + reconsideration trigger), evidence, fitness-function references, and follow-up routes.
 9. **Route specialist gaps.** Send SLOs, HA, dependency resilience, secure design, rollout, or data consistency to the narrow skill when the design exposes that surface.
 
 ## Synthesized Default
