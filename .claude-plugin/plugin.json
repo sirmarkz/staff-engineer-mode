@@ -3,7 +3,7 @@
   "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer and produces the artifact a careful staff engineer would insist on — rollback plan, missing-owner flag, backwards-compatibility note, blast-radius summary.",
   "version": "0.4.0",
   "author": {
-    "name": "Mark Z."
+    "name": "sirmarkz"
   },
   "homepage": "https://github.com/tnilabs/staff-engineer-mode",
   "repository": "https://github.com/tnilabs/staff-engineer-mode",

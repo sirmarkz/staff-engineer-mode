@@ -6,7 +6,7 @@ Staff Engineer Mode is maintained by named humans. Senior engineers do not adopt
 
 ## Active Maintainers
 
-### Mark Z.
+### sirmarkz
 
 - **GitHub:** [@sirmarkz](https://github.com/sirmarkz)
 
