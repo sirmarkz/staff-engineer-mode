@@ -75,18 +75,19 @@ Use a risk-based test strategy with fast deterministic pre-merge gates, focused 
 - State required evidence such as defect history, critical journeys, CI runtime, flake rate, coverage gaps, static findings, and release failure data; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside verification and quality gates. Route production rollout gates, reviewer workflow, or chaos testing only when they are the central unresolved risk.
-- Be concise: avoid generic test-pyramid exposition and prefer compact risk-to-gate matrices.
+- Be concise and prefer compact risk-to-gate matrices, but always state: a flake-rate metric paired with a quarantine timer, a coverage metric+target paired with a meaningful-vs-vanity caveat, a CI runtime target paired with how it is measured, and per-layer test ratios with rationale when test composition is in scope.
 
 ## Required Outputs
 
 - Test strategy by risk area and lifecycle stage.
 - Gate matrix: pre-merge, pre-release, launch, and advisory checks.
-- Runtime budget for blocking lanes and action when the budget is exceeded.
+- Runtime budget for blocking lanes with a measurement source (p95 from CI history, not aspirational), and the action when the budget is exceeded.
+- Test composition by layer (unit/integration/e2e ratios or counts) with rationale when redesigning a suite.
 - Failure response for each blocking gate.
 - Static analysis, security scanning, and dependency check policy.
-- Coverage or mutation policy where it adds useful signal.
+- Coverage or mutation policy where it adds useful signal — name the metric, the target, and the meaningful-vs-vanity caveat (changed-code coverage, critical-path coverage).
 - Test data sourcing and privacy/sensitivity policy.
-- Flake management and quarantine policy.
+- Flake management and quarantine policy — state the flake-rate threshold (e.g. >1% rerun rate) and the quarantine timer (e.g. 24-48h to quarantine or downgrade with expiry).
 - Legacy ratchet plan with owner and cadence.
 
 ## Evidence Gates

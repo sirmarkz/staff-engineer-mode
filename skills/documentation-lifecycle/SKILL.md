@@ -74,8 +74,10 @@ Use a lightweight documentation lifecycle: classify by user job, assign owner, d
 
 ## Required Outputs
 
-- Documentation inventory by audience, job, and quadrant (tutorial, how-to, reference, explanation), with runbooks and decision records tagged separately.
-- Owner, source-of-truth, freshness, and archive map.
+- Documentation inventory **table with explicit columns**: `Doc | Diátaxis quadrant (tutorial / how-to / reference / explanation) | Owner | Source of truth | Last reviewed | Review cadence | Staleness signal`. Runbooks and decision records tagged separately as operational/architectural.
+- Source-of-truth map that **states the no-duplication rule explicitly** (e.g., "one canonical location per system; duplicates are marked non-authoritative or deleted").
+- Freshness policy naming **both review cadence AND staleness signal** (e.g., "review every 90 days; mark `stale` if last-verified > cadence or if linked alert/code changed without doc update").
+- Docs-as-code workflow: **PR-based review for doc changes AND automated checks** (link-checker, markdown lint, CI build) running on every doc PR.
 - Required docs for launch, operations, migration, or maintenance.
 - Update triggers tied to code, operations, and release events.
 - Stale-doc cleanup plan.
@@ -85,7 +87,10 @@ Use a lightweight documentation lifecycle: classify by user job, assign owner, d
 
 - `audience_job`: each critical doc names its reader and supported task.
 - `owner_source`: owner and source of truth are explicit.
-- `quadrant_classification`: every doc asset is classified into exactly one of tutorial, how-to, reference, or explanation; runbooks and decision records are tagged separately as operational or architectural artifacts. A doc that mixes two or more quadrants is rejected and split or rewritten until each piece sits in one quadrant.
+- `quadrant_classification`: every doc in the inventory **table carries a visible quadrant label** (tutorial / how-to / reference / explanation); runbooks and decision records tagged separately as operational/architectural. Mixed-quadrant docs are split.
+- `no_duplication_rule`: source-of-truth section states an explicit rule against duplication, not just "remove duplicates."
+- `staleness_signal`: freshness policy names both a cadence and the signal that flips a doc to stale.
+- `docs_as_code`: doc changes flow through PR review AND automated checks (lint, link-check, or CI).
 - `freshness_rule`: review trigger, lifecycle state, and archive rule exist.
 - `delivery_link`: docs required for operation or launch are tied to delivery gates.
 - `usability_check`: someone can find and use the doc without tribal knowledge.

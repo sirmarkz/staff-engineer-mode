@@ -31,7 +31,7 @@ If a cleanup cannot be reviewed, tested, rolled back, or bounded, it is not hygi
 - The main topic is build provenance, artifact signing, dependency inventory, builder isolation, or deployment admission; defer to `software-supply-chain-security`.
 - The issue is an actively exploitable deployed vulnerability with SLA; defer to `vulnerability-management`.
 - The refactor changes architecture boundaries; defer to `architecture-decisions`.
-- The question is CI gate design; defer to `testing-and-quality-gates`.
+- The question is broad CI gate strategy (test selection, coverage, mutation); defer to `testing-and-quality-gates`. Dependency-vulnerability scanning at PR/release time with a severity-blocking threshold remains in scope here.
 
 ## Inputs To Collect
 
@@ -77,6 +77,7 @@ Use continuous small-batch maintenance with pinned inputs, dependency inventory,
 ## Required Outputs
 
 - Dependency update policy and cadence.
+- Dependency-vulnerability scan integrated into PR/release CI, with the severity threshold that blocks merge or promotion.
 - Lockfile or pinned-input review policy.
 - Deprecated package and migration plan.
 - Static-analysis backlog ratchet and suppression policy.

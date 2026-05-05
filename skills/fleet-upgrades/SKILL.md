@@ -72,14 +72,16 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside fleet upgrade and version-skew management. Route dependency hygiene, API compatibility, or deprecation work only when that surface dominates.
 - Be concise: prefer upgrade matrices and batch plans over broad migration prose.
+- Emit upgrade order as a discrete labeled tier list before the time-phased rollout, not buried inside a weekly schedule.
 
 ## Required Outputs
 
 - Fleet inventory with owner, version, criticality, and support status.
 - Version-skew and compatibility matrix.
-- Upgrade order and rollout batches.
+- Upgrade order as an explicit tier list (e.g., control plane → data plane / nodes → clients/operators), with one-line rationale per tier and the allowed skew range between tiers stated as a numeric window with breakage criteria.
+- Rollout batches (waves) with progression criteria per wave.
 - Mixed-version test plan and evidence requirements.
-- Rollback or roll-forward plan.
+- Rollback or roll-forward plan stating both the procedure and the state-compatibility note (which prior state is restorable, which is not).
 - Exception register with owner, expiry, and compensating control.
 - Operations update checklist.
 - Old-version retirement gate.

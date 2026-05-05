@@ -70,14 +70,14 @@ Use layered edge protection: origin isolation, traffic steering, caching where c
 - Cover origin isolation, route cost, identity-aware limits, bot/abuse controls, false-positive review, edge telemetry, staged enforcement, rollback, and expiry before optional edge breadth.
 - Make recommendations actionable with owners, rule scopes, thresholds, dry-run/enforce stages, rollback commands, review windows, and emergency authority where relevant.
 - State required evidence such as DNS/origin exposure, route inventory, request rates, tenant/user identity, rule logs, false-positive samples, origin saturation, and mitigation history; do not claim unseen evidence.
-- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
+- Stay vendor/product-agnostic, but DO name the standard edge primitives by category: rate-limit breach action (e.g., 429, deny, challenge), bot-detection mechanism (challenge, fingerprint, behavioral, IP reputation) with false-positive handling, origin-shielding mechanism (edge-IP allowlist, signed origin headers, private connectivity, mTLS) with a verification step, and load-shedding criteria with priority preservation (e.g., shed unauthenticated/low-priority before authenticated critical).
 - Stay inside edge traffic and DDoS defense. Route broader capacity or abuse-product policy only when they materially block defense decisions.
 - Be concise: avoid generic DDoS background and prefer compact edge maps, rule tables, and runbooks.
 
 ## Required Outputs
 
 - Edge architecture and origin-protection map.
-- Denial-of-service, abuse, and rate-limit policy.
+- Denial-of-service, abuse, and rate-limit policy — each rate limit names its breach action (429/deny/challenge); each bot control names its mechanism AND false-positive handling; origin-shielding lists a mechanism AND a verification step; load-shedding states criteria AND which traffic is preserved by priority.
 - Origin bypass remediation plan.
 - False-positive review and rollout plan.
 - Edge telemetry and alert requirements.

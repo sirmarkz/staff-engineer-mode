@@ -51,7 +51,9 @@ If the same alert or manual operation keeps recurring, the system is asking for 
 5. **Eliminate toil.** Automate, self-heal, remove, or redesign repeated manual operations; do not just document them better.
 6. **Create an engineering backlog.** Give every recurring class an owner, priority, expected page reduction, and verification metric.
 7. **Protect the signal.** Use SLO burn, grouping, dedupe, maintenance windows, and ticket routing to prevent alert erosion.
-8. **Review regularly.** Feed incident/postmortem findings back into alert policy, platform work, and reliability standards.
+8. **Set a page-rate budget.** State a numeric per-shift / per-week page target (e.g., "≤2 pages/shift") AND how it will be measured (rolling 7d, after-hours weighted). Compare against current rate.
+9. **Audit runbook freshness.** For every paging alert, record runbook last-reviewed date and require review cadence (e.g., 90d) alongside coverage.
+10. **Review regularly.** Feed incident/postmortem findings back into alert policy, platform work, and reliability standards.
 
 ## Synthesized Default
 
@@ -83,6 +85,8 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 - Automation or redesign backlog with expected page/manual-effort reduction.
 - Ownership and escalation fixes.
 - Measurement plan for page volume, after-hours interruptions, and toil hours.
+- Numeric page-rate / interruption budget per shift with the measurement window and source.
+- Runbook coverage AND freshness check (last-reviewed date, review cadence) for each paging alert.
 
 ## Evidence Gates
 
@@ -91,6 +95,8 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 - `runbook_check`: remaining pages link to executable runbooks with mitigation and verification.
 - `noise_reduction`: proposed changes state expected page or toil reduction and how it will be measured.
 - `scope_check`: staffing, compensation, and HR issues are reframed or marked out of scope.
+- `page_rate_budget`: a numeric per-shift or per-week page target is stated with measurement window.
+- `runbook_freshness`: each paging alert has a last-reviewed date and a freshness cadence.
 
 ## Red Flags - Stop And Rework
 

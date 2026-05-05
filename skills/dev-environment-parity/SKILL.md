@@ -80,6 +80,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 ## Response Quality Bar
 
 - Lead with the parity matrix, drift budget, drift-detection plan, allowed-divergence taxonomy, or environment-failure reproduction requested.
+- When diagnosing a "passes here, fails there" failure, name the anti-pattern in plain language ("the local pass is a mocked happy-path result", "the fix is environment-only and does not count as shipped") AND name the enforcement that would have caught it (CI route-coverage check, readiness gate, lint, review checklist). Do not let the structured matrix replace the verdict.
 - Cover dependencies, configuration, data shape, time and clock, network policy, and secret handling before optional environment breadth.
 - Make recommendations actionable with per-dimension parity status, drift budget, detection cadence, action trigger, and environment owner.
 - State required evidence such as dependency-lock comparisons, configuration snapshots, schema versions, clock settings, network reachability checks, and the drift signals that fired or did not fire; do not claim parity without the comparison.
