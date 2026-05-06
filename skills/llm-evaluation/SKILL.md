@@ -1,6 +1,6 @@
 ---
 name: llm-evaluation
-description: "Use to build an eval harness for a model-backed change — datasets, graders, thresholds, slice coverage, regression history — before merging a prompt edit, model swap, or tool-policy change."
+description: "Use when asked to build an eval harness for a model-backed change — datasets, graders, thresholds, slice coverage, regression history — before merging a prompt edit, model swap, or tool-policy change."
 ---
 
 # LLM Evaluation Harness Engineering
@@ -11,7 +11,7 @@ description: "Use to build an eval harness for a model-backed change — dataset
 NO MODEL-BACKED CHANGE WITHOUT EVAL CASES, SCORING RULES, THRESHOLDS, REGRESSION HISTORY, AND FAILURE TRIAGE
 ```
 
-If the team cannot say what got better, what got worse, and which failures block release, the eval is not a gate.
+If you cannot say what got better, what got worse, and which failures block release, the eval is not a gate.
 
 ## Overview
 
@@ -24,13 +24,13 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 - The user asks about LLM evals, prompt tests, agent evals, graders, regression sets, acceptance thresholds, or model-backed workflow quality gates.
 - A prompt, model, retrieval source, tool policy, or agent workflow changes and needs release evidence.
 - Existing evals are flaky, too small, too easy, judge-biased, or disconnected from production failures.
-- The team needs repeatable evidence for quality, safety, refusal, formatting, task completion, or user-impact slices.
+- You need repeatable evidence for quality, safety, refusal, formatting, task completion, or user-impact slices.
 
 ## When Not To Use
 
-- The main risk is prompt injection, tool misuse, data leakage, or unsafe actions; defer to `llm-application-security`.
-- The main work is classical ML drift, training-serving skew, or model-serving readiness; defer to `ml-reliability-and-evaluation`.
-- The request is broad AI coding-agent governance; defer to `ai-coding-governance`.
+- The main risk is prompt injection, tool misuse, data leakage, or unsafe actions; use `llm-application-security` instead.
+- The main work is classical ML drift, training-serving skew, or model-serving readiness; use `ml-reliability-and-evaluation` instead.
+- The request is broad AI coding-agent governance; use `ai-coding-governance` instead.
 - The request is product strategy for which model to choose with no engineering gate.
 
 ## Inputs To Collect
@@ -40,7 +40,7 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 - Scoring method, graders, rubrics, deterministic checks, human review, and tie-break rules.
 - Thresholds, confidence needs, flake rate, baseline result, and comparison target.
 - Versioned prompts, models, retrieval inputs, tools, datasets, and harness code.
-- Failure triage workflow, owner, severity, waiver rules, and re-run policy.
+- Failure triage workflow, severity, waiver rules, and re-run policy.
 
 ## Workflow
 
@@ -67,7 +67,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 
 - Lead with the eval harness design, release gate, failure triage, or threshold decision requested.
 - Cover decision, cases, slices, scoring, thresholds, versioning, regression history, and failure handling before optional model discussion.
-- Make recommendations actionable with dataset changes, grader rules, pass/fail criteria, owners, and rerun policy where relevant.
+- Make recommendations actionable with dataset changes, grader rules, pass/fail criteria, and rerun policy where relevant.
 - State required evidence such as eval cases, baseline runs, grader rubric, flake rate, slice results, versioned inputs, and failure log; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside model-backed evaluation gates. Route security, ML serving, or AI coding governance only when those risks dominate.
@@ -80,7 +80,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 - Scoring and grader rubric.
 - Thresholds for pass, warn, block, and rollback.
 - Versioned-input record.
-- Failure triage table with owner and disposition.
+- Failure triage table with disposition and next action.
 - Regression history and case-promotion policy.
 
 ## Evidence Gates
@@ -96,7 +96,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 - A single aggregate score hides critical slice regressions.
 - The grader rubric changes between baseline and candidate.
 - Eval cases are generated from the same prompt being tested with no review.
-- Failures are waived without owner, reason, and expiry.
+- Failures are waived without reason, and expiry.
 - Production incidents do not become regression cases.
 
 ## Common Mistakes

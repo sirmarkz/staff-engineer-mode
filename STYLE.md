@@ -31,14 +31,14 @@ If you cannot point at the artifact the skill produces, the prose is wrong.
 
 ### 4. Iron Laws are the brand voice
 
-Every SKILL.md has one ALL-CAPS line that names the load-bearing rule. This is the strongest single voice device in the pack. Keep using it. Resist softening it for marketing copy.
+Every SKILL.md has one ALL-CAPS line that names the central rule. This is the strongest single voice device in the pack. Keep using it. Resist softening it for marketing copy.
 
 - **Do:** `NO LAUNCH READINESS CLAIM WITHOUT EVIDENCE OR A DATED EXCEPTION`
 - **Don't:** "Launches should generally have evidence."
 
 ### 5. Refuse FAANG name-dropping in the opening
 
-Citation discipline is a brand pillar. Naming Google/Amazon/Meta in a hero or a SKILL.md opening transfers credibility to *them*, not us, and reads as authority cosplay. Cite specific sources where they are load-bearing — RFC numbers, NIST SP IDs, SRE Workbook chapters — not company logos.
+Citation discipline is a brand pillar. Naming Google/Amazon/Meta in a hero or a SKILL.md opening transfers credibility to *them*, not us, and reads as authority cosplay. Cite specific sources where they materially support the claim — RFC numbers, NIST SP IDs, SRE Workbook chapters — not company logos.
 
 - **Don't:** "Drawn from public engineering practice at Google, Amazon, Meta..."
 - **Do:** "Cites NIST SP 800-218 in software supply chain. Cites the SRE Workbook on error budgets. See sources."

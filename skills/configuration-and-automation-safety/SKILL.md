@@ -1,6 +1,6 @@
 ---
 name: configuration-and-automation-safety
-description: "Use before running a config change, bulk script, or automation that touches production state — to add validation, preview, blast-radius limits, and a recovery path."
+description: "Use when asked to run a config change, bulk script, or automation that touches production state — to add validation, preview, blast-radius limits, and a recovery path."
 ---
 
 # Configuration And Automation Safety
@@ -8,7 +8,7 @@ description: "Use before running a config change, bulk script, or automation tha
 ## Iron Law
 
 ```
-NO CONFIG OR AUTOMATION CHANGE WITHOUT VALIDATION, PREVIEW, BLAST RADIUS, OWNER, AND RECOVERY PATH
+NO CONFIG OR AUTOMATION CHANGE WITHOUT VALIDATION, PREVIEW, BLAST RADIUS, CONFIRMATION, AND RECOVERY PATH
 ```
 
 If the change cannot be checked before execution and reversed or contained after failure, it is not safe enough.
@@ -17,68 +17,71 @@ If the change cannot be checked before execution and reversed or contained after
 
 Configuration and automation can change production faster than code review can notice.
 
-**Core principle:** treat config, generated changes, and operational automation as production code with explicit schema, preview, owner, and recovery evidence.
+**Core principle:** treat config, generated changes, and operational automation as production code with explicit schema, preview, user confirmation, and recovery evidence.
 
 ## When To Use
 
 - The user asks about configuration safety, generated changes, operational scripts, bulk automation, feature settings, policy defaults, or config validation.
 - A non-code change can alter routing, permissions, capacity, customer experience, data handling, or operational behavior.
 - Automation creates, updates, deletes, migrates, or remediates production state.
+- A pre-launch or unlaunched production environment can affect real users, data, credentials, capacity, or recovery expectations.
 - Configuration drift, copy-paste settings, or unreviewed overrides are causing incidents.
 
 ## When Not To Use
 
-- The main question is production rollout sequencing; defer to `progressive-delivery`.
-- The main question is declarative infrastructure, admission, or drift reconciliation; defer to `infrastructure-and-policy-as-code`.
-- The main question is dependency cleanup or package updates; defer to `dependency-and-code-hygiene`.
+- The main question is production rollout sequencing; use `progressive-delivery` instead.
+- The main question is declarative infrastructure, admission, or drift reconciliation; use `infrastructure-and-policy-as-code` instead.
+- The main question is dependency cleanup or package updates; use `dependency-and-code-hygiene` instead.
 - The request is one-off local scripting with no production or shared-state risk.
 
 ## Inputs To Collect
 
-- Config or automation surface, owner, consumers, environments, and affected production state.
+- Config or automation surface, consumers, environments, affected production state, and local change path.
 - Schema, allowed values, defaults, invariants, dependency ordering, and unsafe combinations.
-- Change path, review path, preview or dry-run output, execution identity, and audit record.
+- Change path, review path, user confirmation, preview or dry-run output, execution identity, and audit record.
 - Blast radius, rollback or disable path, rate limit, lock, retry, and idempotency behavior.
-- Change class and approval path: low-risk, standard production, or emergency; who can approve each class and what evidence they need.
+- Change class and confirmation path: low-risk, standard production, or emergency; evidence required before the user proceeds.
 - Prior incidents, drift reports, manual overrides, and exception process.
 
 ## Workflow
 
-1. **Classify the surface and change class.** Separate static config, dynamic config, generated changes, scheduled automation, and emergency automation; name the change class as low-risk, standard production, or emergency, with a distinct approval path for each class.
-2. **Define the contract.** Specify schema, defaults, bounds, invariants, ownership, and incompatible combinations.
-3. **Validate before execution.** Require parse, semantic, dependency, permission, and environment checks before production use.
-4. **Preview the effect.** Show intended creates, updates, deletes, traffic impact, permission changes, and affected owners before apply.
-5. **Bound execution.** Use batches, locks, rate limits, stop criteria, and idempotency for automation that touches shared state.
-6. **Make recovery concrete.** Define rollback, disable, restore, or roll-forward behavior for config, generated changes, and automation side effects.
-7. **Control drift.** Detect unmanaged overrides and stale settings; decide reconcile, exception, or removal.
-8. **Close with evidence.** Record owner, review, validation output, preview, execution result, and cleanup for temporary settings.
+1. **Classify the surface and change class.** Separate static config, dynamic config, generated changes, scheduled automation, and emergency automation; name the change class as low-risk, standard production, or emergency, with a distinct confirmation path for each class.
+2. **Define the contract.** Specify schema, defaults, bounds, invariants, local change path, and incompatible combinations.
+3. **Record production changes.** For production-impacting changes, including pre-launch production, capture user confirmation, confirmation basis, expected blast radius, and recovery path before execution.
+4. **Validate before execution.** Require parse, semantic, dependency, permission, and environment checks before production use.
+5. **Preview the effect.** Show intended creates, updates, deletes, traffic impact, permission changes, and affected systems before apply.
+6. **Bound execution.** Use batches, locks, rate limits, stop criteria, and idempotency for automation that touches shared state.
+7. **Make recovery concrete.** Define rollback, disable, restore, or roll-forward behavior for config, generated changes, and automation side effects.
+8. **Control drift.** Detect unmanaged overrides and stale settings; decide reconcile, exception, or removal.
+9. **Close with evidence.** Record user confirmation, validation output, preview, execution result, and cleanup for temporary settings.
 
 ## Synthesized Default
 
-Use typed config contracts, deterministic validation, effect preview, small execution batches, explicit owner approval, audit records, drift checks, and tested recovery paths. Automation should be idempotent by default and should fail closed when it cannot prove the intended target.
+Use typed config contracts, deterministic validation, effect preview, small execution batches, explicit user confirmation for production-impacting work, audit records, drift checks, and tested recovery paths. Automation should be idempotent by default and should fail closed when it cannot prove the intended target.
 
 ## Exceptions
 
-- Emergency automation may run with reduced review when delay is riskier, but it still needs owner, audit, stop criteria, and post-change reconciliation.
+- Emergency automation may run with reduced pre-change evidence when delay is riskier, but it still needs user confirmation, audit, stop criteria, and post-change reconciliation.
 - Low-risk local config can use lighter checks if it cannot affect shared systems, sensitive data, or production users.
 - Some generated changes are easier to roll forward than roll back; document the recovery decision before execution.
 
 ## Response Quality Bar
 
 - Lead with the safety decision, config contract, automation risk, or gate matrix requested.
-- Name the change class and approval path: low-risk changes need the accountable owner, standard production changes need owner plus reviewer or operator approval, and emergency changes need incident owner approval plus post-change reconciliation.
-- Cover validation, preview, blast radius, owner, execution controls, drift handling, and recovery before optional automation detail.
-- Make recommendations actionable with owners, validation checks, stop criteria, batch size, audit evidence, and cleanup where relevant.
-- State required evidence such as schema, preview output, owner approval, execution logs, drift reports, and rollback proof; do not claim unseen evidence.
+- Name the change class and confirmation path: low-risk changes need local validation evidence, standard production changes need explicit user confirmation plus preview evidence, and emergency changes need user confirmation plus post-change reconciliation.
+- Cover validation, preview, blast radius, execution controls, drift handling, and recovery before optional automation detail.
+- Make recommendations actionable with validation checks, stop criteria, batch size, audit evidence, and cleanup where relevant.
+- State required evidence such as schema, preview output, user confirmation, execution logs, drift reports, and rollback proof; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside config and automation safety. Route rollout, infrastructure policy, or dependency hygiene only when that surface owns the immediate risk.
+- Stay inside config and automation safety. Use rollout, infrastructure policy, or dependency hygiene skills only when that surface is the immediate risk.
 - Be concise: prefer compact contract and gate tables over generic automation advice.
 
 ## Required Outputs
 
 - Configuration or automation safety review.
-- Change class and approval path: low-risk, standard production, or emergency, with who approves and why.
-- Contract: owner, schema, defaults, invariants, unsafe combinations, and allowed overrides.
+- Change class and confirmation path: low-risk, standard production, or emergency, with required evidence and decision rationale.
+- Production change record with user confirmation, expected effect, blast radius, and recovery evidence where the change can affect production state.
+- Contract: schema, defaults, invariants, unsafe combinations, allowed overrides, and local change path.
 - Validation and preview gate list.
 - Blast-radius and execution-control plan.
 - Recovery plan for rollback, disable, restore, or roll-forward.
@@ -87,132 +90,22 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 
 ## Evidence Gates
 
-- `change_class_approved`: low-risk, standard production, or emergency class is named with the required approver for that class.
-- `contract_defined`: owner, schema, defaults, bounds, and invariants are explicit.
+- `change_class_confirmed`: low-risk, standard production, or emergency class is named with the required evidence for that class.
+- `change_record`: production-impacting config or automation has traceable preview, user confirmation, execution identity, and recovery evidence.
+- `contract_defined`: schema, defaults, bounds, invariants, and local change path are explicit.
 - `preview_checked`: intended production effect is visible before execution.
-- `blast_radius`: affected users, systems, data, and owners are bounded.
+- `blast_radius`: affected users, systems, and data are bounded.
 - `recovery_path`: rollback, disable, restore, or roll-forward path is defined.
 - `audit_record`: review, validation, execution result, and exception state are traceable.
 
 ## Red Flags - Stop And Rework
 
 - Configuration bypasses review because it is "not code."
+- Unlaunched production is treated as non-production even though it can affect users, data, credentials, or recovery.
 - Automation can delete or mutate shared state without preview.
 - Defaults differ by environment without a documented reason.
 - Recovery depends on remembering the previous value manually.
-- Temporary overrides have no owner or expiry.
-
-## Common Mistakes
-
-| Mistake | Correction |
-| --- | --- |
-| Valid syntax as safety | Add semantic, dependency, and blast-radius checks. |
-| One giant automation run | Use batches, locks, stop criteria, and idempotency. |
-| Silent config drift | Detect, reconcile, or exception-gate unmanaged changes. |
-| Rollback by memory | Record prior state and prove recovery. |
----
-name: configuration-and-automation-safety
-description: "Use before running a config change, bulk script, or automation that touches production state — to add validation, preview, blast-radius limits, and a recovery path."
----
-
-# Configuration And Automation Safety
-
-## Overview
-
-Configuration and automation can change production faster than code review can notice.
-
-**Core principle:** treat config, generated changes, and operational automation as production code with explicit schema, preview, owner, and recovery evidence.
-
-## Iron Law
-
-```
-NO CONFIG OR AUTOMATION CHANGE WITHOUT VALIDATION, PREVIEW, BLAST RADIUS, OWNER, AND RECOVERY PATH
-```
-
-If the change cannot be checked before execution and reversed or contained after failure, it is not safe enough.
-
-## When To Use
-
-- The user asks about configuration safety, generated changes, operational scripts, bulk automation, feature settings, policy defaults, or config validation.
-- A non-code change can alter routing, permissions, capacity, customer experience, data handling, or operational behavior.
-- Automation creates, updates, deletes, migrates, or remediates production state.
-- Configuration drift, copy-paste settings, or unreviewed overrides are causing incidents.
-
-## When Not To Use
-
-- The main question is production rollout sequencing; defer to `progressive-delivery`.
-- The main question is declarative infrastructure, admission, or drift reconciliation; defer to `infrastructure-and-policy-as-code`.
-- The main question is dependency cleanup or package updates; defer to `dependency-and-code-hygiene`.
-- The request is one-off local scripting with no production or shared-state risk.
-
-## Inputs To Collect
-
-- Config or automation surface, owner, consumers, environments, and affected production state.
-- Schema, allowed values, defaults, invariants, dependency ordering, and unsafe combinations.
-- Change path, review path, preview or dry-run output, execution identity, and audit record.
-- Blast radius, rollback or disable path, rate limit, lock, retry, and idempotency behavior.
-- Change class and approval path: low-risk, standard production, or emergency; who can approve each class and what evidence they need.
-- Prior incidents, drift reports, manual overrides, and exception process.
-
-## Workflow
-
-1. **Classify the surface and change class.** Separate static config, dynamic config, generated changes, scheduled automation, and emergency automation; name the change class as low-risk, standard production, or emergency, with a distinct approval path for each class.
-2. **Define the contract.** Specify schema, defaults, bounds, invariants, ownership, and incompatible combinations.
-3. **Validate before execution.** Require parse, semantic, dependency, permission, and environment checks before production use.
-4. **Preview the effect.** Show intended creates, updates, deletes, traffic impact, permission changes, and affected owners before apply.
-5. **Bound execution.** Use batches, locks, rate limits, stop criteria, and idempotency for automation that touches shared state.
-6. **Make recovery concrete.** Define rollback, disable, restore, or roll-forward behavior for config, generated changes, and automation side effects.
-7. **Control drift.** Detect unmanaged overrides and stale settings; decide reconcile, exception, or removal.
-8. **Close with evidence.** Record owner, review, validation output, preview, execution result, and cleanup for temporary settings.
-
-## Synthesized Default
-
-Use typed config contracts, deterministic validation, effect preview, small execution batches, explicit owner approval, audit records, drift checks, and tested recovery paths. Automation should be idempotent by default and should fail closed when it cannot prove the intended target.
-
-## Exceptions
-
-- Emergency automation may run with reduced review when delay is riskier, but it still needs owner, audit, stop criteria, and post-change reconciliation.
-- Low-risk local config can use lighter checks if it cannot affect shared systems, sensitive data, or production users.
-- Some generated changes are easier to roll forward than roll back; document the recovery decision before execution.
-
-## Response Quality Bar
-
-- Lead with the safety decision, config contract, automation risk, or gate matrix requested.
-- Name the change class and approval path: low-risk changes need the accountable owner, standard production changes need owner plus reviewer or operator approval, and emergency changes need incident owner approval plus post-change reconciliation.
-- Cover validation, preview, blast radius, owner, execution controls, drift handling, and recovery before optional automation detail.
-- Make recommendations actionable with owners, validation checks, stop criteria, batch size, audit evidence, and cleanup where relevant.
-- State required evidence such as schema, preview output, owner approval, execution logs, drift reports, and rollback proof; do not claim unseen evidence.
-- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside config and automation safety. Route rollout, infrastructure policy, or dependency hygiene only when that surface owns the immediate risk.
-- Be concise: prefer compact contract and gate tables over generic automation advice.
-
-## Required Outputs
-
-- Configuration or automation safety review.
-- Change class and approval path: low-risk, standard production, or emergency, with who approves and why.
-- Contract: owner, schema, defaults, invariants, unsafe combinations, and allowed overrides.
-- Validation and preview gate list.
-- Blast-radius and execution-control plan.
-- Recovery plan for rollback, disable, restore, or roll-forward.
-- Drift detection and exception policy.
-- Evidence checklist for review, execution, and cleanup.
-
-## Evidence Gates
-
-- `change_class_approved`: low-risk, standard production, or emergency class is named with the required approver for that class.
-- `contract_defined`: owner, schema, defaults, bounds, and invariants are explicit.
-- `preview_checked`: intended production effect is visible before execution.
-- `blast_radius`: affected users, systems, data, and owners are bounded.
-- `recovery_path`: rollback, disable, restore, or roll-forward path is defined.
-- `audit_record`: review, validation, execution result, and exception state are traceable.
-
-## Red Flags - Stop And Rework
-
-- Configuration bypasses review because it is "not code."
-- Automation can delete or mutate shared state without preview.
-- Defaults differ by environment without a documented reason.
-- Recovery depends on remembering the previous value manually.
-- Temporary overrides have no owner or expiry.
+- Temporary overrides have no expiry or cleanup action.
 
 ## Common Mistakes
 

@@ -6,5 +6,5 @@
 
 ## Threats
 
-| Threat | Control | Verification | Owner | Residual Risk |
+| Threat | Control | Verification | Response Path | Residual Risk |
 | --- | --- | --- | --- | --- |

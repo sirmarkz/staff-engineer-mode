@@ -1,6 +1,6 @@
 ---
 name: documentation-lifecycle
-description: "Use to assign owner, source of truth, freshness rule, and review trigger to engineering docs — runbooks, design docs, ADRs, onboarding — when staleness is a production risk. Not for editorial polish."
+description: "Use when asked to assign source of truth, freshness rule, and review trigger to engineering docs — runbooks, design docs, ADRs, onboarding — when staleness is a production risk. Not for editorial polish."
 ---
 
 # Engineering Documentation Lifecycle
@@ -8,23 +8,23 @@ description: "Use to assign owner, source of truth, freshness rule, and review t
 ## Iron Law
 
 ```
-NO CRITICAL ENGINEERING DOC WITHOUT AUDIENCE, OWNER, SOURCE OF TRUTH, FRESHNESS RULE, AND REVIEW TRIGGER
+NO CRITICAL ENGINEERING DOC WITHOUT AUDIENCE, SOURCE OF TRUTH, FRESHNESS RULE, AND REVIEW TRIGGER
 ```
 
-If a doc can mislead an operator, reviewer, or maintainer, stale documentation is a production risk.
+If a doc can mislead an operator, or stale documentation is a production risk.
 
 ## Overview
 
-Engineering documentation is useful only when it is findable, owned, current, authoritative, and tied to the system it describes.
+Engineering documentation is useful only when it is findable, maintained, current, authoritative, and tied to the system it describes.
 
-**Core principle:** make docs part of the delivery system, with audience, owner, freshness signal, source of truth, and review trigger.
+**Core principle:** make docs part of the delivery system, with audience, freshness signal, source of truth, and review trigger.
 
 ## When To Use
 
 - The user asks to audit, design, govern, restructure, or lifecycle-manage engineering docs, runbooks, design docs, decision records, onboarding guides, operational references, or documentation standards.
-- Documentation is stale, duplicated, missing owners, hard to find, or disconnected from code and operations.
+- Documentation is stale, duplicated, missing hard to find, or disconnected from code and operations.
 - A launch, migration, incident, or deprecation needs docs that remain accurate after the change lands.
-- A team needs a doc lifecycle, not just copy editing.
+- You need a doc lifecycle, not just copy editing.
 
 ## When Not To Use
 
@@ -35,9 +35,9 @@ Engineering documentation is useful only when it is findable, owned, current, au
 
 ## Inputs To Collect
 
-- Doc type, audience, owner, source of truth, repo or system link, and decision authority.
+- Doc type, audience, source of truth, repo or system link, and user decision point.
 - Current doc set, duplicates, stale pages, search paths, and missing operational references.
-- Change triggers: code ownership, service behavior, alerts, runbooks, interfaces, migrations, and deprecations.
+- Change triggers: code responsibility, service behavior, alerts, runbooks, interfaces, migrations, and deprecations.
 - Review cadence, freshness signal, archival rule, and exception path.
 - Evidence that users can find and apply the doc during real work.
 
@@ -45,36 +45,36 @@ Engineering documentation is useful only when it is findable, owned, current, au
 
 1. **Classify docs by job.** Place every doc asset into exactly one quadrant: tutorial (learning-oriented), how-to (task-oriented), reference (information-oriented), or explanation (understanding-oriented). Tag runbooks and decision records separately as operational and architectural artifacts. Split or rewrite any doc that mixes quadrants until each piece sits in one.
 2. **Name the audience.** State who uses the doc and what decision or task it supports.
-3. **Assign ownership.** Give every critical doc an owner (a team in larger orgs, a person in small ones, you if solo) and an update trigger tied to the system lifecycle. Anonymous docs become stale silently.
+3. **Assign responsibility.** Give every critical doc a user/agent responsibility path and an update trigger tied to the system lifecycle. Anonymous docs become stale silently.
 4. **Pick the source of truth.** Remove or mark duplicates so readers know where authority lives.
 5. **Add freshness signals.** Include last-reviewed state, lifecycle stage, review trigger, and archive rule.
 6. **Connect docs to delivery.** Link docs to code, alerts, dashboards, runbooks, release gates, or decision records where they are used.
-7. **Test usability.** Verify a new maintainer or on-call engineer can find and follow the doc under realistic conditions.
-8. **Retire stale docs.** Archive misleading content rather than keeping it searchable with no owner.
+7. **Test usability.** Verify a fresh agent or the user from a clean clone can find and follow the doc under realistic conditions.
+8. **Retire stale docs.** Archive misleading content rather than keeping it searchable with no current source of truth.
 
 ## Synthesized Default
 
-Use a lightweight documentation lifecycle: classify by user job, assign owner, define source of truth, tie updates to system changes, add freshness signals, and archive stale material. Critical runbooks and launch docs should be checked as part of delivery, not after outages prove they were wrong.
+Use a lightweight documentation lifecycle: classify by user job, assign define source of truth, tie updates to system changes, add freshness signals, and archive stale material. Critical runbooks and launch docs should be checked as part of delivery, not after outages prove they were wrong.
 
 ## Exceptions
 
 - Short-lived design notes may expire after the decision is recorded elsewhere.
 - Exploratory notes can remain rough if clearly marked as non-authoritative.
-- Emergency docs may start minimal but need owner and cleanup immediately after the event.
+- Emergency docs may start minimal but need cleanup immediately after the event.
 
 ## Response Quality Bar
 
 - Lead with the doc lifecycle, inventory, rewrite plan, or freshness gate requested.
-- Cover audience, owner, source of truth, doc type, update trigger, discoverability, and archival rule before optional style advice.
-- Make recommendations actionable with owners, review cadence, stale-doc handling, and delivery gates where relevant.
-- State required evidence such as current docs, usage paths, owner map, stale pages, runbook tests, and change triggers; do not claim unseen evidence.
+- Cover audience, source of truth, doc type, update trigger, discoverability, and archival rule before optional style advice.
+- Make recommendations actionable with review cadence, stale-doc handling, and delivery gates where relevant.
+- State required evidence such as current docs, usage paths, responsibility paths, stale pages, runbook tests, and change triggers; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside engineering documentation. Route architecture decisions, incident writeups, or marketing copy only when they are central.
 - Be concise: prefer doc inventories and lifecycle rules over broad writing theory.
 
 ## Required Outputs
 
-- Documentation inventory **table with explicit columns**: `Doc | Diátaxis quadrant (tutorial / how-to / reference / explanation) | Owner | Source of truth | Last reviewed | Review cadence | Staleness signal`. Runbooks and decision records tagged separately as operational/architectural.
+- Documentation inventory **table with explicit columns**: `Doc | Diátaxis quadrant (tutorial / how-to / reference / explanation) | Responsibility path | Source of truth | Last reviewed | Review cadence | Staleness signal`. Runbooks and decision records tagged separately as operational/architectural.
 - Source-of-truth map that **states the no-duplication rule explicitly** (e.g., "one canonical location per system; duplicates are marked non-authoritative or deleted").
 - Freshness policy naming **both review cadence AND staleness signal** (e.g., "review every 90 days; mark `stale` if last-verified > cadence or if linked alert/code changed without doc update").
 - Docs-as-code workflow: **PR-based review for doc changes AND automated checks** (link-checker, markdown lint, CI build) running on every doc PR.
@@ -86,7 +86,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign owner, d
 ## Evidence Gates
 
 - `audience_job`: each critical doc names its reader and supported task.
-- `owner_source`: owner and source of truth are explicit.
+- `doc_source`: responsibility path and source of truth are explicit.
 - `quadrant_classification`: every doc in the inventory **table carries a visible quadrant label** (tutorial / how-to / reference / explanation); runbooks and decision records tagged separately as operational/architectural. Mixed-quadrant docs are split.
 - `no_duplication_rule`: source-of-truth section states an explicit rule against duplication, not just "remove duplicates."
 - `staleness_signal`: freshness policy names both a cadence and the signal that flips a doc to stale.
@@ -98,7 +98,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign owner, d
 ## Red Flags - Stop And Rework
 
 - Two docs contradict each other and neither is marked authoritative.
-- A runbook has no owner or last-review signal.
+- A runbook has no source of truth or last-review signal.
 - A launch depends on undocumented manual knowledge.
 - Stale docs remain searchable after the system changes.
 - Documentation standards focus on formatting while operational gaps remain.
@@ -110,4 +110,4 @@ Use a lightweight documentation lifecycle: classify by user job, assign owner, d
 | Writing before audience | Start with reader job and decision. |
 | Keeping every page forever | Archive misleading docs aggressively. |
 | Treating docs as separate from delivery | Add update triggers to code and release workflows. |
-| Style as governance | Govern ownership, truth, freshness, and usability. |
+| Style as governance | Govern responsibility, truth, freshness, and usability. |

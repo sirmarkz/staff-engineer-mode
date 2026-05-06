@@ -1,4 +1,4 @@
 # SLO Table
 
-| Journey | Owner | SLI | SLO | Window | Error Budget | Alert Policy |
+| Journey | Response Path | SLI | SLO | Window | Error Budget | Alert Policy |
 | --- | --- | --- | --- | --- | --- | --- |

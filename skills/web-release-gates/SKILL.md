@@ -1,6 +1,6 @@
 ---
 name: web-release-gates
-description: "Use to gate a browser or web client release on user-perceived loading, interaction readiness, visual stability, runtime errors, journey budgets, and accessibility smoke checks."
+description: "Use when asked to gate a browser or web client release on user-perceived loading, interaction readiness, visual stability, runtime errors, journey budgets, and accessibility smoke checks."
 ---
 
 # Frontend Performance Release Gates
@@ -22,15 +22,15 @@ Client-side quality is production reliability for the user's device and network.
 ## When To Use
 
 - A browser-delivered or client-rendered change can affect user-perceived loading, interaction readiness, visual stability, runtime errors, payload weight, or client-side release safety.
-- The team needs release thresholds for routes, screens, or user journeys.
+- You need release thresholds for routes, screens, or user journeys.
 - Field-user telemetry, lab checks, deploy markers, feature flags, or automated accessibility smoke checks are needed to stop client regressions from shipping.
 
 ## When Not To Use
 
 - The request is product UX strategy, visual design, SEO strategy, or broad accessibility-program management.
-- Backend latency is the only issue and client user experience is not central; defer to `performance-and-capacity`.
-- The request is general CI gate policy; defer to `testing-and-quality-gates`.
-- The issue is mobile native release stability; defer to `mobile-release-engineering`.
+- Backend latency is the only issue and client user experience is not central; use `performance-and-capacity` instead.
+- The request is general CI gate policy; use `testing-and-quality-gates` instead.
+- The issue is mobile native release stability; use `mobile-release-engineering` instead.
 
 ## Inputs To Collect
 
@@ -67,7 +67,7 @@ Use user-centric journey-level budgets, field monitoring, lab checks, runtime-er
 
 - Lead with the release gates, blocking thresholds, or rollout decision requested.
 - Cover user-centric metrics, journey budgets, field/lab signals, runtime errors, and rollback criteria before optional client quality topics.
-- Make recommendations actionable with owners, evidence, gates, stop conditions, and rollback or flag actions where relevant.
+- Make recommendations actionable with evidence, gates, stop conditions, and rollback or flag actions where relevant.
 - For ticketing or release-readiness prompts, separate feature implementation tickets from release-control tickets; if a critical journey already regressed, lead with the hold, flag, or rollback decision before the ticket list.
 - State required evidence such as field telemetry segments, lab checks, deploy markers, error rates, and payload/journey budgets; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
@@ -96,7 +96,7 @@ Use user-centric journey-level budgets, field monitoring, lab checks, runtime-er
 
 - Build success is the only client release gate.
 - Aggregate site metrics hide critical route regressions.
-- Payload budgets exist but no one owns failures.
+- Payload budgets exist but failures have no response path.
 - Field monitoring collects sensitive data unnecessarily.
 - Accessibility is treated as fully solved by one automated scan.
 

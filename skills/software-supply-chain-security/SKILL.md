@@ -1,6 +1,6 @@
 ---
 name: software-supply-chain-security
-description: "Use to harden the source-to-deploy chain — protected source, isolated builders, artifact provenance and signing, dependency inventory, deployment admission, and least-privilege automation credentials."
+description: "Use when asked to harden the source-to-deploy chain — protected source, isolated builders, artifact provenance and signing, dependency inventory, deployment admission, and least-privilege automation credentials."
 ---
 
 # Software Supply Chain Security
@@ -15,7 +15,7 @@ If an artifact cannot be traced back to reviewed source and a trusted build path
 
 ## Overview
 
-Production should run artifacts whose source, build, dependencies, and approval path can be proven.
+Production should run artifacts whose source, build, dependencies, and confirmation path can be proven.
 
 **Core principle:** protect the source-to-deploy chain with reviewed changes, isolated builds, provenance, artifact integrity, least-privilege automation, and deployment verification.
 
@@ -24,13 +24,13 @@ Production should run artifacts whose source, build, dependencies, and approval 
 - The user asks about build/deploy security, builder isolation, artifact signing, provenance, dependency inventories, deployment admission, secret scanning, or build/deploy integrity.
 - A production path lacks proof of what source and build produced an artifact.
 - Automation credentials can modify source, build, registry, deployment, or infrastructure.
-- The team needs supply-chain controls or evidence for release integrity.
+- You need supply-chain controls or evidence for release integrity.
 
 ## When Not To Use
 
-- The work is routine package updates or dead-code cleanup; defer to `dependency-and-code-hygiene`.
-- The issue is a deployed vulnerability with patch SLA; defer to `vulnerability-management`.
-- The question is runtime authorization or service access; defer to `identity-and-secrets`.
+- The work is routine package updates or dead-code cleanup; use `dependency-and-code-hygiene` instead.
+- The issue is a deployed vulnerability with patch SLA; use `vulnerability-management` instead.
+- The question is runtime authorization or service access; use `identity-and-secrets` instead.
 - The request is broad compliance program management; out of scope unless framed as engineering evidence.
 
 ## Inputs To Collect
@@ -40,21 +40,21 @@ Production should run artifacts whose source, build, dependencies, and approval 
 - Artifact types, registries, signing, checksums, provenance, dependency inventories, and retention.
 - Deployment path, admission controls, environment promotion, and rollback.
 - Automation credentials, token scopes, secret exposure, and third-party integrations.
-- Scanning coverage, vulnerability handoff, and incident/exception process.
+- Scanning coverage, vulnerability checkpoint, and incident/exception process.
 
 ## Workflow
 
 1. **Map source to deploy.** Draw every step from code change through build, artifact, registry, deployment, and runtime admission.
-2. **Protect source.** Require reviewed changes, branch protections, ownership, and tamper-evident history for production paths.
+2. **Protect source.** Require reviewed changes, branch protections, responsibility, and tamper-evident history for production paths.
 3. **Harden builders.** Use isolated or ephemeral build environments for production artifacts; minimize mutable state and privileged credentials.
-4. **Record provenance.** Produce metadata linking artifact identity, source revision, reviewed change, build steps, builder identity, dependency inputs, build time, and approval path. Tier-critical paths should make this metadata verifiable at deployment.
+4. **Record provenance.** Produce metadata linking artifact identity, source revision, reviewed change, build steps, builder identity, dependency inputs, build time, and confirmation path. Tier-critical paths should make this metadata verifiable at deployment.
 5. **Protect artifacts.** Sign or otherwise verify integrity; store artifacts in controlled registries with retention and rollback.
 6. **Generate inventories.** Produce structured, machine-readable dependency inventories when they support vulnerability response, customer evidence, or audit workflows; name the consumer so the artifact is not theater.
 7. **Decide reproducibility level.** State whether the path needs byte-identical, declared-nondeterminism, or content-equivalent rebuild evidence, and record any expected differences.
-8. **Standardize secure pipelines.** Use governed templates or reusable pipeline modules for production paths so scanning, integrity checks, dependency inventories, approvals, and secure compute are not optional per repository.
+8. **Standardize secure pipelines.** Use reusable pipeline modules for production paths so scanning, integrity checks, dependency inventories, user confirmations, and secure compute are not optional per repository.
 9. **Control deployment.** Verify artifact integrity/provenance at admission and keep environment promotion auditable.
 10. **Constrain automation.** Use least-privilege, short-lived credentials and secret scanning across source/build paths.
-11. **Screen common attack classes.** Check for dependency confusion, typo or name-squatting, malicious maintainer takeover, build-cache poisoning, unreviewed install hooks, and compromised automation credentials.
+11. **Screen common attack classes.** Check for dependency confusion, typo or name-squatting, compromised package publishing, build-cache poisoning, unreviewed install hooks, and compromised automation credentials.
 
 ## Synthesized Default
 
@@ -63,16 +63,16 @@ Use reviewed source, governed production pipelines, isolated builds, provenance,
 ## Exceptions
 
 - Low-risk prototypes may use lighter controls if isolated from production data and deployment.
-- Legacy build systems may need staged improvements; record missing provenance/signing as exceptions with owners.
+- Legacy build systems may need staged improvements; record missing provenance/signing as exceptions with expiry and compensating controls.
 - Dependency inventories are useful when consumed for vulnerability, customer, or audit workflows; do not generate unused artifacts as theater.
 - Emergency patches can use expedited paths only with post-facto provenance and review evidence.
-- Release engineering owns reproducible build mechanics; this skill owns the trust boundary, provenance expectations, artifact integrity, and admission policy.
+- Release engineering covers reproducible build mechanics; this skill covers the trust boundary, provenance expectations, artifact integrity, and admission policy.
 
 ## Response Quality Bar
 
 - Lead with the source-to-deploy risk, control gap, provenance plan, or exception register requested.
 - Cover source review, builder trust, artifact integrity, provenance, dependency inventory, deployment admission, automation credentials, and secret scanning before optional supply-chain breadth.
-- Make recommendations actionable with owners, control locations, validation commands, admission gates, exception expiry, and remediation steps where relevant.
+- Make recommendations actionable with control locations, validation commands, admission gates, exception expiry, and remediation steps where relevant.
 - State required evidence such as protected branch settings, build identity, isolation model, artifact metadata, signatures or digests, dependency-inventory consumers, deploy policy, and credential scopes; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside supply-chain integrity. Route routine dependency hygiene or deployed vulnerability remediation only when those are the central unresolved risk.
@@ -82,11 +82,11 @@ Use reviewed source, governed production pipelines, isolated builds, provenance,
 
 - Source-to-deploy supply-chain map.
 - Control matrix for source, build, artifact, registry, deployment, and automation.
-- Provenance and artifact integrity plan with minimum fields: artifact identity, source revision, reviewed change, builder identity, dependency inputs, build time, approval path, and verification location.
-- Structured dependency inventory policy with producer, consumer, retention, and vulnerability handoff.
+- Provenance and artifact integrity plan with minimum fields: artifact identity, source revision, reviewed change, builder identity, dependency inputs, build time, confirmation path, and verification location.
+- Structured dependency inventory policy with producer, consumer, retention, and vulnerability checkpoint.
 - Build and deployment credential hardening plan.
 - Secret scanning and exposure response plan.
-- Exceptions with owner, expiry, and compensating controls.
+- Exceptions with expiry, and compensating controls.
 
 ## Evidence Gates
 

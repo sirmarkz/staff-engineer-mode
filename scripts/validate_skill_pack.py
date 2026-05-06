@@ -10,6 +10,7 @@ SKILLS = ROOT / "skills"
 SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
 CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
 CODEX_MAX_SKILL_NAME_LENGTH = 64
+MAX_SKILL_LINES = 300
 ROUTER_MAX_WORDS = 1200
 ROUTER_EVIDENCE_GATES = {
     "single_primary",
@@ -245,8 +246,41 @@ def validate_router_skill(text: str, path: Path) -> None:
     require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "questions", "skill names"], path)
 
 
+def validate_no_duplicate_fragments(text: str, path: Path) -> None:
+    frontmatter = re.match(r"---\n.*?\n---\n", text, re.DOTALL)
+    body = text[frontmatter.end() :] if frontmatter else text
+
+    seen_headings: dict[str, int] = {}
+    for match in re.finditer(r"^(#{1,2} .+)$", body, re.MULTILINE):
+        heading = match.group(1).strip()
+        line_number = body[: match.start()].count("\n") + 1
+        if heading in seen_headings:
+            fail(
+                f"{path} repeats heading {heading!r} "
+                f"at lines {seen_headings[heading]} and {line_number}"
+            )
+        seen_headings[heading] = line_number
+
+    seen_blocks: dict[str, int] = {}
+    for index, block in enumerate(re.split(r"\n\s*\n", body), 1):
+        normalized = re.sub(r"\s+", " ", block.strip())
+        if len(normalized) < 180:
+            continue
+        if normalized in seen_blocks:
+            fail(f"{path} repeats a substantial text block at blocks {seen_blocks[normalized]} and {index}")
+        seen_blocks[normalized] = index
+
+
 def validate_skill(path: Path) -> None:
     text = path.read_text()
+    line_count = len(text.splitlines())
+    if line_count > MAX_SKILL_LINES:
+        fail(f"{path} is {line_count} lines; SKILL.md files must stay at or below {MAX_SKILL_LINES}")
+    if not text.endswith("\n"):
+        fail(f"{path} must end with a newline")
+    frontmatter_delimiters = sum(1 for line in text.splitlines() if line == "---")
+    if frontmatter_delimiters != 2:
+        fail(f"{path} must contain exactly one YAML frontmatter block")
     frontmatter = parse_frontmatter(text, path)
     expected_name = path.parent.name
     name = frontmatter.get("name")
@@ -256,8 +290,11 @@ def validate_skill(path: Path) -> None:
         fail(f"{path} frontmatter name {name!r} does not match directory {expected_name!r}")
     if not description:
         fail(f"{path} missing description")
+    if not description.startswith("Use when"):
+        fail(f"{path} description must start with 'Use when'")
     if len(description) > 600:
         fail(f"{path} description is too long")
+    validate_no_duplicate_fragments(text, path)
     if expected_name == "staff-engineer-mode":
         validate_router_skill(text, path)
     else:

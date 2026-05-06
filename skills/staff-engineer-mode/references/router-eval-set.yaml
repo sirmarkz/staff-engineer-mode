@@ -1,12 +1,22 @@
 cases:
-  - prompt: "We are splitting billing from checkout and need a design review before we lock service boundaries, ownership, and failure behavior."
+  - prompt: "We are splitting billing from checkout and need a design review before we lock service boundaries, responsibility, and failure behavior."
     expected_primary: architecture-decisions
-    expected_behavior: "infer architecture review from boundaries, ownership, and decision timing"
+    expected_behavior: "infer architecture review from boundaries, responsibility, and decision timing"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "A partner-facing endpoint needs to rename a response field and return a new error shape, but older clients cannot break."
     expected_primary: api-design-and-compatibility
     expected_behavior: "route to compatibility and client migration instead of generic architecture"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "We need operation names and request shapes for generated client methods that create, list, batch-get, and cancel jobs without confusing callers."
+    expected_primary: api-design-and-compatibility
+    expected_behavior: "route to API operation naming and generated-client contract ergonomics"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Design a batch endpoint and filtered list endpoint for partner resources, including item limits, partial failures, page tokens, and empty results."
+    expected_primary: api-design-and-compatibility
+    expected_behavior: "route to batch and list API contract shape instead of dependency resilience"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "We need to decide which customer-facing failures count against checkout reliability and when they should page someone."
@@ -19,10 +29,20 @@ cases:
     expected_behavior: "route to fault-domain topology, not disaster recovery"
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
+  - prompt: "A location-scoped service must avoid cross-location runtime dependencies, show per-fault-domain health, and keep enough static capacity to survive one location loss."
+    expected_primary: high-availability-design
+    expected_behavior: "route to fault-domain independence and static failover capacity"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
   - prompt: "The order flow melts whenever the fraud service slows down, and retries seem to make the queue worse."
     expected_primary: dependency-resilience
     expected_behavior: "infer dependency overload from prose without relying on product names"
     category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "The dependency client needs an adaptive retry budget, must stop retrying on overload signals, and batch retries should skip items that already succeeded."
+    expected_primary: dependency-resilience
+    expected_behavior: "route to retry-budget and partial-batch dependency behavior"
+    category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "The ticket keeps blaming the cache product, but the actual failure is slow cache reads causing checkout retries and queue buildup."
     expected_primary: dependency-resilience
@@ -39,7 +59,7 @@ cases:
     expected_behavior: "route to restore and corruption recovery; suggest incident response only if impact is active"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Plan a controlled failover exercise for the regional checkout path, including abort criteria and blast-radius limits."
+  - prompt: "Plan a controlled failover exercise for the critical checkout path, including abort criteria and blast-radius limits."
     expected_primary: resilience-experiments
     expected_behavior: "route to experiment design, not topology design"
     category: direct
@@ -49,7 +69,7 @@ cases:
     expected_behavior: "route to high-assurance validation instead of ordinary tests"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "During incidents the team cannot tell whether failures start in checkout, payment, or fulfillment from the telemetry we have."
+  - prompt: "During incidents we cannot tell whether failures start in checkout, payment, or fulfillment from the telemetry we have."
     expected_primary: observability-and-alerting
     expected_behavior: "route to observability because debuggability evidence is the artifact"
     category: paraphrase
@@ -59,7 +79,7 @@ cases:
     expected_behavior: "active incident handling takes priority over suspected root cause"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "The team gets paged dozens of times a night for self-healing failures, and the runbook work is mostly manual."
+  - prompt: "We get paged dozens of times a night for self-healing failures, and the runbook work is mostly manual."
     expected_primary: oncall-health
     expected_behavior: "route to page and toil reduction, not staffing policy"
     category: direct
@@ -69,9 +89,14 @@ cases:
     expected_behavior: "route to merge and quality gates"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "This config change flips routing defaults for checkout, and we need validation, preview, owner approval, and a rollback path before it runs."
+  - prompt: "This config change flips routing defaults for checkout, and we need validation, preview, user confirmation, and a rollback path before it runs."
     expected_primary: configuration-and-automation-safety
     expected_behavior: "route to configuration and automation safety rather than generic rollout"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "An operational script will touch an unlaunched production environment, so we need a change record, user confirmation, preview, blast-radius limit, and recovery path."
+    expected_primary: configuration-and-automation-safety
+    expected_behavior: "route to production automation change controls even before launch"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "What should we require before this lands?"
@@ -90,6 +115,11 @@ cases:
     expected_behavior: "route to production exposure strategy"
     category: direct
     expected_gates: [single_primary, intent_inference]
+  - prompt: "Plan a customer-impacting deploy that moves through one instance, one partition, one deployment unit, and then location waves with bake time and automatic rollback on availability or latency."
+    expected_primary: progressive-delivery
+    expected_behavior: "route to phased deployment waves and rollback gates"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
   - prompt: "The new payments service is supposed to take full production traffic tomorrow, and leadership wants a readiness call."
     expected_primary: production-readiness-review
     expected_behavior: "use production readiness as an aggregator because launch readiness is explicit"
@@ -100,17 +130,17 @@ cases:
     expected_behavior: "route to broad migration and deprecation controls"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "The runtime upgrade affects hundreds of services, and old and new versions must coexist until every owner moves."
+  - prompt: "The runtime upgrade affects hundreds of services, and old and new versions must coexist until every component moves."
     expected_primary: fleet-upgrades
     expected_behavior: "route to fleet upgrade support windows and mixed-version compatibility"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Reviews sit idle for days, owners are unclear, and large changes keep landing late in the cycle."
+  - prompt: "Reviews sit idle for days, responsibility paths are unclear, and large changes keep landing late in the cycle."
     expected_primary: code-review-and-workflow
-    expected_behavior: "route to review workflow and ownership"
+    expected_behavior: "route to review workflow and responsibility"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Our runbooks and design docs contradict each other; we need owners, source of truth, freshness rules, and archive criteria."
+  - prompt: "Our runbooks and design docs contradict each other; we need responsibility paths, source of truth, freshness rules, and archive criteria."
     expected_primary: documentation-lifecycle
     expected_behavior: "route to engineering documentation lifecycle instead of architecture decision review"
     category: direct
@@ -126,7 +156,7 @@ cases:
     expected_behavior: "route to dependency and code health, not supply-chain trust"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Threat model the new admin approval flow, including abuse cases and security requirements before implementation."
+  - prompt: "Threat model the new admin privilege flow, including abuse cases and security requirements before implementation."
     expected_primary: secure-sdlc-and-threat-modeling
     expected_behavior: "route to secure design and abuse-case review"
     category: direct
@@ -176,7 +206,7 @@ cases:
     expected_behavior: "route to event workflow semantics"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Several teams consume this shared customer dataset, and we need schema ownership, compatibility rules, and consumer tests before changing a field."
+  - prompt: "Several components consume this shared customer dataset, and we need schema responsibility, compatibility rules, and consumer tests before changing a field."
     expected_primary: data-contracts
     expected_behavior: "route to cross-consumer data contracts instead of pipeline freshness or one API review"
     category: direct
@@ -211,7 +241,7 @@ cases:
     expected_behavior: "route to production ML reliability and evaluation"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "New teams keep hand-rolling service setup; we need a golden path, catalog entry, scorecard, and default templates."
+  - prompt: "New services keep hand-rolling setup; we need a golden path, catalog entry, scorecard, and default templates."
     expected_primary: platform-golden-paths
     expected_behavior: "route to internal platform standardization"
     category: direct
@@ -255,6 +285,31 @@ cases:
     expected_primary: llm-application-security
     expected_behavior: "route to LLM application security, not broad AI strategy"
     category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Review a GenAI product for prompt injection, sensitive prompt redaction, prompt and response storage, retrieval leaks, and emergency stop controls."
+    expected_primary: llm-application-security
+    expected_behavior: "route GenAI application security controls to LLM application security"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "The model-backed app accepts file uploads and renders model-generated markdown links; review input validation, output handling, and unsafe sinks before launch."
+    expected_primary: llm-application-security
+    expected_behavior: "route multimodal and rendered-output risks to LLM application security"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Define retention, deletion, export, and access controls for stored prompts and responses in logs, support tooling, and analytics."
+    expected_primary: privacy-and-data-lifecycle
+    expected_behavior: "route prompt and response data lifecycle to privacy unless LLM boundary risk dominates"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Verify signing, provenance, builder isolation, and admission controls for a model artifact before deployment, with no prompt, retrieval, or tool boundary in scope."
+    expected_primary: software-supply-chain-security
+    expected_behavior: "route generic model artifact trust to supply-chain security instead of LLM app security"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Plan staged rollout and rollback of a model-backed feature using canary metrics, exposure rings, and a kill switch after guardrail metrics regress."
+    expected_primary: progressive-delivery
+    expected_behavior: "route model-backed rollout sequencing to progressive delivery instead of LLM app security"
+    category: paraphrase
     expected_gates: [single_primary, intent_inference]
   - prompt: "Secure our prompt so the agent cannot misuse tools, leak retrieved data, or follow malicious instructions."
     expected_primary: llm-application-security
@@ -328,7 +383,7 @@ cases:
     expected_behavior: "translate the dashboard product into telemetry construction, with SLO policy as the separate follow-up"
     category: mixed_intent
     expected_gates: [single_primary, secondary_cap, capability_translation, intent_inference]
-  - prompt: "Rename a field in the partner API while also updating the shared customer dataset contract consumed by internal teams."
+  - prompt: "Rename a field in the partner API while also updating the shared customer dataset contract consumed by internal components."
     expected_primary: api-design-and-compatibility
     expected_secondary: data-contracts
     expected_behavior: "choose partner-facing API compatibility as primary and shared data contracts as the separate artifact"
@@ -379,13 +434,13 @@ cases:
   - prompt: "Roll the database migration out safely while also adding checks that block future incompatible schema changes."
     expected_primary: database-operations
     expected_secondary: testing-and-quality-gates
-    expected_behavior: "choose database operations as primary because production schema execution owns the immediate risk"
+    expected_behavior: "choose database operations as primary because production schema execution carries the immediate risk"
     category: mixed_intent
     expected_gates: [single_primary, secondary_cap, intent_inference]
   - prompt: "The streaming job is double-counting late events after replay, but the message contract and dead-letter workflow are also unclear."
     expected_primary: data-pipeline-reliability
     expected_secondary: event-workflows
-    expected_behavior: "choose pipeline reliability because freshness and idempotent reprocessing own the failure; suggest workflow semantics as secondary"
+    expected_behavior: "choose pipeline reliability because freshness and idempotent reprocessing carry the failure; suggest workflow semantics as secondary"
     category: mixed_intent
     expected_gates: [single_primary, secondary_cap, intent_inference]
   - prompt: "Launch the new checkout service after we finish threat modeling, load testing, dashboards, rollback, and on-call docs."
@@ -405,7 +460,7 @@ cases:
     category: out_of_scope
     expected_gates: [scope_check, ambiguity_check]
     forbidden_in_response: [all_specialist_names]
-  - prompt: "Review this AI-generated diff and tell me what a senior reviewer would catch before we merge it."
+  - prompt: "Review this AI-generated diff and tell me what a senior pre-merge pass would catch before we merge it."
     expected_primary: agent-pr-review
     expected_behavior: "route per-diff senior pre-merge review of agent output to agent PR review"
     category: direct
@@ -420,12 +475,12 @@ cases:
     expected_behavior: "route per-diff agent-output review to agent PR review instead of generic code review workflow"
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
-  - prompt: "The rollout is finished; build me an inventory of every live flag with owner, expiry, and removal plan."
+  - prompt: "The rollout is finished; build me an inventory of every live flag with expiry, safe fallback, and removal plan."
     expected_primary: feature-flag-lifecycle
     expected_behavior: "route post-rollout flag inventory and removal planning to feature flag lifecycle"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Find the orphan flags in this repo whose feature shipped or whose owner left and propose a safe removal sequence."
+  - prompt: "Find the orphan flags in this repo whose feature shipped or whose behavior is no longer explained and propose a safe removal sequence."
     expected_primary: feature-flag-lifecycle
     expected_behavior: "route orphan flag detection and removal planning to feature flag lifecycle instead of generic code hygiene"
     category: paraphrase

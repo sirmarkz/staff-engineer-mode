@@ -1,6 +1,6 @@
 ---
 name: infrastructure-and-policy-as-code
-description: "Use to make infrastructure declarative — desired state, policy checks, drift detection and reconciliation, environment promotion, and emergency change paths."
+description: "Use when asked to make infrastructure declarative — desired state, policy checks, drift detection and reconciliation, environment promotion, and emergency change paths."
 ---
 
 # Infrastructure GitOps And Policy As Code
@@ -11,7 +11,7 @@ description: "Use to make infrastructure declarative — desired state, policy c
 NO INFRASTRUCTURE CHANGE WITHOUT REVIEWABLE DESIRED STATE, POLICY CHECK, DRIFT PLAN, AND ROLLBACK STORY
 ```
 
-If production infrastructure can change outside review with no reconciliation, the platform is not controlled.
+If production infrastructure can change without traceable desired state and reconciliation, the platform is not controlled.
 
 ## Overview
 
@@ -29,15 +29,15 @@ Infrastructure is safer when desired state, review, policy, drift, and rollback 
 ## When Not To Use
 
 - The request is application business logic policy.
-- The work is broad platform product design; defer to `platform-golden-paths`.
-- The main topic is artifact provenance or signing; defer to `software-supply-chain-security`.
+- The work is broad platform product design; use `platform-golden-paths` instead.
+- The main topic is artifact provenance or signing; use `software-supply-chain-security` instead.
 - The request is one-off architecture without reusable infrastructure policy.
 
 ## Inputs To Collect
 
-- Infrastructure resources, environments, owners, desired-state repositories, and change workflow.
+- Infrastructure resources, environments, responsible change path, desired-state repositories, and change workflow.
 - Policy requirements: security, reliability, identity, network, secrets, tagging, cost, and operational standards.
-- Deployment/admission points, promotion model, approvals, and emergency-change process.
+- Deployment/admission points, promotion model, user confirmations, and emergency-change process.
 - Drift sources, detection methods, reconciliation authority, and incident history.
 - Rollback/roll-forward mechanisms, state storage, locks, and blast-radius controls.
 - Secret material, secret references, diff redaction, and state-store protection requirements.
@@ -46,13 +46,13 @@ Infrastructure is safer when desired state, review, policy, drift, and rollback 
 
 1. **Define desired state.** Identify which infrastructure and runtime config must be represented declaratively.
 2. **Keep secrets out of desired-state diffs.** Store secret references, encrypted envelopes, or external secret bindings instead of plaintext; redact plans/diffs and fail the change if secret values appear in review artifacts.
-3. **Review changes in version control.** Require owners, plans/diffs, checks, and approvals appropriate to risk.
+3. **Make changes reviewable in version control.** Require responsible change path, plans/diffs, checks, and user confirmations appropriate to risk.
 4. **Encode and test policies.** Convert standards into automated rules with clear failure messages, fixture tests, historical dry runs where feasible, and an exception path.
-5. **Separate platform and workload boundaries.** Make shared services, application environments, and delegated team ownership explicit so policy inheritance and exceptions are understandable.
+5. **Separate platform and workload boundaries.** Make shared services, application environments, and responsibility explicit so policy inheritance and exceptions are understandable.
 6. **Enforce at the right point.** Use pre-merge, pre-deploy, admission, or continuous audit depending on risk and feasibility.
 7. **Detect drift.** Compare actual state to desired state and decide whether to alert, reconcile, or open a ticket.
 8. **Plan rollback.** State when rollback is possible, when roll-forward is safer, and how state is protected.
-9. **Handle emergencies.** Permit manual break-glass only with separate emergency identity, owner, audit, maximum duration, automatic re-locking, reconciliation, and post-change review.
+9. **Handle emergencies.** Permit manual break-glass only with separate emergency identity, audit, maximum duration, automatic re-locking, reconciliation, and post-change review.
 10. **Protect the source of truth.** Treat desired-state repositories, state stores, lock stores, and reconcilers as production control-plane dependencies with access control, backup, and recovery plans.
 11. **Feed evidence.** Surface policy and drift evidence to scorecards and PRR where useful.
 
@@ -71,8 +71,8 @@ Use declarative desired state, reviewed changes, automated policy checks, clear 
 
 - Lead with the infrastructure workflow, policy decision, drift finding, or emergency-change procedure requested.
 - Cover desired-state scope, reviewability, plan/diff evidence, policy checks, enforcement mode, drift response, rollback or roll-forward, and emergency reconciliation before optional GitOps breadth.
-- Make recommendations actionable with owners, source-of-truth paths, policy rules, exception workflow, detection cadence, reconciliation steps, and audit gates where relevant.
-- State required evidence such as repo paths, plans/diffs, approvals, policy outputs, drift reports, reconciliation logs, break-glass records, and deployment status; do not claim unseen evidence.
+- Make recommendations actionable with source-of-truth paths, policy rules, exception workflow, detection cadence, reconciliation steps, and audit gates where relevant.
+- State required evidence such as repo paths, plans/diffs, user confirmations, policy outputs, drift reports, reconciliation logs, break-glass records, and deployment status; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside infrastructure workflow and policy-as-code. Route platform product work or supply-chain controls only when they are central to the decision.
 - Be concise: avoid generic GitOps background and prefer compact workflow and control matrices.
@@ -80,7 +80,7 @@ Use declarative desired state, reviewed changes, automated policy checks, clear 
 ## Required Outputs
 
 - Infrastructure change workflow.
-- Desired-state scope and ownership.
+- Desired-state scope and responsibility.
 - Policy-as-code control matrix.
 - Enforcement point and exception model.
 - Drift detection and reconciliation plan.
@@ -92,7 +92,7 @@ Use declarative desired state, reviewed changes, automated policy checks, clear 
 ## Evidence Gates
 
 - `desired_state`: managed infrastructure scope and source of truth are explicit.
-- `review_check`: changes are reviewable with owner, plan/diff, and approval path.
+- `review_check`: changes are reviewable with plan/diff, responsible change path, and confirmation path.
 - `secret_check`: desired state and review artifacts do not expose plaintext secrets.
 - `policy_check`: policies map to engineering standards and enforcement/advisory mode.
 - `drift_check`: drift detection and reconciliation response are defined.
@@ -113,5 +113,5 @@ Use declarative desired state, reviewed changes, automated policy checks, clear 
 | --- | --- |
 | Policy as paperwork | Encode enforceable or auditable checks. |
 | Blocking too early | Tune in advisory mode, then enforce high-signal rules. |
-| Ignoring drift | Define detection, owner, and reconciliation. |
+| Ignoring drift | Define detection, reconciliation, and the change path. |
 | No emergency path | Add audited break-glass and post-change cleanup. |

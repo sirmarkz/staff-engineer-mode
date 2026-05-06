@@ -1,6 +1,6 @@
 ---
 name: staff-engineer-mode
-description: "Use to route broad or multi-surface engineering requests to one Staff Engineer Mode specialist before answering."
+description: "Use when asked to route broad or multi-surface engineering requests to one Staff Engineer Mode specialist before answering."
 ---
 
 # Staff Engineer Mode
@@ -15,9 +15,9 @@ Loading many plausible skills is a routing failure.
 
 ## Overview
 
-Users are not expected to know skill names. This router classifies ordinary engineering language and selects the one specialist that owns the next useful artifact.
+Users are not expected to know skill names. This router classifies ordinary engineering language and selects the one specialist skill that best fits the next useful artifact.
 
-Do not answer as a generic expert, route by keyword, or restate specialist guidance. Infer the artifact, phase, surface, and risk, then hand off quietly.
+Do not answer as a generic expert, route by keyword, or restate specialist guidance. Infer the artifact, phase, surface, and risk, then select the matching skill quietly.
 
 ## When To Use
 
@@ -37,16 +37,16 @@ Do not answer as a generic expert, route by keyword, or restate specialist guida
 - **Artifact:** decision, plan, gate, rollout, investigation, runbook, policy, migration, evaluation, evidence pack, or review.
 - **Phase:** design, before merge, launch, migration, active incident, post-incident, regression, audit/evidence, or maintenance.
 - **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, AI, accessibility, cost, or operator load.
-- **Risk and scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-region.
+- **Risk and scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-location.
 
 ## Workflow
 
 1. Identify the requested artifact and phase before naming any skill.
 2. Translate named tools into capabilities. Do not invent tool, vendor, framework, protocol, database, or command examples when the user did not provide them.
 3. Choose the narrowest primary whose required outputs match the next artifact.
-4. Add one secondary only when the user explicitly asks for a separate artifact owned by another skill.
+4. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
 5. If confidence is low, ask only the missing intake questions needed to route and start useful work.
-6. Keep single-surface evidence with the surface owner; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
+6. Keep single-surface evidence with the matching specialist skill; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
 7. Reframe out-of-scope work as an engineering-control question only when that is plausible.
 
 ## Synthesized Default
@@ -66,7 +66,7 @@ Select exactly one primary specialist when the prompt has enough context. Recomm
 - For confident routing: optional secondary skill name, only when necessary.
 - For confident routing: confidence of high or medium.
 - For confident routing: inferred user intent, including requested artifact, dominant surface, and work phase.
-- For confident routing: routing rationale in one or two sentences.
+- For confident routing: routing rationale in one sentence.
 - For explicit eval-harness runs only: also include a fenced `routing` block containing a JSON object with `primary`, `secondary`, `confidence`, `artifact`, `surface`, `phase`, and `rationale`.
 - For low-confidence routing: questions only.
 - Do not include a primary, secondary, confidence label, routing draft, candidate list, or any specialist skill names.
@@ -86,17 +86,17 @@ Select exactly one primary specialist when the prompt has enough context. Recomm
 Use specialist descriptions as the primary map. Load `references/routing-matrix.md` only when adjacent surfaces compete.
 
 - Launch or major traffic-shift readiness aggregates through `production-readiness-review`; ordinary design review does not.
-- Active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
+- Active user-impacting incidents select `incident-response-and-postmortems` before root-cause specialty work.
 - Reliability objective policy, telemetry construction, and page fatigue are separate artifacts.
-- Topology, restore capability, controlled failure tests, and overload controls have separate owners.
+- Topology, restore capability, controlled failure tests, and overload controls span separate evidence surfaces.
 - Exposed contract compatibility, broad deprecation/migration, and asynchronous workflow semantics are distinct.
 - Build/release artifact reproducibility comes before production exposure and rollback strategy.
-- Single-domain evidence stays with the owner; cross-surface evidence packs use `engineering-control-evidence`.
-- Public edge traffic, internal service traffic, backend performance, client performance, cost tradeoffs, and data movement freshness should not be collapsed into one route.
+- Single-domain evidence stays with the matching specialist skill; cross-surface evidence packs use `engineering-control-evidence`.
+- Public edge traffic, internal service traffic, backend performance, client performance, cost tradeoffs, and data freshness stay separate.
 - Security routes by artifact: threat model, identity/secrets, supply-chain trust, deployed vulnerability remediation, tenant boundary, privacy lifecycle, or model/tool/retrieval app risk.
 - Newer narrow routes beat broad neighbors: config/automation safety, documentation lifecycle, data contracts, accessibility gates, AI coding governance, agent PR review, LLM eval harnesses, experimentation guardrails, fleet upgrades, cryptography and key lifecycle, feature flag lifecycle, LLM serving cost and latency, code readability for agents, test data engineering, and dev environment parity.
-- Any diff that needs a senior pre-merge review routes to `agent-pr-review`; org-level AI-assisted coding policy still routes to `ai-coding-governance`; reviewer routing, change size, and workflow metrics stay with `code-review-and-workflow`.
-- Post-rollout flag life, owners, expiry, and removal route to `feature-flag-lifecycle`; introducing the flag during rollout stays with `progressive-delivery`; generic dead-code cleanup stays with `dependency-and-code-hygiene`.
+- Any diff that needs a senior pre-merge review routes to `agent-pr-review`; org-level AI-assisted coding policy still routes to `ai-coding-governance`; review routing, change size, and workflow metrics stay with `code-review-and-workflow`.
+- Post-rollout flag life, expiry, and removal route to `feature-flag-lifecycle`; introducing the flag during rollout stays with `progressive-delivery`; generic dead-code cleanup stays with `dependency-and-code-hygiene`.
 - LLM-route token budget, tail latency, prompt/response cache, and provider-failure degradation route to `llm-serving-cost-and-latency`; generic spend/reliability tradeoffs route to `cost-aware-reliability`; generic backend latency to `performance-and-capacity`; generic remote-call resilience to `dependency-resilience`.
 - Repo-as-artifact for AI comprehension, name collisions, function/file-size budgets, and one-tool-call locatability route to `code-readability-for-agents`; macro service boundaries stay with `architecture-decisions`; per-diff pre-merge review stays with `agent-pr-review`.
 - Fixture inventory, anonymization policy, fixture freshness, and production/test data drift route to `test-data-engineering`; overall test strategy and merge gates stay with `testing-and-quality-gates`.

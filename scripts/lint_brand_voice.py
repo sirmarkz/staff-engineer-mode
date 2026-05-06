@@ -445,7 +445,7 @@ def check_iron_law_present(
             rule="BV005/missing-iron-law",
             message=(
                 "specialist SKILL.md is missing the '## Iron Law' section; "
-                "every specialist must declare its load-bearing rule"
+                "every specialist must declare its central rule"
             ),
         )
     ]

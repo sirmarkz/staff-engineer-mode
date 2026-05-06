@@ -1,6 +1,6 @@
 ---
 name: distributed-data-and-consistency
-description: "Use to choose storage, decide consistency per operation, pick a shard or partition key, or write down what happens during failover, conflict, and replication lag — before code or schema lands."
+description: "Use when asked to choose storage, decide consistency per operation, pick a shard or partition key, or write down what happens during failover, conflict, and replication lag — before code or schema lands."
 ---
 
 # Distributed Data And Consistency
@@ -21,17 +21,17 @@ Data architecture starts with semantics, not storage brands.
 
 ## When To Use
 
-- The user asks about storage choice, replication, consistency, transactions, sharding, hot keys, data correctness, distributed locks, or data ownership.
-- A service boundary changes who owns or mutates data.
+- The user asks about storage choice, replication, consistency, transactions, sharding, hot keys, data correctness, distributed locks, or data responsibility.
+- A service boundary changes who is responsible for mutating data.
 - The design needs to choose between strong, eventual, read-your-writes, monotonic, causal, or quorum-style behavior.
 - The user asks whether stale reads, duplicate writes, or conflicts are acceptable.
 
 ## When Not To Use
 
-- The request is only cache TTL, invalidation, stampede, or materialized-view operation; defer to `caching-and-derived-data`.
-- The question is online schema/backfill execution; defer to `database-operations`.
-- The work is service event choreography; defer to `event-workflows`.
-- The request is warehouse/ETL freshness rather than application data correctness; defer to `data-pipeline-reliability`.
+- The request is only cache TTL, invalidation, stampede, or materialized-view operation; use `caching-and-derived-data` instead.
+- The question is online schema/backfill execution; use `database-operations` instead.
+- The work is service event choreography; use `event-workflows` instead.
+- The request is warehouse/ETL freshness rather than application data correctness; use `data-pipeline-reliability` instead.
 
 ## Inputs To Collect
 
@@ -40,7 +40,7 @@ Data architecture starts with semantics, not storage brands.
 - Correctness expectations: uniqueness, ordering, freshness, read-your-writes, conflict handling, idempotency, and durability.
 - Access patterns, read/write volume, fanout, hot keys, tenant/shard routing, and growth forecast.
 - Failure modes: partial writes, failover, replication lag, split brain, retries, duplicate leaders, and operator repair.
-- Migration constraints, ownership, auditability, and backup/restore requirements.
+- Migration constraints, responsibility, auditability, and backup/restore requirements.
 
 ## Workflow
 
@@ -48,27 +48,27 @@ Data architecture starts with semantics, not storage brands.
 2. **Write operation semantics.** For each critical operation, define allowed staleness, conflict behavior, idempotency, and durability.
 3. **Choose consistency deliberately.** Use the weakest guarantee that preserves correctness and user expectation; document the tradeoff.
 4. **Avoid cross-service transactions.** Prefer local transactions plus outbox, sagas, reconciliation, or compensating actions over distributed two-phase commit.
-5. **Plan partitioning early.** Choose shard/tenant keys, hot-key mitigations, locality needs, shard-map ownership, resharding path, and ownership boundaries.
+5. **Plan partitioning early.** Choose shard/tenant keys, hot-key mitigations, locality needs, shard-map responsibility, resharding path, and responsibility boundaries.
 6. **Treat locks and leaders as dangerous.** Use proven coordination primitives when necessary, and design work to be idempotent under duplicate execution.
 7. **Define repair and verification.** Include reconciliation jobs, invariants, audit trails, and manual repair safety.
 8. **Route operational changes.** Schema/backfill execution goes to database operations; cache mechanics go to caching.
 
 ## Synthesized Default
 
-Default to the simplest storage and consistency model that satisfies operation semantics. Keep data ownership local where possible, co-locate data that must transact together, use idempotency and durable state transitions, and avoid custom distributed coordination. When weaker consistency is chosen, state exactly what users may observe and how repair works.
+Default to the simplest storage and consistency model that satisfies operation semantics. Keep data responsibility local where possible, co-locate data that must transact together, use idempotency and durable state transitions, and avoid custom distributed coordination. When weaker consistency is chosen, state exactly what users may observe and how repair works.
 
 ## Exceptions
 
 - Financial, authorization, inventory, and destructive operations may require strong consistency or formal modeling.
 - High-scale read paths may accept stale or derived reads when user impact and repair are explicit.
-- Multi-step workflows across owners should use sagas or reconciliation rather than pretending one atomic transaction exists.
+- Multi-step workflows across independent mutation boundaries should use sagas or reconciliation rather than pretending one atomic transaction exists.
 - Distributed locks are acceptable only with a proven primitive, lease semantics, fencing or idempotency, and failure tests.
 
 ## Response Quality Bar
 
 - Lead with the consistency decision, tradeoff, or unresolved blocker.
 - Cover data semantics, stale-read impact, conflicts, failure behavior, and operational cost before optional distributed-systems breadth.
-- Make recommendations actionable with owners, evidence, gates, stop conditions, and validation criteria where relevant.
+- Make recommendations actionable with evidence, gates, stop conditions, and validation criteria where relevant.
 - State required evidence such as invariants, latency budgets, conflict rates, replication behavior, and failure assumptions; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the data consistency decision. Mention caches, workflows, or schema execution only when they materially change semantics.
@@ -88,7 +88,7 @@ Default to the simplest storage and consistency model that satisfies operation s
 
 - `semantics_check`: every critical operation has freshness, ordering, idempotency, conflict, and durability semantics.
 - `consistency_choice`: chosen guarantees are justified by user consequence and failure behavior.
-- `ownership_check`: every data class has an owner and mutation boundary.
+- `responsibility_check`: every data class has an explicit mutation boundary and repair path.
 - `partition_check`: shard/tenant key, hot-key risk, and resharding approach are addressed where scale requires it.
 - `repair_check`: invariants, reconciliation, audit, or manual repair path exists for known inconsistency modes.
 

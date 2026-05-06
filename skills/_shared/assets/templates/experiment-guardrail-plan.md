@@ -6,7 +6,7 @@
 
 ## Metrics
 
-| Metric | Type | Definition | Owner | Blocks Ramp |
+| Metric | Type | Definition | Response Path | Blocks Ramp |
 | --- | --- | --- | --- | --- |
 
 ## Validity Checks

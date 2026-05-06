@@ -2,7 +2,7 @@
 
 ## Inventory
 
-| Item | Use | Owner | Consumers | Expires | Rotation Path | Monitoring |
+| Item | Use | Responsibility Path | Consumers | Expires | Rotation Path | Monitoring |
 | --- | --- | --- | --- | --- | --- | --- |
 
 ## Compatibility

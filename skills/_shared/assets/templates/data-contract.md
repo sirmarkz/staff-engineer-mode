@@ -8,7 +8,7 @@
 
 ## Fields
 
-| Field | Meaning | Required | Default | Validity Rule | Sensitive | Owner |
+| Field | Meaning | Required | Default | Validity Rule | Sensitive | Responsibility Path |
 | --- | --- | --- | --- | --- | --- | --- |
 
 ## Compatibility Rules

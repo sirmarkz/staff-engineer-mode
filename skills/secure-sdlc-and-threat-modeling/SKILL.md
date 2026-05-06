@@ -1,6 +1,6 @@
 ---
 name: secure-sdlc-and-threat-modeling
-description: "Use to threat-model a feature or system — trust boundaries, data flows, abuse cases, controls mapped to tests, residual risk register — before implementation crosses a sensitive boundary."
+description: "Use when asked to threat-model a feature or system — trust boundaries, data flows, abuse cases, controls mapped to tests, residual risk register — before implementation crosses a sensitive boundary."
 ---
 
 # Secure SDLC And Threat Modeling
@@ -15,9 +15,9 @@ If threats do not map to controls and verification, the review is not actionable
 
 ## Overview
 
-Produces a trust-boundary and data-flow map, an abuse-case table, a control mapping with verification for each high-risk control, and a residual-risk register with named owners and expiry. Refuses to accept controls that cannot be tested, gated, or observed.
+Produces a trust-boundary and data-flow map, an abuse-case table, a control mapping with verification for each high-risk control, and a residual-risk register with explicit user acceptance and expiry. Refuses to accept controls that cannot be tested, gated, or observed.
 
-**Core principle:** model trust boundaries and abuse cases early, then turn threats into testable controls with owners.
+**Core principle:** model trust boundaries and abuse cases early, then turn threats into testable controls, explicit evidence, and user-accepted residual risk.
 
 ## When To Use
 
@@ -28,9 +28,9 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 
 ## When Not To Use
 
-- The main topic is build provenance, artifact signing, dependency inventory, or deployment admission; defer to `software-supply-chain-security`.
-- The main topic is identity, secrets, cryptography lifecycle, or access lifecycle; defer to `identity-and-secrets` or `cryptography-and-key-lifecycle`.
-- The main topic is LLM prompt, tool, or retrieval abuse; defer to `llm-application-security`.
+- The main topic is build provenance, artifact signing, dependency inventory, or deployment admission; use `software-supply-chain-security` instead.
+- The main topic is identity, secrets, cryptography lifecycle, or access lifecycle; use `identity-and-secrets` or `cryptography-and-key-lifecycle` instead.
+- The main topic is LLM prompt, tool, or retrieval abuse; use `llm-application-security` instead.
 - The request is broad legal/compliance program management; out of scope unless reframed as engineering controls.
 
 ## Inputs To Collect
@@ -39,7 +39,7 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 - Data classification, sensitive fields, privacy constraints, logging/telemetry handling, and retention.
 - Entry points, APIs, background jobs, admin paths, operational access, and third-party integrations.
 - Abuse cases, attacker goals, known vulnerability classes, dependency assumptions, and misuse paths.
-- Existing controls, tests, code review gates, scanning results, incidents, and residual risks.
+- Existing controls, tests, self-review gates, scanning results, incidents, and residual risks.
 
 ## Workflow
 
@@ -48,29 +48,29 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 3. **List abuse cases.** Write what an attacker or malicious/buggy client tries to accomplish, not only what component might fail.
 4. **Apply a threat frame.** Use spoofing, tampering, repudiation, disclosure, denial, privilege elevation, or equivalent categories to avoid blind spots.
 5. **Map controls.** Assign authentication, authorization, validation, output handling, rate limits, audit, secrets handling, encryption, and isolation controls.
-6. **Make controls testable.** Define unit/integration/security tests, review gates, runtime monitors, or operational evidence for each high-risk control.
-7. **Record residual risk.** State owner, compensating control, expiry, and acceptance condition.
+6. **Make controls testable.** Define unit/integration/security tests, self-review gates, runtime monitors, or operational evidence for each high-risk control.
+7. **Record residual risk.** State compensating control, expiry, acceptance condition, and explicit user risk acceptance.
 8. **Route specialized surfaces.** Identity/secrets, supply chain, LLM, tenant isolation, and vulnerability remediation go to their specialist skills when central.
 
 ## Synthesized Default
 
-Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, abuse cases, control mapping, test plan, and residual-risk register. Prefer controls that are enforced in code, configuration, review gates, runtime evidence, or deployment checks over prose-only policy.
+Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, abuse cases, control mapping, test plan, and residual-risk register. Prefer controls that are enforced in code, configuration, self-review gates, runtime evidence, or deployment checks over prose-only policy.
 
 ## Exceptions
 
 - Low-risk internal changes can use a small abuse-case checklist if no trust boundary, data sensitivity, or privileged operation changes.
-- High-risk financial, privacy, safety, or admin paths need deeper review and explicit security signoff.
+- High-risk financial, privacy, safety, or admin paths need deeper evidence and explicit user risk acceptance.
 - Emergency fixes may document the minimal threat review first and complete residual-risk review immediately after mitigation.
 - Legal/compliance requirements can constrain controls, but this skill remains focused on engineering implementation and evidence.
 
 ## Response Quality Bar
 
 - Lead with the threat-model decision, abuse-case table, control gap, or residual-risk register requested.
-- Cover trust boundaries, actors, data flows, privileged paths, abuse cases, control mapping, verification, and residual ownership before optional security breadth.
-- Make recommendations actionable with owners, control points, tests or review gates, stop criteria, compensating controls, and expiry where relevant.
+- Cover trust boundaries, actors, data flows, privileged paths, abuse cases, control mapping, verification, and residual responsibility before optional security breadth.
+- Make recommendations actionable with control points, tests or self-review gates, stop criteria, compensating controls, and expiry where relevant.
 - State required evidence such as architecture/data-flow diagrams, auth paths, sensitive data stores, logs, deployment gates, security tests, and runtime checks; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside secure design and threat modeling. Route identity, supply-chain, tenant, LLM, or vulnerability work only when the prompt makes that specialist surface central.
+- Stay inside secure design and threat modeling. Use identity, supply-chain, tenant, LLM, or vulnerability skills only when the prompt makes that specialist surface central.
 - Be concise: avoid generic vulnerability category lists and prefer system-specific abuse-case and control tables.
 
 ## Required Outputs
@@ -79,17 +79,17 @@ Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, a
 - Threat and abuse-case table.
 - Security requirements and control mapping.
 - Verification plan for controls.
-- Residual-risk register with owners and expiry.
+- Residual-risk register with explicit user acceptance and expiry.
 - Sensitive-data and logging review.
-- Follow-up routes for identity, supply-chain, tenant, LLM, or vulnerability work.
+- Follow-up checks for identity, supply-chain, tenant, LLM, or vulnerability work.
 
 ## Evidence Gates
 
 - `boundary_check`: actors, trust boundaries, data flows, and privileged paths are explicit.
 - `threat_coverage`: high-risk abuse cases map to controls.
-- `verification_check`: every high-risk control has a test, review gate, runtime check, or evidence source.
+- `verification_check`: every high-risk control has a test, self-review gate, runtime check, or evidence source.
 - `data_handling`: sensitive data storage, transmission, logging, and retention behavior is addressed.
-- `risk_owner`: residual risks have owner, expiry, and compensating control.
+- `risk_responsibility`: residual risks have explicit user acceptance, expiry, and compensating control.
 
 ## Red Flags - Stop And Rework
 
@@ -97,7 +97,7 @@ Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, a
 - Controls are stated but not testable.
 - Admin or operational access is ignored.
 - Sensitive data appears in logs, traces, errors, or analytics without controls.
-- Residual risks have no owner or expiry.
+- Residual risks have no user acceptance or expiry.
 
 ## Common Mistakes
 

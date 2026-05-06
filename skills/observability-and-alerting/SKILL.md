@@ -1,6 +1,6 @@
 ---
 name: observability-and-alerting
-description: "Use to design telemetry, dashboards, alert rules, or runbooks tied to user journeys — and to decide what should page versus ticket. Not for SLO math; that is slo-and-error-budgets."
+description: "Use when asked to design telemetry, dashboards, alert rules, or runbooks tied to user journeys — and to decide what should page versus ticket. Not for SLO math; that is slo-and-error-budgets."
 ---
 
 # Observability And Alerting
@@ -15,7 +15,7 @@ Telemetry that does not map to a user-visible symptom is decoration. An alert th
 
 ## Overview
 
-Produces telemetry requirements tied to user journeys, a dashboard specification that answers impact and recent change, and an alert policy where every page has user impact, urgency, actionability, and a runbook. Refuses host-health pages, unowned alerts, and dashboards built from whatever the platform happened to emit.
+Produces telemetry requirements tied to user journeys, a dashboard specification that answers impact and recent change, and an alert policy where every page has user impact, urgency, actionability, and a runbook. Refuses host-health pages, anonymous alerts, and dashboards built from whatever the platform happened to emit.
 
 **Core principle:** instrument user-visible symptoms first, then add enough causal context to debug without guessing.
 
@@ -28,19 +28,20 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 
 ## When Not To Use
 
-- The user needs reliability targets, SLO math, or budget policy; defer to `slo-and-error-budgets`.
-- The user needs to reduce existing page volume or toil; defer to `oncall-health` unless new telemetry is central.
+- The user needs reliability targets, SLO math, or budget policy; use `slo-and-error-budgets` instead.
+- The user needs to reduce existing page volume or toil; use `oncall-health` instead unless new telemetry is central.
 - The user is in a live incident; route to `incident-response-and-postmortems` first.
 - The work is only local development logging without production operations impact.
 
 ## Inputs To Collect
 
-- Critical user journeys, SLOs, owners, service tier, and incident history.
+- Critical user journeys, SLOs, service tier, and incident history.
 - Request paths, dependency map, queues, data stores, batch jobs, and external integrations.
 - Existing metrics, logs, traces, dashboards, alerts, runbooks, and known blind spots.
+- Fault-domain labels needed for impact analysis, such as location, deployment unit, partition, shard, tenant, and deployment stage.
 - Deployment markers, version identifiers, feature/config flags, tenant/customer context, and correlation identifiers.
 - Privacy constraints, sensitive fields, retention requirements, and sampling limits.
-- Responder workflow: where pages go, who owns them, and how runbooks are used.
+- Responder workflow: where pages go, what local response path handles them, and how runbooks are used.
 
 ## Workflow
 
@@ -48,15 +49,16 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 2. **Add golden signals.** Capture latency, traffic, errors, and saturation for services; utilization, saturation, and errors for resources.
 3. **Instrument dependencies.** Include call count, latency, errors, timeouts, retries, queue depth, queue age, and drain rate.
 4. **Connect events.** Propagate correlation/context identifiers across boundaries and attach deployment/change markers.
-5. **Structure logs and events.** Use stable fields for operation, owner, tenant/customer context where safe, dependency, result, error class, and latency.
+5. **Structure logs and events.** Use stable fields for operation, tenant/customer context where safe, dependency, result, error class, and latency.
 6. **Define the health model.** State healthy, degraded, unavailable, and recovering conditions at component, dependency, journey, and workload levels; distinguish transient degradation from sustained unavailability.
-7. **Design dashboards for questions.** Build views around impact, scope, recent changes, dependencies, saturation, and recovery progress.
+7. **Design dashboards for questions.** Build views around impact, scope, fault domain, recent changes, dependencies, saturation, and recovery progress.
 8. **Page on symptoms.** Use SLO burn or direct user-impact alerts. Keep diagnostic and causal alerts as tickets unless urgent and actionable.
-9. **Attach runbooks.** Every page needs triage steps, impact check, mitigation options, escalation path, and rollback/fallback links.
+9. **Identify affected customers safely.** For customer-impacting services, define privacy-safe signals that support impact scoping and notification.
+10. **Attach runbooks.** Every page needs triage steps, impact check, mitigation options, fallback path, and rollback/fallback links.
 
 ## Synthesized Default
 
-Use SLO/user-journey symptoms, layered health models, golden signals, structured events, distributed context, deployment markers, and dependency signals as the default telemetry set. Page only when action is required now; use dashboards and tickets for investigation and slow-burn work.
+Use SLO/user-journey symptoms, layered health models, golden signals, fault-domain labels, structured events, distributed context, deployment markers, and dependency signals as the default telemetry set. Page only when action is required now; use dashboards and tickets for investigation and slow-burn work.
 
 ## Exceptions
 
@@ -69,7 +71,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, structured
 
 - Lead with the dashboard spec, alert classification, telemetry gap, or runbook requirement requested.
 - Cover user journeys, health states, golden signals, dependency context, deployment markers, privacy-safe events, paging policy, and runbooks before optional observability breadth.
-- Make recommendations actionable with owners, metric/log/trace names, thresholds, routes, runbook links, failure response, and rollout gates where relevant.
+- Make recommendations actionable with metric/log/trace names, thresholds, routes, runbook links, failure response, and rollout gates where relevant.
 - State required evidence such as SLOs, metric sources, log fields, trace context, alert history, runbook content, deploy markers, and sensitive-data handling; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside observability and alerting. Route SLO definition, on-call policy, or incident response only when those are the central unresolved risk.
@@ -79,6 +81,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, structured
 
 - Telemetry requirements mapped to user journeys and dependencies.
 - Dashboard specification for impact, scope, dependencies, saturation, and recent changes.
+- Fault-domain and affected-customer scoping signals where relevant.
 - Alert policy with page/ticket/diagnostic classification.
 - Structured log/event field standard and sensitive-data handling.
 - Trace or context propagation requirements.
@@ -90,7 +93,8 @@ Use SLO/user-journey symptoms, layered health models, golden signals, structured
 - `symptom_first`: paging alerts map to SLO burn or direct user-visible impact.
 - `health_model`: component and dependency signals aggregate into critical-journey and workload health states.
 - `causal_context`: telemetry includes dependency, correlation, version/change, and saturation context.
-- `runbook_link`: every page has a runbook with impact check, mitigation, escalation, and verification.
+- `fault_domain_context`: telemetry can separate impact by location, deployment unit, partition, shard, tenant, or deployment stage where those domains exist.
+- `runbook_link`: every page has a runbook with impact check, mitigation, fallback, and verification.
 - `privacy_check`: sensitive data handling is defined for logs, traces, labels, and events.
 - `debug_path`: dashboards answer impact, scope, cause candidates, recent changes, and recovery state.
 
@@ -99,7 +103,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, structured
 - Dashboards start from whatever the platform emits instead of user journeys.
 - Every dependency error pages even when retries hide user impact.
 - Logs contain sensitive data or unbounded high-cardinality fields without controls.
-- Alerts have no owner or runbook.
+- Alerts have no runbook or response path.
 - Metrics show averages only and hide tail latency or saturation.
 
 ## Common Mistakes

@@ -1,6 +1,6 @@
 # Production Readiness Review
 
-## Ownership
+## Responsibility
 
 ## SLOs
 

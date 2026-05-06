@@ -2,7 +2,7 @@
 
 ## Change
 
-## Owner
+## Responsibility Path
 
 ## Contract
 

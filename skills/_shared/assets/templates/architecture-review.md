@@ -6,7 +6,7 @@
 
 ## Risks
 
-| Risk | Impact | Mitigation | Owner | Evidence |
+| Risk | Impact | Mitigation | Responsibility Path | Evidence |
 | --- | --- | --- | --- | --- |
 
 ## Synthesized Default

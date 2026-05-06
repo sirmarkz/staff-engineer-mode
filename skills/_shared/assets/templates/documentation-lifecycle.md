@@ -1,6 +1,6 @@
 # Documentation Lifecycle
 
-| Doc | Audience | Job | Owner | Source Of Truth | Review Trigger | Archive Rule |
+| Doc | Audience | Job | Responsibility Path | Source Of Truth | Review Trigger | Archive Rule |
 | --- | --- | --- | --- | --- | --- | --- |
 
 ## Required Docs

@@ -1,6 +1,6 @@
 ---
 name: llm-serving-cost-and-latency
-description: "Use to set per-route token and latency budgets on an LLM-backed feature, design the cache strategy, write the degradation path on provider failure, or attribute spend per route, feature, or tenant."
+description: "Use when asked to set per-route token and latency budgets on an LLM-backed feature, design the cache strategy, write the degradation path on provider failure, or attribute spend per route, feature, or tenant."
 ---
 
 # LLM Serving Cost And Latency
@@ -23,9 +23,9 @@ Produces a per-route token and latency budget table, a cache strategy spec for p
 
 - The user is designing, reviewing, or operating a route, agent, or background job that calls a hosted or self-served language model.
 - Spend on model inference is rising faster than traffic and the cause is unclear.
-- p95 or p99 latency on an LLM-backed path is unacceptable to users and the team is choosing between caching, batching, smaller models, streaming, or removing calls.
+- p95 or p99 latency on an LLM-backed path is unacceptable to users and you is choosing between caching, batching, smaller models, streaming, or removing calls.
 - A model provider had an outage or degraded response and the route had no fallback.
-- The team needs a token budget per request before launching a feature that calls the model in a loop, in a tool-use pattern, or per item in a list.
+- You need a token budget per request before launching a feature that calls the model in a loop, in a tool-use pattern, or per item in a list.
 - Prompt cache hit rate, embedding reuse, or response cache invalidation rules need to be defined.
 - A retry policy is amplifying token spend on partial failures and needs bounding.
 - A multi-tenant or multi-feature workload needs cost attribution because one consumer is hiding behind aggregate spend.
@@ -54,7 +54,7 @@ Produces a per-route token and latency budget table, a cache strategy spec for p
 
 ## Workflow
 
-1. **Enumerate the routes.** List every path where the model is called, including tool-call loops and background jobs. A route the team forgot is the route that breaks the cost model.
+1. **Enumerate the routes.** List every path where the model is called, including tool-call loops and background jobs. A route you forgot is the route that breaks the cost model.
 2. **Set token budgets per route.** Define a per-request input-token cap, an expected output-token cap, and a hard cap that triggers a degraded response. The budget is a contract; the prompt assembler must enforce it.
 3. **Set latency budgets per route.** Define p50, p95, and p99 end-to-end targets. For interactive routes, also define a time-to-first-token target if streaming is used. For background jobs, define a wall-clock deadline and a per-item cost ceiling.
 4. **Choose the model tier deliberately.** Match the smallest acceptable model to the route's quality bar. State the fallback tier and the conditions that switch to it. Cascading from cheaper to more expensive models is allowed when the cheaper model has a measurable quality threshold; without that threshold, cascading just doubles the cost.
@@ -62,14 +62,14 @@ Produces a per-route token and latency budget table, a cache strategy spec for p
 6. **Bound retries and timeouts.** Set max retries, backoff, and a per-call timeout shorter than the upstream timeout. Confirm the operation is idempotent at the model layer or that retries are guarded by an idempotency key. Compute the worst-case token cost as cost-per-attempt times max attempts; that is the real per-request budget.
 7. **Write the degradation policy.** For each route, state what happens when the primary model is unavailable, rate-limited, slower than the latency budget, or returns malformed output. Options include fallback model, cached response, cached approximate response, partial answer with explicit signaling, queued for later, or refused with a defined error contract. Silent fallback that changes user-visible quality without signaling is not allowed.
 8. **Decide batching versus streaming.** For interactive routes, streaming usually wins on perceived latency at similar cost. For batch jobs, batching wins on throughput and per-token cost where the provider supports it; deadlines and partial-failure semantics must be explicit.
-9. **Bound structured-output cost.** Schema-constrained output and tool calls amplify token cost when the model retries to satisfy a schema. Cap retries, validate cheaply before re-prompting, and treat schema-validation failure as a first-class failure mode with its own counter.
+9. **Bound structured-output cost.** Schema-constrained output and tool calls amplify token cost when the model retries to satisfy a schema. Cap retries, validate cheaply before re-prompting, and treat schema-validation failure as a first-class failure mode with a separate counter.
 10. **Attribute cost.** Tag every model call with route, feature, and tenant where applicable. Aggregate spend and tail latency per tag. A cost spike with no per-tag breakdown is a finding by itself.
 11. **Add guardrails and alerts.** Alert on per-route token-budget breach, per-tenant cost anomaly, cache-hit-rate regression, fallback rate, retry amplification, and tail-latency regression after a model or prompt change.
 12. **Rehearse the degraded path.** Periodically force fallback or refusal in a low-impact environment so the degraded contract is real, not theoretical.
 
 ## Synthesized Default
 
-Set per-route token and latency budgets before launch. Choose the smallest acceptable model and a defined fallback. Cache aggressively at the layer that matches the determinism of the call: prompt prefix, embedding, full response, or scoped semantic. Bound retries and structured-output reattempts. Stream for interactivity, batch for throughput. Tag every call for attribution. Always have a degraded path and rehearse it. Treat the prompt assembler as a piece of production code with its own budget tests.
+Set per-route token and latency budgets before launch. Choose the smallest acceptable model and a defined fallback. Cache aggressively at the layer that matches the determinism of the call: prompt prefix, embedding, full response, or scoped semantic. Bound retries and structured-output reattempts. Stream for interactivity, batch for throughput. Tag every call for attribution. Always have a degraded path and rehearse it. Treat the prompt assembler as a piece of production code with dedicated budget tests.
 
 ## Exceptions
 
@@ -86,7 +86,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 - Make recommendations actionable with per-route numbers, cache scopes and TTLs, fallback conditions, retry caps, and the alerts that catch regression.
 - State required evidence such as per-route token histograms, latency percentiles, cache hit rates, fallback rate, retry rate, and per-tag spend; do not claim a budget without the data behind it.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside model-serving cost and latency. Route prompt-injection and tool-access risk, eval gates, generic backend performance, and generic dollar-cost optimization to the owning specialist.
+- Stay inside model-serving cost and latency. Route prompt-injection and tool-access risk, eval gates, generic backend performance, and generic dollar-cost optimization to the responsible specialist.
 - Be concise: prefer compact route, cache, and fallback tables over generic LLM exposition.
 
 ## Required Outputs
@@ -99,7 +99,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 - Structured-output and tool-call cost bound: max validation retries, validation strategy, and the failure-mode counter.
 - Cost-attribution model mapping spend to route, feature, and tenant, with the engineering unit each tag exposes.
 - Alert and guardrail set: token-budget breach, tail-latency regression, cache-hit regression, fallback rate, retry amplification, and per-tenant cost anomaly.
-- Rehearsal plan for the degraded path with cadence and owner.
+- Rehearsal plan for the degraded path with cadence and verification path.
 
 ## Evidence Gates
 

@@ -63,7 +63,7 @@ Total: 60 seconds. Eight beats.
   - no telemetry budget
   - page-size unbounded (DoS risk)
 - **Narrator:** "With it: missing rollback. No SLO. Owner unset. No telemetry budget. Unbounded page size. Five risks the agent missed."
-- **Purpose:** the proof. This is the load-bearing beat. Do not rush.
+- **Purpose:** the proof. This is the central beat. Do not rush.
 
 ### Beat 7 — Proof line (0:52–0:57)
 

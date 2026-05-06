@@ -1,6 +1,6 @@
 # Support Window Inventory
 
-| Component | Owner | Version | Support Ends | Criticality | Exception | Migration Date |
+| Component | Responsibility Path | Version | Support Ends | Criticality | Exception | Migration Date |
 | --- | --- | --- | --- | --- | --- | --- |
 
 ## Unknowns

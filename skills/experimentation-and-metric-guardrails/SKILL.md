@@ -1,6 +1,6 @@
 ---
 name: experimentation-and-metric-guardrails
-description: "Use to design or read out an A/B test, holdout, or ramp where the team plans to make a decision from the result — including hand-rolled experiments without an experimentation platform."
+description: "Use when asked to design or read out an A/B test, holdout, or ramp where you plans to make a decision from the result — including hand-rolled experiments without an experimentation platform."
 ---
 
 # Experimentation And Metric Guardrails
@@ -11,7 +11,7 @@ description: "Use to design or read out an A/B test, holdout, or ramp where the 
 NO EXPERIMENT CALL WITHOUT A HYPOTHESIS, A KNOWN EXPOSED POPULATION, GUARDRAIL METRICS, AND A PRE-COMMITTED READOUT RULE
 ```
 
-The experiment must say what it predicts, prove who actually saw the change (not just who was assigned), name the safety/quality metrics that can block a positive primary result, and commit to the decision rule before reading the result. For a small-team or hand-rolled experiment "known exposed population" can be as simple as "logged-in users on build SHA X after timestamp Y" — the invariant is that you can answer who was affected, not that you have an experimentation platform.
+The experiment must say what it predicts, prove who actually saw the change (not just who was assigned), name the safety/quality metrics that can block a positive primary result, and commit to the decision rule before reading the result. For a small-project or hand-rolled experiment "known exposed population" can be as simple as "logged-in users on build SHA X after timestamp Y" — the invariant is that you can answer who was affected, not that you have an experimentation platform.
 
 ## Overview
 
@@ -28,9 +28,9 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 
 ## When Not To Use
 
-- The main question is blast radius, rollback, canary, or operational rollout; defer to `progressive-delivery`.
-- The main question is service reliability objectives or alerting policy; defer to `slo-and-error-budgets`.
-- The main question is LLM evals or model release gates; defer to `llm-evaluation` or `ml-reliability-and-evaluation`.
+- The main question is blast radius, rollback, canary, or operational rollout; use `progressive-delivery` instead.
+- The main question is service reliability objectives or alerting policy; use `slo-and-error-budgets` instead.
+- The main question is LLM evals or model release gates; use `llm-evaluation` or `ml-reliability-and-evaluation` instead.
 - The request is product strategy with no engineering measurement artifact.
 
 ## Inputs To Collect
@@ -39,7 +39,7 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 - Primary metric, guardrail metrics, diagnostic metrics, minimum effect, runtime, and stopping rule.
 - Assignment implementation, eligibility filters, ramp plan, holdout policy, and contamination risks.
 - Exposure logging, event definitions, metric pipelines, missingness, delayed effects, and data-quality checks.
-- Segment/slice plan, interaction with other experiments, and decision owner.
+- Segment/slice plan, interaction with other experiments, and decision point.
 
 ## Workflow
 
@@ -50,7 +50,7 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 5. **Check validity.** Test assignment balance, sample-ratio mismatch, missing telemetry, logging defects, and eligibility drift.
 6. **Plan interactions.** Identify overlapping experiments, long-lived holdouts, novelty effects, and downstream metric coupling.
 7. **Gate ramps.** Combine experiment outcomes with operational guardrails; do not let positive primary metrics hide safety regressions.
-8. **Record decision evidence.** Capture result, caveats, decision, owner, rollback trigger, and follow-up measurement.
+8. **Record decision evidence.** Capture result, caveats, decision, rollback trigger, and follow-up measurement.
 
 ## Synthesized Default
 
@@ -66,10 +66,10 @@ Use predeclared hypotheses, stable assignment, exposure-based analysis, primary 
 
 - Lead with the experiment design, validity finding, ramp decision, or metric guardrail requested.
 - Cover hypothesis, assignment, exposure, metrics, guardrails, validity checks, slices, interactions, and decision rule before optional statistics detail.
-- Make recommendations actionable with owners, metric definitions, stop criteria, invalidation triggers, and readout dates where relevant.
+- Make recommendations actionable with metric definitions, stop criteria, invalidation triggers, and readout dates where relevant.
 - State required evidence such as assignment logs, exposure events, metric definitions, balance checks, missingness, segment results, and prior experiment interactions; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside experimentation and metric trust. Route rollout safety, service SLOs, or AI evals only when those own the decision.
+- Stay inside experimentation and metric trust. Use rollout safety, service SLO, or AI eval skills only when those surfaces drive the decision.
 - Be concise: prefer experiment design and readout tables over generic testing background.
 
 ## Required Outputs

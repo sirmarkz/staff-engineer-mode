@@ -1,6 +1,6 @@
 ---
 name: caching-and-derived-data
-description: "Use to add, fix, or audit a cache or materialized view — TTL, invalidation order, miss-storm protection, and what users see when the cache is cold or stale."
+description: "Use when asked to add, fix, or audit a cache or materialized view — TTL, invalidation order, miss-storm protection, and what users see when the cache is cold or stale."
 ---
 
 # Caching And Derived Data
@@ -28,14 +28,14 @@ Caching is a correctness path disguised as a performance optimization.
 
 ## When Not To Use
 
-- The primary question is whether stale reads are semantically acceptable; defer to `distributed-data-and-consistency`.
+- The primary question is whether stale reads are semantically acceptable; use `distributed-data-and-consistency` instead.
 - The work is primary storage choice or transaction design.
-- The issue is warehouse/ETL pipeline freshness; defer to `data-pipeline-reliability`.
-- The problem is generic dependency overload without cache mechanics; defer to `dependency-resilience`.
+- The issue is warehouse/ETL pipeline freshness; use `data-pipeline-reliability` instead.
+- The problem is generic dependency overload without cache mechanics; use `dependency-resilience` instead.
 
 ## Inputs To Collect
 
-- Cached objects, keys, writers, invalidators, readers, and owners.
+- Cached objects, keys, writers, invalidators, readers, and responsibility paths.
 - Freshness requirement, TTL, negative caching, versioning, and stale-read tolerance.
 - Backing dependency capacity, miss amplification, hot keys, and cache population path.
 - Failure behavior: cache unavailable, cache cold, invalidation delayed, stale write, partial rebuild.
@@ -56,7 +56,7 @@ Caching is a correctness path disguised as a performance optimization.
 
 ## Synthesized Default
 
-Use explicit TTLs, version-aware invalidation, request coalescing, downstream protection, stale-read observability, and repair paths. Treat cache invalidation as part of the write path and derived-state maintenance as operationally owned; never let the cache become the only proof of correctness.
+Use explicit TTLs, version-aware invalidation, request coalescing, downstream protection, stale-read observability, and repair paths. Treat cache invalidation as part of the write path and derived-state maintenance as an operational responsibility; never let the cache become the only proof of correctness.
 
 ## Exceptions
 
@@ -69,7 +69,7 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 
 - Lead with the cache correctness decision, mitigation plan, or production blockers.
 - Cover freshness, invalidation, stampede behavior, fallback, source-of-truth semantics, and observability before optional cache topics.
-- Make recommendations actionable with owners, evidence, gates, stop conditions, and rollback or bypass actions where relevant.
+- Make recommendations actionable with evidence, gates, stop conditions, and rollback or bypass actions where relevant.
 - State required evidence such as TTLs, hit/miss rates, source update events, stale-read bounds, and dependency saturation; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside cache and derived-data behavior. Route broader storage consistency or dependency overload only when materially unresolved.
@@ -78,7 +78,7 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 ## Required Outputs
 
 - Cache or derived-data decision record.
-- Key, writer, invalidator, reader, and owner map.
+- Key, writer, invalidator, reader, and responsibility map.
 - Freshness, TTL, invalidation, and versioning policy.
 - Stampede and miss-amplification protection plan.
 - Failure/degradation behavior.
@@ -97,7 +97,7 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 
 - TTL is the only invalidation strategy for correctness-sensitive data.
 - Cache miss paths can fan out enough to overload backing systems.
-- Writers and invalidators are owned by different teams with no contract.
+- Writers and invalidators are maintained by different projects with no contract.
 - Stale entries are possible but not observable.
 - Rebuild or reindex time is longer than the business recovery expectation.
 
@@ -107,5 +107,5 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 | --- | --- |
 | Calling cache a performance-only detail | Treat it as correctness and availability behavior. |
 | Hiding stale reads | Measure and expose freshness. |
-| Ignoring cold starts | Model cache cold, regional failover, and bulk invalidation. |
+| Ignoring cold starts | Model cache cold, location failover, and bulk invalidation. |
 | Invalidating globally by default | Prefer scoped, versioned, or staged repair when possible. |

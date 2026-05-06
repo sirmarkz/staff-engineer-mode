@@ -1,6 +1,6 @@
 ---
 name: database-operations
-description: "Use before running a schema change, backfill, index build, or destructive query against a production datastore — to assess locks, lag, throttle, abort, and verification."
+description: "Use when asked to run a schema change, backfill, index build, or destructive query against a production datastore — to assess locks, lag, throttle, abort, and verification."
 ---
 
 # Database Operations And Schema Changes
@@ -28,10 +28,10 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 
 ## When Not To Use
 
-- The question is abstract storage or consistency choice; defer to `distributed-data-and-consistency`.
-- The request is general rollout sequencing without database risk; defer to `progressive-delivery`.
-- The primary concern is recovery after corruption or destructive change; defer to `backup-and-recovery`.
-- The work is warehouse/ETL freshness; defer to `data-pipeline-reliability`.
+- The question is abstract storage or consistency choice; use `distributed-data-and-consistency` instead.
+- The request is general rollout sequencing without database risk; use `progressive-delivery` instead.
+- The primary concern is recovery after corruption or destructive change; use `backup-and-recovery` instead.
+- The work is warehouse/ETL freshness; use `data-pipeline-reliability` instead.
 
 ## Inputs To Collect
 
@@ -56,7 +56,7 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 
 ## Synthesized Default
 
-Use compatible expand/contract migrations, throttled idempotent backfills, explicit abort criteria, delayed destructive cleanup, and verification queries. Treat database operations as release events with telemetry and owner presence; include partitioning and shard-map effects when data placement changes.
+Use compatible expand/contract migrations, throttled idempotent backfills, explicit abort criteria, delayed destructive cleanup, and verification queries. Treat database operations as release events with telemetry, user confirmation for risky steps, and rollback evidence; include partitioning and shard-map effects when data placement changes.
 
 ## Exceptions
 
@@ -69,7 +69,7 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 
 - Lead with the migration safety decision, blockers, or execution plan requested.
 - Cover locks, query plans, backfill throttling, replication lag, verification, and rollback before optional database topics.
-- Make recommendations actionable with owners, evidence, gates, stop conditions, and rollback or pause criteria where relevant.
+- Make recommendations actionable with evidence, gates, stop conditions, and rollback or pause criteria where relevant.
 - State required evidence such as table size, write rate, lock behavior, replica lag, batch metrics, and validation queries; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside database change execution. Route broader distributed consistency only when semantic consistency is unresolved.
@@ -77,18 +77,18 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 
 ## Required Outputs
 
-- Database change plan with phases and owner.
+- Database change plan with phases, confirmation points, and rollback evidence.
 - Lock, lag, write-amplification, and query-plan risk assessment.
 - Backfill or maintenance runbook with throttle, pause, abort, and checkpointing.
 - Verification query/invariant plan.
 - Monitoring and alert additions for the change window.
 - Rollback or forward-fix decision record.
-- Cleanup plan with delay, owner, and evidence gate.
+- Cleanup plan with delay, and evidence gate.
 
 ## Evidence Gates
 
 - `lock_lag_check`: lock behavior, replication lag, and write amplification are assessed.
-- `throttle_abort`: batch size, throttle, pause, abort, and owner are defined.
+- `throttle_abort`: batch size, throttle, pause, abort, and confirmation point are defined.
 - `verification_check`: data correctness verification queries or invariants exist.
 - `rollback_check`: rollback or forward-fix path is written before execution.
 - `cleanup_delay`: destructive cleanup is delayed until cutover is verified.

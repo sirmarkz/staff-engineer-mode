@@ -1,6 +1,6 @@
 ---
 name: state-machine-correctness
-description: "Use to validate a high-stakes state machine, protocol, or concurrency boundary — explicit invariants plus property tests, fuzzing, simulation, or model checking — when example-based tests cannot cover the input or interleaving space."
+description: "Use when asked to validate a high-stakes state machine, protocol, or concurrency boundary — explicit invariants plus property tests, fuzzing, simulation, or model checking — when example-based tests cannot cover the input or interleaving space."
 ---
 
 # Systems Correctness And Formal Validation
@@ -11,7 +11,7 @@ description: "Use to validate a high-stakes state machine, protocol, or concurre
 NO HIGH-STAKES STATE MACHINE WITHOUT EXPLICIT INVARIANTS AND COUNTEREXAMPLE-DRIVEN VALIDATION
 ```
 
-If the team cannot state what must never happen, it cannot prove that the design avoids it.
+If you cannot state what must never happen, it cannot prove that the design avoids it.
 
 ## Overview
 
@@ -48,7 +48,7 @@ Some bugs are too subtle for example-based tests and too expensive to discover i
 
 1. **Name the critical property.** Write invariants in plain language before choosing tools.
 2. **Bound the model.** Include only state, actors, timing, failures, and nondeterminism needed to test the property.
-3. **Choose validation strength.** Match the technique to the invariant. Use property-based testing and fuzzing when the invariant is local and the input or interleaving space exceeds what examples cover; use deterministic simulation when timing, scheduling, crash, or retry interleavings dominate; use model checking when the protocol or concurrency interleaving is the source of risk; reserve full proof for cryptographic, consensus, or safety-critical mechanisms. Escalate up the ladder when the lower technique cannot cover the state space; do not stop at examples for high-stakes invariants. Bounded property tests on pure logic and parser-only fuzzing with no state-machine or invariant under test belong in `testing-and-quality-gates`.
+3. **Choose validation strength.** Match the technique to the invariant. Use property-based testing and fuzzing when the invariant is local and the input or interleaving space exceeds what examples cover; use deterministic simulation when timing, scheduling, crash, or retry interleavings dominate; use model checking when the protocol or concurrency interleaving is the source of risk; reserve full proof for cryptographic, consensus, or safety-critical mechanisms. Move up the validation ladder when the lower technique cannot cover the state space; do not stop at examples for high-stakes invariants. Bounded property tests on pure logic and parser-only fuzzing with no state-machine or invariant under test belong in `testing-and-quality-gates`.
 4. **Search for counterexamples.** Treat each failing trace as design feedback, not as a tool nuisance.
 5. **Connect model to code.** Record which code paths implement each transition and which tests or monitors prove the mapping.
 6. **Verify recovery paths.** Include crash, retry, duplicate, reorder, timeout, partial write, and restart behavior.
@@ -70,7 +70,7 @@ Use lightweight formal or semi-formal validation for high-stakes stateful behavi
 
 - Lead with the invariant set, model boundary, counterexample, validation method, or blocker requested.
 - Cover safety/liveness properties, state actors, messages, timing, failures, retries, recovery, code mapping, and runtime checks before optional formal-methods breadth.
-- Make recommendations actionable with owners, model scope, properties to test, counterexample handling, recovery cases, gates, and stop criteria where relevant.
+- Make recommendations actionable with model scope, properties to test, counterexample handling, recovery cases, gates, and stop criteria where relevant.
 - State required evidence such as protocol states, transition rules, failure assumptions, trace logs, property-test results, simulation output, model checker traces, and code links; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside correctness validation. Route distributed-data consistency, tenant isolation, or cryptography only when those are the central unresolved risk.
@@ -106,7 +106,7 @@ Use lightweight formal or semi-formal validation for high-stakes stateful behavi
 
 | Mistake | Correction |
 | --- | --- |
-| Modeling the whole system | Model the smallest state machine that owns the invariant. |
+| Modeling the whole system | Model the smallest state machine that protects the invariant. |
 | Confusing tests with properties | Write the rule first, then generate or search cases. |
 | Ignoring liveness assumptions | State what timing, retry, and failure assumptions allow progress. |
 | Letting specs drift | Update model and invariant checks when implementation changes. |
