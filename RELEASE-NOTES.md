@@ -1,5 +1,23 @@
 # Staff Engineer Mode Release Notes
 
+## 0.7.0 - 2026-05-06
+
+Self-sufficient skill guidance release.
+
+- Refactors the skill catalog so guidance works directly for solo developers:
+  skills now use local evidence, explicit user decisions, and executable
+  response paths instead of external responsibility chains.
+- Consolidates all specialist `SKILL.md` files under the 300-line cap while
+  preserving operational sections, evidence gates, red flags, and common
+  mistakes.
+- Adds stronger API design, availability, dependency resilience, LLM
+  application security, data lifecycle, and release-safety guidance across the
+  relevant specialist skills.
+- Updates shared templates, router fixtures, and routing notes to match the
+  evidence-based responsibility model.
+- Strengthens validation with line-count enforcement, duplicate-content checks,
+  description trigger checks, frontmatter shape checks, and newline checks.
+
 ## 0.6.0 - 2026-05-05
 
 Performance optimizations across the skill catalog.
