@@ -31,3 +31,6 @@ Thumbs.db
 *.log
 tmp/
 temp/
+
+# Local docs scratchpad (not part of the skill pack)
+docs/
