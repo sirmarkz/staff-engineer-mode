@@ -53,7 +53,7 @@ Produces a staged rollout plan with named blast radius per stage, predeclared ca
 5. **Stage stateful changes.** Keep reader/writer compatibility across at least one-version skew; use expand/contract, dual-read/dual-write, delayed cleanup, and explicit schema/data ordering when state is involved.
 6. **Choose canary gates.** Select metrics before release. Include user-visible symptoms and correctness, not only process health. Each gate needs a baseline window, minimum observation window, bake time, and enough exposed traffic or an alternate signal such as synthetic probes, extended bake time, or manual verification.
 7. **Gate each exposure step.** Start with a tiny production slice when possible, then move through rings, cohorts, partitions, stamps, deployment units, or locations only after health evidence says the previous step is safe.
-8. **Set stop and rollback rules.** Define thresholds, who can halt, how rollback works, and when forward-fix is safer. If user impact is active, route incident command to `incident-response-and-postmortems` while keeping rollback mechanics traceable here.
+8. **Set stop and rollback rules.** Define thresholds, who can halt, and how rollback works. Pre-classify rollback safety per change: it is safe when the change is stateless, flag-gated, purely additive, or recently deployed with minimal state divergence; it is dangerous when a schema migration has run, a data format changed and new data is being written, external clients depend on the new contract, a stateful workflow is in flight, or a cache holds data in the new format. Choose forward-fix when rollback would cause more damage than the current impact, the fix is small and quickly deployable, or impact is confined to an isolatable subset. If user impact is active, route incident command to `incident-response-and-postmortems` while keeping rollback mechanics traceable here.
 9. **Handle forward-fix-only surfaces.** If rollback is structurally impossible, require a server-side kill switch or disable path, staged adoption metric, hotfix lane, and explicit user confirmation before first exposure.
 10. **Handle non-code changes as first class.** Validate config, stage flags, throttle migrations, and delay destructive cleanup.
 11. **Keep emergency flow familiar.** Hotfixes may move faster, but should use the same artifact identity, review, health gates, and traceable branch/change workflow where practical.
@@ -97,7 +97,7 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 - `artifact_identity`: the release identifies the artifact/change set and promotion path.
 - `canary_criteria`: canary metrics, thresholds, windows, and stop rules are defined before rollout.
 - `fault_domain_sequence`: customer-impacting exposure moves through bounded instance, cohort, partition, deployment-unit, or location waves rather than parallel broad deployment.
-- `rollback_path`: rollback or forward-fix path is tested, rehearsed, or explicitly exempted with user confirmation.
+- `rollback_path`: rollback or forward-fix path is pre-classified per change type, tested, rehearsed, or explicitly exempted with user confirmation.
 - `cleanup_responsibility`: temporary flags, configs, compatibility paths, and migration leftovers have cleanup action and expiry.
 
 ## Red Flags - Stop And Rework

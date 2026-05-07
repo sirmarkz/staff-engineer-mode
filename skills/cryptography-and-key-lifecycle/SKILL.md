@@ -49,9 +49,10 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 3. **Assess agility.** Determine whether each dependency can be renewed, rotated, revoked, or replaced without coordinated outage.
 4. **Prove compatibility.** Test old/new material and algorithm combinations with representative clients and workloads.
 5. **Automate renewal carefully.** Use monitored renewal paths with alerting, audit, and failed-renewal response.
-6. **Plan transitions.** Define overlap, dual support, rollout order, client migration, and retirement gates for deprecated algorithms or trust roots.
-7. **Prepare emergency response.** Document revocation, compromise response, rollback or roll-forward, and communication path.
-8. **Close exceptions.** Track unsupported material with expiry, risk, and compensating controls.
+6. **Rotate without coordinated downtime.** Default to a dual-credential overlap sequence: issue the new credential, configure verifiers to accept both old and new, migrate producers and clients to the new credential, prove zero traffic uses the old, then revoke. The verify-zero-old-traffic gate is what makes the rotation zero-downtime; rotations that skip it convert routine rotation into an outage.
+7. **Plan transitions.** Define overlap, dual support, rollout order, client migration, and retirement gates for deprecated algorithms or trust roots.
+8. **Prepare emergency response.** Document revocation, compromise response, rollback or roll-forward, and communication path.
+9. **Close exceptions.** Track unsupported material with expiry, risk, and compensating controls.
 
 ## Synthesized Default
 

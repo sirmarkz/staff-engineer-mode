@@ -47,7 +47,7 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 
 1. **Classify the change.** Separate additive schema, index, backfill, dual-write, cutover, cleanup, query-plan, and maintenance work.
 2. **Assess production risk.** Identify locks, lag, write amplification, query-plan shifts, shard/partition effects, cache churn, and failover interactions.
-3. **Use expand/contract.** Add compatible structures first, backfill safely, cut over, verify, then remove old structures later.
+3. **Use expand/contract in named phases.** Run schema evolution as four sequential phases — Expand (add the new structure, old code ignores it), Migrate (backfill data into the new structure), Transition (new code reads/writes both), Contract (remove the old structure once nothing references it). Each phase except Contract is rollback-safe on its own: a failed Expand drops the new structure, a failed Migrate leaves the old structure authoritative with the new partially populated, a failed Transition reverts code while the old structure still serves; a failed Contract has already validated everything, so investigate before retrying rather than rolling back.
 4. **Throttle and checkpoint.** Run in small batches with pause/abort controls, progress tracking, idempotency, and load-sensitive throttles.
 5. **Validate data.** Use verification queries, invariant checks, counts, sampling, and reconciliation before declaring completion.
 6. **Delay destructive cleanup.** Keep rollback/forward-fix options until telemetry proves the new path is stable.

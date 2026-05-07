@@ -47,13 +47,13 @@ Most cascading failures are dependency failures amplified by callers.
 
 1. **Build the dependency matrix.** Include synchronous and asynchronous dependencies, third parties, control planes, and shared infrastructure.
 2. **Set the caller deadline.** Define the total time budget from the user's perspective, then allocate per-hop timeouts inside it.
-3. **Bound retries.** Retry only when the operation is safe, useful, inside the deadline, jittered, and not repeated at every layer. Use a retry budget that replenishes during healthy responses and drains quickly during systemic failure; do not retry explicit overload signals.
+3. **Bound retries.** Retry only when the operation is safe, useful, inside the deadline, jittered, and at one layer only — chained per-layer retries multiply load geometrically (three tries per layer across five layers is 243× load on the deepest dependency). Default to at most one retry on synchronous request-response paths; allow more on asynchronous or batch work with backoff and a dead-letter terminus. Enforce the retry rate with a token-bucket budget that replenishes on healthy responses and drains under systemic failure; do not retry explicit overload signals.
 4. **Make mutations idempotent.** Require idempotency keys or durable dedupe for retryable writes, webhooks, and queue consumers.
 5. **Handle partial batch outcomes.** If a batch call partially succeeds, retry only the failed or unknown items and preserve per-item correlation.
 6. **Control queues.** Set max depth, max age, drain-rate alerts, poison handling, and backpressure before backlogs become unrecoverable.
 7. **Smooth mismatched rates.** When callers can outpace dependencies, use durable buffering, controlled workers, and rate limits instead of unbounded memory queues.
 8. **Design overload response.** Prefer fail-fast, admission control, load shedding, and priority shedding before expensive work starts.
-9. **Use circuit breakers carefully.** Only add them when open-state behavior is tested and better than bounded fail-fast; name the open threshold, half-open probe policy, close/recovery condition, and user-visible behavior while open.
+9. **Use circuit breakers carefully.** For limiting retry-induced load, prefer a token-bucket retry budget over a breaker — it bounds aggregate retry rate without modal flapping. If a breaker is needed for primary-call protection, prefer additive-increase / multiplicative-decrease over binary open/closed; binary breakers oscillate under partial failure and add a rarely exercised failure mode. Name the threshold, half-open probe policy, close/recovery condition, and user-visible behavior while open.
 10. **Keep health checks local.** Readiness may check immediate dependencies only when that cannot remove all capacity at once.
 
 ## Synthesized Default

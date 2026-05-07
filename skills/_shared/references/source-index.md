@@ -46,6 +46,13 @@ publisher, or named author. They are not grouped by skill topic.
 - [S182] AWS Best Practices for DDoS Resiliency: https://docs.aws.amazon.com/whitepapers/latest/aws-best-practices-ddos-resiliency/aws-best-practices-ddos-resiliency.html
 - [S213] Amazon Science - How Amazon Web Services Uses Formal Methods: https://www.amazon.science/publications/how-amazon-web-services-uses-formal-methods
 - [S261] Amazon EKS - Kubernetes Versions: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
+- [S284] AWS Builders' Library - Ensuring Rollback Safety During Deployments: https://aws.amazon.com/builders-library/ensuring-rollback-safety-during-deployments/
+- [S285] AWS Builders' Library - Instrumenting Distributed Systems for Operational Visibility: https://aws.amazon.com/builders-library/instrumenting-distributed-systems-for-operational-visibility/
+- [S286] AWS Builders' Library - Building Dashboards for Operational Visibility: https://aws.amazon.com/builders-library/building-dashboards-for-operational-visibility/
+- [S287] AWS Builders' Library - Going Faster with Continuous Delivery: https://aws.amazon.com/builders-library/going-faster-with-continuous-delivery/
+- [S288] AWS Builders' Library - Using Dependency Isolation to Contain Concurrency Overload: https://aws.amazon.com/builders-library/dependency-isolation/
+- [S289] AWS Builders' Library - Minimizing Correlated Failures in Distributed Systems: https://aws.amazon.com/builders-library/minimizing-correlated-failures-in-distributed-systems/
+- [S290] AWS Builders' Library - Caching Challenges and Strategies: https://aws.amazon.com/builders-library/caching-challenges-and-strategies/
 
 ### Anthropic
 - [S259] Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests

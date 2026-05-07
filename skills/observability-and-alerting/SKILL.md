@@ -48,8 +48,8 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 1. **Start with symptoms.** Define what users notice: failed requests, slow actions, stale data, dropped work, lost messages, or incorrect results.
 2. **Add golden signals.** Capture latency, traffic, errors, and saturation for services; utilization, saturation, and errors for resources.
 3. **Instrument dependencies.** Include call count, latency, errors, timeouts, retries, queue depth, queue age, and drain rate.
-4. **Connect events.** Propagate correlation/context identifiers across boundaries and attach deployment/change markers.
-5. **Structure logs and events.** Use stable fields for operation, tenant/customer context where safe, dependency, result, error class, and latency.
+4. **Connect events.** Propagate trace context across every service boundary so the trace identifier is global to a request and span identifiers are local to each unit of work; attach deployment/change markers.
+5. **Structure logs and events.** Require a baseline field set on every entry — UTC timestamp, severity, service identifier, trace identifier, request identifier, and message — plus stable fields for operation, tenant/customer context where safe, dependency, result, error class, and latency.
 6. **Define the health model.** State healthy, degraded, unavailable, and recovering conditions at component, dependency, journey, and workload levels; distinguish transient degradation from sustained unavailability.
 7. **Design dashboards for questions.** Build views around impact, scope, fault domain, recent changes, dependencies, saturation, and recovery progress.
 8. **Page on symptoms.** Use SLO burn or direct user-impact alerts. Keep diagnostic and causal alerts as tickets unless urgent and actionable.
