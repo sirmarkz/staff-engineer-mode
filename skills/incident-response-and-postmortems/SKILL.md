@@ -46,11 +46,11 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 ## Workflow
 
 1. **During active impact, assign roles.** Use incident commander, operations lead, communications lead, and scribe when coordination requires them; for solo work, explicitly claim each role yourself.
-2. **Classify severity.** Use impact radius and urgency: highest severity for widespread critical user or data/security impact, high severity for major but bounded customer impact, medium severity for limited degradation or internal dependency risk, low severity for low-impact anomaly requiring follow-up.
+2. **Classify ticket severity.** Use impact radius and urgency: highest severity for widespread critical user or data/security impact, high severity for major but bounded customer impact, medium severity for limited degradation or internal dependency risk, and low severity for a low-impact anomaly requiring follow-up.
 3. **Put live-site impact first.** Treat customer-visible availability, health, and security as the top priority until impact is controlled.
 4. **Mitigate before explaining.** Prefer actions that reduce user impact safely; postpone deep root-cause analysis until impact is controlled.
 5. **Keep a live timeline.** Record timestamped facts, hypotheses, decisions, commands/actions, status updates, and responsibility changes.
-6. **Communicate predictably.** Set status cadence by severity; highest severity should update within 30 minutes or less, high severity within an hour, and lower severities by the user-confirmed cadence. Say what is known, unknown, impact, mitigation, and next update time.
+6. **Communicate predictably.** Set status cadence by ticket severity; highest-severity incidents should update within 30 minutes or less, high-severity incidents within an hour, and lower severities by the user-confirmed cadence. Say what is known, unknown, impact, mitigation, and next update time.
 7. **Change strategy when stuck.** Use the user, available documentation, dependency status, or a narrower diagnostic skill when impact persists, mitigation authority is unclear, or a latent risk is not getting traction. Do not wait for a vendor or outside group before taking the safest available mitigation.
 8. **Checkpoint explicitly.** At every incident-commander or shift change, record state, current hypothesis, customer impact, in-flight actions, user decision point, comms cadence, and next decision point.
 9. **Use the normal hotfix path where possible.** Reduce context switching by keeping review, artifact, branch, and rollout mechanics traceable even under urgency.

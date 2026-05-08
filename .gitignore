@@ -34,3 +34,6 @@ temp/
 
 # Local docs scratchpad (not part of the skill pack)
 docs/
+
+# Local agent instructions
+AGENTS.md
