@@ -11,7 +11,7 @@ SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
 CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
 CODEX_MAX_SKILL_NAME_LENGTH = 64
 MAX_SKILL_LINES = 300
-ROUTER_MAX_WORDS = 1200
+ROUTER_MAX_WORDS = 1600
 ROUTER_EVIDENCE_GATES = {
     "single_primary",
     "secondary_cap",

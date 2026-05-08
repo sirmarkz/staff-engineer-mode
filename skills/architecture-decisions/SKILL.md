@@ -1,6 +1,6 @@
 ---
 name: architecture-decisions
-description: "Use when asked to design or review a system, write an ADR, or decide between competing service boundaries before code lands."
+description: "Use when asked to design or review a system, write an ADR, or decide between competing service, module, or worker boundaries before code lands."
 ---
 
 # Architecture Review And Decision Records

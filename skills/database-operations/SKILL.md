@@ -1,6 +1,6 @@
 ---
 name: database-operations
-description: "Use when asked to run or review a schema change, backfill, index build, destructive query, query-plan regression, or endpoint slowdown tied to a database change — locks, lag, throttle, abort, and verification."
+description: "Use when asked to run or review a schema change, backfill, index build, destructive query, query-plan regression, or endpoint slowdown tied to a database change — locks, lag, throttle, abort, and verification. Not for storage splits or consistency semantics."
 ---
 
 # Database Operations And Schema Changes
@@ -29,6 +29,7 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 ## When Not To Use
 
 - The question is abstract storage or consistency choice; use `distributed-data-and-consistency` instead.
+- The request is primarily about splitting a data model across databases, shards, or mutation boundaries; use `distributed-data-and-consistency` instead.
 - The request is general rollout sequencing without database risk; use `progressive-delivery` instead.
 - The primary concern is recovery after corruption or destructive change; use `backup-and-recovery` instead.
 - The work is warehouse/ETL freshness; use `data-pipeline-reliability` instead.

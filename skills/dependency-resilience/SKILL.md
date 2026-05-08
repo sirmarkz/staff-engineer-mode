@@ -1,6 +1,6 @@
 ---
 name: dependency-resilience
-description: "Use when asked to set timeouts, retries, idempotency, duplicate-work prevention, queue limits, and overload behavior on a remote dependency call or queue. Not for async replay/order/DLQ workflow design."
+description: "Use when asked to set timeouts, retries, idempotency, duplicate-work prevention, queue limits, and overload behavior on a remote dependency call or queue. Not for async replay/order/DLQ workflow design or worker/service boundary ownership."
 ---
 
 # Dependency Resilience And Overload
@@ -29,6 +29,7 @@ Most cascading failures are dependency failures amplified by callers.
 ## When Not To Use
 
 - The request is only about in-process exceptions or validation.
+- The question is where a service, module, or worker boundary should own responsibility; use `architecture-decisions` instead.
 - The main question is SLO target policy; use `slo-and-error-budgets` instead.
 - The main issue is topology and fault-domain survival; use `high-availability-design` instead.
 - The problem is p99 optimization without dependency safety changes; use `performance-and-capacity` instead.
