@@ -8,7 +8,7 @@
     {
       "name": "staff-engineer-mode",
       "description": "The senior reviewer your AI coding agent is missing. An engineering review pack with auto-routing.",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "source": "./",
       "author": {
         "name": "sirmarkz"

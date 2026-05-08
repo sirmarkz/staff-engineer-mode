@@ -1,5 +1,16 @@
 # Staff Engineer Mode Release Notes
 
+## 0.9.0 - 2026-05-08
+
+Routing quality and metadata efficiency release.
+
+- Hardens Staff Engineer Mode routing and sample prompts so natural engineering
+  requests route cleanly without users naming individual skills.
+- Shortens Codex skill-discovery metadata while preserving the specialist
+  routing boundaries validated by the full sample-prompt suite.
+- Aligns the human contributor style guide and routing reference with the
+  compact, skill-focused authoring rules used by the pack.
+
 ## 0.8.0 - 2026-05-07
 
 AWS Builders' Library guidance pass and phase-based navigation aid.
