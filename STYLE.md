@@ -1,95 +1,181 @@
-# Voice And Style Guide
+# STYLE.md
 
-The brand essence in one sentence:
+Operational rules for human contributors writing or reviewing skill prose in
+this repository.
 
-> *The careful pair of eyes between your AI agent and production.*
+This is the human-facing companion to [AGENTS.md](AGENTS.md). `AGENTS.md`
+tells coding agents how to work in the repo. This file tells people what good
+`SKILL.md` content looks like before they open a PR.
 
-This file is for contributors. If you are adding a SKILL.md, editing the README, writing a manifest description, drafting release notes, or replying to an issue on behalf of the project, the rules below apply.
+## What This Repo Publishes
 
-## Voice Principles
+This repository publishes skills that route engineering lifecycle, DevOps,
+operations, reliability, security, stability, and architecture work toward
+reviewable engineering practice.
 
-### 1. Lead with the pain, not the catalog
+It is not a generic process handbook, a role-play pack, or a catalog of famous
+company habits. Skills should stay focused on building, shipping, securing,
+operating, and maintaining complex software systems.
 
-The reader does not care about the count of skills, the surface taxonomy, or the FAANG provenance. They care about the moment their agent shipped something they had to fix at 11pm.
+## What A Skill Must Do
 
-- **Don't:** "Forty-nine specialists across eight surfaces..."
-- **Do:** "Your agent rewrote twelve files. This reads them before you do."
+A skill is useful when it changes what the coding agent does in a concrete
+engineering situation.
 
-### 2. Name the reader. Name the moment
+Each skill should:
 
-Address the user. Name the situation they are in when they reach for the pack.
+- State when the router should select it.
+- State when not to use it.
+- Give the agent an operational workflow it can follow from local evidence.
+- Name required inputs, required outputs, evidence gates, red flags, and common
+  mistakes.
+- Produce artifacts a reviewer can inspect: risks, blockers, owners, rollout
+  gates, rollback paths, exceptions, runbooks, matrices, or test evidence.
+- Mark unknowns explicitly instead of pretending outside facts are known.
+- Keep the agent responsible for the work with the user. Do not defer the core
+  decision to an outside team, vendor, committee, or future confirmation.
 
-- **Don't:** "The checks staff engineers run before code ships at serious engineering orgs."
-- **Do:** "It's 11pm. Your agent says it's done. Read this first."
+If a draft only gives background, motivation, or a reading list, it is not a
+skill yet.
 
-### 3. Concrete artifact beats abstract claim
+## Skill Authoring Rules
 
-If you cannot point at the artifact the skill produces, the prose is wrong.
+- Keep each skill narrow enough that the router can select it with low noise.
+- Keep `skills/<skill-name>/SKILL.md` under 300 lines.
+- Use the flat `skills/<skill-name>/SKILL.md` namespace.
+- Frontmatter descriptions start with `Use when` and describe the trigger, not
+  the feature.
+- Names are lowercase and hyphenated. Prefer
+  `<surface>-<action-or-artifact>` or `<artifact>-and-<scope>`.
+- Do not use vendor names, tool names, emoji, or persona names in skill names.
+- Final skill prose is hand-authored. Do not bulk-generate `SKILL.md` bodies
+  from templates, tables, scripts, LLM batch output, or search summaries.
+- Scripts may validate, package, move, or review skills. Scripts must not be the
+  source of truth for final skill prose.
+- A skill may route to an adjacent skill, but it must still produce useful
+  guidance for the current user request.
+- Do not force users to invoke skills by name. Router language should let normal
+  engineering prompts select the right specialist.
 
-- **Don't:** "Comprehensive engineering rigor for production systems."
-- **Do:** "Returns blockers, owners, exceptions, and a rollback plan."
+## Required Skill Shape
 
-### 4. Iron Laws are the brand voice
+Every specialist skill should include:
 
-Every SKILL.md has one ALL-CAPS line that names the central rule. This is the strongest single voice device in the pack. Keep using it. Resist softening it for marketing copy.
+- `## Iron Law`
+- `## When To Use`
+- `## When Not To Use`
+- `## Required Inputs`
+- `## Workflow`
+- `## Required Outputs`
+- `## Evidence Gates`
+- `## Red Flags`
+- `## Common Mistakes`
 
-- **Do:** `NO LAUNCH READINESS CLAIM WITHOUT EVIDENCE OR A DATED EXCEPTION`
-- **Don't:** "Launches should generally have evidence."
+Additional sections are fine when they remove ambiguity. Do not add sections
+that only repeat the same rule in different words.
 
-### 5. Refuse FAANG name-dropping in the opening
+## Writing Style
 
-Citation discipline is a brand pillar. Naming Google/Amazon/Meta in a hero or a SKILL.md opening transfers credibility to *them*, not us, and reads as authority cosplay. Cite specific sources where they materially support the claim — RFC numbers, NIST SP IDs, SRE Workbook chapters — not company logos.
+Write like an engineer leaving instructions for another careful engineer.
 
-- **Don't:** "Drawn from public engineering practice at Google, Amazon, Meta..."
-- **Do:** "Cites NIST SP 800-218 in software supply chain. Cites the SRE Workbook on error budgets. See sources."
+- Be plain, direct, and specific.
+- Prefer imperatives over commentary.
+- Prefer artifacts over abstract claims.
+- Prefer evidence gates over confidence words.
+- Prefer capabilities over products: `queue`, `cache`, `object store`,
+  `load balancer`, `identity provider`, `approval system`.
+- End sentences where the meaning ends.
+- Use short examples only when they clarify the rule.
 
-### 6. End every line with a stop, not a flourish
+Avoid:
 
-Periods. Short clauses. Sentence ends where the meaning ends.
+- Marketing adjectives: `powerful`, `comprehensive`, `world-class`,
+  `industry-leading`, `seamless`, `cutting-edge`, `production-grade`,
+  `game-changing`, `best-in-class`.
+- Vague hedges: `best practices`, `industry standards`, `modern engineering`,
+  `cloud-native`, unless the phrase is user-provided context being analyzed.
+- Logo name-dropping in openings. Name a source only when it supports a concrete
+  rule.
+- Persona language. The skill is a reviewer, not a cast of characters.
+- Tooling invented by the skill. Do not prescribe a cloud provider, database,
+  framework, observability product, or command the user did not supply unless
+  the skill is explicitly technology-bound.
 
-- **Don't:** Run-on sentences with three nested clauses that try to compress the entire value proposition into one breath without giving the reader a place to land.
-- **Do:** "Fewer vibes. More engineering."
+## Sources And Synthesis
 
-### 7. Refuse marketing adjectives
+Use sources to support operational rules, not to borrow prestige.
 
-The brand says less. Adjectives like *powerful*, *comprehensive*, *world-class*, *industry-leading*, *seamless*, *cutting-edge*, *production-grade* (yes, even that one), *game-changing*, *best-in-class* are banned in user-facing copy.
+- Cite stable source IDs from
+  `skills/_shared/references/source-index.md`.
+- Prefer authoritative sources: official documentation, standards bodies,
+  peer-reviewed papers, first-party engineering publications, or widely cited
+  practitioner references that originated the pattern.
+- Do not cite encyclopedias, forums, scraped mirrors, SEO summaries, anonymous
+  content farms, or unofficial copies when a primary source exists.
+- Read the relevant source notes and reconcile tradeoffs into one blended
+  default.
+- Keep final prose technology-agnostic unless the skill's surface is explicitly
+  technology-bound, such as frontend, mobile, ML, or LLM applications.
+- Do not paste source prose into skills. Synthesize.
 
-- **Don't:** "Comprehensive, production-grade engineering rigor."
-- **Do:** State the artifact. State the gate. Stop.
+## Iron Laws
 
-### 8. Refuse invented tooling
+Every specialist skill has one all-caps rule that names the central failure mode
+the skill prevents.
 
-Do not introduce vendor names, framework names, cloud provider names, database names, monitoring product names, or command examples that the user did not supply or that are not already in the repo. Write in capabilities — *queue*, *cache*, *object store*, *load balancer* — not in vendors.
+Good Iron Laws are short, testable, and operational:
 
-- **Don't:** "Use Redis to cache the response and Datadog to alert on the SLO."
-- **Do:** "Cache the response in a low-latency store. Alert when the SLO burn rate crosses the threshold."
+- `NO LAUNCH READINESS CLAIM WITHOUT EVIDENCE OR A DATED EXCEPTION`
+- `NO STATE MACHINE REVIEW WITHOUT EXPLICIT INVARIANTS`
+- `NO SECRET ROTATION WITHOUT OVERLAP, VERIFICATION, AND ROLLBACK`
 
-## Naming Conventions For New Skills
+Weak Iron Laws are slogans:
 
-- Lowercase, hyphenated.
-- Pattern: `<surface>-<action-or-artifact>` or `<artifact>-and-<scope>`. Examples in repo: `production-readiness-review`, `slo-and-error-budgets`, `ai-coding-governance`, `code-review-and-workflow`.
-- No vendor names. No tool names. No emoji.
-- Description in frontmatter starts with `Use when` and is trigger-focused, not feature-focused.
-- Every skill must include: an Iron Law, a `When To Use` section, a `When Not To Use` section, `Required Outputs`, `Evidence Gates`, `Red Flags`, and `Common Mistakes`. The structure is the brand.
+- "Be careful with releases."
+- "Security should be considered."
+- "Use best practices."
 
-## The Kill List
+## Documentation Rules
 
-Things that must not appear in user-facing surfaces (README hero, plugin manifest descriptions, marketplace card, social posts, talk titles, release notes summaries, SKILL.md openings):
+README, release notes, manifests, install docs, sample prompts, and source
+references should match the skills.
 
-- The FAANG parade. Move provenance to a Sources section. Never lead with it.
-- The count. "49 specialists" is internal architecture. The user-facing claim is *the right reviewer auto-selects*.
-- Marketing adjectives (see Principle 7).
-- Invented vendor or framework names (see Principle 8).
-- Vague hedging — "best practices," "industry standards," "modern engineering," "cloud-native." Either name the source or remove the claim.
-- Apologetic footers. The current Notice block is positive posture, not defensive disclaimer.
-- Persona/agency vocabulary borrowed from adjacent packs — no "agents," no "personas," no emoji severity markers, no named personalities. The brand is the reviewer, not the team.
+- Update docs when setup, CLI behavior, manifests, public paths, examples, or
+  skill contracts change.
+- Verify command examples before presenting them as working.
+- Keep public copy plain and technically accurate.
+- Do not use source-owner names as hero copy or credibility decoration.
+- Do not add AI assistants, automation, or tools as co-authors or attribution in
+  docs, headers, release notes, or commit messages.
 
-## A Note On Enforcement
+## Validation
 
-`scripts/lint_brand_voice.py` enforces a hard subset of the rules above: FAANG/cloud names in H1/H2 and opening lines (BV001), marketing adjectives in headings or descriptions (BV002), hedging phrases in headings or descriptions (BV003), specialist vendor or framework names in `SKILL.md` prose (BV004), and the presence of `## Iron Law` in every specialist `SKILL.md` (BV005). It also warns on first-person plural marketing voice, marketing-pattern openers, and exact specialist counts in headings. PRs that fail the hard subset do not merge.
+Run the relevant checks before asking for review.
 
-The rest of this file — the kill list of vague hedges ("best practices," "industry standards," "modern engineering," "cloud-native"), the apologetic-footer rule, the persona-vocabulary rule, and the principles in the prior sections — are reviewer-enforced principles, not linter rules. Reviewers verify them on every change. If you want one of those promoted into the hard subset, add the rule to `scripts/lint_brand_voice.py` first.
+- Run repo-local validation for skill changes.
+- Run `python3 scripts/validate_source_quality.py` after source-index or
+  citation changes.
+- Run `python3 scripts/validate_platform_support.py` after plugin manifest,
+  install, README, NOTICE, or cross-tool packaging changes.
+- Run `python3 scripts/lint_brand_voice.py` after public prose changes.
 
-## When Voice Tension Is Genuine
+The voice linter enforces the hard subset of these rules: prestige vendor and
+cloud names in H1/H2 and opening lines, marketing adjectives in headings or
+descriptions, hedging phrases in headings or descriptions, specialist vendor or
+framework names in `SKILL.md` prose, and `## Iron Law` presence in specialist
+skills. The rest is reviewer-enforced.
 
-Sometimes a SKILL.md needs a vendor name (the user explicitly asked for one), or a count (a tier rubric needs four explicit tiers), or a hedge (the truth genuinely is "it depends"). The rules above are defaults, not gags. Override deliberately, with a one-line comment in the PR explaining why. The reviewer will check whether the override is real or a reach.
+## Review Bar
+
+A style-compliant change should leave the reviewer able to answer:
+
+1. What situation selects this skill?
+2. What should the agent do first, next, and last?
+3. What evidence proves the output is safe enough to use?
+4. What output artifact will the user receive?
+5. What is explicitly out of scope?
+6. Which sources support the rule, and where are they cited?
+7. Does the prose work without vendor prestige, marketing language, or invented
+   tooling?
+
+If those answers are not clear from the file, keep editing.

@@ -111,7 +111,7 @@ New skills must be technology-agnostic, cite stable source IDs, and avoid vendor
 
 ## Maintainers
 
-See [MAINTAINERS.md](MAINTAINERS.md). For security issues, contact the maintainer listed there.
+See [MAINTAINERS.md](MAINTAINERS.md).
 
 ## Sources And Influences
 
