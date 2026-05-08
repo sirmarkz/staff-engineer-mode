@@ -1,6 +1,6 @@
 ---
 name: cost-aware-reliability
-description: "Use when asked to investigate a cost spike, decide a cost-vs-reliability tradeoff, set unit economics, or cut spend without quietly eating SLO headroom."
+description: "Use when cost spikes, unit economics, or spend cuts must preserve reliability and SLO headroom"
 ---
 
 # FinOps And Cost Aware Reliability

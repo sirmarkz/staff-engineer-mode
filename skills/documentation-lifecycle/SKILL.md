@@ -1,6 +1,6 @@
 ---
 name: documentation-lifecycle
-description: "Use when asked to assign source of truth, freshness rule, and review trigger to engineering docs — runbooks, design docs, ADRs, onboarding — when staleness is a production risk. Not for editorial polish."
+description: "Use when runbooks, design docs, ADRs, or onboarding docs need ownership, freshness rules, or review triggers"
 ---
 
 # Engineering Documentation Lifecycle

@@ -1,6 +1,6 @@
 ---
 name: identity-and-secrets
-description: "Use when asked to design human or workload access — identities, scopes, credential lifetime, secret storage, break-glass, and audit — before granting a new permission or rotating a long-lived secret."
+description: "Use when human or workload access, scopes, credential lifetime, secret storage, break-glass, or audit need design"
 ---
 
 # Zero Trust Identity And Secrets

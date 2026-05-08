@@ -1,6 +1,6 @@
 ---
 name: testing-and-quality-gates
-description: "Use when asked to design the test strategy and decide which checks block merge or release — pre-merge gates, CI runtime budgets, static analysis, mutation testing, flake policy, and legacy ratchets."
+description: "Use when test strategy, merge/release gates, CI budgets, static analysis, mutation tests, flakes, or ratchets matter"
 ---
 
 # Testing And Quality Gates

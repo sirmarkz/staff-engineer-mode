@@ -1,6 +1,6 @@
 ---
 name: progressive-delivery
-description: "Use when asked to plan a rollout — staged exposure, canary metrics, stop criteria, rollback or forward-fix path — for changes affecting production behavior, config, schema, data, or clients. Not for broad launch blocker reviews; that is production-readiness-review."
+description: "Use when config, schema, data, or non-API client changes need staged rollout, canary metrics, or rollback plans"
 ---
 
 # Progressive Delivery And Safe Change

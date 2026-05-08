@@ -1,6 +1,6 @@
 ---
 name: observability-and-alerting
-description: "Use when asked to design telemetry, dashboards, alert rules, or runbooks tied to user journeys. Not for SLO-tied alert policy, burn-rate policy, error-budget math, page-volume reduction, or suppression-rule cleanup."
+description: "Use when telemetry, dashboards, alert rules, or runbooks need design outside SLO or release-gate policy"
 ---
 
 # Observability And Alerting

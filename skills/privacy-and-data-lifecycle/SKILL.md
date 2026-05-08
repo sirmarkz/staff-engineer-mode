@@ -1,6 +1,6 @@
 ---
 name: privacy-and-data-lifecycle
-description: "Use when asked to engineer privacy controls — data minimization, classification, retention, deletion propagation, privacy-safe telemetry, export and erasure — for any field carrying personal or sensitive data."
+description: "Use when personal data needs minimization, classification, retention, erasure, export, or privacy-safe telemetry"
 ---
 
 # Privacy Engineering And Data Lifecycle

@@ -1,6 +1,6 @@
 ---
 name: state-machine-correctness
-description: "Use when asked to validate a high-stakes state machine, protocol, or concurrency boundary — invariants plus property tests, fuzzing, simulation, or model checking. Not for choosing distributed data consistency under failover."
+description: "Use when state machines, protocols, or concurrency boundaries need invariants, property tests, fuzzing, or simulation"
 ---
 
 # Systems Correctness And Formal Validation

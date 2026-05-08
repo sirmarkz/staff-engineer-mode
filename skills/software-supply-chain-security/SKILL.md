@@ -1,6 +1,6 @@
 ---
 name: software-supply-chain-security
-description: "Use when asked to harden the source-to-deploy chain — protected source, isolated builders, artifact provenance and signing, dependency inventory, deployment admission, and least-privilege automation credentials."
+description: "Use when source-to-deploy paths need protected source, isolated builds, provenance, signing, inventory, or admission"
 ---
 
 # Software Supply Chain Security

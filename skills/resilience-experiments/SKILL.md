@@ -1,6 +1,6 @@
 ---
 name: resilience-experiments
-description: "Use when asked to design or run a chaos test, game day, failover drill, or fault-injection experiment — with hypothesis, blast-radius bound, abort criteria, and a learning loop."
+description: "Use when chaos tests, game days, failover drills, or fault injection need hypothesis, blast radius, and abort criteria"
 ---
 
 # Resilience Experiments And Chaos Engineering

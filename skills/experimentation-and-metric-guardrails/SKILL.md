@@ -1,6 +1,6 @@
 ---
 name: experimentation-and-metric-guardrails
-description: "Use when asked to design or read out an A/B test, holdout, or ramp where you plans to make a decision from the result — including hand-rolled experiments without an experimentation platform."
+description: "Use when A/B tests, holdouts, ramps, or experiment readouts need decision metrics and guardrails"
 ---
 
 # Experimentation And Metric Guardrails

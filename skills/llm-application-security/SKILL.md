@@ -1,6 +1,6 @@
 ---
 name: llm-application-security
-description: "Use when asked to harden an LLM or generative-AI-backed feature when prompts, retrieval, tools, model output, or generated actions cross security boundaries."
+description: "Use when LLM prompts, retrieval, tools, model output, or generated actions cross security boundaries"
 ---
 
 # LLM Application Security

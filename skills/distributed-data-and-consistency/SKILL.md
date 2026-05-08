@@ -1,6 +1,6 @@
 ---
 name: distributed-data-and-consistency
-description: "Use when asked to choose storage, split a data model across databases or shards, decide consistency per operation, assess distributed locks, pick a shard or partition key, or write down failover, conflict, and replication-lag behavior."
+description: "Use when storage choice, database splits, sharding, transactions, consistency, locks, conflicts, or failover matter"
 ---
 
 # Distributed Data And Consistency

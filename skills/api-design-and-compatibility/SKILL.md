@@ -1,6 +1,6 @@
 ---
 name: api-design-and-compatibility
-description: "Use when asked to design or evolve an exposed API contract, including response-field compatibility or deprecation, before generated SDKs, clients, or services depend on the shape."
+description: "Use when exposed API behavior, response fields, deprecation, clients, or client rollouts need compatibility review"
 ---
 
 # API Design And Compatibility

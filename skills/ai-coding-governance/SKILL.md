@@ -1,6 +1,6 @@
 ---
 name: ai-coding-governance
-description: "Use when asked to set the repo-level rules for AI coding agents — allowed and forbidden actions, protected paths, secret and data boundaries, required test/review evidence, and audit trail. Not for reviewing one diff; that is agent-pr-review."
+description: "Use when setting repo rules for AI coding agents: allowed actions, protected paths, data boundaries, evidence"
 ---
 
 # AI-Assisted Coding Governance

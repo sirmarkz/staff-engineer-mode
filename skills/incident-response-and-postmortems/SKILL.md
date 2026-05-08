@@ -1,6 +1,6 @@
 ---
 name: incident-response-and-postmortems
-description: "Use when asked to run an active incident, write a postmortem, or set status-update cadence — anything from 'we have an outage right now' to 'we need a writeup with action items'."
+description: "Use when running active incidents, writing postmortems, or setting status cadence and action items"
 ---
 
 # Incident Response And Postmortems

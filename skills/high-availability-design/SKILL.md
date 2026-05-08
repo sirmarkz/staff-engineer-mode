@@ -1,6 +1,6 @@
 ---
 name: high-availability-design
-description: "Use when asked to claim or validate that a system survives loss of a location, deployment unit, partition, shard, tenant, or dependency — fault domains, static capacity, blast radius, and failover behavior."
+description: "Use when a system must survive loss of a location, deployment unit, partition, shard, tenant, or dependency"
 ---
 
 # High Availability Design And Validation

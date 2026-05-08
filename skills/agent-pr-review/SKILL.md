@@ -1,6 +1,6 @@
 ---
 name: agent-pr-review
-description: "Use when asked to apply a senior pre-merge checklist to a diff before it merges, after narrower API, dependency, config, rollout, security, database, and test-gate surfaces are ruled out."
+description: "Use when a PR or diff needs senior pre-merge review of intent, behavior evidence, edge cases, or residual risk"
 ---
 
 # Pre-Merge PR Review

@@ -1,6 +1,6 @@
 ---
 name: internal-service-networking
-description: "Use when asked to design internal service-to-service traffic — discovery, routing, locality, identity, encrypted transport, mesh adoption, private dependency access, and per-hop failure behavior. Not for public-edge or DDoS work."
+description: "Use when internal service traffic needs discovery, routing, locality, identity, encrypted transport, or private access"
 ---
 
 # Internal Networking And Service Mesh

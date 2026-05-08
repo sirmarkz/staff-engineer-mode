@@ -1,6 +1,6 @@
 ---
 name: tenant-isolation
-description: "Use when asked to enforce multi-tenant boundaries — tenant context propagation, data partitioning, quotas, cross-tenant tests, and privacy-safe telemetry — anywhere shared infrastructure serves multiple customers or organizations. Assumes a multi-tenant deployment."
+description: "Use when multi-tenant systems need tenant context, data partitioning, quotas, cross-tenant tests, or safe telemetry"
 ---
 
 # Tenant Isolation And Data Protection

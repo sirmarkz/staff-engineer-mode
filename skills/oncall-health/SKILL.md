@@ -1,6 +1,6 @@
 ---
 name: oncall-health
-description: "Use when asked to cut page volume, review suppression rules, eliminate toil, fix runbook gaps, or convert recurring manual operations into engineering work — when responders are interrupted by noisy alerts."
+description: "Use when page volume, suppression rules, toil, runbook gaps, or recurring manual ops are hurting responders"
 ---
 
 # Oncall Health And Toil Reduction

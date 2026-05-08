@@ -1,6 +1,6 @@
 ---
 name: release-build-reproducibility
-description: "Use when asked to make a build reproducible and the artifact identifiable — pinned inputs, hermetic build environment, immutable artifact identity, and traceable promotion through environments."
+description: "Use when builds need pinned inputs, hermetic environments, immutable artifact identity, or traceable promotion"
 ---
 
 # Release Engineering And Build Reproducibility

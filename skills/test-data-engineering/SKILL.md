@@ -1,6 +1,6 @@
 ---
 name: test-data-engineering
-description: "Use when asked to inventory and govern test data — fixtures, golden files, captured production snapshots — with anonymization policy, scope per fixture, freshness vs determinism rule, and drift detection against production shape."
+description: "Use when fixtures, golden files, or production snapshots need anonymization, scope, freshness, or drift checks"
 ---
 
 # Test Data Engineering

@@ -1,6 +1,6 @@
 ---
 name: engineering-control-evidence
-description: "Use when asked to build a cross-surface evidence pack, scorecard, or exception register that maps engineering standards to artifacts projects already produce — for audits, governance reviews, or program-level reporting that spans two or more specialist surfaces."
+description: "Use when cross-surface evidence packs, scorecards, exceptions, or control mappings are needed for engineering audits"
 ---
 
 # Engineering Control Evidence

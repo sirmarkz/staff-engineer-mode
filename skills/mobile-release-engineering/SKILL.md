@@ -1,6 +1,6 @@
 ---
 name: mobile-release-engineering
-description: "Use when asked to plan a native mobile rollout — staged release, crash-free thresholds, startup, hang and offline behavior, segmented telemetry, kill switches, and forward-fix path."
+description: "Use when mobile rollouts need staged release, crash-free gates, startup, hangs, offline behavior, or kill switches"
 ---
 
 # Mobile Release Engineering And Crash Budgets

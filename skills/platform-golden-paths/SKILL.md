@@ -1,6 +1,6 @@
 ---
 name: platform-golden-paths
-description: "Use when asked to design or evolve a developer platform — golden paths, service templates, scorecards, paved roads — when many projects need the same safe defaults baked in. Assumes a cross-project or platform context."
+description: "Use when developer platforms, golden paths, service templates, scorecards, or paved-road defaults need design"
 ---
 
 # Platform Engineering And Golden Paths

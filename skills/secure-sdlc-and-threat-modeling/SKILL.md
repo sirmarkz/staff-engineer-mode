@@ -1,6 +1,6 @@
 ---
 name: secure-sdlc-and-threat-modeling
-description: "Use when asked to threat-model a feature or system — trust boundaries, data flows, abuse cases, controls mapped to tests, residual risk register — before implementation crosses a sensitive boundary."
+description: "Use when features need threat models, trust boundaries, abuse cases, control tests, or residual-risk records"
 ---
 
 # Secure SDLC And Threat Modeling

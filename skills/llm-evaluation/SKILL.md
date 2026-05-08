@@ -1,6 +1,6 @@
 ---
 name: llm-evaluation
-description: "Use when asked to build an eval harness for a model-backed change — datasets, graders, thresholds, slice coverage, regression history — before merging a prompt edit, model swap, or tool-policy change."
+description: "Use when model-backed changes need eval datasets, graders, thresholds, slices, regression history, or failure triage"
 ---
 
 # LLM Evaluation Harness Engineering

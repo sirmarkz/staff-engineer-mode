@@ -1,6 +1,6 @@
 ---
 name: database-operations
-description: "Use when asked to run or review a schema change, backfill, index build, destructive query, query-plan regression, or endpoint slowdown tied to a database change — locks, lag, throttle, abort, and verification. Not for storage splits or consistency semantics."
+description: "Use when schema changes, backfills, indexes, destructive queries, query plans, locks, lag, throttles, or aborts matter"
 ---
 
 # Database Operations And Schema Changes

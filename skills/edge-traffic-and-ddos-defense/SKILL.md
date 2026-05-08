@@ -1,6 +1,6 @@
 ---
 name: edge-traffic-and-ddos-defense
-description: "Use when asked to design public-edge defense — rate limits, bot controls, origin isolation, DDoS response — when abusive traffic could overwhelm origins or cost."
+description: "Use when public-edge rate limits, bot controls, origin isolation, abuse traffic, or DDoS response need design"
 ---
 
 # Edge Traffic And Denial-Of-Service Defense

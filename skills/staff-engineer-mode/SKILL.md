@@ -1,6 +1,6 @@
 ---
 name: staff-engineer-mode
-description: "Use when asked to route broad or multi-surface engineering requests to one Staff Engineer Mode specialist before answering."
+description: "Use when broad or multi-surface engineering requests need routing to one Staff Engineer Mode specialist"
 ---
 
 # Staff Engineer Mode

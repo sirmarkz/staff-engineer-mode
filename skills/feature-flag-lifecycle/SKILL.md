@@ -1,6 +1,6 @@
 ---
 name: feature-flag-lifecycle
-description: "Use when asked to audit and retire feature flags after rollout — set expiry per flag, detect orphans, plan removal with rollback, and score the flag debt. Not for in-flight rollout sequencing; that is progressive-delivery."
+description: "Use when launched feature flags need expiry, orphan detection, debt scoring, rollback-safe cleanup, or removal"
 ---
 
 # Feature Flag Lifecycle

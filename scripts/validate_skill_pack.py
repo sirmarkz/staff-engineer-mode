@@ -11,6 +11,7 @@ SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
 CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
 CODEX_MAX_SKILL_NAME_LENGTH = 64
 MAX_SKILL_LINES = 300
+MAX_DESCRIPTION_CHARS = 120
 ROUTER_MAX_WORDS = 1600
 ROUTER_EVIDENCE_GATES = {
     "single_primary",
@@ -292,8 +293,11 @@ def validate_skill(path: Path) -> None:
         fail(f"{path} missing description")
     if not description.startswith("Use when"):
         fail(f"{path} description must start with 'Use when'")
-    if len(description) > 600:
-        fail(f"{path} description is too long")
+    if len(description) > MAX_DESCRIPTION_CHARS:
+        fail(
+            f"{path} description is {len(description)} chars; "
+            f"frontmatter descriptions must stay at or below {MAX_DESCRIPTION_CHARS}"
+        )
     validate_no_duplicate_fragments(text, path)
     if expected_name == "staff-engineer-mode":
         validate_router_skill(text, path)

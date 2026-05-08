@@ -1,6 +1,6 @@
 ---
 name: performance-and-capacity
-description: "Use when asked to investigate tail latency, plan a load test, find a saturation point, or claim capacity for peak or failover - anything where the answer must be tail percentiles, not averages. Not for query-plan regressions tied to schema or index changes."
+description: "Use when tail latency, load tests, saturation, capacity, headroom, or peak/failover traffic need analysis"
 ---
 
 # Capacity Performance And Tail Latency

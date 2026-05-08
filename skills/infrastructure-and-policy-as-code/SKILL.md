@@ -1,6 +1,6 @@
 ---
 name: infrastructure-and-policy-as-code
-description: "Use when asked to make infrastructure declarative — desired state, policy checks, drift detection and reconciliation, environment promotion, and emergency change paths. Not for one runtime config automation change."
+description: "Use when infrastructure needs declarative desired state, policy checks, drift detection, or environment promotion"
 ---
 
 # Infrastructure GitOps And Policy As Code

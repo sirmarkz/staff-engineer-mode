@@ -1,6 +1,6 @@
 ---
 name: cryptography-and-key-lifecycle
-description: "Use when asked to plan certificate rotation, key replacement, or algorithm migration before expiry — anything from a single TLS cert to a fleet-wide signing key transition."
+description: "Use when certificates, signing keys, secrets, algorithms, or crypto material need rotation or migration planning"
 ---
 
 # Crypto Agility And Cert Lifecycle

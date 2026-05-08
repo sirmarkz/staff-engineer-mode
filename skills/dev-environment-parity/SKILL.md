@@ -1,6 +1,6 @@
 ---
 name: dev-environment-parity
-description: "Use when asked to diagnose 'works on my machine' failures or build a parity matrix across local, CI, staging, and production — covering dependencies, config, data shape, time, network, and secrets — with a drift budget."
+description: "Use when local, CI, staging, or production drift causes parity failures across config, data, network, or secrets"
 ---
 
 # Dev Environment Parity

@@ -1,6 +1,6 @@
 ---
 name: slo-and-error-budgets
-description: "Use when asked to define an SLI or SLO tied to a user journey, calculate the error budget, set burn-rate alerts, connect alerts to SLOs, or write the policy that consumes the budget. Not for general telemetry or dashboards."
+description: "Use when user journeys need SLIs, SLOs, error budgets, burn-rate alerts, page/ticket policy, or budget rules"
 ---
 
 # SLO Error Budget Engineering

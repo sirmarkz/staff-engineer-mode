@@ -1,6 +1,6 @@
 ---
 name: configuration-and-automation-safety
-description: "Use when asked to run a config change, bulk script, cleanup automation, runtime override, or drift fix that touches production state — to add validation, preview, blast-radius limits, and recovery."
+description: "Use when one-shot config changes, scripts, cleanup automation, overrides, or drift fixes touch production state"
 ---
 
 # Configuration And Automation Safety

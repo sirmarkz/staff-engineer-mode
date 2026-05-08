@@ -1,6 +1,6 @@
 ---
 name: migration-and-deprecation
-description: "Use when asked to retire a service, sunset an API family, replace a legacy library, or run a broad migration across many call sites — usage telemetry, replacement readiness, batched migration, and no-new-usage controls. Not for one exposed API response field; that is api-design-and-compatibility."
+description: "Use when retiring services, sunsetting APIs, replacing libraries, or migrating many callers with no-new-usage gates"
 ---
 
 # Large-Scale Change And Service Deprecation

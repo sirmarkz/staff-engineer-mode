@@ -1,6 +1,6 @@
 ---
 name: code-review-and-workflow
-description: "Use when asked to set code review or self-review rules — review purpose, change-size limits, latency targets, and productivity metrics paired with quality guardrails. Not for one specific PR; that is agent-pr-review."
+description: "Use when setting review workflow rules: review purpose, change size, latency targets, reviewer routing, guardrails"
 ---
 
 # Engineering Productivity And Code Review

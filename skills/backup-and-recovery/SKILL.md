@@ -1,6 +1,6 @@
 ---
 name: backup-and-recovery
-description: "Use when asked to set RTO/RPO, design backups, run a restore test, or prove a stateful system can recover from corruption, accidental deletion, or location-wide loss."
+description: "Use when setting RTO/RPO, backup design, restore tests, or recovery from corruption, deletion, or site loss"
 ---
 
 # Backup Restore And Disaster Recovery

@@ -1,6 +1,6 @@
 ---
 name: accessibility-gates
-description: "Use when asked to set release gates on user-facing flows for keyboard, screen-reader, focus, contrast, and assistive-technology behavior — anything from a single critical journey on a small site to a full conformance program."
+description: "Use when user-facing flows need keyboard, screen-reader, focus, contrast, or assistive-technology release gates"
 ---
 
 # Accessibility Conformance Gates

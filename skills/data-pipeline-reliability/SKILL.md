@@ -1,6 +1,6 @@
 ---
 name: data-pipeline-reliability
-description: "Use when asked to set freshness SLIs, validation gates, lineage, and replay paths for a batch or streaming pipeline whose consumers need timely correct data. Not for cache or search-index refresh mechanics."
+description: "Use when batch or streaming pipelines need freshness SLIs, validation gates, lineage, or replay paths"
 ---
 
 # Data Pipeline Reliability
