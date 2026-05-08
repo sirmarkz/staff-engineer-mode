@@ -342,14 +342,14 @@ class MarketingOpenerTests(_TmpRepoMixin, unittest.TestCase):
 
 class SpecificCountTests(_TmpRepoMixin, unittest.TestCase):
     def test_count_in_heading_is_warned(self) -> None:
-        self.write("README.md", "# 49 specialists across 8 surfaces\n\nBody.\n")
+        self.write("README.md", "# 55 specialists across 8 surfaces\n\nBody.\n")
         rules = self.rules(self.lint("README.md"))
         self.assertIn("BV103/specific-count-in-headline", rules)
 
     def test_count_in_body_is_not_warned(self) -> None:
         self.write(
             "README.md",
-            "# Title\n\nBody.\n\nThe pack ships with 49 specialists today.\n",
+            "# Title\n\nBody.\n\nThe pack ships with 55 specialists today.\n",
         )
         rules = self.rules(self.lint("README.md"))
         self.assertNotIn("BV103/specific-count-in-headline", rules)

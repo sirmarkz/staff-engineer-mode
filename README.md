@@ -101,7 +101,7 @@ Examples by surface (the full catalog with prompts for every specialist is in [S
 | Platform and edge | [`platform-golden-paths`](skills/platform-golden-paths/SKILL.md), [`infrastructure-and-policy-as-code`](skills/infrastructure-and-policy-as-code/SKILL.md), [`internal-service-networking`](skills/internal-service-networking/SKILL.md), [`edge-traffic-and-ddos-defense`](skills/edge-traffic-and-ddos-defense/SKILL.md), [`cost-aware-reliability`](skills/cost-aware-reliability/SKILL.md) |
 | Client, ML/AI, and experimentation | [`web-release-gates`](skills/web-release-gates/SKILL.md), [`mobile-release-engineering`](skills/mobile-release-engineering/SKILL.md), [`accessibility-gates`](skills/accessibility-gates/SKILL.md), [`ai-coding-governance`](skills/ai-coding-governance/SKILL.md), [`llm-application-security`](skills/llm-application-security/SKILL.md), [`llm-evaluation`](skills/llm-evaluation/SKILL.md), [`llm-serving-cost-and-latency`](skills/llm-serving-cost-and-latency/SKILL.md), [`ml-reliability-and-evaluation`](skills/ml-reliability-and-evaluation/SKILL.md), [`experimentation-and-metric-guardrails`](skills/experimentation-and-metric-guardrails/SKILL.md) |
 
-Every specialist appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with three representative prompts. Or browse by SDLC phase in [OE-PHASE-MAP.md](OE-PHASE-MAP.md) — same skills, grouped by Design & Build / Develop & Test / Deploy & Operate / Monitor & Respond / Improve.
+Every specialist appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with four representative prompts. Or browse by SDLC phase in [OE-PHASE-MAP.md](OE-PHASE-MAP.md) — same skills, grouped by Design & Build / Develop & Test / Deploy & Operate / Monitor & Respond / Improve.
 
 ## Contributing
 

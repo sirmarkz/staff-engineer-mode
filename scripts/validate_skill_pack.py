@@ -7,11 +7,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
+README = ROOT / "README.md"
+SAMPLE_PROMPTS = ROOT / "SAMPLE-PROMPTS.md"
 SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
 CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
 CODEX_MAX_SKILL_NAME_LENGTH = 64
 MAX_SKILL_LINES = 300
 MAX_DESCRIPTION_CHARS = 120
+SAMPLE_PROMPTS_PER_SPECIALIST = 4
 ROUTER_MAX_WORDS = 1600
 ROUTER_EVIDENCE_GATES = {
     "single_primary",
@@ -338,6 +341,59 @@ def validate_skill_contract() -> None:
         fail("shared skill contract is missing")
 
 
+def validate_sample_prompts(skill_files: list[Path]) -> None:
+    if not SAMPLE_PROMPTS.exists():
+        fail("SAMPLE-PROMPTS.md is missing")
+
+    specialist_names = {
+        path.parent.name for path in skill_files if path.parent.name != "staff-engineer-mode"
+    }
+    text = SAMPLE_PROMPTS.read_text()
+    sections: dict[str, int] = {}
+    current: str | None = None
+    count = 0
+    for line in text.splitlines():
+        heading = re.match(r"^### `([^`]+)`\s*$", line)
+        if heading:
+            if current is not None:
+                sections[current] = count
+            current = heading.group(1)
+            count = 0
+        elif current is not None and line.startswith("- "):
+            count += 1
+    if current is not None:
+        sections[current] = count
+
+    section_names = set(sections)
+    missing = specialist_names - section_names
+    extra = section_names - specialist_names
+    if missing:
+        fail(f"SAMPLE-PROMPTS.md missing specialists: {', '.join(sorted(missing))}")
+    if extra:
+        fail(f"SAMPLE-PROMPTS.md has unknown specialist sections: {', '.join(sorted(extra))}")
+
+    wrong_counts = {
+        name: prompt_count
+        for name, prompt_count in sections.items()
+        if prompt_count != SAMPLE_PROMPTS_PER_SPECIALIST
+    }
+    if wrong_counts:
+        details = ", ".join(f"{name}={count}" for name, count in sorted(wrong_counts.items()))
+        fail(
+            "SAMPLE-PROMPTS.md must list "
+            f"{SAMPLE_PROMPTS_PER_SPECIALIST} prompts per specialist; found {details}"
+        )
+
+    if README.exists():
+        readme = README.read_text()
+        match = re.search(r"with (\w+) representative prompts", readme)
+        if match and match.group(1).lower() != "four":
+            fail(
+                "README.md representative prompt count must match "
+                f"SAMPLE-PROMPTS.md ({SAMPLE_PROMPTS_PER_SPECIALIST})"
+            )
+
+
 def main() -> int:
     skill_files = sorted(path for path in SKILLS.glob("**/SKILL.md") if "_shared" not in path.parts)
     if not skill_files:
@@ -359,6 +415,7 @@ def main() -> int:
         fail("router routing matrix is missing")
 
     validate_skill_contract()
+    validate_sample_prompts(skill_files)
     print(f"skill pack validation passed: {len(skill_files)} skills")
     return 0
 
