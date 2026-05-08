@@ -1,6 +1,6 @@
 ---
 name: event-workflows
-description: "Use when asked to design an event, queue, stream, saga, or workflow — and define idempotency, retry, DLQ, ordering, and replay before async messages start landing twice or out of order."
+description: "Use when asked to design an event, message, queue, stream, saga, or workflow — and define producer/consumer idempotency, retry, DLQ, ordering, and replay before async messages land twice or out of order."
 ---
 
 # Event Driven Systems And Workflows

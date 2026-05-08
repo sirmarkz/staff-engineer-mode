@@ -15,15 +15,13 @@ Loading many plausible skills is a routing failure.
 
 ## Overview
 
-Users are not expected to know skill names. This router classifies ordinary engineering language and selects the one specialist skill that best fits the next useful artifact.
-
-Do not answer as a generic expert, route by keyword, or restate specialist guidance. Infer the artifact, phase, surface, and risk, then select the matching skill quietly.
+Users are not expected to know skill names. Classify ordinary engineering language by artifact, phase, surface, and risk, then quietly select the specialist whose outputs fit the next useful artifact.
 
 ## When To Use
 
 - The request is broad, vague, or spans multiple engineering surfaces.
 - No single specialist clearly dominates from the prompt.
-- The user asks for staff-engineer-level production quality, architecture, reliability, security, operations, delivery, data, platform, client, or cost-aware engineering guidance.
+- The user asks for staff-engineer-level architecture, reliability, security, operations, delivery, data, platform, client, or cost guidance.
 - The user asks to troubleshoot an unclear network, deployment, reliability, performance, security, data, or operations issue.
 
 ## When Not To Use
@@ -34,24 +32,25 @@ Do not answer as a generic expert, route by keyword, or restate specialist guida
 
 ## Inputs To Collect
 
-- **Artifact:** decision, plan, gate, rollout, investigation, runbook, policy, migration, evaluation, evidence pack, or review.
+- **Artifact:** decision, plan, gate, rollout, investigation, runbook, policy, migration, eval, evidence pack, or review.
 - **Phase:** design, before merge, launch, migration, active incident, post-incident, regression, audit/evidence, or maintenance.
 - **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, AI, accessibility, cost, or operator load.
-- **Risk and scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-location.
+- **Risk/scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-location.
 
 ## Workflow
 
 1. Identify the requested artifact and phase before naming any skill.
-2. Translate named tools into capabilities. Do not invent tool, vendor, framework, protocol, database, or command examples when the user did not provide them.
-3. Choose the narrowest primary whose required outputs match the next artifact.
-4. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
-5. If confidence is low, ask only the missing intake questions needed to route and start useful work.
-6. Keep single-surface evidence with the matching specialist skill; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
-7. Reframe out-of-scope work as an engineering-control question only when that is plausible.
+2. Translate named tools into capabilities; do not invent tools, vendors, frameworks, protocols, databases, or commands.
+3. Use exact loaded skill slugs; never invent, shorten, or paraphrase names.
+4. Choose the narrowest primary whose required outputs match the next artifact.
+5. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
+6. If confidence is low, ask only the missing intake questions needed to route and start useful work.
+7. Keep single-surface evidence with the matching specialist skill; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
+8. Reframe out-of-scope work as an engineering-control question only when that is plausible.
 
 ## Synthesized Default
 
-Select exactly one primary specialist when the prompt has enough context. Recommend at most one secondary as a follow-up. Broad requests should become a short sequence, not a pile of loaded skills.
+Select one primary when the prompt has enough context. Recommend at most one secondary follow-up. Broad requests become a short sequence, not a pile of loaded skills.
 
 ## Exceptions
 
@@ -62,14 +61,10 @@ Select exactly one primary specialist when the prompt has enough context. Recomm
 
 ## Required Outputs
 
-- For confident routing: primary skill name.
-- For confident routing: optional secondary skill name, only when necessary.
-- For confident routing: confidence of high or medium.
-- For confident routing: inferred user intent, including requested artifact, dominant surface, and work phase.
-- For confident routing: routing rationale in one sentence.
+- For confident routing: primary skill name; optional secondary only when necessary; confidence of high or medium.
+- Inferred intent: requested artifact, dominant surface, work phase, and one-sentence rationale.
 - For explicit eval-harness runs only: also include a fenced `routing` block containing a JSON object with `primary`, `secondary`, `confidence`, `artifact`, `surface`, `phase`, and `rationale`.
-- For low-confidence routing: questions only.
-- Do not include a primary, secondary, confidence label, routing draft, candidate list, or any specialist skill names.
+- For low-confidence routing: questions only; no primary, secondary, confidence label, routing draft, candidate list, or specialist names.
 - Out-of-scope reframe when applicable.
 
 ## Evidence Gates
@@ -78,24 +73,27 @@ Select exactly one primary specialist when the prompt has enough context. Recomm
 - `secondary_cap`: output has no more than one secondary skill.
 - `capability_translation`: tool, vendor, or framework names are translated into capability language before routing.
 - `scope_check`: out-of-scope requests are reframed or declined.
-- `ambiguity_check`: ambiguous prompts ask only user-facing questions and expose zero skill names, candidate routes, confidence labels, or routing drafts.
+- `ambiguity_check`: ambiguous prompts ask user-facing questions and expose no skill names, candidate routes, confidence labels, or drafts.
 - `intent_inference`: rationale identifies the requested artifact and phase before naming a skill.
 
 ## Routing Tiebreakers
 
-Use specialist descriptions as the primary map. Load `references/routing-matrix.md` only when adjacent surfaces compete.
+Use specialist descriptions as the primary map. Load `references/routing-matrix.md` for eval runs, exact-slug uncertainty, or adjacent surfaces.
 
 - Launch or major traffic-shift readiness aggregates through `production-readiness-review`; ordinary design review does not.
 - Active user-impacting incidents select `incident-response-and-postmortems` before root-cause specialty work.
-- Reliability objective policy, telemetry construction, and page fatigue are separate artifacts.
-- Topology, restore capability, controlled failure tests, and overload controls span separate evidence surfaces.
-- Exposed contract compatibility, broad deprecation/migration, and asynchronous workflow semantics are distinct.
+- Reliability targets, SLIs/SLOs, error budgets, SLO-based alert review, and page-vs-ticket policy route to `slo-and-error-budgets`; telemetry construction routes to `observability-and-alerting`; page fatigue and toil route to `oncall-health`.
+- Topology, restore capability, controlled failure tests, overload controls, invariants, and review workflow span separate surfaces.
+- Exposed API/client compatibility routes to `api-design-and-compatibility`, even for branch, PR, before-merge, review, or response-field deprecation prompts.
+- Shared dataset/schema compatibility, downstream consumers, and field removal gates route to `data-contracts`.
+- Broad service/module retirement or multi-quarter caller migration routes to `migration-and-deprecation`; stale library/dead-code cleanup routes to `dependency-and-code-hygiene`.
+- Asynchronous workflow semantics route to `event-workflows`.
 - Build/release artifact reproducibility comes before production exposure and rollback strategy.
 - Single-domain evidence stays with the matching specialist skill; cross-surface evidence packs use `engineering-control-evidence`.
 - Public edge traffic, internal service traffic, backend performance, client performance, cost tradeoffs, and data freshness stay separate.
 - Security routes by artifact: threat model, identity/secrets, supply-chain trust, deployed vulnerability remediation, tenant boundary, privacy lifecycle, or model/tool/retrieval app risk.
 - Newer narrow routes beat broad neighbors: config/automation safety, documentation lifecycle, data contracts, accessibility gates, AI coding governance, agent PR review, LLM eval harnesses, experimentation guardrails, fleet upgrades, cryptography and key lifecycle, feature flag lifecycle, LLM serving cost and latency, code readability for agents, test data engineering, and dev environment parity.
-- Any diff that needs a senior pre-merge review routes to `agent-pr-review`; org-level AI-assisted coding policy still routes to `ai-coding-governance`; review routing, change size, and workflow metrics stay with `code-review-and-workflow`.
+- Generic senior pre-merge diff review routes to `agent-pr-review` only after narrower API, data, config, rollout, security, and test-gate routes are ruled out.
 - Post-rollout flag life, expiry, and removal route to `feature-flag-lifecycle`; introducing the flag during rollout stays with `progressive-delivery`; generic dead-code cleanup stays with `dependency-and-code-hygiene`.
 - LLM-route token budget, tail latency, prompt/response cache, and provider-failure degradation route to `llm-serving-cost-and-latency`; generic spend/reliability tradeoffs route to `cost-aware-reliability`; generic backend latency to `performance-and-capacity`; generic remote-call resilience to `dependency-resilience`.
 - Repo-as-artifact for AI comprehension, name collisions, function/file-size budgets, and one-tool-call locatability route to `code-readability-for-agents`; macro service boundaries stay with `architecture-decisions`; per-diff pre-merge review stays with `agent-pr-review`.

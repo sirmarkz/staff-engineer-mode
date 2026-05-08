@@ -1,6 +1,6 @@
 ---
 name: distributed-data-and-consistency
-description: "Use when asked to choose storage, decide consistency per operation, pick a shard or partition key, or write down what happens during failover, conflict, and replication lag — before code or schema lands."
+description: "Use when asked to choose storage, decide consistency per operation, assess distributed locks, pick a shard or partition key, or write down failover, conflict, and replication-lag behavior."
 ---
 
 # Distributed Data And Consistency

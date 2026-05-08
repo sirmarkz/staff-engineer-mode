@@ -1,6 +1,6 @@
 ---
 name: performance-and-capacity
-description: "Use when asked to investigate tail latency, plan a load test, find a saturation point, or claim capacity for peak or failover - anything where the answer must be tail percentiles, not averages."
+description: "Use when asked to investigate tail latency, plan a load test, find a saturation point, or claim capacity for peak or failover - anything where the answer must be tail percentiles, not averages. Not for query-plan regressions tied to schema or index changes."
 ---
 
 # Capacity Performance And Tail Latency
@@ -33,6 +33,7 @@ Users experience tail latency, not averages.
 - The main request is public edge abuse, denial-of-service defense, or application-layer filtering; use `edge-traffic-and-ddos-defense` instead.
 - The user asks pure billing/procurement questions; out of scope.
 - The work is SLO target selection without performance investigation; use `slo-and-error-budgets` instead.
+- The regression is explicitly tied to a query plan, index, or schema migration; use `database-operations` instead.
 
 ## Inputs To Collect
 

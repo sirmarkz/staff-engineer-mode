@@ -1,6 +1,6 @@
 ---
 name: data-contracts
-description: "Use when asked to write or evolve a shared data interface — a schema, event, dataset, file, or stream that another component reads — and decide which changes are safe to ship."
+description: "Use when asked to write or evolve a shared data interface — a schema, event, dataset, file, or stream another component reads — and decide safe changes. Not for replay, ordering, idempotency, or DLQ behavior."
 ---
 
 # Data Contracts And Domain Interfaces

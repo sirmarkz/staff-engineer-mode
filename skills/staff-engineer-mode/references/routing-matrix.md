@@ -1,6 +1,6 @@
 # Routing Matrix Notes
 
-The router skill body must stay compact enough for Codex and Claude to load without warning. Keep detailed boundary notes here, and load this file only when adjacent surfaces compete.
+The router skill body must stay compact enough for Codex and Claude to load without warning. Keep detailed boundary notes here, and load this file for eval runs, exact-slug uncertainty, or adjacent surfaces.
 
 This file records the highest-risk routing boundaries to preserve during future edits. Do not duplicate every skill description here; duplication creates drift.
 
@@ -12,9 +12,36 @@ This file records the highest-risk routing boundaries to preserve during future 
 4. Route to one primary. Add a secondary only when the user explicitly asks for a separate artifact.
 5. Ask only the missing intake questions when the artifact or phase is unclear. Do not expose skill names, confidence labels, candidate lists, or routing drafts while asking.
 
+## Exact Slug Guardrails
+
+Return the canonical `skills/<slug>/SKILL.md` name, not a semantic alias.
+
+- Fault-domain or location-loss survivability is `high-availability-design`, not resilience/fault-domain labels.
+- Existing-client callers, backwards compatibility, and safe deprecation of an exposed API response field are `api-design-and-compatibility`, not broad migration.
+- RTO/RPO, backup, restore, corruption, accidental deletion, or DR restore tests are `backup-and-recovery`, not backup/restore aliases.
+- Chaos tests, game days, failover drills, and fault injection are `resilience-experiments`, not chaos-testing aliases.
+- Downstream dependency calls, retries, timeouts, idempotency, duplicate work, and overload behavior are `dependency-resilience`, unless the prompt is mainly event replay, ordering, or DLQ behavior.
+- State machines, invariants, protocol correctness, locking, concurrency, property tests, fuzzing, simulation, or model checking are `state-machine-correctness`.
+- Production config changes, generated operations, bulk scripts, validation, preview, blast-radius limits, abort paths, or rollback before mutation are `configuration-and-automation-safety`, not config aliases.
+- Runtime configuration drift and temporary overrides that need owners, expiry, validation, or rollback before automation applies them are `configuration-and-automation-safety`; declarative desired-state design remains `infrastructure-and-policy-as-code`.
+- Code-review purpose, change-size limits, ownership, review latency, and workflow metrics are `code-review-and-workflow`; one concrete pre-merge diff review is `agent-pr-review`.
+- Dependency updates, lockfile sweeps, migration notes, rollback risks, and small-batch hygiene are `dependency-and-code-hygiene`, even when packaged as a PR.
+- On-call suppression rules, noisy pages, responder load, toil, and proof that page reduction does not hide user impact are `oncall-health`; new alert design remains `observability-and-alerting`.
+- Cross-service distributed-data locks tied to consistency, failover, conflicts, or replication lag are `distributed-data-and-consistency`; local protocol invariants remain `state-machine-correctness`.
+- Event message producer/consumer replay, ordering, idempotency, and DLQ behavior are `event-workflows`; shared schema compatibility alone is `data-contracts`.
+- Derived search indexes, materialized views, cache invalidation, and stale-result freshness are `caching-and-derived-data`; batch or streaming pipeline freshness is `data-pipeline-reliability`.
+- Query plans, schema migrations, indexes, backfills, locks, and database-caused endpoint regressions are `database-operations`; general hot-path or capacity regressions are `performance-and-capacity`.
+- Threat models, trust boundaries, data flows, abuse cases, and residual-risk registers are `secure-sdlc-and-threat-modeling`, not threat-modeling aliases.
+- Source-to-deploy trust, isolated builders, provenance, signing, deployment admission, or untrusted artifact risk are `software-supply-chain-security`.
+- Deployed vulnerabilities, exploitability, exposure, patch SLAs, remediation rollout, and expiring exceptions are `vulnerability-management`.
+- Model-serving promotion, eval thresholds, training-serving skew, drift, and rollback evidence are `ml-reliability-and-evaluation`; broad launch evidence without ML risk is `production-readiness-review`.
+- Internal service-to-service routing, discovery, locality, identity, and private dependency traffic policy are `internal-service-networking`; dependency version cleanup is `dependency-and-code-hygiene`.
+- AI coding-agent repo rules, protected paths, required tests, data boundaries, and generated-code acceptance gates are `ai-coding-governance`.
+- LLM eval harnesses, datasets, graders, thresholds, slice coverage, and regression history are `llm-evaluation`.
+
 ## High-Risk Boundaries
 
-- Reliability target policy routes to `slo-and-error-budgets`; telemetry construction routes to `observability-and-alerting`; page fatigue routes to `oncall-health`.
+- Reliability target policy, SLO-based alert review, and page-vs-ticket policy route to `slo-and-error-budgets`; telemetry construction routes to `observability-and-alerting`; page fatigue routes to `oncall-health`.
 - When a prompt mixes noisy pages and missing reliability targets, route the immediate operator pain to `oncall-health` and use `slo-and-error-budgets` only as a secondary policy artifact.
 - Launch readiness routes to `production-readiness-review` only when launch, major traffic shift, tier upgrade, or broad readiness audit is explicit. Generic design review routes elsewhere.
 - Fault-domain topology routes to `high-availability-design`; restore capability routes to `backup-and-recovery`; controlled failure tests route to `resilience-experiments`.

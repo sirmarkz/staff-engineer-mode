@@ -1,6 +1,6 @@
 ---
 name: dependency-and-code-hygiene
-description: "Use when asked to plan dependency updates, dead-code removal, lockfile sweeps, codemods, or static-analysis ratchets in small reversible batches."
+description: "Use when asked to plan dependency updates, dependency-update PR checks, dead-code removal, lockfile sweeps, codemods, or static-analysis ratchets in small reversible batches."
 ---
 
 # Dependency Hygiene And Code Health

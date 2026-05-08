@@ -1,6 +1,6 @@
 ---
 name: production-readiness-review
-description: "Use when asked to run a launch-readiness review on a service, feature, migration, tier change, or major traffic shift — produces an evidence matrix, blockers, exceptions, and a tier classification, but does not give go/no-go authority."
+description: "Use when asked to run a launch-readiness review on a service, feature, migration, tier change, or major traffic shift — evidence matrix, blockers, exceptions, and tier classification. Not for ML model-promotion gates."
 ---
 
 # Production Readiness Review

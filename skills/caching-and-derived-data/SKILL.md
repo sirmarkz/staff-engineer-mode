@@ -1,6 +1,6 @@
 ---
 name: caching-and-derived-data
-description: "Use when asked to add, fix, or audit a cache or materialized view — TTL, invalidation order, miss-storm protection, and what users see when the cache is cold or stale."
+description: "Use when asked to add, fix, or audit a cache, search index, derived value, or materialized view — TTL, invalidation order, miss-storm protection, refresh behavior, and cold or stale user experience."
 ---
 
 # Caching And Derived Data

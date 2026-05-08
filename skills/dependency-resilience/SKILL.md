@@ -1,6 +1,6 @@
 ---
 name: dependency-resilience
-description: "Use when asked to set timeouts, retries, idempotency, queue limits, and overload behavior on a remote call or queue — before a slow dependency cascades through the caller."
+description: "Use when asked to set timeouts, retries, idempotency, duplicate-work prevention, queue limits, and overload behavior on a remote dependency call or queue. Not for async replay/order/DLQ workflow design."
 ---
 
 # Dependency Resilience And Overload

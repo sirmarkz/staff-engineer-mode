@@ -1,6 +1,6 @@
 ---
 name: state-machine-correctness
-description: "Use when asked to validate a high-stakes state machine, protocol, or concurrency boundary — explicit invariants plus property tests, fuzzing, simulation, or model checking — when example-based tests cannot cover the input or interleaving space."
+description: "Use when asked to validate a high-stakes state machine, protocol, or concurrency boundary — invariants plus property tests, fuzzing, simulation, or model checking. Not for choosing distributed data consistency under failover."
 ---
 
 # Systems Correctness And Formal Validation

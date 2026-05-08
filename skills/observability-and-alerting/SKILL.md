@@ -1,6 +1,6 @@
 ---
 name: observability-and-alerting
-description: "Use when asked to design telemetry, dashboards, alert rules, or runbooks tied to user journeys — and to decide what should page versus ticket. Not for SLO math; that is slo-and-error-budgets."
+description: "Use when asked to design telemetry, dashboards, alert rules, or runbooks tied to user journeys. Not for SLO-tied alert policy, burn-rate policy, error-budget math, page-volume reduction, or suppression-rule cleanup."
 ---
 
 # Observability And Alerting
@@ -24,11 +24,11 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 - The user asks for metrics, logs, traces, dashboards, alerting, runbooks, correlation IDs, telemetry fields, or production debugging.
 - A service cannot explain incidents from existing signals.
 - The user asks how to instrument a new service, dependency, queue, pipeline, or rollout.
-- Alert rules are the main deliverable, even if SLO policy is already defined.
+- Alert rules are the main deliverable and the work is not asking to connect them to SLO or error-budget policy.
 
 ## When Not To Use
 
-- The user needs reliability targets, SLO math, or budget policy; use `slo-and-error-budgets` instead.
+- The user needs reliability targets, SLO math, SLO-based page/ticket policy, or budget policy; use `slo-and-error-budgets` instead.
 - The user needs to reduce existing page volume or toil; use `oncall-health` instead unless new telemetry is central.
 - The user is in a live incident; route to `incident-response-and-postmortems` first.
 - The work is only local development logging without production operations impact.

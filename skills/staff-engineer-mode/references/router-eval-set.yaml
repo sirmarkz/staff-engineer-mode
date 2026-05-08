@@ -9,6 +9,21 @@ cases:
     expected_behavior: "route to compatibility and client migration instead of generic architecture"
     category: direct
     expected_gates: [single_primary, intent_inference]
+  - prompt: "Review the API changes in this branch and tell me what could break existing clients."
+    expected_primary: api-design-and-compatibility
+    expected_behavior: "route API branch review to client compatibility instead of generic PR review"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Inspect the endpoint code and API schema docs for this new pagination behavior before we merge."
+    expected_primary: api-design-and-compatibility
+    expected_behavior: "route endpoint/schema review before merge to API compatibility, not generic PR review"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Several SDKs and partner clients still read this response field; check compatibility and removal gates before changing it."
+    expected_primary: api-design-and-compatibility
+    expected_behavior: "route response field deprecation to exposed API contract migration"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
   - prompt: "We need operation names and request shapes for generated client methods that create, list, batch-get, and cancel jobs without confusing callers."
     expected_primary: api-design-and-compatibility
     expected_behavior: "route to API operation naming and generated-client contract ergonomics"
@@ -22,6 +37,21 @@ cases:
   - prompt: "We need to decide which customer-facing failures count against checkout reliability and when they should page someone."
     expected_primary: slo-and-error-budgets
     expected_behavior: "route to reliability objectives and paging policy"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Look at this service's routes, dashboards, and alerts, then propose user-centered SLIs and SLOs."
+    expected_primary: slo-and-error-budgets
+    expected_behavior: "route SLI/SLO proposal to error-budget skill without inventing reliability-target aliases"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Review the alert rules against this service's SLOs and separate paging alerts from ticket-only alerts."
+    expected_primary: slo-and-error-budgets
+    expected_behavior: "route page-vs-ticket policy tied to SLOs to error-budget skill"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Use the service code and recent incidents to draft an error-budget policy for releases."
+    expected_primary: slo-and-error-budgets
+    expected_behavior: "route error-budget policy to the exact slo-and-error-budgets skill"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "The service has to keep serving traffic if an entire availability fault domain disappears during peak traffic."
@@ -209,6 +239,11 @@ cases:
   - prompt: "Several components consume this shared customer dataset, and we need schema responsibility, compatibility rules, and consumer tests before changing a field."
     expected_primary: data-contracts
     expected_behavior: "route to cross-consumer data contracts instead of pipeline freshness or one API review"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Inspect the schema and downstream usage, then define the contract and removal gates for this field."
+    expected_primary: data-contracts
+    expected_behavior: "route schema downstream-usage removal gates to data contracts, not dependency resilience"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "The product page shows stale inventory after updates, and cache invalidation keeps breaking during traffic spikes."
@@ -524,4 +559,59 @@ cases:
     expected_primary: dev-environment-parity
     expected_behavior: "route 'works only in one environment' failures to dev environment parity instead of build reproducibility"
     category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Inspect this downstream payment dependency call and find where retries could double-charge or duplicate work."
+    expected_primary: dependency-resilience
+    expected_behavior: "route downstream call retries and duplicate work to dependency resilience instead of event workflows"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Find runtime configuration drift and temporary overrides that an automation change could apply, then add owners, expiry, validation, and rollback."
+    expected_primary: configuration-and-automation-safety
+    expected_behavior: "route runtime config drift with automation rollback controls to configuration safety"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Run a production-readiness review for this migration PR and identify launch blockers before we move traffic tomorrow."
+    expected_primary: production-readiness-review
+    expected_behavior: "route explicit readiness review before traffic movement to PRR instead of rollout sequencing"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Review this dependency update and lockfile sweep for migration, hygiene, and rollback risks."
+    expected_primary: dependency-and-code-hygiene
+    expected_behavior: "route dependency update and lockfile sweep to dependency hygiene instead of generic PR review"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Review these on-call suppression rules and prove we are reducing page noise without hiding real user impact."
+    expected_primary: oncall-health
+    expected_behavior: "route suppression rules and page-noise reduction to oncall health instead of observability design"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Inspect this cross-service distributed-data lock and decide whether the consistency model is safe during failover or replication lag."
+    expected_primary: distributed-data-and-consistency
+    expected_behavior: "route distributed-data lock safety under failover and replication lag to consistency design"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Inspect this event message change and find producer or consumer replay, ordering, idempotency, or DLQ behavior that might break."
+    expected_primary: event-workflows
+    expected_behavior: "route event message behavior under replay, ordering, idempotency, and DLQ to event workflows"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Check the derived search-index refresh path and define stale-result freshness checks we can verify."
+    expected_primary: caching-and-derived-data
+    expected_behavior: "route derived search-index freshness and stale results to caching and derived data"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Use the query plan and schema migration diff to find why this endpoint got slower after the database change."
+    expected_primary: database-operations
+    expected_behavior: "route database-caused endpoint regression with query plan and schema migration evidence to database operations"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Define ML model-serving promotion evidence for this endpoint, including eval thresholds, training-serving skew, drift, rollback, tests, metrics, and deploy workflow."
+    expected_primary: ml-reliability-and-evaluation
+    expected_behavior: "route ML model-serving promotion evidence to ML reliability instead of generic readiness review"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Inspect internal service-to-service routing config and keep this private dependency's traffic local when possible."
+    expected_primary: internal-service-networking
+    expected_behavior: "route internal traffic locality and service-to-service routing config to internal networking"
+    category: direct
     expected_gates: [single_primary, intent_inference]
