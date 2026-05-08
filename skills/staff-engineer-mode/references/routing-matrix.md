@@ -1,9 +1,5 @@
 # Routing Matrix Notes
 
-The router skill body must stay compact enough for Codex and Claude to load without warning. Keep detailed boundary notes here, and load this file for eval runs, exact-slug uncertainty, or adjacent surfaces.
-
-This file records the highest-risk routing boundaries to preserve during future edits. Do not duplicate every skill description here; duplication creates drift.
-
 ## Decision Frame
 
 1. Identify the requested artifact: decision, plan, gate, rollout, investigation, runbook, policy, migration, evidence pack, or review.
