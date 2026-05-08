@@ -1,6 +1,6 @@
 # OE Phase Map
 
-browse by phase, route by artifact/surface.
+Browse by phase, route by artifact/surface.
 
 Use this as a navigation aid for scanning which specialist surfaces tend to appear in each OE phase; the [staff-engineer-mode](skills/staff-engineer-mode/SKILL.md) router still selects the right specialist from the user's artifact, surface, risk, and evidence.
 
