@@ -1,5 +1,31 @@
 # Staff Engineer Mode Release Notes
 
+## 0.8.0 - 2026-05-07
+
+AWS Builders' Library guidance pass and phase-based navigation aid.
+
+- Tightens 10 specialist skills with technical defaults sourced from the
+  AWS Builders' Library: structured-log baseline fields and trace/span
+  propagation contract; per-hop timeout calibration, token-bucket retry
+  budget, AIMD over binary breakers, per-dependency pool sizing,
+  server-side overload defaults (LIFO, deadline propagation,
+  observe-before-enforce, shed-metric visibility), shallow liveness +
+  health-endpoint capacity reservation; canary-slice scoping and
+  two-thirds rolling-deploy capacity floor; pre-classified rollback
+  safety dimensions; named expand/migrate/transition/contract phases
+  with per-phase rollback safety; cache hit-rate operating-point
+  alarming; constant-work-pattern guidance; dual-credential overlap
+  rotation with verify-zero-old-traffic gate plus renewal-runway
+  default.
+- Adds `OE-PHASE-MAP.md` at the repo root: a phase-based navigation aid
+  (Foundations / Design & Build / Develop & Test / Deploy & Operate /
+  Monitor & Respond / Improve) with one-line descriptions per skill.
+  README links to it next to `SAMPLE-PROMPTS.md`.
+- Adds 7 AWS Builders' Library entries to the source index (S284-S290):
+  Ensuring Rollback Safety, Instrumenting Distributed Systems, Building
+  Dashboards, Going Faster with CD, Dependency Isolation, Minimizing
+  Correlated Failures, Caching Challenges and Strategies.
+
 ## 0.7.0 - 2026-05-06
 
 Self-sufficient skill guidance release.
