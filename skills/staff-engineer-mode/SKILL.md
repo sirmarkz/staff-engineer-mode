@@ -8,18 +8,18 @@ description: "Use when engineering design, review, delivery, reliability, securi
 ## Iron Law
 
 ```
-ONE PRIMARY SKILL BY DEFAULT; ASK ONLY QUESTIONS WHEN CONFIDENCE IS LOW
+ONE PRIMARY SPECIALIST BY DEFAULT; ASK ONLY QUESTIONS WHEN CONFIDENCE IS LOW
 ```
 
-Loading many plausible skills is a routing failure.
+Loading many plausible specialists is a routing failure.
 
 ## Overview
 
-Users are not expected to know skill names. Classify ordinary engineering language by artifact, phase, surface, and risk, then quietly select the specialist whose outputs fit the next useful artifact.
+Users are not expected to know specialist names. Classify by artifact, phase, surface, and risk, then quietly select the specialist whose outputs fit the next useful artifact.
 
 ## When To Use
 
-- The request asks for engineering design, review, delivery, operations, reliability, security, architecture, API, data, platform, or client guidance, even when it appears to be a single surface.
+- The request asks for engineering design, review, delivery, operations, reliability, security, architecture, API, data, platform, or client guidance.
 - The request is broad, vague, or spans multiple engineering surfaces.
 - No single specialist clearly dominates from the prompt.
 - The user asks for staff-engineer-level architecture, reliability, security, operations, delivery, data, platform, client, or cost guidance.
@@ -38,7 +38,7 @@ Users are not expected to know skill names. Classify ordinary engineering langua
 - **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, AI, accessibility, cost, or operator load.
 - **Risk/scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-location.
 
-## Loaded Specialist Slugs
+## Bundled Specialist Slugs
 
 Pick `primary` and `secondary` only from this exact list. Never invent, shorten, or paraphrase a slug.
 
@@ -67,16 +67,17 @@ web-release-gates
 
 1. Identify the requested artifact and phase before naming any skill.
 2. Translate named tools into capabilities; do not invent tools, vendors, frameworks, protocols, databases, or commands.
-3. Pick `primary` (and any `secondary`) verbatim from the Loaded Specialist Slugs list above; if no listed slug fits, ask a clarification question instead of inventing or paraphrasing one.
+3. Pick `primary` (and any `secondary`) verbatim from the Bundled Specialist Slugs list above; if no listed slug fits, ask a clarification question instead of inventing or paraphrasing one.
 4. Choose the narrowest primary whose required outputs match the next artifact.
 5. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
-6. If confidence is low, ask only the missing intake questions needed to route and start useful work.
-7. Keep single-surface evidence with the matching specialist skill; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
-8. Reframe out-of-scope work as an engineering-control question only when that is plausible.
+6. Read only `../../specialists/<slug>/SKILL.md`, or the same file under the platform-supplied specialist root.
+7. If confidence is low, ask only the missing intake questions needed to route and start useful work.
+8. Keep single-surface evidence with the matching specialist; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
+9. Reframe out-of-scope work as an engineering-control question only when that is plausible.
 
 ## Synthesized Default
 
-Select one primary when the prompt has enough context. Recommend at most one secondary follow-up. Broad requests become a short sequence, not a pile of loaded skills.
+Select one primary when the prompt has enough context. Recommend at most one secondary follow-up. Broad requests become a short sequence, not a pile of loaded specialists.
 
 ## Exceptions
 
@@ -87,7 +88,7 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 ## Required Outputs
 
-- For confident routing: primary skill name; optional secondary only when necessary; confidence of high or medium.
+- For confident routing: primary specialist slug; optional secondary only when necessary; confidence of high or medium.
 - Inferred intent: requested artifact, dominant surface, work phase, and one-sentence rationale.
 - For explicit eval-harness runs only: also include a fenced `routing` block containing a JSON object with `primary`, `secondary`, `confidence`, `artifact`, `surface`, `phase`, and `rationale`.
 - For low-confidence routing: questions only; no primary, secondary, confidence label, routing draft, candidate list, or specialist names.
@@ -95,16 +96,16 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 ## Evidence Gates
 
-- `single_primary`: output has exactly one primary skill unless asking a clarification question.
-- `secondary_cap`: output has no more than one secondary skill.
+- `single_primary`: output has exactly one primary specialist unless asking a clarification question.
+- `secondary_cap`: output has no more than one secondary specialist.
 - `capability_translation`: tool, vendor, or framework names are translated into capability language before routing.
 - `scope_check`: out-of-scope requests are reframed or declined.
-- `ambiguity_check`: ambiguous prompts ask user-facing questions and expose no skill names, candidate routes, confidence labels, or drafts.
+- `ambiguity_check`: ambiguous prompts ask user-facing questions and expose no specialist names, candidate routes, confidence labels, or drafts.
 - `intent_inference`: rationale identifies the requested artifact and phase before naming a skill.
 
 ## Routing Tiebreakers
 
-Use specialist descriptions as the primary map. Load `references/routing-matrix.md` for eval runs, exact-slug uncertainty, or adjacent surfaces.
+Use the bundled slug list and tiebreakers as the primary map. Load `references/routing-matrix.md` for eval runs, exact-slug uncertainty, or adjacent surfaces.
 
 - Launch or major traffic-shift readiness aggregates through `production-readiness-review`; ordinary design review does not.
 - Active user-impacting incidents select `incident-response-and-postmortems` before root-cause specialty work.
@@ -115,7 +116,7 @@ Use specialist descriptions as the primary map. Load `references/routing-matrix.
 - Broad service/module retirement or multi-quarter caller migration routes to `migration-and-deprecation`; stale library/dead-code cleanup routes to `dependency-and-code-hygiene`.
 - Asynchronous workflow semantics route to `event-workflows`.
 - Build/release artifact reproducibility comes before production exposure and rollback strategy.
-- Single-domain evidence stays with the matching specialist skill; cross-surface evidence packs use `engineering-control-evidence`.
+- Single-domain evidence stays with the matching specialist; cross-surface evidence packs use `engineering-control-evidence`.
 - Public edge traffic, internal service traffic, backend performance, client performance, cost tradeoffs, and data freshness stay separate.
 - Security routes by artifact: threat model, identity/secrets, supply-chain trust, deployed vulnerability remediation, tenant boundary, privacy lifecycle, or model/tool/retrieval app risk.
 - Newer narrow routes beat broad neighbors: config/automation safety, documentation lifecycle, data contracts, accessibility gates, AI coding governance, agent PR review, LLM eval harnesses, experimentation guardrails, fleet upgrades, cryptography and key lifecycle, feature flag lifecycle, LLM serving cost and latency, code readability for agents, test data engineering, and dev environment parity.
@@ -137,19 +138,19 @@ Use specialist descriptions as the primary map. Load `references/routing-matrix.
 
 ## Red Flags - Stop And Rework
 
-- More than two skills are selected automatically.
+- More than two specialists are selected automatically.
 - The router chooses from a phrase match without identifying artifact and phase.
 - A tool or vendor name drives routing without capability translation.
 - `production-readiness-review` is used for any broad prompt without a readiness event.
 - Compliance, staffing, compensation, procurement, or marketing work is routed as engineering work.
-- A low-confidence answer names candidate skills, prints a routing draft, or exposes the internal shortlist.
+- A low-confidence answer names candidate specialists, prints a routing draft, or exposes the internal shortlist.
 
 ## Common Mistakes
 
 | Mistake | Correction |
 | --- | --- |
 | Keyword matching | Infer artifact, phase, surface, and risk. |
-| Loading every related skill | Choose one primary and list at most one follow-up. |
+| Loading every related specialist | Choose one primary and list at most one follow-up. |
 | Treating tools as domains | Translate tools to capabilities. |
-| Dumping candidate skills | Ask missing diagnostic or scoping questions without naming skills. |
+| Dumping candidate specialists | Ask missing diagnostic or scoping questions without naming specialists. |
 | Avoiding clarification | Ask focused intake questions when confidence is low. |

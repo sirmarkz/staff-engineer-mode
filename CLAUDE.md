@@ -13,9 +13,9 @@ accessibility, cost, production-readiness, rollout, migration, incident, and
 evidence requests start with the router even when another pack recommends
 generic brainstorming for broad design work.
 
-Do not require users to name individual skills. Route natural-language requests
-through `staff-engineer-mode`, then load the smallest useful specialist
-skill set.
+Do not require users to name individual specialists. Route natural-language requests
+through `staff-engineer-mode`, then read only the selected specialist reference
+file from `specialists/<specialist-name>/SKILL.md`.
 
 Keep guidance technology-agnostic by default. Do not introduce cloud providers,
 frameworks, databases, monitoring products, protocols, or command examples unless

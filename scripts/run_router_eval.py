@@ -12,6 +12,7 @@ from typing import Any, NamedTuple
 ROOT = Path(__file__).resolve().parents[1]
 ROUTER_EVAL = ROOT / "skills" / "staff-engineer-mode" / "references" / "router-eval-set.yaml"
 SKILLS = ROOT / "skills"
+SPECIALISTS = ROOT / "specialists"
 ROUTING_BLOCK_RE = re.compile(r"```routing\s*(?P<body>.*?)```", re.DOTALL)
 LOW_CONFIDENCE_PRIMARIES = {"staff-engineer-mode", "none"}
 TOOL_BAIT_TERMS = [
@@ -83,11 +84,7 @@ def parse_cases(text: str) -> list[dict[str, Any]]:
 
 
 def specialist_names() -> list[str]:
-    return sorted(
-        path.parent.name
-        for path in SKILLS.glob("*/SKILL.md")
-        if path.parent.name != "staff-engineer-mode"
-    )
+    return sorted(path.parent.name for path in SPECIALISTS.glob("*/SKILL.md"))
 
 
 def case_id(index: int, case: dict[str, Any]) -> str:

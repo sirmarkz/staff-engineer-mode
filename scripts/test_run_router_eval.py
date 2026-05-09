@@ -56,7 +56,7 @@ class RouterEvalHarnessTests(unittest.TestCase):
         case = {
             "prompt": "Make alerts better for checkout.",
             "expected_primary": "staff-engineer-mode",
-            "expected_behavior": "ask without naming skills",
+            "expected_behavior": "ask without naming specialists",
             "category": "ambiguous",
             "expected_gates": ["ambiguity_check"],
             "forbidden_in_response": ["all_specialist_names"],

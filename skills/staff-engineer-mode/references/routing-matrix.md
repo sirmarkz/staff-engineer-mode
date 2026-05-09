@@ -6,11 +6,11 @@
 2. Identify the work phase: design, pre-merge, launch, migration, active incident, post-incident, regression, audit, or steady-state maintenance.
 3. Identify the dominant risk: availability, latency, durability, correctness, security, privacy, compatibility, operator load, cost, release safety, or customer experience.
 4. Route to one primary. Add a secondary only when the user explicitly asks for a separate artifact.
-5. Ask only the missing intake questions when the artifact or phase is unclear. Do not expose skill names, confidence labels, candidate lists, or routing drafts while asking.
+5. Ask only the missing intake questions when the artifact or phase is unclear. Do not expose specialist names, confidence labels, candidate lists, or routing drafts while asking.
 
 ## Exact Slug Guardrails
 
-Return the canonical `skills/<slug>/SKILL.md` name, not a semantic alias.
+Return the canonical `specialists/<slug>/SKILL.md` slug, not a semantic alias.
 
 - Fault-domain or location-loss survivability is `high-availability-design`, not resilience/fault-domain labels.
 - Existing-client callers, backwards compatibility, and safe deprecation of an exposed API response field are `api-design-and-compatibility`, not broad migration.
@@ -64,7 +64,7 @@ Return the canonical `skills/<slug>/SKILL.md` name, not a semantic alias.
 - LLM tool, prompt-injection, retrieval-boundary, and unsafe-output risk routes to `llm-application-security`; LLM eval datasets, graders, thresholds, and regression gates route to `llm-evaluation`; production ML serving and drift stay with `ml-reliability-and-evaluation`.
 - LLM prompt/response storage, session isolation, rollback, and artifact provenance stay with `llm-application-security` only when tied to prompt/retrieval/tool/output boundaries; otherwise route data lifecycle to `privacy-and-data-lifecycle`, tenant boundaries to `tenant-isolation`, rollout sequencing to `progressive-delivery`, and generic supply-chain trust to `software-supply-chain-security`.
 - Experiments, holdouts, exposure logging, and metric validity route to `experimentation-and-metric-guardrails`; operational canaries stay with `progressive-delivery`.
-- Single-surface evidence stays with the matching specialist skill. `engineering-control-evidence` is for cross-surface control mapping, exception records, scorecards, and evidence packs.
+- Single-surface evidence stays with the matching specialist. `engineering-control-evidence` is for cross-surface control mapping, exception records, scorecards, and evidence packs.
 - Public edge traffic defense routes to `edge-traffic-and-ddos-defense`; internal service-to-service traffic policy routes to `internal-service-networking`.
 - Retry, timeout, circuit-breaker, load-shedding, and dependency overload policy routes to `dependency-resilience` even when implemented through internal traffic tooling; service identity, discovery, transport, and locality route to `internal-service-networking`.
 - Client-rendered user experience performance gates route to `web-release-gates`; backend latency and headroom route to `performance-and-capacity`.

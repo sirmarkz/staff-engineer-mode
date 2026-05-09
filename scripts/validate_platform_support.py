@@ -70,6 +70,7 @@ def validate_codex() -> None:
     if value.get("skills") != "./skills/":
         fail(".codex-plugin/plugin.json skills must be ./skills/")
     assert_path_exists(path, "skills")
+    assert_path_exists(path, "specialists")
     interface = value.get("interface")
     if not isinstance(interface, dict):
         fail(".codex-plugin/plugin.json missing interface object")
@@ -104,6 +105,8 @@ def validate_claude() -> None:
         fail("CLAUDE.md must name the flat router entrypoint")
     if "Keep guidance technology-agnostic by default" not in claude_text:
         fail("CLAUDE.md must require technology-agnostic guidance by default")
+    if "specialists/<specialist-name>/SKILL.md" not in claude_text:
+        fail("CLAUDE.md must document routed specialist reference files")
     marketplace = ROOT / ".claude-plugin" / "marketplace.json"
     value = read_json(marketplace)
     if value.get("name") != NAME:
@@ -146,6 +149,8 @@ def validate_gemini() -> None:
         fail("GEMINI.md must not reference the old nested router path")
     if "Keep guidance technology-agnostic by default" not in text:
         fail("GEMINI.md must require technology-agnostic guidance by default")
+    if "specialists/<specialist-name>/SKILL.md" not in text:
+        fail("GEMINI.md must document routed specialist reference files")
 
 
 def validate_opencode() -> None:
@@ -160,6 +165,8 @@ def validate_opencode() -> None:
     text = plugin_path.read_text()
     if "skillsDir" not in text or "config.skills.paths" not in text:
         fail("OpenCode plugin must register skillsDir in config.skills.paths")
+    if "specialistsDir" not in text or "<slug>/SKILL.md" not in text:
+        fail("OpenCode plugin must route to hidden specialist reference files")
     if "experimental.chat.messages.transform" not in text or "staff-engineer-mode" not in text:
         fail("OpenCode plugin must inject the router bootstrap")
     if "Keep guidance technology-agnostic by default" not in text:
@@ -186,6 +193,8 @@ def validate_hooks() -> None:
         "additional_context",
         "staff-engineer-mode",
         "skills/staff-engineer-mode/SKILL.md",
+        "specialists",
+        "<slug>/SKILL.md",
         "Keep guidance technology-agnostic by default",
     ]:
         if term not in session_start:
@@ -268,6 +277,8 @@ def validate_docs() -> None:
         fail(".codex/INSTALL.md must use the native ~/.agents/skills/staff-engineer-mode install path")
     if 'ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode' not in codex_install:
         fail(".codex/INSTALL.md must symlink the Staff Engineer Mode skill tree for Codex")
+    if "specialists/<slug>/SKILL.md" not in codex_install:
+        fail(".codex/INSTALL.md must document routed specialist files")
 
 
 def main() -> int:

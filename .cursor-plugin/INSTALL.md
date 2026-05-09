@@ -18,8 +18,8 @@ ln -s ~/.cursor/staff-engineer-mode-src ~/.cursor/plugins/staff-engineer-mode
 
 Reload Cursor with `Developer: Reload Window` or restart the IDE. Cursor reads
 the plugin manifest from
-`~/.cursor/plugins/staff-engineer-mode/.cursor-plugin/plugin.json` and the bundled
-`skills/` directory.
+`~/.cursor/plugins/staff-engineer-mode/.cursor-plugin/plugin.json`, the router in
+`skills/`, and routed specialist files in `specialists/`.
 
 ## Installation (Windows PowerShell)
 
@@ -33,12 +33,13 @@ Reload Cursor.
 
 ## Per-Project Alternative
 
-If the skills should be available only in one Cursor workspace, symlink the
-bundled `skills/` directory into the project's `.cursor/skills/` directory:
+If the pack should be available only in one Cursor workspace, symlink the whole
+repository into a workspace plugin path. A skills-only symlink will expose the
+router but not the routed specialist files.
 
 ```bash
-mkdir -p .cursor/skills
-ln -s /path/to/staff-engineer-mode/skills .cursor/skills/staff-engineer-mode
+mkdir -p .cursor/plugins
+ln -s /path/to/staff-engineer-mode .cursor/plugins/staff-engineer-mode
 ```
 
 Reload the workspace.
@@ -51,7 +52,7 @@ In Cursor Agent chat:
 Review this service for production readiness.
 ```
 
-The router should select the smallest useful specialist skill set instead of
+The router should select the smallest useful specialist set instead of
 requiring a named skill invocation.
 
 ## Updating

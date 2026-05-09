@@ -41,8 +41,8 @@ skill yet.
 ## Skill Authoring Rules
 
 - Keep each skill narrow enough that the router can select it with low noise.
-- Keep `skills/<skill-name>/SKILL.md` under 300 lines.
-- Use the flat `skills/<skill-name>/SKILL.md` namespace.
+- Keep `skills/staff-engineer-mode/SKILL.md` and `specialists/<specialist-name>/SKILL.md` under 300 lines.
+- Use `skills/` only for the native router entrypoint; routed specialists live under `specialists/`.
 - Frontmatter descriptions start with `Use when` and describe the trigger, not
   the feature.
 - Names are lowercase and hyphenated. Prefer

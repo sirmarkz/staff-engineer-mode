@@ -75,12 +75,8 @@ def parse_cases(text: str) -> list[dict[str, Any]]:
 
 
 def skill_names() -> set[str]:
-    skills_dir = ROOT / "skills"
-    return {
-        path.parent.name
-        for path in skills_dir.glob("*/SKILL.md")
-        if path.parent.name != "_shared"
-    }
+    specialists_dir = ROOT / "specialists"
+    return {"staff-engineer-mode"} | {path.parent.name for path in specialists_dir.glob("*/SKILL.md")}
 
 
 def main() -> int:
@@ -110,9 +106,9 @@ def main() -> int:
             fail(f"case {index} has unknown expected_primary {case['expected_primary']!r}")
         if "expected_secondary" in case and case["expected_secondary"] not in valid_skill_names:
             fail(f"case {index} has unknown expected_secondary {case['expected_secondary']!r}")
-        if case["expected_primary"] == "staff-engineer-mode" and "without naming skills" not in case["expected_behavior"]:
+        if case["expected_primary"] == "staff-engineer-mode" and "without naming specialists" not in case["expected_behavior"]:
             fail(
-                f"ambiguous case {index} must expect clarification questions without naming skills"
+                f"ambiguous case {index} must expect clarification questions without naming specialists"
             )
         gates = case.get(REQUIRED_GATE_KEY)
         if not isinstance(gates, list) or not gates:

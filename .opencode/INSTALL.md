@@ -14,8 +14,8 @@ Add Staff Engineer Mode to the `plugin` array in `opencode.json`:
 }
 ```
 
-Restart OpenCode. The plugin auto-installs, registers all skills, and injects
-the router bootstrap into the first user message of each session.
+Restart OpenCode. The plugin auto-installs, registers the router skill, and
+injects the router bootstrap into the first user message of each session.
 
 ## Verify
 
@@ -25,7 +25,7 @@ Ask OpenCode:
 Review this service for production readiness.
 ```
 
-The router should choose one primary specialist skill and at most one secondary.
+The router should choose one primary specialist and at most one secondary.
 
 ## Usage
 
@@ -36,8 +36,9 @@ use skill tool to list skills
 use skill tool to load staff-engineer-mode/staff-engineer-mode
 ```
 
-Normal use should not require the user to name a skill; the router bootstrap is
-loaded automatically.
+Normal use should not require the user to name a specialist; the router
+bootstrap is loaded automatically and reads routed specialist files from
+`specialists/`.
 
 ## Updating
 

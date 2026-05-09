@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
+SPECIALISTS = ROOT / "specialists"
 README = ROOT / "README.md"
 SAMPLE_PROMPTS = ROOT / "SAMPLE-PROMPTS.md"
 SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
@@ -247,7 +248,7 @@ def validate_router_skill(text: str, path: Path) -> None:
         fail(f"{path} missing router evidence gates: {', '.join(sorted(missing))}")
     gate_bodies = evidence_gate_bodies(text, path)
     require_gate_terms(gate_bodies, "capability_translation", ["tool", "translated"], path)
-    require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "questions", "skill names"], path)
+    require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "questions", "specialist names"], path)
 
 
 def validate_no_duplicate_fragments(text: str, path: Path) -> None:
@@ -395,16 +396,27 @@ def validate_sample_prompts(skill_files: list[Path]) -> None:
 
 
 def main() -> int:
-    skill_files = sorted(path for path in SKILLS.glob("**/SKILL.md") if "_shared" not in path.parts)
-    if not skill_files:
-        fail("no skills found")
+    router_file = SKILLS / "staff-engineer-mode" / "SKILL.md"
+    if not router_file.exists():
+        fail("missing router skill at skills/staff-engineer-mode/SKILL.md")
+    native_skill_files = sorted(path for path in SKILLS.glob("**/SKILL.md") if "_shared" not in path.parts)
+    if native_skill_files != [router_file]:
+        unexpected = [str(path.relative_to(ROOT)) for path in native_skill_files if path != router_file]
+        fail(f"only the router may live under skills/; found {', '.join(unexpected)}")
 
-    validate_codex_namespaced_length(skill_files)
+    specialist_files = sorted(SPECIALISTS.glob("*/SKILL.md"))
+    if not specialist_files:
+        fail("no routed specialists found under specialists/")
+
+    skill_files = [router_file, *specialist_files]
+
+    validate_codex_namespaced_length([router_file])
     validate_unique_skill_metadata(skill_files)
-    for path in skill_files:
-        relative = path.relative_to(SKILLS)
+    validate_skill(router_file)
+    for path in specialist_files:
+        relative = path.relative_to(SPECIALISTS)
         if len(relative.parts) != 2:
-            fail(f"{path} must live at skills/<skill-name>/SKILL.md")
+            fail(f"{path} must live at specialists/<specialist-name>/SKILL.md")
         validate_skill(path)
 
     router_eval = SKILLS / "staff-engineer-mode" / "references" / "router-eval-set.yaml"
@@ -416,7 +428,7 @@ def main() -> int:
 
     validate_skill_contract()
     validate_sample_prompts(skill_files)
-    print(f"skill pack validation passed: {len(skill_files)} skills")
+    print(f"skill pack validation passed: 1 router skill, {len(specialist_files)} routed specialists")
     return 0
 
 

@@ -12,8 +12,10 @@ architecture review, production readiness, reliability, resilience, DevOps,
 security, privacy, operations, platform, data, mobile, frontend, or cost-aware
 reliability guidance.
 
-Do not require the user to name an individual specialist skill. The router must
-infer intent from the request and choose the smallest useful skill set.
+Do not require the user to name an individual specialist. The router must infer
+intent from the request and choose the smallest useful specialist set.
+After routing, read only the selected specialist reference file from
+`specialists/<specialist-name>/SKILL.md`.
 
 ## Routing Discipline
 
@@ -21,7 +23,7 @@ infer intent from the request and choose the smallest useful skill set.
 - Add at most one secondary skill when the request clearly includes a separate
   engineering surface.
 - Ask only focused intake questions when confidence is low. Do not expose
-  candidate skill names, confidence labels, or routing drafts while asking.
+  candidate specialist names, confidence labels, or routing drafts while asking.
 - Translate vendor, tool, framework, or cloud names into capabilities before
   routing.
 - Keep guidance technology-agnostic by default. Do not introduce provider,
@@ -37,9 +39,9 @@ demands the exception.**
 
 ## Self-Contained Use
 
-The pack does not depend on another plugin. Any specialist guidance it needs is
-inside this repository under `skills/`. Shared sources and assets live under
-`skills/_shared/`.
+The pack does not depend on another plugin. The native skill entrypoint is under
+`skills/`; routed specialist guidance lives under `specialists/`. Shared
+sources and assets live under `skills/_shared/`.
 
 When citing sources, use source IDs from
 `skills/_shared/references/source-index.md`. Do not quote source text unless the

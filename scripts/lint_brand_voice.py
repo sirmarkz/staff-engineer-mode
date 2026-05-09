@@ -40,14 +40,15 @@ ROOT = Path(__file__).resolve().parents[1]
 # Configuration
 # ---------------------------------------------------------------------------
 
-# Default scope: top-level user-facing docs plus every specialist SKILL.md.
+# Default scope: top-level user-facing docs plus router and specialist SKILL.md files.
 DEFAULT_SCOPE: tuple[str, ...] = (
     "README.md",
     "MAINTAINERS.md",
     "COMPARISON.md",
     "STYLE.md",
     "CONTRIBUTING.md",
-    "skills/**/SKILL.md",
+    "skills/staff-engineer-mode/SKILL.md",
+    "specialists/**/SKILL.md",
 )
 
 # FAANG and major cloud vendors whose appearance in titles or first content
@@ -635,22 +636,18 @@ def lint_file(path: Path) -> list[Finding]:
 
 
 def is_specialist_skill(path: Path) -> bool:
-    """A specialist SKILL.md lives under ``skills/<name>/SKILL.md`` where
-    ``<name>`` is neither ``_shared`` nor ``staff-engineer-mode`` (the router).
-    """
+    """A specialist SKILL.md lives under ``specialists/<name>/SKILL.md``."""
     if path.name != "SKILL.md":
         return False
     parts = path.parts
-    if "skills" not in parts:
+    if "specialists" not in parts:
         return False
-    skills_index = parts.index("skills")
+    specialists_index = parts.index("specialists")
     try:
-        skill_name = parts[skills_index + 1]
+        specialist_name = parts[specialists_index + 1]
     except IndexError:
         return False
-    if skill_name in {"_shared", "staff-engineer-mode"}:
-        return False
-    return True
+    return bool(specialist_name)
 
 
 # ---------------------------------------------------------------------------
@@ -699,7 +696,7 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
         metavar="GLOB",
         help=(
             "Glob pattern relative to the repo root.  May be passed multiple "
-            "times.  Defaults to README.md, top-level docs, and skills/**/SKILL.md."
+            "times.  Defaults to README.md, top-level docs, the router, and specialists/**/SKILL.md."
         ),
     )
     parser.add_argument(

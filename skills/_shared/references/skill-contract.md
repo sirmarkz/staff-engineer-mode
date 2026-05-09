@@ -1,6 +1,6 @@
 # Staff Engineer Mode Skill Contract
 
-Every specialist skill must be concise, triggerable, and artifact-oriented.
+Every specialist file must be concise, triggerable, and artifact-oriented.
 
 ## Required SKILL.md Shape
 
@@ -20,7 +20,7 @@ Every specialist skill must be concise, triggerable, and artifact-oriented.
 - `## Red Flags - Stop And Rework`
 - `## Common Mistakes`
 
-Do not add per-skill source, reference, bibliography, citation, or reading-list
+Do not add per-specialist source, reference, bibliography, citation, or reading-list
 sections. Source synthesis belongs in shared reference notes, not in published
 skill instructions.
 
@@ -42,7 +42,7 @@ tool-specific guidance.
 
 ## Routing Rules
 
-- Prefer one primary skill.
+- Prefer one primary specialist.
 - Recommend at most two follow-up routes.
 - Ask one disambiguating question when intent is ambiguous.
 - Do not route to out-of-scope business, marketing, legal, procurement, staffing, compensation, or broad compliance-program work.

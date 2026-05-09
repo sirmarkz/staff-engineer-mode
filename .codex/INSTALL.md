@@ -1,8 +1,8 @@
 # Installing Staff Engineer Mode For Codex
 
-Enable Staff Engineer Mode skills in OpenAI Codex through native skill discovery.
-This mirrors the Superpowers install shape: clone once, expose the repository's
-skill tree through `~/.agents/skills`, and restart Codex.
+Enable Staff Engineer Mode in OpenAI Codex through native skill discovery. The
+native skill tree exposes only the router; specialist guidance stays in the
+repository under `specialists/` and is read only after routing.
 
 ## Prerequisites
 
@@ -47,14 +47,15 @@ Restart Codex after installation.
 ## How It Works
 
 Codex scans `~/.agents/skills/` at startup, parses `SKILL.md` frontmatter, and
-loads skills on demand. Staff Engineer Mode is exposed as one namespaced skill tree:
+loads skills on demand. Staff Engineer Mode is exposed as one router skill:
 
 ```text
 ~/.agents/skills/staff-engineer-mode/ -> ~/.codex/staff-engineer-mode/skills/
 ```
 
-Users should not need to name individual skills. Broad engineering requests
-route through `staff-engineer-mode`.
+Users should not need to name individual specialists. Broad engineering
+requests route through `staff-engineer-mode`, which then reads the selected
+specialist file from `~/.codex/staff-engineer-mode/specialists/<slug>/SKILL.md`.
 
 ## Verify
 
@@ -84,7 +85,7 @@ For engineering lifecycle, architecture, reliability, resilience, operations,
 security, delivery, data, platform, client, or cost-aware reliability requests,
 use Staff Engineer Mode before generic debugging or process skills. When the
 request is ambiguous, ask only the intake questions needed to route it; do not
-print skill names, routing drafts, confidence labels, or candidate lists.
+print specialist names, routing drafts, confidence labels, or candidate lists.
 ```
 
 ## Updating

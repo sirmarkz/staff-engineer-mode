@@ -136,7 +136,7 @@ cases:
     expected_gates: [single_primary, intent_inference]
   - prompt: "What should we require before this lands?"
     expected_primary: staff-engineer-mode
-    expected_behavior: "ask which landing requirement is needed without naming skills"
+    expected_behavior: "ask which landing requirement is needed without naming specialists"
     category: ambiguous
     expected_gates: [ambiguity_check]
     forbidden_in_response: [all_specialist_names]
@@ -449,25 +449,25 @@ cases:
     expected_gates: [single_primary, secondary_cap, intent_inference]
   - prompt: "Make alerts better for checkout."
     expected_primary: staff-engineer-mode
-    expected_behavior: "ask what alert outcome and pain need fixing without naming skills"
+    expected_behavior: "ask what alert outcome and pain need fixing without naming specialists"
     category: ambiguous
     expected_gates: [ambiguity_check]
     forbidden_in_response: [all_specialist_names]
   - prompt: "Improve the mobile app."
     expected_primary: staff-engineer-mode
-    expected_behavior: "ask what engineering outcome is needed without naming skills"
+    expected_behavior: "ask what engineering outcome is needed without naming specialists"
     category: ambiguous
     expected_gates: [ambiguity_check]
     forbidden_in_response: [all_specialist_names]
   - prompt: "Use staff engineer mode to troubleshoot a network issue."
     expected_primary: staff-engineer-mode
-    expected_behavior: "ask diagnostic intake questions about symptoms, path, scope, timing, changes, and evidence without naming skills"
+    expected_behavior: "ask diagnostic intake questions about symptoms, path, scope, timing, changes, and evidence without naming specialists"
     category: ambiguous
     expected_gates: [ambiguity_check]
     forbidden_in_response: [all_specialist_names]
   - prompt: "Troubleshoot a network issue."
     expected_primary: staff-engineer-mode
-    expected_behavior: "ask diagnostic intake questions about symptoms, path, scope, timing, changes, and evidence without naming skills"
+    expected_behavior: "ask diagnostic intake questions about symptoms, path, scope, timing, changes, and evidence without naming specialists"
     category: ambiguous
     expected_gates: [ambiguity_check]
     forbidden_in_response: [all_specialist_names]
