@@ -14,6 +14,8 @@ AI coding agents now write material amounts of production code. The bottleneck i
 
 Ask a normal engineering question. Hand the agent a task. The router reads the work, picks one specialist (occasionally one secondary), reads that specialist file, and returns concrete risks, gates, owners, evidence, and next steps. You never name a specialist.
 
+Claude and Codex should list only the native `staff-engineer-mode` router. Specialist files live under `specialists/` and load only after routing.
+
 The router refuses to load every plausible specialist. One reviewer at a time, by default.
 
 See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for prompts across every specialist.
