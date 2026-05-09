@@ -1,5 +1,16 @@
 # Staff Engineer Mode Release Notes
 
+## 0.10.1 - 2026-05-09
+
+Copy clarification release.
+
+- Clarifies that Staff Engineer Mode installs one native router skill and routes
+  to specialist files, not separately listed specialist skills.
+- Updates root documentation to use tool-neutral language for supported
+  runtimes and the router-only package shape.
+- Removes local Claude memory context from `AGENTS.md` so repository
+  instructions stay portable and public-safe.
+
 ## 0.10.0 - 2026-05-09
 
 Router-only native skill release.
