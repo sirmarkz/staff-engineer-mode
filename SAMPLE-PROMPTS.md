@@ -1,8 +1,8 @@
 # Sample Prompts
 
-You do not need to name skills when you use Staff Engineer Mode. These prompts
-are grouped by skill so you can see the kinds of repository work the router
-understands.
+You do not need to name specialists when you use Staff Engineer Mode. These
+prompts are grouped by specialist file so you can see the kinds of repository
+work the router understands.
 
 Paste them while the agent is in a repo, PR, branch, or workspace. Swap in real
 paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.

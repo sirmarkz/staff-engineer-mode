@@ -4,20 +4,21 @@ Operational rules for AI coding agents working in this repository.
 
 ## What This Repo Is
 
-This repository publishes a set of Codex skills that route engineering lifecycle,
-DevOps, operations, reliability, security, stability, and architecture work toward
-high-quality practices drawn from large-scale engineering organizations and
-public standards.
+This repository publishes one native router skill and routed specialist files
+that guide engineering lifecycle, DevOps, operations, reliability, security,
+stability, and architecture work toward high-quality practices drawn from
+large-scale engineering organizations and public standards.
 
-The repository is not a generic process handbook. Skills should stay focused on
-building, shipping, securing, operating, and maintaining complex software
-systems.
+The repository is not a generic process handbook. The router and specialist
+files should stay focused on building, shipping, securing, operating, and
+maintaining complex software systems.
 
 ## Layout
 
 | Path | Contains |
 | --- | --- |
-| `skills/<skill-name>/SKILL.md` | One hand-authored skill in the flat plugin discovery namespace. |
+| `skills/staff-engineer-mode/SKILL.md` | The only native skill entrypoint exposed to plugin discovery. |
+| `specialists/<specialist-name>/SKILL.md` | Routed specialist reference files loaded only after the router selects one. |
 | `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
 | `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
@@ -25,14 +26,14 @@ systems.
 
 ## Skill Rules
 
-- Keep each skill narrow enough that the router can select it with low noise.
-- `skills/<skill-name>/SKILL.md` files must not exceed 300 lines.
-- Skills must be self-sufficient for solo developers. The agent must produce
+- Keep each specialist file narrow enough that the router can select it with low noise.
+- `SKILL.md` files under `skills/staff-engineer-mode/` and `specialists/` must not exceed 300 lines.
+- Specialist files must be self-sufficient for solo developers. The agent must produce
   complete guidance from local evidence and work directly with the user.
   Confirmation means explicit user confirmation or recorded evidence, not an
   outside gate or waiting point. Adjacent-skill routing is internal skill
   selection, not a delegation of responsibility away from the agent and user.
-- When a skill needs facts about a vendor, upstream project, legal constraint, or
+- When a SKILL.md file needs facts about a vendor, upstream project, legal constraint, or
   outside dependency, proceed from user-provided requirements and locally
   available evidence, marking unknowns explicitly. Do not make the skill depend
   on contacting or waiting for that third party.
@@ -42,24 +43,26 @@ systems.
   bodies from templates, tables, scripts, LLM batch output, or search summaries.
   Scripts may validate, move, package, or review skills, but must not be the
   source of truth for skill content.
-- Each skill must synthesize the relevant references. Read the source notes
+- Each specialist file must synthesize the relevant references. Read the source notes
   and theme guidance, reconcile the tradeoffs, and write unambiguous operational
   instructions a future agent can follow without guessing.
-- Keep skills in a flat `skills/<skill-name>/SKILL.md` namespace so plugin
-  registries can discover them directly. Preserve thematic grouping through
-  names, router language, and shared references rather than nested directories.
-- Keep skills technology-agnostic unless the skill is explicitly for a
+- Keep only the router in the native `skills/` discovery namespace. Specialist
+  guidance lives under `specialists/<specialist-name>/SKILL.md` and is loaded by
+  router instruction, not by plugin registry auto-discovery. Preserve thematic
+  grouping through names, router language, and shared references rather than
+  nested directories.
+- Keep specialist files technology-agnostic unless the file is explicitly for a
   technology-bound surface such as frontend, mobile, ML, or LLM applications.
   Write guidance in terms of capabilities, contracts, failure modes, evidence,
   and artifacts. Do not prescribe a cloud provider, orchestration platform,
   database, framework, vendor product, or tool as the default.
-- Individual skills should state when not to use them, required inputs, workflow,
+- Individual specialist files should state when not to use them, required inputs, workflow,
   synthesized defaults, exceptions, required outputs, evidence gates, red flags,
   and common mistakes.
 - Normalize competing large-scale engineering practices into one blended default
   unless the context clearly requires a named exception.
-- Do not force users to invoke individual skills by name. The router must choose
-  automatically from user intent, with conservative fallback behavior.
+- Do not force users to invoke individual specialists by name. The router must
+  choose automatically from user intent, with conservative fallback behavior.
 - Avoid process-only guidance unless it directly supports engineering lifecycle,
   DevOps, operations, reliability, security, stability, architecture, or
   maintainability work.

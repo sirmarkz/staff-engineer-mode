@@ -9,20 +9,21 @@ tells coding agents how to work in the repo. This file tells people what good
 
 ## What This Repo Publishes
 
-This repository publishes skills that route engineering lifecycle, DevOps,
-operations, reliability, security, stability, and architecture work toward
-reviewable engineering practice.
+This repository publishes one native router skill and routed specialist files
+that guide engineering lifecycle, DevOps, operations, reliability, security,
+stability, and architecture work toward reviewable engineering practice.
 
 It is not a generic process handbook, a role-play pack, or a catalog of famous
-company habits. Skills should stay focused on building, shipping, securing,
-operating, and maintaining complex software systems.
+company habits. The router and specialist files should stay focused on
+building, shipping, securing, operating, and maintaining complex software
+systems.
 
 ## What A Skill Must Do
 
 A skill is useful when it changes what the coding agent does in a concrete
 engineering situation.
 
-Each skill should:
+Each specialist file should:
 
 - State when the router should select it.
 - State when not to use it.
@@ -36,13 +37,13 @@ Each skill should:
   decision to an outside team, vendor, committee, or future confirmation.
 
 If a draft only gives background, motivation, or a reading list, it is not a
-skill yet.
+useful specialist file yet.
 
 ## Skill Authoring Rules
 
-- Keep each skill narrow enough that the router can select it with low noise.
+- Keep each specialist file narrow enough that the router can select it with low noise.
 - Keep `skills/staff-engineer-mode/SKILL.md` and `specialists/<specialist-name>/SKILL.md` under 300 lines.
-- Use `skills/` only for the native router entrypoint; routed specialists live under `specialists/`.
+- Use `skills/` only for the native router entrypoint; routed specialist files live under `specialists/`.
 - Frontmatter descriptions start with `Use when` and describe the trigger, not
   the feature.
 - Names are lowercase and hyphenated. Prefer
@@ -50,16 +51,16 @@ skill yet.
 - Do not use vendor names, tool names, emoji, or persona names in skill names.
 - Final skill prose is hand-authored. Do not bulk-generate `SKILL.md` bodies
   from templates, tables, scripts, LLM batch output, or search summaries.
-- Scripts may validate, package, move, or review skills. Scripts must not be the
+- Scripts may validate, package, move, or review skill files. Scripts must not be the
   source of truth for final skill prose.
-- A skill may route to an adjacent skill, but it must still produce useful
+- A specialist file may route to an adjacent specialist, but it must still produce useful
   guidance for the current user request.
-- Do not force users to invoke skills by name. Router language should let normal
+- Do not force users to invoke specialist files by name. Router language should let normal
   engineering prompts select the right specialist.
 
 ## Required Skill Shape
 
-Every specialist skill should include:
+Every specialist file should include:
 
 - `## Iron Law`
 - `## When To Use`
@@ -120,7 +121,7 @@ Use sources to support operational rules, not to borrow prestige.
 
 ## Iron Laws
 
-Every specialist skill has one all-caps rule that names the central failure mode
+Every specialist file has one all-caps rule that names the central failure mode
 the skill prevents.
 
 Good Iron Laws are short, testable, and operational:
@@ -138,7 +139,7 @@ Weak Iron Laws are slogans:
 ## Documentation Rules
 
 README, release notes, manifests, install docs, sample prompts, and source
-references should match the skills.
+references should match the router and specialist files.
 
 - Update docs when setup, CLI behavior, manifests, public paths, examples, or
   skill contracts change.

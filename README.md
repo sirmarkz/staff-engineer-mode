@@ -14,7 +14,7 @@ AI coding agents now write material amounts of production code. The bottleneck i
 
 Ask a normal engineering question. Hand the agent a task. The router reads the work, picks one specialist (occasionally one secondary), reads that specialist file, and returns concrete risks, gates, owners, evidence, and next steps. You never name a specialist.
 
-Claude and Codex should list only the native `staff-engineer-mode` router. Specialist files live under `specialists/` and load only after routing.
+Supported tools should list only the native `staff-engineer-mode` router. Specialist files live under `specialists/` and load only after routing.
 
 The router refuses to load every plausible specialist. One reviewer at a time, by default.
 
@@ -84,15 +84,17 @@ The agent should load the router, choose a specialist, and respond with concrete
 
 ## What's Inside
 
-One native router skill. Routed specialists for every engineering surface. Three to start with:
+One native router skill: `staff-engineer-mode`. It routes to 55 specialist
+files under `specialists/`; those files are not installed or listed as separate
+native skills. Common routes:
 
 - [**`agent-pr-review`**](specialists/agent-pr-review/SKILL.md) — the default pre-merge review: applies a senior reviewer's checklist to any diff, human or AI-generated, before it merges.
 - [**`production-readiness-review`**](specialists/production-readiness-review/SKILL.md) — when a service, feature, migration, tier change, or traffic shift needs go/no-go evidence.
 - [**`code-review-and-workflow`**](specialists/code-review-and-workflow/SKILL.md) — when reviewer routing, change size, ownership, or workflow quality are the bottleneck.
 
-Examples by surface (the full catalog with prompts for every specialist is in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md)):
+Examples by surface (the full catalog with prompts for every specialist file is in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md)):
 
-| Surface | Example specialists |
+| Surface | Example specialist files |
 | --- | --- |
 | Architecture and interfaces | [`architecture-decisions`](specialists/architecture-decisions/SKILL.md), [`api-design-and-compatibility`](specialists/api-design-and-compatibility/SKILL.md), [`data-contracts`](specialists/data-contracts/SKILL.md), [`state-machine-correctness`](specialists/state-machine-correctness/SKILL.md) |
 | Reliability and resilience | [`slo-and-error-budgets`](specialists/slo-and-error-budgets/SKILL.md), [`high-availability-design`](specialists/high-availability-design/SKILL.md), [`dependency-resilience`](specialists/dependency-resilience/SKILL.md), [`backup-and-recovery`](specialists/backup-and-recovery/SKILL.md), [`resilience-experiments`](specialists/resilience-experiments/SKILL.md), [`performance-and-capacity`](specialists/performance-and-capacity/SKILL.md) |
@@ -103,7 +105,7 @@ Examples by surface (the full catalog with prompts for every specialist is in [S
 | Platform and edge | [`platform-golden-paths`](specialists/platform-golden-paths/SKILL.md), [`infrastructure-and-policy-as-code`](specialists/infrastructure-and-policy-as-code/SKILL.md), [`internal-service-networking`](specialists/internal-service-networking/SKILL.md), [`edge-traffic-and-ddos-defense`](specialists/edge-traffic-and-ddos-defense/SKILL.md), [`cost-aware-reliability`](specialists/cost-aware-reliability/SKILL.md) |
 | Client, ML/AI, and experimentation | [`web-release-gates`](specialists/web-release-gates/SKILL.md), [`mobile-release-engineering`](specialists/mobile-release-engineering/SKILL.md), [`accessibility-gates`](specialists/accessibility-gates/SKILL.md), [`ai-coding-governance`](specialists/ai-coding-governance/SKILL.md), [`llm-application-security`](specialists/llm-application-security/SKILL.md), [`llm-evaluation`](specialists/llm-evaluation/SKILL.md), [`llm-serving-cost-and-latency`](specialists/llm-serving-cost-and-latency/SKILL.md), [`ml-reliability-and-evaluation`](specialists/ml-reliability-and-evaluation/SKILL.md), [`experimentation-and-metric-guardrails`](specialists/experimentation-and-metric-guardrails/SKILL.md) |
 
-Every specialist appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with four representative prompts. Or browse by SDLC phase in [OE-PHASE-MAP.md](OE-PHASE-MAP.md) — same routed specialists, grouped by Design & Build / Develop & Test / Deploy & Operate / Monitor & Respond / Improve.
+Every specialist file appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with four representative prompts. Or browse by SDLC phase in [OE-PHASE-MAP.md](OE-PHASE-MAP.md) — same routed files, grouped by Design & Build / Develop & Test / Deploy & Operate / Monitor & Respond / Improve.
 
 ## Contributing
 

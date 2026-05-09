@@ -2,14 +2,14 @@
 
 Browse by phase, route by artifact/surface.
 
-Use this as a navigation aid for scanning which specialist surfaces tend to appear in each OE phase; the [staff-engineer-mode](skills/staff-engineer-mode/SKILL.md) router still selects the right specialist from the user's artifact, surface, risk, and evidence.
+Use this as a navigation aid for scanning which specialist surfaces tend to appear in each OE phase; the [staff-engineer-mode](skills/staff-engineer-mode/SKILL.md) router still selects the right specialist file from the user's artifact, surface, risk, and evidence.
 
 ## Foundations
 
 This pack does not include a general "what is OE" skill. It starts with concrete Design & Build work, so use Foundations for orientation and routing rather than specialist selection.
 
-- [staff-engineer-mode](skills/staff-engineer-mode/SKILL.md) — Routes broad or mixed engineering requests to the best specialist before detailed guidance.
-- [source-index](skills/_shared/references/source-index.md) — Shared citation inventory for the standards and engineering references synthesized by the skills.
+- [staff-engineer-mode](skills/staff-engineer-mode/SKILL.md) — Routes broad or mixed engineering requests to the best specialist file before detailed guidance.
+- [source-index](skills/_shared/references/source-index.md) — Shared citation inventory for the standards and engineering references synthesized by the pack.
 
 ## Design & Build
 

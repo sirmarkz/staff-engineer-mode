@@ -5,11 +5,11 @@
 Router-only native skill release.
 
 - Keeps only the Staff Engineer Mode router in native skill discovery while
-  moving all routed specialists under `specialists/`, reducing Claude and Codex
-  skill-listing overhead.
-- Teaches the router to load selected specialists by path after classification,
+  moving all routed specialist files under `specialists/`, reducing native
+  skill-listing overhead across supported tools.
+- Teaches the router to load selected specialist files by path after classification,
   so users can ask natural engineering questions without naming specialist
-  skills.
+  files or invoking separate skills.
 - Updates Claude, Codex, Cursor, OpenCode, Gemini, validation scripts, and docs
   for the router-only package shape.
 - Validates live Claude and Codex routing across all 55 specialists after the

@@ -13,14 +13,14 @@ security, privacy, operations, platform, data, mobile, frontend, or cost-aware
 reliability guidance.
 
 Do not require the user to name an individual specialist. The router must infer
-intent from the request and choose the smallest useful specialist set.
+intent from the request and choose the smallest useful specialist file set.
 After routing, read only the selected specialist reference file from
 `specialists/<specialist-name>/SKILL.md`.
 
 ## Routing Discipline
 
-- Pick one primary skill by default.
-- Add at most one secondary skill when the request clearly includes a separate
+- Pick one primary specialist file by default.
+- Add at most one secondary specialist file when the request clearly includes a separate
   engineering surface.
 - Ask only focused intake questions when confidence is low. Do not expose
   candidate specialist names, confidence labels, or routing drafts while asking.
@@ -39,8 +39,8 @@ demands the exception.**
 
 ## Self-Contained Use
 
-The pack does not depend on another plugin. The native skill entrypoint is under
-`skills/`; routed specialist guidance lives under `specialists/`. Shared
+The pack does not depend on another plugin. The only native skill entrypoint is
+under `skills/`; routed specialist files live under `specialists/`. Shared
 sources and assets live under `skills/_shared/`.
 
 When citing sources, use source IDs from
