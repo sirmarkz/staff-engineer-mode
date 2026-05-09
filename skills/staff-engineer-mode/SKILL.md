@@ -1,6 +1,6 @@
 ---
 name: staff-engineer-mode
-description: "Use when broad or multi-surface engineering requests need routing to one Staff Engineer Mode specialist"
+description: "Use when engineering design, review, delivery, reliability, security, API, data, or platform work needs routing"
 ---
 
 # Staff Engineer Mode
@@ -19,6 +19,7 @@ Users are not expected to know skill names. Classify ordinary engineering langua
 
 ## When To Use
 
+- The request asks for engineering design, review, delivery, operations, reliability, security, architecture, API, data, platform, or client guidance, even when it appears to be a single surface.
 - The request is broad, vague, or spans multiple engineering surfaces.
 - No single specialist clearly dominates from the prompt.
 - The user asks for staff-engineer-level architecture, reliability, security, operations, delivery, data, platform, client, or cost guidance.
@@ -26,7 +27,7 @@ Users are not expected to know skill names. Classify ordinary engineering langua
 
 ## When Not To Use
 
-- One focused specialist clearly applies.
+- A focused specialist has already been selected and loaded for the current request.
 - The request is product discovery, marketing, staffing, compensation, procurement, legal/auditor liaison, broad compliance program management, or business strategy.
 - The work is outside system delivery, operations, security, reliability, or maintainability.
 

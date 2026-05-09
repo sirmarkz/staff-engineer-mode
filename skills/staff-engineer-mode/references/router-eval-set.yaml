@@ -29,6 +29,11 @@ cases:
     expected_behavior: "route to API operation naming and generated-client contract ergonomics"
     category: direct
     expected_gates: [single_primary, intent_inference]
+  - prompt: "Let's design an API for partners to create, list, and cancel jobs without breaking future clients."
+    expected_primary: api-design-and-compatibility
+    expected_behavior: "route open-ended API design to compatibility and client contract guidance before generic brainstorming"
+    category: direct
+    expected_gates: [single_primary, intent_inference]
   - prompt: "Design a batch endpoint and filtered list endpoint for partner resources, including item limits, partial failures, page tokens, and empty results."
     expected_primary: api-design-and-compatibility
     expected_behavior: "route to batch and list API contract shape instead of dependency resilience"

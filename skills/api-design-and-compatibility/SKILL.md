@@ -1,6 +1,6 @@
 ---
 name: api-design-and-compatibility
-description: "Use when exposed API behavior, response fields, deprecation, clients, or client rollouts need compatibility review"
+description: "Use when API design, exposed behavior, response fields, deprecation, clients, or rollouts need compatibility review"
 ---
 
 # API Design And Compatibility
