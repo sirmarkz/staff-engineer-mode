@@ -121,8 +121,8 @@ def validate_claude() -> None:
     source = entry.get("source")
     if not isinstance(source, dict):
         fail(".claude-plugin/marketplace.json plugin entry source must pin GitHub metadata")
-    if source.get("source") != "url" or source.get("url") != "https://github.com/sirmarkz/staff-engineer-mode.git":
-        fail(".claude-plugin/marketplace.json plugin entry source must use HTTPS git URL")
+    if source.get("source") != "github" or source.get("repo") != "sirmarkz/staff-engineer-mode":
+        fail(".claude-plugin/marketplace.json plugin entry source must use sirmarkz/staff-engineer-mode")
     expected_ref = f"v{package_version()}"
     if source.get("ref") != expected_ref:
         fail(f".claude-plugin/marketplace.json plugin entry source must pin ref {expected_ref}")
