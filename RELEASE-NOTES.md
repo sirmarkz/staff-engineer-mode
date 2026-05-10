@@ -2,14 +2,34 @@
 
 ## 1.3.0 - 2026-05-10
 
-Routing boundary and alert-language release.
+Engineering-surface cleanup and live-routing hardening release.
 
-- Tightens live-tested router boundaries for deprecation PRs, ML promotion,
-  frontend release gates, static-analysis hygiene, cross-service storage
-  correctness, and high-availability failover evidence.
+- Removes the generic `code-review-and-workflow` specialist. Review-system
+  design, reviewer routing, change-size policy, ownership workflow, and DORA
+  process prompts no longer route unless the request names a concrete
+  engineering surface; the pack now routes to 54 engineering specialists.
+- Keeps the lifecycle-routing model from 1.2.0 focused on engineering decisions
+  across ideation, design, development, testing, release, operation, and
+  maintenance. Concrete diffs still route to `agent-pr-review`; surface-specific
+  design, rollout, security, data, accessibility, migration, and test evidence
+  routes to the narrow specialist that should guide the decision.
+- Reorganizes the README catalog so process-adjacent specialists live in a final
+  `Engineering workflow, readiness, and evidence` category, while delivery,
+  operations, platform, security, client, data, and reliability categories stay
+  engineering-surface first.
+- Narrows `engineering-control-evidence` into a cross-surface engineering
+  evidence aggregator, not a compliance or workflow-management specialist.
+  Single-surface evidence stays with the matching specialist; cross-surface
+  scorecards, exception registers, and evidence packs stay here.
+- Hardens router and matrix boundaries from live Claude and Codex routing:
+  deprecation PRs, ML model promotion, frontend field/lab release gates,
+  static-analysis hygiene, cross-service database/storage correctness,
+  high-availability failover evidence, and desired-state infrastructure drift
+  now route to the intended engineering specialists.
 - Removes paging/page wording from engineering-surface specialists where
-  responder interrupt policy is not the primary workflow, with validation that
-  page language stays limited to workflow, readiness, and evidence specialists.
+  responder interruption is not the primary workflow, and adds validation so
+  page language remains limited to workflow, readiness, and evidence
+  specialists.
 - Updates Claude, Codex, Cursor, OpenCode, Gemini, and package metadata to the
   1.3.0 release line.
 
