@@ -212,6 +212,11 @@ cmd_bump() {
   echo "Done. Running audit to check for missed files..."
   echo
   cmd_audit
+
+  echo
+  echo "Next: commit chore(release): $new_version, tag v$new_version, push,"
+  echo "publish hosted release, then capture SHA for any pending directory"
+  echo "listing with: git rev-parse v$new_version^{commit}"
 }
 
 case "${1:-}" in
