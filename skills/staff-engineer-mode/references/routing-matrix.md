@@ -12,15 +12,18 @@
 
 Return the canonical `specialists/<slug>/SKILL.md` slug, not a semantic alias.
 
-- Fault-domain or location-loss survivability is `high-availability-design`, not resilience/fault-domain labels.
+- Fault-domain topology, static failover capacity, location-loss survivability, and availability assumptions are `high-availability-design`; chaos tests, game days, failover drills, and fault injection are `resilience-experiments`.
 - Existing-client callers, backwards compatibility, and safe deprecation of an exposed API response field are `api-design-and-compatibility`, not broad migration.
 - RTO/RPO, backup, restore, corruption, accidental deletion, or DR restore tests are `backup-and-recovery`, not backup/restore aliases.
-- Chaos tests, game days, failover drills, and fault injection are `resilience-experiments`, not chaos-testing aliases.
+- Evidence that a controlled failure test itself is safe and scoped is `resilience-experiments`; evidence that the topology has enough already-available capacity under domain loss is `high-availability-design`.
 - Downstream dependency calls, retries, timeouts, idempotency, duplicate work, and overload behavior are `dependency-resilience`, unless the prompt is mainly event replay, ordering, or DLQ behavior.
 - State machines, invariants, protocol correctness, locking, concurrency, property tests, fuzzing, simulation, or model checking are `state-machine-correctness`.
 - Production config changes, generated operations, bulk scripts, validation, preview, blast-radius limits, abort paths, or rollback before mutation are `configuration-and-automation-safety`, not config aliases.
-- Runtime configuration drift and temporary overrides that need owners, expiry, validation, or rollback before automation applies them are `configuration-and-automation-safety`; declarative desired-state design remains `infrastructure-and-policy-as-code`.
+- Runtime configuration drift and temporary overrides that need owners, expiry, validation, or rollback before automation applies them are `configuration-and-automation-safety`; desired-state capture, drift detection, reconciliation, and emergency exception rules after manual infrastructure changes are `infrastructure-and-policy-as-code`.
 - Generic code-review purpose, change-size limits, ownership, review latency, and workflow metrics have no routed specialist unless a concrete engineering surface is present; one concrete pre-merge diff review is `agent-pr-review`.
+- A concrete diff, branch, PR, or last-commit review stays with `agent-pr-review` even when the prompt says tests pass, changed behavior needs evidence, or edge cases may be missing; test strategy without a concrete diff is `testing-and-quality-gates`.
+- A deprecation PR, sunset change, or removal diff that asks for no-new-usage gates, migration controls, or backsliding prevention routes to `migration-and-deprecation`, not `agent-pr-review`.
+- Static-analysis backlogs, warning ratchets, dead-code cleanup, and maintenance-risk prioritization route to `dependency-and-code-hygiene` even when changed files are available; changed files alone do not make the request a pre-merge diff review.
 - The word "review" is not enough to select `agent-pr-review`: design review, security review, API review, data review, rollout review, or test review without a concrete diff routes by the engineering surface.
 - A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, safety, rollout, security, accessibility, data, or test evidence rather than a general diff verdict.
 - Dependency updates, lockfile sweeps, migration notes, rollback risks, and small-batch hygiene are `dependency-and-code-hygiene`, even when packaged as a PR.
@@ -32,7 +35,7 @@ Return the canonical `specialists/<slug>/SKILL.md` slug, not a semantic alias.
 - Threat models, trust boundaries, data flows, abuse cases, and residual-risk registers are `secure-sdlc-and-threat-modeling`, not threat-modeling aliases.
 - Source-to-deploy trust, isolated builders, provenance, signing, deployment admission, or untrusted artifact risk are `software-supply-chain-security`.
 - Deployed vulnerabilities, exploitability, exposure, patch SLAs, remediation rollout, and expiring exceptions are `vulnerability-management`.
-- Model-serving promotion, eval thresholds, training-serving skew, drift, and rollback evidence are `ml-reliability-and-evaluation`; broad launch evidence without ML risk is `production-readiness-review`.
+- Model-serving promotion, eval thresholds, training-serving skew, drift monitors, model rollback, and model endpoint replacement evidence are `ml-reliability-and-evaluation`; broad launch evidence without ML risk is `production-readiness-review`.
 - Internal service-to-service routing, discovery, locality, identity, and private dependency traffic policy are `internal-service-networking`; dependency version cleanup is `dependency-and-code-hygiene`.
 - AI coding-agent repo rules, protected paths, required tests, data boundaries, and generated-code acceptance gates are `ai-coding-governance`.
 - LLM eval harnesses, datasets, graders, thresholds, slice coverage, and regression history are `llm-evaluation`.
@@ -67,7 +70,7 @@ Return the canonical `specialists/<slug>/SKILL.md` slug, not a semantic alias.
 - Cross-surface data contracts, producer/consumer schema evolution, and domain-interface responsibility route to `data-contracts`; single API contract changes stay with `api-design-and-compatibility`.
 - Cache invalidation, derived values, and stale cache entries route to `caching-and-derived-data`; deciding whether stale reads are allowed by the storage model routes to `distributed-data-and-consistency`.
 - Data model splits across databases, shards, or mutation boundaries route to `distributed-data-and-consistency`, even when a migration is mentioned; executing schema, backfill, index, or destructive data changes routes to `database-operations`.
-- Cross-service workflows whose correctness depends on storage, replication, sharding, or failover route to `distributed-data-and-consistency`; in-process state machines, protocols, and concurrency invariants stay with `state-machine-correctness`.
+- Cross-service workflows whose correctness depends on a database, storage, replication, sharding, or failover route to `distributed-data-and-consistency`; event/message replay, ordering, and DLQ behavior stay with `event-workflows`; in-process state machines, protocols, and concurrency invariants without storage semantics stay with `state-machine-correctness`.
 - AI-assisted repo workflow, agent instructions, data boundaries, and generated-code acceptance route to `ai-coding-governance`; deployed LLM app security stays with `llm-application-security`.
 - Any specific diff that needs a senior pre-merge review (human, AI, or mixed) routes to `agent-pr-review`; org-level AI coding controls still route to `ai-coding-governance`; generic review routing, responsibility, change size, and DORA workflow do not route unless tied to a concrete engineering surface; explicit launch readiness still routes to `production-readiness-review`; an active incident still routes to `incident-response-and-postmortems` first.
 - System-level review rules, change-size limits, review-latency targets, and reviewer routing do not route by themselves; org-level AI coding rules for allowed actions, protected paths, secret/data boundaries, and required evidence route to `ai-coding-governance`.
@@ -78,7 +81,7 @@ Return the canonical `specialists/<slug>/SKILL.md` slug, not a semantic alias.
 - Single-surface evidence stays with the matching specialist. `engineering-control-evidence` is for cross-surface control mapping, exception records, scorecards, and evidence packs.
 - Public edge traffic defense routes to `edge-traffic-and-ddos-defense`; internal service-to-service traffic policy routes to `internal-service-networking`.
 - Retry, timeout, circuit-breaker, load-shedding, and dependency overload policy routes to `dependency-resilience` even when implemented through internal traffic tooling; service identity, discovery, transport, and locality route to `internal-service-networking`.
-- Browser or web client release gates, including loading, interaction readiness, layout stability, runtime errors, payload growth, accessibility smoke, or a concrete UI PR review focused on those gates, route to `web-release-gates`; native mobile rollouts route to `mobile-release-engineering`; backend latency and headroom route to `performance-and-capacity`.
+- Browser or web client release gates, including field/lab performance signals, loading, interaction readiness, layout stability, runtime errors, payload growth, accessibility smoke, or a concrete UI PR review focused on those gates, route to `web-release-gates`; native mobile rollouts route to `mobile-release-engineering`; backend latency and headroom route to `performance-and-capacity`.
 - Headroom and latency without spend tradeoffs route to `performance-and-capacity`; cost, spend, allocation, or reliability/cost tradeoffs route to `cost-aware-reliability`; pure billing work is out of scope.
 
 ## Scope

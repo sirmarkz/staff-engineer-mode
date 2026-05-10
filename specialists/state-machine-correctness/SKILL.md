@@ -31,7 +31,7 @@ Some bugs are too subtle for example-based tests and too expensive to discover i
 
 - The request is normal unit, integration, end-to-end, or CI merge-gate design with no state-machine or invariant under test; use `testing-and-quality-gates`.
 - The fuzz target is purely a parser, format decoder, or input validator with no protocol or state-machine surface; use `testing-and-quality-gates`.
-- The main question is storage choice or consistency semantics; use `distributed-data-and-consistency` unless high-assurance validation of the storage protocol itself is central.
+- The main question is storage choice, database-backed workflow correctness, or consistency semantics; use `distributed-data-and-consistency` unless high-assurance validation of the storage protocol itself is central.
 - The main question is retry, timeout, circuit-breaker, or backoff policy rather than correctness of the underlying state machine; use `dependency-resilience`.
 - The system is low-risk and ordinary example-based testing is proportional.
 

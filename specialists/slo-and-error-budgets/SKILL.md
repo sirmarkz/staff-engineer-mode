@@ -1,6 +1,6 @@
 ---
 name: slo-and-error-budgets
-description: "Use when user journeys need SLIs, SLOs, error budgets, burn-rate alerts, page/ticket policy, or budget rules"
+description: "Use when user journeys need SLIs, SLOs, error budgets, burn-rate alerts, urgent/ticket policy, or budget rules"
 ---
 
 # SLO Error Budget Engineering
@@ -15,21 +15,21 @@ If the journey, window, target, budget, and response policy are missing, do not 
 
 ## Overview
 
-Produces an SLI/SLO table tied to named user journeys, an error-budget calculation, a multi-window burn-rate alert policy, and a budget-state release rule. Refuses 100-percent targets, host-health proxies, and pages that do not name a user.
+Produces an SLI/SLO table tied to named user journeys, an error-budget calculation, a multi-window burn-rate alert policy, and a budget-state release rule. Refuses 100-percent targets, host-health proxies, and urgent alerts that do not name a user.
 
-**Core principle:** define the experience users are promised, measure it with SLIs, set an SLO that leaves an explicit error budget, and let that budget govern paging and release risk.
+**Core principle:** define the experience users are promised, measure it with SLIs, set an SLO that leaves an explicit error budget, and let that budget govern alert urgency and release risk.
 
 ## When To Use
 
 - The user asks what reliability target, availability target, latency target, freshness target, correctness target, or durability target a service should meet.
-- The user asks what should page, how burn-rate alerts should work, or how to connect alerts to SLOs.
+- The user asks which alerts need urgent response, how burn-rate alerts should work, or how to connect alerts to SLOs.
 - A launch, PRR, tier upgrade, or reliability decision needs SLI/SLO evidence.
 - Existing alerts are noisy because they monitor causes instead of user-visible symptoms.
 
 ## When Not To Use
 
 - The user only asks to build dashboards, traces, or logging without a user-visible objective; use `observability-and-alerting` instead.
-- The user asks to reduce existing page volume or on-call fatigue; use `oncall-health` instead unless new SLO policy is the main work.
+- The user asks to reduce existing urgent-alert volume or on-call fatigue; use `oncall-health` instead unless new SLO policy is the main work.
 - The user asks for cost optimization without reliability targets; use `cost-aware-reliability` instead.
 - A live outage is underway; route to `incident-response-and-postmortems` first.
 
@@ -51,7 +51,7 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 4. **Model health states.** Define healthy, degraded, unavailable, and recovering for the journey so partial failures and degraded quality do not disappear inside raw uptime.
 5. **Set the SLO target and window.** Pick a target users need and the system can plausibly meet. Keep internal thresholds tighter than external customer commitments when they exist. Include availability, latency, freshness, recovery, or correctness targets only when they match the journey. Avoid 100 percent unless failure is impossible by construction.
 6. **Calculate the budget.** Convert target and window into allowed bad events or bad minutes. Include low-traffic math so one event does not create nonsensical burn.
-7. **Design alerts from burn.** Page on fast and sustained budget burn. Ticket slow burns. As a starting point, page when short-window and longer-window burn both show urgent exhaustion risk, ticket when multi-hour or multi-day burn threatens the window, and recompute thresholds for low traffic.
+7. **Design alerts from burn.** Trigger urgent alerts on fast and sustained budget burn. Ticket slow burns. As a starting point, interrupt only when short-window and longer-window burn both show urgent exhaustion risk, ticket when multi-hour or multi-day burn threatens the window, and recompute thresholds for low traffic.
 8. **Handle latency correctly.** State where latency is measured and how percentiles are aggregated. Do not average percentiles across services or windows; merge compatible distributions or measure at the user-journey boundary.
 9. **Attach policy.** State what happens when budget is healthy, threatened, exhausted, or repeatedly exhausted.
 10. **Route gaps.** Missing telemetry goes to observability; rollout policy goes to progressive delivery; launch aggregation goes to PRR.
@@ -75,10 +75,10 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 
 ## Exceptions
 
-- Internal tools may use advisory SLOs, ticket alerts, and longer windows when paging would not protect users.
+- Internal tools may use advisory SLOs, ticket alerts, and longer windows when urgent interruption would not protect users.
 - External SLAs may force stricter internal SLOs; state both and keep the engineering SLO tighter than the contractual breach point.
 - Low-volume services may need event-count thresholds or synthetic checks so one failed request does not create misleading burn.
-- Diagnostic cause alerts can page only when they are urgent, actionable, and reliably precede user-visible impact.
+- Diagnostic cause alerts can trigger urgent response only when they are urgent, actionable, and reliably precede user-visible impact.
 - Planned maintenance, deliberate shedding, or abusive traffic may be excluded only with enumerable, time-bounded, and auditable rules.
 
 ## Response Quality Bar
@@ -86,7 +86,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - Lead with the SLO table, alert policy, budget-state decision, or telemetry blocker requested.
 - Cover user journeys, SLIs, health states, target/window math, burn alerts, dashboards, release policy, and observability gaps before optional SRE breadth.
 - Make recommendations actionable with metric definitions, thresholds, windows, alert routes, budget consequences, and follow-up gates where relevant.
-- State required evidence such as request/event sources, numerator/denominator definitions, traffic volume, deployment markers, current burn, paging history, and dashboard links; do not claim unseen evidence.
+- State required evidence such as request/event sources, numerator/denominator definitions, traffic volume, deployment markers, current burn, urgent-alert history, and dashboard links; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside SLO and error-budget engineering. Route rollout policy, observability instrumentation, or PRR only when they are the central unresolved risk.
 - Be concise: avoid generic SRE exposition and prefer compact SLI/SLO and burn-policy tables.
@@ -97,7 +97,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - SLI/SLO table with target, window, source metric, numerator, denominator, and exclusions.
 - Health-state definitions for healthy, degraded, unavailable, and recovering conditions where partial degradation matters.
 - Error-budget calculation in bad events or bad minutes.
-- Burn-rate alert policy with paging and ticket thresholds, including windows, budget-consumption rate, low-traffic handling, and diagnostic non-page rules.
+- Burn-rate alert policy with urgent-alert and ticket thresholds, including windows, budget-consumption rate, low-traffic handling, and diagnostic non-urgent rules.
 - Dashboard requirements that show SLO state, burn, traffic, fault-domain scope where relevant, and recent deployments.
 - Budget-state release policy and reliability-work triggers.
 - Assumptions, proxy risks, blockers, and follow-up routes.
@@ -108,7 +108,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - `health_state`: the SLO can distinguish successful, degraded, unavailable, and excluded events where users experience partial failure.
 - `math_check`: every SLO has a target, window, denominator, allowed bad events or minutes, and low-traffic handling.
 - `promise_margin`: internal alert or stop thresholds are stricter than external commitments where such commitments exist.
-- `alert_mapping`: every paging alert maps to SLO burn or has a documented urgent/actionable exception.
+- `alert_mapping`: every urgent alert maps to SLO burn or has a documented urgent/actionable exception.
 - `policy_check`: exhausted-budget behavior is stated, including who can allow releases and what work is prioritized.
 - `telemetry_check`: every SLI names its metric/log/event source or marks observability work as a blocker.
 
@@ -117,7 +117,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - The SLI measures CPU, memory, instance health, queue depth, or host availability without connecting to user success.
 - The SLO target is 100 percent because "this must never fail".
 - Burn-rate thresholds are copied from another service without traffic-window math.
-- The response recommends pages for every cause alert.
+- The response recommends urgent interruption for every cause alert.
 - The policy says "improve reliability" without release, review, user-decision, or work-intake consequences.
 - Latency SLOs average percentile values instead of measuring the journey or merging compatible distributions.
 - Journey SLOs are synthesized from component SLOs without an explicit dependency model.
@@ -128,5 +128,5 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 | --- | --- |
 | Starting with dashboards | Start with journeys, then metrics. |
 | Treating SLA and SLO as synonyms | SLA is external promise; SLO is engineering target; SLI is measurement. |
-| Making all alerts paging alerts | Page on urgent budget burn; ticket slow or diagnostic signals. |
+| Making all alerts urgent alerts | Alert urgently on budget burn; ticket slow or diagnostic signals. |
 | Hiding missing telemetry | Mark telemetry as a blocker or proxy risk. |

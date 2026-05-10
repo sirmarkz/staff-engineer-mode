@@ -34,6 +34,7 @@ Users experience tail latency, not averages.
 - The user asks pure billing/procurement questions; out of scope.
 - The work is SLO target selection without performance investigation; use `slo-and-error-budgets` instead.
 - The regression is explicitly tied to a query plan, index, or schema migration; use `database-operations` instead.
+- The request is browser field/lab release gating for a frontend rollout; use `web-release-gates` instead.
 
 ## Inputs To Collect
 

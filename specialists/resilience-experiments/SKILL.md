@@ -30,6 +30,7 @@ Resilience experiments test whether the system behaves the way the design claims
 ## When Not To Use
 
 - The main deliverable is fault-domain topology, static stability, or multi-location design; use `high-availability-design` instead.
+- The request is proving failover capacity, topology, or availability assumptions rather than designing the experiment itself; use `high-availability-design` instead.
 - The main deliverable is backup restore testing or RTO/RPO proof; use `backup-and-recovery` instead unless broader experiments are central.
 - The main deliverable is timeout, retry, queue, or overload policy; use `dependency-resilience` instead.
 - The work is only unit/integration testing without runtime failure injection.

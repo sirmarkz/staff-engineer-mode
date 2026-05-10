@@ -145,6 +145,6 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 | Drift treated only as developer annoyance | Set a drift budget with a named action when exceeded. |
 | Ephemeral environments trusted by default | State the parity contract; results count only for replicated dimensions. |
 | Secrets shared across tiers for convenience | Scope secrets per environment; document any cross-tier exception with user-confirmed reason and expiry. |
-| Detection without action | Map every breach to block, page, or open follow-up. |
+| Detection without action | Map every breach to block, trigger an urgent alert, or open follow-up. |
 | Divergence considered only on incident | Compare parity-required dimensions on a defined cadence. |
 | Treating data shape and data values the same | Forbid production values in non-prod; require shape parity for the paths under test. |

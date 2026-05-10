@@ -30,6 +30,7 @@ Asynchronous systems trade call-time coupling for delivery, ordering, replay, an
 
 - The design is only synchronous RPC or HTTP call policy; use `dependency-resilience` instead.
 - The main question is storage consistency or transaction semantics; use `distributed-data-and-consistency` instead.
+- The prompt centers a database or storage boundary where correctness can break; use `distributed-data-and-consistency` instead.
 - The work is batch/warehouse freshness and lineage; use `data-pipeline-reliability` instead.
 - The issue is cache invalidation only; use `caching-and-derived-data` instead.
 

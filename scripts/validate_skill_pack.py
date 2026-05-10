@@ -19,6 +19,17 @@ SAMPLE_PROMPTS_PER_SPECIALIST = 4
 ROUTER_MAX_WORDS = 1600
 ROUTER_TIEBREAKER_MAX_WORDS = 260
 SAMPLE_PROMPT_RE = re.compile(r'^- ".+"$')
+PROCESS_PAGE_RE = re.compile(r"\b(?:pages?|paging)\b", re.IGNORECASE)
+PROCESS_PAGE_ALLOWED_SPECIALISTS = {
+    "agent-pr-review",
+    "ai-coding-governance",
+    "documentation-lifecycle",
+    "engineering-control-evidence",
+    "incident-response-and-postmortems",
+    "oncall-health",
+    "platform-golden-paths",
+    "production-readiness-review",
+}
 ROUTER_EVIDENCE_GATES = {
     "single_primary",
     "secondary_cap",
@@ -434,6 +445,11 @@ def validate_decision_guide_framing(text: str, path: Path) -> None:
 def validate_specialist_skill(text: str, path: Path) -> None:
     slug = path.parent.name
     description = parse_frontmatter(text, path)["description"].lower()
+    if slug not in PROCESS_PAGE_ALLOWED_SPECIALISTS:
+        match = PROCESS_PAGE_RE.search(text)
+        if match:
+            line = text[: match.start()].count("\n") + 1
+            fail(f"{path} uses process-style page/paging language outside workflow/readiness/evidence specialists at line {line}")
     if slug not in SPECIALIST_DESCRIPTION_REVIEW_EXCEPTIONS:
         for term in ["review", "audit"]:
             if term in description:

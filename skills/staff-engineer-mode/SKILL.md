@@ -99,10 +99,11 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 Treat "review" as a verb until the artifact proves otherwise.
 
 - Concrete PR, branch, patch, last commit, or diff review before merge routes to `agent-pr-review`.
+- Changed files alone do not make a diff review; route static-analysis or maintenance backlog prioritization to `dependency-and-code-hygiene`.
 - Generic review-system design, reviewer routing, ownership, change size, review latency, or DORA workflow has no routed specialist unless a concrete engineering surface is present.
 - Launch readiness, go/no-go, tier upgrade, or broad release evidence routes to `production-readiness-review`.
 - Design review, architecture review, security review, API review, data review, rollout review, or test review without a concrete diff routes by the engineering surface, not by the word "review".
-- A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, safety, rollout, security, accessibility, data, or test evidence rather than a general diff verdict.
+- A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, deprecation, migration, safety, rollout, security, accessibility, data, or test evidence rather than a general diff verdict.
 
 ## Required Outputs
 
@@ -126,12 +127,14 @@ Treat "review" as a verb until the artifact proves otherwise.
 Use this section for common routing precedence. Load `references/routing-matrix.md` for exact-slug guardrails, eval runs, exact-slug uncertainty, or adjacent surfaces.
 
 - Explicit launch, major traffic shift, tier upgrade, or readiness decision routes to `production-readiness-review`; active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
-- Prefer newer narrow routes over broad neighbors. Only a concrete PR, branch, patch, or diff review routes to `agent-pr-review`; otherwise route the engineering decision to the narrow surface specialist.
-- Reliability policy, telemetry construction, page fatigue, topology, restore capability, failure experiments, overload controls, and state invariants are separate surfaces.
-- API/client compatibility, shared data contracts, broad migrations, routine cleanup, fleet upgrades, event workflows, database operations including production backfills, distributed data, cache freshness, and pipeline freshness stay distinct.
-- Build/release artifacts, production exposure, rollback plans, config or automation mutation, declarative infrastructure, and feature-flag lifecycle are separate delivery artifacts.
+- Prefer newer narrow routes over broad neighbors. Concrete PR, branch, patch, or diff review routes to `agent-pr-review` even when test evidence is mentioned; otherwise route the engineering decision to the narrow surface specialist.
+- Reliability policy, telemetry construction, interrupt load, fault-domain topology/static failover capacity, restore capability, failure experiments, overload controls, and state invariants are separate surfaces.
+- API compatibility, data contracts, migrations, hygiene, fleet upgrades, event replay/DLQ, database backfills, cross-service database/storage correctness, cache freshness, and pipeline freshness stay distinct.
+- Build/release artifacts, production exposure, rollback plans, config or automation mutation, and feature-flag lifecycle are separate delivery artifacts.
+- Desired-state capture, drift detection, reconciliation, or emergency exception rules after manual infrastructure changes route to `infrastructure-and-policy-as-code`.
+- Deprecation PRs/no-new-usage gates stay with `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback stays with `ml-reliability-and-evaluation`.
 - Security routes by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
-- Public edge defense, service identity/discovery/locality, dependency retry/timeout/circuit-breaker policy, backend capacity, client release gates, accessibility, cost tradeoffs, LLM eval/serving/security, AI coding controls, and code readability stay separate.
+- Public edge defense, service identity/discovery/locality, dependency retry/timeout/circuit-breaker policy, backend capacity, browser field/lab release signals, accessibility, cost tradeoffs, LLM eval/serving/security, AI coding controls, and code readability stay separate.
 - Single-surface evidence stays with the matching specialist; cross-surface control mappings, scorecards, exception records, and evidence packs route to `engineering-control-evidence`.
 
 ## Red Flags - Stop And Rework

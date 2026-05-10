@@ -51,7 +51,7 @@ An API is a long-lived contract with unknown clients, retries, partial failures,
 4. **Prefer additive evolution.** Add optional fields, new operations, new enum values with tolerant readers, and new versions only when needed.
 5. **Design error semantics.** Use a small stable error surface with machine-readable categories, typed programmatic fields, human-readable detail, retryability, correlation identifiers, and safe redaction.
 6. **Make retries safe.** For mutating operations that clients may retry, require idempotency keys, operation identifiers, or dedupe semantics. Scope dedupe state to the caller and request parameters, expire it deliberately, and ensure duplicate retries create no side effects.
-7. **Handle collections deliberately.** Prefer stable cursor-style pagination for mutable collections; define ordering, filtering, empty results, page-token expiration, and list item summaries that avoid needless follow-up calls.
+7. **Handle collections deliberately.** Prefer stable cursor-style pagination for mutable collections; define ordering, filtering, empty results, cursor-token expiration, and list item summaries that avoid needless follow-up calls.
 8. **Bound filters and payloads.** Keep filters explicit, bounded, commutative, and limited to fields the caller may see; define unknown, malformed, duplicate, and over-limit behavior. Publish maxima for variable inputs, payloads, and inner lists at launch.
 9. **Shape batch operations intentionally.** Use batch APIs only for repeated same-action work. Shape each item like the singular operation, include per-item correlation, separate successes from errors, define partial-success behavior, and reject whole invalid batches before attempting items.
 10. **Plan migration.** Use telemetry to identify clients, publish deprecation windows, support overlap, and define removal gates.
@@ -123,7 +123,7 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 - Operation names expose implementation steps, combine unrelated actions, or generate confusing client methods.
 - Errors are free-form strings with no retryability or client action.
 - Mutating operations are retryable but not idempotent.
-- A list, filter, or batch API ships without bounds, page semantics, or partial-failure behavior.
+- A list, filter, or batch API ships without bounds, collection traversal semantics, or partial-failure behavior.
 - Filters expose fields the caller cannot otherwise inspect.
 - Deprecation depends on guessing client usage instead of telemetry.
 

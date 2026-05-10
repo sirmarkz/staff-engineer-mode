@@ -34,6 +34,8 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 - The request is org-level rules for AI-assisted work, not a single diff; use `ai-coding-governance` instead.
 - The request is review routing, change-size policy, responsibility policy, or workflow metrics rather than a concrete diff; no routed specialist applies unless the prompt names a concrete engineering surface.
 - The request is launch readiness across multiple surfaces with an explicit launch event; use `production-readiness-review` instead.
+- The PR is primarily a deprecation, sunset, or removal-control artifact; use `migration-and-deprecation` instead.
+- The request is static-analysis, warning, dead-code, or maintenance-risk prioritization over changed files; use `dependency-and-code-hygiene` instead.
 - The diff is one trivial fix the human author can self-review without a structured pass.
 
 ## Inputs To Collect

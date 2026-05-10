@@ -30,6 +30,7 @@ Produces a tier-classified launch posture with an evidence matrix, a blocker lis
 
 - A small code change has no production responsibility, operational, security, or reliability impact.
 - The user needs one narrow artifact, such as only an SLO table (use `slo-and-error-budgets` instead) or only a threat model (use `secure-sdlc-and-threat-modeling` instead).
+- The request is model-serving promotion evidence, eval thresholds, skew, drift, monitoring, or rollback; use `ml-reliability-and-evaluation` instead.
 - A live incident is underway; route to `incident-response-and-postmortems` first.
 - The question is business confirmation, marketing launch, legal release decision, or procurement; out of scope.
 
