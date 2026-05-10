@@ -1,5 +1,18 @@
 # Staff Engineer Mode Release Notes
 
+## 1.1.0 - 2026-05-10
+
+Router and marketplace refresh release.
+
+- Compacts the native router tiebreakers while preserving detailed adjacent
+  routing boundaries in the bundled routing matrix.
+- Tightens router output discipline from live smoke testing: routine mechanical
+  docs edits stay out of Staff Engineer Mode, out-of-scope answers do not leak
+  specialist names, and eval routing blocks avoid repeating tool names from
+  prompts.
+- Updates Claude marketplace, Codex, Cursor, OpenCode, Gemini, and package
+  metadata to the 1.1.0 release line.
+
 ## 1.0.0 - 2026-05-09
 
 Stable release.
