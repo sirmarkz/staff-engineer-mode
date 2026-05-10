@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.2.0 - 2026-05-10
+
+Lifecycle-aware specialist routing release.
+
+- Repositions the router and specialists for ideation, design, development,
+  testing, release, operation, and maintenance guidance instead of
+  after-the-fact review.
+- Clarifies review routing so concrete diffs, review-system design, readiness
+  decisions, and surface-specific design reviews route to the right specialist.
+- Adds lifecycle and review-routing eval cases, plus live Claude and Codex smoke
+  coverage for pre-code design routing.
+
 ## 1.1.0 - 2026-05-10
 
 Router and marketplace refresh release.
