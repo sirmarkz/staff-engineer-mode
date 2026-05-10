@@ -1,5 +1,16 @@
 # Staff Engineer Mode Release Notes
 
+## 1.0.0 - 2026-05-09
+
+Stable release.
+
+- Marks the router-and-specialist architecture (one native router skill, 55
+  routed specialist files) as stable for downstream listings, plugin
+  directories, and integrations.
+- Aligns plugin and marketplace descriptions to a single capability-focused
+  summary suitable for plugin directory listings.
+- No skill content, routing behavior, or supported-tools changes since 0.10.1.
+
 ## 0.10.1 - 2026-05-09
 
 Copy clarification release.
