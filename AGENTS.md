@@ -139,22 +139,6 @@ maintaining complex software systems.
 - After pushing, check GitHub Actions when available and fix failures with
   follow-up commits.
 
-## Plugin Directory Submissions
-
-- For listings on third-party directories such as
-  `anthropics/claude-plugins-official` or `claudemarketplaces.com`, pin the
-  directory entry's `source.sha` to a tagged release commit, not `main` HEAD.
-- Capture the SHA only after the release commit lands and is tagged: bump
-  version, validate, commit `chore(release): X.Y.Z`, tag `vX.Y.Z`, push commit
-  and tag, publish the hosted release, then read the release commit SHA with
-  `git rev-parse vX.Y.Z^{}`. A SHA captured before the release commit is stale and
-  must be amended in the directory PR.
-- This repo's own manifests carry the version string but not the SHA. Only the
-  directory-side entry needs a SHA.
-- A follow-up release is a one-line `source.sha` change in the directory's
-  `marketplace.json`; nothing in this repo needs extra work beyond the normal
-  release artifacts.
-
 ## Bar A Change Must Clear
 
 1. Repo-local validation scripts pass.
