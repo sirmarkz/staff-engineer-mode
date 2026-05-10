@@ -4,7 +4,7 @@
 
 **Your AI coding agent ships fast. This makes it ship with judgment.**
 
-Staff-level routing for design, development, testing, release, and operations decisions.
+Staff-level engineering reasoning for design, development, testing, release, and operations decisions.
 
 ## Why Now
 

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -115,8 +116,19 @@ def validate_claude() -> None:
     if not isinstance(plugins, list) or len(plugins) != 1:
         fail(".claude-plugin/marketplace.json must list exactly one plugin")
     entry = plugins[0]
-    if entry.get("name") != NAME or entry.get("source") != "./":
-        fail(".claude-plugin/marketplace.json plugin entry must use source ./")
+    if entry.get("name") != NAME:
+        fail(".claude-plugin/marketplace.json plugin entry name must be staff-engineer-mode")
+    source = entry.get("source")
+    if not isinstance(source, dict):
+        fail(".claude-plugin/marketplace.json plugin entry source must pin GitHub metadata")
+    if source.get("source") != "github" or source.get("repo") != "sirmarkz/staff-engineer-mode":
+        fail(".claude-plugin/marketplace.json plugin entry source must use sirmarkz/staff-engineer-mode")
+    expected_ref = f"v{package_version()}"
+    if source.get("ref") != expected_ref:
+        fail(f".claude-plugin/marketplace.json plugin entry source must pin ref {expected_ref}")
+    sha = source.get("sha")
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        fail(".claude-plugin/marketplace.json plugin entry source must include a 40-character sha")
 
 
 def validate_cursor() -> None:
