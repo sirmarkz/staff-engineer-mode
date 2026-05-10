@@ -72,7 +72,7 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -85,7 +85,7 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 ## Response Quality Bar
 
 - Lead with the mesh/no-mesh decision, routing policy, identity model, or failure-mode blocker requested.
-- For quick design-review or troubleshooting answers, still include one compact per-edge baseline: `<caller> -> <callee>` discovery/routing mechanism and stale/unavailable behavior; service-to-service authentication mechanism and scope, such as mutual-authentication transport workload identity, mesh identity, or a signed service token for that edge; per-request authorization decision criteria, such as caller identity plus method/resource/action; default-deny service policy with user-confirmed exception rule; RED metrics (request rate, error rate, latency) with dashboard and alert; and runnable debug command or procedure.
+- For quick design or troubleshooting answers, still include one compact per-edge baseline: `<caller> -> <callee>` discovery/routing mechanism and stale/unavailable behavior; service-to-service authentication mechanism and scope, such as mutual-authentication transport workload identity, mesh identity, or a signed service token for that edge; per-request authorization decision criteria, such as caller identity plus method/resource/action; default-deny service policy with user-confirmed exception rule; RED metrics (request rate, error rate, latency) with dashboard and alert; and runnable debug command or procedure.
 - Cover concrete repeated needs, traffic map, routing/locality/failover, identity/encrypted transport/authorization, retry responsibility, telemetry, upgrades, rollback, and cost/latency tradeoffs before optional mesh breadth.
 - Make recommendations actionable with policy locations, rollout stages, config checks, failure tests, rollback steps, and operational runbooks where relevant.
 - State required evidence such as dependency maps, route config, retry/timeout settings, control-plane health, proxy versions, identity claims, latency/egress data, and incident history; do not claim unseen evidence.

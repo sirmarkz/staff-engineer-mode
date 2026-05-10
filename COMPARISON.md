@@ -1,6 +1,6 @@
 # Compared To Adjacent Skill Packs
 
-> *agency-agents adds roles. Superpowers adds methodology. Staff Engineer Mode adds a senior reviewer.*
+> *agency-agents adds roles. Superpowers adds methodology. Staff Engineer Mode adds lifecycle engineering judgment.*
 
 This page exists because engineers buy on comparison. The three projects below are the most likely things in a reader's head when they evaluate Staff Engineer Mode. They solve different problems. Pick by job, not by star count.
 
@@ -8,22 +8,22 @@ This page exists because engineers buy on comparison. The three projects below a
 
 | | **Staff Engineer Mode** | **Superpowers** | **agency-agents** |
 | --- | --- | --- | --- |
-| **Job-to-be-done** | Catch what the agent missed before it ships | Make the agent disciplined about how it works (TDD, root-cause debugging, brainstorm-first) | Give the agent a specialist persona on demand |
+| **Job-to-be-done** | Guide high-risk engineering decisions before, during, and after the change | Make the agent disciplined about how it works (TDD, root-cause debugging, brainstorm-first) | Give the agent a specialist persona on demand |
 | **Voice** | Restrained, structural, infrastructural; iron laws and evidence gates | Methodology-confident, single-sentence opinions | Personality-driven, named characters, vibe-tagged |
-| **Who it's for** | ICs about to merge agent-generated code; platform leads standardizing review across teams | Anyone who wants the agent to follow a strict workflow methodology | ICs, founders, agencies who want a multi-role team in their IDE |
-| **Install moment** | "I'm about to merge this — what did the agent miss?" | "I want my agent to write tests first / debug to root cause" | "I need a Frontend Developer / Marketing Strategist / SEO Specialist right now" |
-| **Signature artifact** | A readiness matrix with blockers, owners, exceptions, and rollback plans | A red-green-refactor TDD cycle and a four-phase debugging protocol | A named persona file with frontmatter, vibe, and a methodology sketch |
-| **Why you pick it** | Production reasoning the agent does not have | Workflow discipline the agent does not have | Specialist roles the agent does not have |
+| **Who it's for** | ICs and leads shaping architecture, delivery, release, operations, and maintenance decisions | Anyone who wants the agent to follow a strict workflow methodology | ICs, founders, agencies who want a multi-role team in their IDE |
+| **Install moment** | "We need to design, build, test, or ship this with the right constraints." | "I want my agent to write tests first / debug to root cause" | "I need a Frontend Developer / Marketing Strategist / SEO Specialist right now" |
+| **Signature artifact** | A decision frame with risks, gates, owners, evidence, and next steps | A red-green-refactor TDD cycle and a four-phase debugging protocol | A named persona file with frontmatter, vibe, and a methodology sketch |
+| **Why you pick it** | Lifecycle engineering judgment the agent does not have | Workflow discipline the agent does not have | Specialist roles the agent does not have |
 
 ## How They Compose
 
-**Staff Engineer Mode + Superpowers.** Use Superpowers for the workflow inside the change. Use Staff Engineer Mode for the gate around the change. Superpowers makes the agent more disciplined while writing; Staff Engineer Mode makes it more careful before shipping.
+**Staff Engineer Mode + Superpowers.** Use Superpowers for the workflow inside the change. Use Staff Engineer Mode to shape the engineering decisions around the change. Superpowers makes the agent more disciplined while writing; Staff Engineer Mode makes the work more operable, compatible, observable, and safe to release.
 
-**Staff Engineer Mode + agency-agents.** Use agency-agents to give the agent a specialist identity for the task. Use Staff Engineer Mode to read the resulting work and produce the artifact a senior reviewer would insist on.
+**Staff Engineer Mode + agency-agents.** Use agency-agents to give the agent a specialist identity for the task. Use Staff Engineer Mode to select the engineering lens and produce the decision artifact the work needs.
 
 **Staff Engineer Mode + your CLAUDE.md / AGENTS.md.** Your repo instructions cover project-specific conventions. Staff Engineer Mode covers staff-engineer judgment that is not specific to any one project. They pair.
 
-**Staff Engineer Mode + vendor-bundled skills (Cursor, Claude Code defaults).** Vendor skills cover daily flow. Staff Engineer Mode is the senior reviewer that overlays the daily flow. Not a substitute.
+**Staff Engineer Mode + vendor-bundled skills (Cursor, Claude Code defaults).** Vendor skills cover daily flow. Staff Engineer Mode adds lifecycle engineering judgment to that flow. Not a substitute.
 
 ## What Staff Engineer Mode Is Not
 

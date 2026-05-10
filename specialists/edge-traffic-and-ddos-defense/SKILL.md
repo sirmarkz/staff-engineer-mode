@@ -41,7 +41,7 @@ Public traffic must be filtered and shaped before abusive load reaches expensive
 - Existing edge rules, rate limits, bot controls, challenges, allow/deny lists, and emergency controls.
 - Origin capacity, dependency limits, caching behavior, and overload thresholds.
 - Telemetry: rule ID, action, request ID, route, identity/tenant, status, latency, and origin result.
-- Rule responsibility, rollout mode, dry-run capability, expiry, review cadence, and rollback path.
+- Rule responsibility, rollout mode, dry-run capability, expiry, refresh cadence, and rollback path.
 
 ## Workflow
 
@@ -50,10 +50,10 @@ Public traffic must be filtered and shaped before abusive load reaches expensive
 3. **Protect origin.** Restrict direct access, require edge-origin authentication where possible, and remove bypass routes.
 4. **Shape traffic early.** Apply rate limits, quotas, challenges, caching, prioritization, and load shedding before expensive work.
 5. **Specify rate rules.** For each protected route or route class, name the key, window, threshold, and breach action such as 429, deny, or challenge.
-6. **Tune false positives.** Use dry-run or staged enforcement for new rules when possible; define review signals.
+6. **Tune false positives.** Use dry-run or staged enforcement for new rules when possible; define false-positive signals.
 7. **Instrument decisions.** Log rule, action, identity, route, request ID, and origin outcome.
-8. **Plan emergency controls.** Predefine who can apply broad blocks, how long they last, and how they are reviewed.
-9. **Review and expire rules.** Temporary mitigations need expiry, rollback, and post-event analysis.
+8. **Plan emergency controls.** Predefine who can apply broad blocks, how long they last, and how they are checked.
+9. **Expire rules.** Temporary mitigations need expiry, rollback, and post-event analysis.
 
 ## Synthesized Default
 
@@ -69,12 +69,12 @@ Use layered edge protection: origin isolation, traffic steering, caching where c
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
-- During active denial-of-service events, temporary broad blocking may be acceptable if reviewed and expired quickly.
+- During active denial-of-service events, temporary broad blocking may be acceptable if checked and expired quickly.
 - Internal-only services can use lighter public-edge controls if no public route exists.
 - High-value customers or critical traffic may need priority lanes or separate rate policies.
 - Some rules cannot run in dry-run mode; compensate with narrow scope and fast rollback.
@@ -82,8 +82,8 @@ Use layered edge protection: origin isolation, traffic steering, caching where c
 ## Response Quality Bar
 
 - Lead with the edge risk, denial-of-service or abuse policy, origin-bypass fix, or emergency mitigation requested.
-- Cover origin isolation, route cost, identity-aware limits, bot/abuse controls, false-positive review, edge telemetry, staged enforcement, rollback, and expiry before optional edge breadth.
-- Make recommendations actionable with rule scopes, thresholds, dry-run/enforce stages, rollback commands, review windows, and emergency authority where relevant.
+- Cover origin isolation, route cost, identity-aware limits, bot/abuse controls, false-positive handling, edge telemetry, staged enforcement, rollback, and expiry before optional edge breadth.
+- Make recommendations actionable with rule scopes, thresholds, dry-run/enforce stages, rollback commands, verification windows, and emergency authority where relevant.
 - Include a compact rate-rule table for public APIs: route or route class, identity key (IP/session/user/tenant/API key), window, threshold, breach action, rollout mode, user-confirmed exception, and rollback.
 - State required evidence such as DNS/origin exposure, route inventory, request rates, tenant/user identity, rule logs, false-positive samples, origin saturation, and mitigation history; do not claim unseen evidence.
 - Stay vendor/product-agnostic, but DO name the standard edge primitives by category: rate-limit breach action (e.g., 429, deny, challenge), bot-detection mechanism (challenge, fingerprint, behavioral, reputation-based) with false-positive handling, origin-shielding mechanism (edge-IP allowlist, signed origin headers, private connectivity, mutual-authentication transport) with a verification step, and load-shedding criteria with priority preservation (e.g., shed unauthenticated/low-priority before authenticated critical).
@@ -106,7 +106,7 @@ Use layered edge protection: origin isolation, traffic steering, caching where c
 - `rate_policy`: rate limits or abuse controls are tied to identity, route cost, and false-positive tolerance.
 - `telemetry_check`: edge decisions include rule, action, route, identity/request context, and origin result.
 - `rollback_check`: enforcement rules have rollout mode, and rollback path.
-- `emergency_check`: broad mitigations have authority, expiry, and review requirements.
+- `emergency_check`: broad mitigations have authority, expiry, and verification requirements.
 
 ## Red Flags - Stop And Rework
 

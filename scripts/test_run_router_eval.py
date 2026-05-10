@@ -51,20 +51,20 @@ class RouterEvalHarnessTests(unittest.TestCase):
 
         self.assertTrue(result.passed, result.failures)
 
-    def test_score_ambiguous_case_rejects_forbidden_skill_names(self) -> None:
+    def test_score_no_route_case_rejects_forbidden_skill_names(self) -> None:
         runner = load_runner()
         case = {
-            "prompt": "Make alerts better for checkout.",
-            "expected_primary": "staff-engineer-mode",
-            "expected_behavior": "ask without naming specialists",
-            "category": "ambiguous",
-            "expected_gates": ["ambiguity_check"],
+            "prompt": "Write a marketing launch plan.",
+            "expected_primary": "none",
+            "expected_behavior": "decline without naming specialists",
+            "category": "out_of_scope",
+            "expected_gates": ["scope_check"],
             "forbidden_in_response": ["all_specialist_names"],
         }
 
         result = runner.score_case(
             case,
-            "Do you want observability-and-alerting work or SLO policy?",
+            "This is out of scope. Try observability-and-alerting instead.",
             ["observability-and-alerting", "slo-and-error-budgets"],
         )
 

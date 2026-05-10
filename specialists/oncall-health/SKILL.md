@@ -21,6 +21,7 @@ Repeated pages and manual operations are engineering defects.
 
 ## When To Use
 
+- The user is designing or revising paging, toil, runbook, suppression, escalation, or manual-operation decisions that affect responder load.
 - The user asks to reduce pages, alert fatigue, toil, manual operations, repeated runbook work, or operational burden.
 - On-call responders are interrupted by non-urgent, unactionable, duplicate, or noisy alerts.
 - Manual mitigations are repeated often enough to automate or remove.
@@ -53,8 +54,8 @@ Repeated pages and manual operations are engineering defects.
 6. **Create an engineering backlog.** Give every recurring class a priority, expected page reduction, and verification metric.
 7. **Protect the signal.** Use SLO burn, grouping, dedupe, maintenance windows, and ticket routing to prevent alert erosion.
 8. **Set a page-rate budget.** State a numeric per-shift / per-week page target (e.g., "≤2 pages/shift") AND how it will be measured (rolling 7d, after-hours weighted). Compare against current rate.
-9. **Audit runbook freshness.** For every paging alert, record runbook last-reviewed date and require review cadence (e.g., 90d) alongside coverage.
-10. **Review regularly.** Feed incident/postmortem findings back into alert policy, platform work, and reliability standards.
+9. **Check runbook freshness.** For every paging alert, record runbook last-verified date and require freshness cadence alongside coverage.
+10. **Refresh regularly.** Feed incident/postmortem findings back into alert rules, platform work, and reliability standards.
 
 ## Synthesized Default
 
@@ -70,7 +71,7 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -100,17 +101,17 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 - Responsibility and fallback fixes.
 - Measurement plan for page volume, after-hours interruptions, and toil hours.
 - Numeric page-rate / interruption budget per shift with the measurement window and source.
-- Runbook coverage AND freshness check (last-reviewed date, review cadence) for each paging alert.
+- Runbook coverage AND freshness check (last-verified date, freshness cadence) for each paging alert.
 
 ## Evidence Gates
 
-- `page_classification`: each reviewed page is classified by urgency, actionability, user visibility, and novelty.
+- `page_classification`: each page is classified by urgency, actionability, user visibility, and novelty.
 - `toil_inventory`: repeated manual work has frequency, and elimination or automation plan.
 - `runbook_check`: remaining pages link to executable runbooks with mitigation and verification.
 - `noise_reduction`: proposed changes state expected page or toil reduction and how it will be measured.
 - `scope_check`: staffing, compensation, and HR issues are reframed or marked out of scope.
 - `page_rate_budget`: a numeric per-shift or per-week page target is stated with measurement window.
-- `runbook_freshness`: each paging alert has a last-reviewed date and a freshness cadence.
+- `runbook_freshness`: each paging alert has a last-verified date and a freshness cadence.
 
 ## Red Flags - Stop And Rework
 

@@ -1,6 +1,6 @@
 ---
 name: staff-engineer-mode
-description: "Use when engineering design, review, delivery, reliability, security, API, data, or platform work needs routing"
+description: "Use when making engineering decisions across ideation, design, development, testing, release, operations, or maintenance"
 ---
 
 # Staff Engineer Mode
@@ -8,7 +8,7 @@ description: "Use when engineering design, review, delivery, reliability, securi
 ## Iron Law
 
 ```
-ONE PRIMARY SPECIALIST BY DEFAULT; ASK ONLY QUESTIONS WHEN CONFIDENCE IS LOW
+ONE PRIMARY SPECIALIST BY DEFAULT; INFER ROUTING CONTEXT BEFORE WITHHOLDING
 ```
 
 Loading many plausible specialists is a routing failure.
@@ -19,7 +19,7 @@ Users are not expected to know specialist names. Classify by artifact, phase, su
 
 ## When To Use
 
-- The request asks for engineering design, review, delivery, operations, reliability, security, architecture, API, data, platform, or client guidance.
+- The request asks for engineering decisions or guidance for design, delivery, operations, reliability, security, architecture, API, data, platform, or client work.
 - The user asks to guide ideation, design, development, testing, release, or maintenance decisions.
 - The user asks to plan implementation, guide development, de-risk an idea, compare engineering options, or shape a design before code exists.
 - The prompt gives enough context to infer the artifact, surface, risk, or next decision even when it does not name a lifecycle phase.
@@ -35,10 +35,12 @@ Users are not expected to know specialist names. Classify by artifact, phase, su
 - The request is routine editorial or mechanical single-file documentation cleanup with no source-of-truth, freshness, operational, or lifecycle decision.
 - The work is outside system delivery, operations, security, reliability, or maintainability.
 
-## Inputs To Collect
+## Inputs To Infer
 
-- **Artifact:** decision, plan, gate, rollout, investigation, runbook, policy, migration, eval, evidence pack, or review.
-- **Phase:** ideation, design, development, testing, before merge, release, migration, active incident, post-incident, regression, audit/evidence, or maintenance.
+Infer these from the prompt, repo, files, branch context, and conversation. Do not ask the user to supply them as intake fields.
+
+- **Artifact:** decision, design, plan, gate, rollout, investigation, runbook, migration, eval, evidence pack, or diff review.
+- **Phase:** ideation, design, development, testing, before merge, release, migration, active incident, post-incident, regression, evidence, or maintenance.
 - **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, AI, accessibility, cost, or operator load.
 - **Risk/scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-location.
 
@@ -69,15 +71,15 @@ web-release-gates
 
 ## Workflow
 
-1. Identify the requested artifact and phase before naming any skill.
-2. If the work is in ideation, design, development, testing, release, or maintenance and has an engineering surface, route by the decision or artifact the specialist should guide; do not require concrete files unless the chosen specialist is intentionally diff-only.
+1. Infer the requested artifact and phase from prompt, repo, files, branch context, and conversation before naming any skill.
+2. If the work is in ideation, design, development, testing, release, or maintenance and has an engineering surface, route by the decision or artifact the specialist should guide; concrete files, diffs, and repo artifacts improve evidence, and are required only for explicitly diff-specific review.
 3. Treat phase labels as signals, not hard gates; infer applicability from context, artifact, surface, risk, and the next decision.
 4. Translate named tools into capabilities; routing outputs must use capability language, not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
-5. Pick `primary` (and any `secondary`) verbatim from the Bundled Specialist Slugs list above; if no listed slug fits, ask a clarification question instead of inventing or paraphrasing one.
+5. Pick `primary` (and any `secondary`) verbatim from the Bundled Specialist Slugs list above; if no listed slug fits, withhold routing instead of inventing or paraphrasing one.
 6. Choose the narrowest primary whose required outputs match the next artifact.
 7. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
 8. Read only `../../specialists/<slug>/SKILL.md`, or the same file under the platform-supplied specialist root.
-9. If confidence is low, ask only the missing intake questions needed to route and start useful work.
+9. If confidence is low, infer the safest narrow in-scope route from available evidence; withhold routing only when no engineering lifecycle/control frame is present.
 10. Keep single-surface evidence with the matching specialist; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
 11. Reframe out-of-scope work as an engineering-control question only when that is plausible.
 
@@ -87,39 +89,49 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 ## Exceptions
 
-- For explicit launch/readiness audits, use `production-readiness-review` as primary.
+- For explicit launch/readiness decisions or broad release evidence gates, use `production-readiness-review` as primary.
 - For active incidents, use `incident-response-and-postmortems` first even if root cause appears to belong elsewhere.
-- For vague prompts such as "make this better" or "troubleshoot a network issue", ask intake questions before routing.
-- For out-of-scope business/process prompts, do not select a skill unless the user confirms an engineering lifecycle/control framing.
+- For vague prompts such as "make this better" or "troubleshoot a network issue", infer from repo and conversation context before withholding routing.
+- For out-of-scope business or ceremony prompts, do not select a skill unless context already supplies an engineering lifecycle/control framing.
+
+## Review Routing
+
+Treat "review" as a verb until the artifact proves otherwise.
+
+- Concrete PR, branch, patch, last commit, or diff review before merge routes to `agent-pr-review`.
+- Review-system design, reviewer routing, ownership, responsibility, change size, review latency, or DORA workflow routes to `code-review-and-workflow`.
+- Launch readiness, go/no-go, tier upgrade, or broad release evidence routes to `production-readiness-review`.
+- Design review, architecture review, security review, API review, data review, rollout review, or test review without a concrete diff routes by the engineering surface, not by the word "review".
+- A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, safety, rollout, security, accessibility, data, or test evidence rather than a general diff verdict.
 
 ## Required Outputs
 
 - For confident routing: primary specialist slug; optional secondary only when necessary; confidence of high or medium.
 - Inferred intent: requested artifact, dominant surface, work phase, and one-sentence rationale.
 - For explicit eval-harness runs only: include a fenced `routing` block only for confident in-scope routing; never emit a routing block for low-confidence, ambiguous, or out-of-scope prompts. The block contains a JSON object with `primary`, `secondary`, `confidence`, `artifact`, `surface`, `phase`, and `rationale`; JSON text fields must not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
-- For low-confidence routing: questions only; no primary, secondary, confidence label, routing draft, candidate list, or specialist names.
+- For low-confidence routing: infer a best-effort route when in scope; otherwise withhold routing without intake questions, candidate lists, confidence labels, routing drafts, or specialist names.
 - Out-of-scope reframe when applicable, without specialist names or candidate routes.
 
 ## Evidence Gates
 
-- `single_primary`: output has exactly one primary specialist unless asking a clarification question.
+- `single_primary`: output has exactly one primary specialist unless routing is withheld.
 - `secondary_cap`: output has no more than one secondary specialist.
 - `capability_translation`: tool, vendor, or framework names are translated into capability language before routing and not repeated in routing block fields.
 - `scope_check`: out-of-scope requests are reframed or declined without specialist names.
-- `ambiguity_check`: ambiguous prompts ask user-facing questions and expose no specialist names, candidate routes, confidence labels, or drafts.
+- `ambiguity_check`: ambiguous prompts infer from available context when possible; withheld routes expose no specialist names, candidate routes, confidence labels, drafts, or intake questions.
 - `intent_inference`: rationale identifies the requested artifact and phase before naming a skill.
 
 ## Routing Tiebreakers
 
 Use this section for common routing precedence. Load `references/routing-matrix.md` for exact-slug guardrails, eval runs, exact-slug uncertainty, or adjacent surfaces.
 
-- Explicit launch, major traffic shift, tier upgrade, or readiness audit routes to `production-readiness-review`; active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
-- Prefer newer narrow routes over broad neighbors. Generic pre-merge diff review routes to `agent-pr-review` only after narrower API, data, config, rollout, security, and test-gate routes are ruled out.
+- Explicit launch, major traffic shift, tier upgrade, or readiness decision routes to `production-readiness-review`; active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
+- Prefer newer narrow routes over broad neighbors. Only a concrete PR, branch, patch, or diff review routes to `agent-pr-review`; otherwise route the engineering decision to the narrow surface specialist.
 - Reliability policy, telemetry construction, page fatigue, topology, restore capability, failure experiments, overload controls, and state invariants are separate surfaces.
-- API/client compatibility, shared data contracts, broad migrations, routine cleanup, fleet upgrades, event workflows, database operations, distributed data, cache freshness, and pipeline freshness stay distinct.
+- API/client compatibility, shared data contracts, broad migrations, routine cleanup, fleet upgrades, event workflows, database operations including production backfills, distributed data, cache freshness, and pipeline freshness stay distinct.
 - Build/release artifacts, production exposure, rollback plans, config or automation mutation, declarative infrastructure, and feature-flag lifecycle are separate delivery artifacts.
 - Security routes by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
-- Public edge defense, service identity/discovery/locality, dependency retry/timeout/circuit-breaker policy, backend capacity, client release gates, accessibility, cost tradeoffs, LLM eval/serving/security, AI coding governance, and code readability stay separate.
+- Public edge defense, service identity/discovery/locality, dependency retry/timeout/circuit-breaker policy, backend capacity, client release gates, accessibility, cost tradeoffs, LLM eval/serving/security, AI coding controls, and code readability stay separate.
 - Single-surface evidence stays with the matching specialist; cross-surface control mappings, scorecards, exception records, and evidence packs route to `engineering-control-evidence`.
 
 ## Red Flags - Stop And Rework
@@ -138,5 +150,5 @@ Use this section for common routing precedence. Load `references/routing-matrix.
 | Keyword matching | Infer artifact, phase, surface, and risk. |
 | Loading every related specialist | Choose one primary and list at most one follow-up. |
 | Treating tools as domains | Translate tools to capabilities. |
-| Dumping candidate specialists | Ask missing diagnostic or scoping questions without naming specialists. |
-| Avoiding clarification | Ask focused intake questions when confidence is low. |
+| Dumping candidate specialists | Infer the narrowest route, or withhold only when no in-scope frame exists. |
+| Asking intake questions too soon | Infer from prompt, repo, files, branch context, and conversation first. |

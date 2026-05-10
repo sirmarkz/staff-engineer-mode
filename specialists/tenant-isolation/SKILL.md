@@ -55,7 +55,7 @@ Multi-tenancy fails when tenant context is optional.
 6. **Control noisy neighbors.** Add per-tenant quotas, rate limits, concurrency caps, and load-shedding rules where shared capacity exists.
 7. **Protect privacy surfaces.** Minimize, redact, tokenize, encrypt, or segregate sensitive data in logs, telemetry, exports, and support views.
 8. **Handle tenant offboarding.** Propagate deletion and access removal through stores, caches, indexes, derived data, exports, backup expiry, and support tooling.
-9. **Audit high-risk access.** Record administrative, support, export, deletion, and cross-tenant operations in tenant-scoped audit logs; define retention long enough for investigation, compliance, and incident review.
+9. **Audit high-risk access.** Record administrative, support, export, deletion, and cross-tenant operations in tenant-scoped audit logs; define retention long enough for investigation, compliance, and incident investigation.
 10. **Verify isolation.** Use tests, probes, reviews, and monitoring for cross-tenant reads/writes and capacity abuse.
 
 ## Synthesized Default
@@ -72,7 +72,7 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -111,7 +111,7 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 - `data_boundary`: data access controls enforce tenant isolation where shared stores exist.
 - `privacy_check`: sensitive data handling is defined for logs, traces, metrics, errors, exports, and support tools.
 - `quota_check`: shared capacity has tenant-aware quotas or an explicit risk acceptance.
-- `audit_check`: tenant-scoped audit logs cover high-risk access and define retention for forensics and incident review.
+- `audit_check`: tenant-scoped audit logs cover high-risk access and define retention for forensics and incident investigation.
 - `cross_tenant_test`: tests or probes cover unauthorized cross-tenant read/write paths.
 
 ## Red Flags - Stop And Rework

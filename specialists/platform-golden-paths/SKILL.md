@@ -51,14 +51,14 @@ A good platform makes the safe path the easy path.
 3. **Bake in defaults.** Include responsibility, SLO hooks, telemetry, safe deploys, secret handling, access boundaries, runbooks, and evidence.
 4. **Make start-right templates.** Bootstrap repositories, delivery, infrastructure, observability, security, and policy defaults together so projects do not assemble safety by hand.
 5. **Expose self-service with guardrails.** Make the path usable without bespoke platform intervention for normal cases while policy, security, cost, and operations controls stay automatic.
-6. **Design scorecards.** Measure capability maturity across investment, adoption, governance, provisioning and management, interfaces, and feedback; use evidence for meaningful capabilities, not vanity checkboxes.
+6. **Design scorecards.** Measure capability maturity across investment, adoption, controls, provisioning and management, interfaces, and feedback; use evidence for meaningful capabilities, not vanity checkboxes.
 7. **Handle exceptions.** Require user-confirmed reason, expiry, compensating control, and migration plan.
 8. **Plan adoption.** Prioritize new services, high-risk services, and repeated incident classes; avoid big-bang migrations.
 9. **Close feedback loops.** Use incidents, developer friction, and scorecard gaps to improve the platform.
 
 ## Synthesized Default
 
-Build golden paths around capabilities rather than tools: service creation, build, test, release, telemetry, security, responsibility, recovery, governance, and evidence. Provide self-service with guardrails, start-right templates, and escape hatches, but make exceptions visible and temporary.
+Build golden paths around capabilities rather than tools: service creation, build, test, release, telemetry, security, responsibility, recovery, controls, and evidence. Provide self-service with guardrails, start-right templates, and escape hatches, but make exceptions visible and temporary.
 
 
 
@@ -70,7 +70,7 @@ Build golden paths around capabilities rather than tools: service creation, buil
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions

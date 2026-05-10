@@ -15,7 +15,7 @@ If the change cannot be checked before execution and reversed or contained after
 
 ## Overview
 
-Configuration and automation can change production faster than code review can notice.
+Configuration and automation can change production faster than ordinary code paths expose.
 
 **Core principle:** treat config, generated changes, and operational automation as production code with explicit schema, preview, user confirmation, and recovery evidence.
 
@@ -25,7 +25,7 @@ Configuration and automation can change production faster than code review can n
 - A non-code change can alter routing, permissions, capacity, customer experience, data handling, or operational behavior.
 - Automation creates, updates, deletes, migrates, or remediates production state.
 - A pre-launch or unlaunched production environment can affect real users, data, credentials, capacity, or recovery expectations.
-- Configuration drift, copy-paste settings, or unreviewed overrides are causing incidents.
+- Configuration drift, copy-paste settings, or untracked overrides are causing incidents.
 
 ## When Not To Use
 
@@ -39,10 +39,10 @@ Configuration and automation can change production faster than code review can n
 - Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Config or automation surface, consumers, environments, affected production state, and local change path.
 - Schema, allowed values, defaults, invariants, dependency ordering, and unsafe combinations.
-- Change path, review path, user confirmation, preview or dry-run output, execution identity, and audit record.
+- Change path, approval path, user confirmation, preview or dry-run output, execution identity, and traceability record.
 - Blast radius, rollback or disable path, rate limit, lock, retry, and idempotency behavior.
 - Change class and confirmation path: low-risk, standard production, or emergency; evidence required before the user proceeds.
-- Prior incidents, drift reports, manual overrides, and exception process.
+- Prior incidents, drift reports, manual overrides, and exception rules.
 
 ## Workflow
 
@@ -58,7 +58,7 @@ Configuration and automation can change production faster than code review can n
 
 ## Synthesized Default
 
-Use typed config contracts, deterministic validation, effect preview, small execution batches, explicit user confirmation for production-impacting work, audit records, drift checks, and tested recovery paths. Automation should be idempotent by default and should fail closed when it cannot prove the intended target.
+Use typed config contracts, deterministic validation, effect preview, small execution batches, explicit user confirmation for production-impacting work, traceability records, drift checks, and tested recovery paths. Automation should be idempotent by default and should fail closed when it cannot prove the intended target.
 
 
 
@@ -70,12 +70,12 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
-- Emergency automation may run with reduced pre-change evidence when delay is riskier, but it still needs user confirmation, audit, stop criteria, and post-change reconciliation.
+- Emergency automation may run with reduced pre-change evidence when delay is riskier, but it still needs user confirmation, traceability, stop criteria, and post-change reconciliation.
 - Low-risk local config can use lighter checks if it cannot affect shared systems, sensitive data, or production users.
 - Some generated changes are easier to roll forward than roll back; document the recovery decision before execution.
 
@@ -84,7 +84,7 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 - Lead with the safety decision, config contract, automation risk, or gate matrix requested.
 - Name the change class and confirmation path: low-risk changes need local validation evidence, standard production changes need explicit user confirmation plus preview evidence, and emergency changes need user confirmation plus post-change reconciliation.
 - Cover validation, preview, blast radius, execution controls, drift handling, and recovery before optional automation detail.
-- Make recommendations actionable with validation checks, stop criteria, batch size, audit evidence, and cleanup where relevant.
+- Make recommendations actionable with validation checks, stop criteria, batch size, traceability evidence, and cleanup where relevant.
 - State required evidence such as schema, preview output, user confirmation, execution logs, drift reports, and rollback proof; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside config and automation safety. Use rollout, infrastructure policy, or dependency hygiene skills only when that surface is the immediate risk.
@@ -92,15 +92,15 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 
 ## Required Outputs
 
-- Configuration or automation safety review.
+- Configuration or automation safety decision.
 - Change class and confirmation path: low-risk, standard production, or emergency, with required evidence and decision rationale.
 - Production change record with user confirmation, expected effect, blast radius, and recovery evidence where the change can affect production state.
 - Contract: schema, defaults, invariants, unsafe combinations, allowed overrides, and local change path.
 - Validation and preview gate list.
 - Blast-radius and execution-control plan.
 - Recovery plan for rollback, disable, restore, or roll-forward.
-- Drift detection and exception policy.
-- Evidence checklist for review, execution, and cleanup.
+- Drift detection and exception rules.
+- Evidence checklist for approval, execution, and cleanup.
 
 ## Evidence Gates
 
@@ -110,11 +110,11 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 - `preview_checked`: intended production effect is visible before execution.
 - `blast_radius`: affected users, systems, and data are bounded.
 - `recovery_path`: rollback, disable, restore, or roll-forward path is defined.
-- `audit_record`: review, validation, execution result, and exception state are traceable.
+- `traceability_record`: approval, validation, execution result, and exception state are traceable.
 
 ## Red Flags - Stop And Rework
 
-- Configuration bypasses review because it is "not code."
+- Configuration bypasses validation because it is "not code."
 - Unlaunched production is treated as non-production even though it can affect users, data, credentials, or recovery.
 - Automation can delete or mutate shared state without preview.
 - Defaults differ by environment without a documented reason.

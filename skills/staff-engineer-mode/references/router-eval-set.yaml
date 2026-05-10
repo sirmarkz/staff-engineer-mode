@@ -1,7 +1,7 @@
 cases:
-  - prompt: "We are splitting billing from checkout and need a design review before we lock service boundaries, responsibility, and failure behavior."
+  - prompt: "We are splitting billing from checkout and need a design decision before we lock service boundaries, responsibility, and failure behavior."
     expected_primary: architecture-decisions
-    expected_behavior: "infer architecture review from boundaries, responsibility, and decision timing"
+    expected_behavior: "infer architecture decision from boundaries, responsibility, and decision timing"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "A partner-facing endpoint needs to rename a response field and return a new error shape, but older clients cannot break."
@@ -9,14 +9,14 @@ cases:
     expected_behavior: "route to compatibility and client migration instead of generic architecture"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Review the API changes in this branch and tell me what could break existing clients."
+  - prompt: "Inspect the API changes in this branch and tell me what could break existing clients."
     expected_primary: api-design-and-compatibility
-    expected_behavior: "route API branch review to client compatibility instead of generic PR review"
+    expected_behavior: "route API branch check to client compatibility instead of generic PR review"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Inspect the endpoint code and API schema docs for this new pagination behavior before we merge."
     expected_primary: api-design-and-compatibility
-    expected_behavior: "route endpoint/schema review before merge to API compatibility, not generic PR review"
+    expected_behavior: "route endpoint/schema check before merge to API compatibility, not generic PR review"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Several SDKs and partner clients still read this response field; check compatibility and removal gates before changing it."
@@ -49,7 +49,7 @@ cases:
     expected_behavior: "route SLI/SLO proposal to error-budget skill without inventing reliability-target aliases"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Review the alert rules against this service's SLOs and separate paging alerts from ticket-only alerts."
+  - prompt: "Inspect the alert rules against this service's SLOs and separate paging alerts from ticket-only alerts."
     expected_primary: slo-and-error-budgets
     expected_behavior: "route page-vs-ticket policy tied to SLOs to error-budget skill"
     category: direct
@@ -135,11 +135,10 @@ cases:
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "What should we require before this lands?"
-    expected_primary: staff-engineer-mode
-    expected_behavior: "ask which landing requirement is needed without naming specialists"
-    category: ambiguous
-    expected_gates: [ambiguity_check]
-    forbidden_in_response: [all_specialist_names]
+    expected_primary: testing-and-quality-gates
+    expected_behavior: "infer a landing-gate request and route to quality gates without intake questions"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
   - prompt: "Release builds are not reproducible across machines, and the artifact we promote is not always the one we tested."
     expected_primary: release-build-reproducibility
     expected_behavior: "route to build and artifact discipline, not rollout"
@@ -172,12 +171,12 @@ cases:
     expected_gates: [single_primary, intent_inference]
   - prompt: "Reviews sit idle for days, responsibility paths are unclear, and large changes keep landing late in the cycle."
     expected_primary: code-review-and-workflow
-    expected_behavior: "route to review workflow and responsibility"
+    expected_behavior: "route to review-system workflow and responsibility"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Our runbooks and design docs contradict each other; we need responsibility paths, source of truth, freshness rules, and archive criteria."
     expected_primary: documentation-lifecycle
-    expected_behavior: "route to engineering documentation lifecycle instead of architecture decision review"
+    expected_behavior: "route to engineering documentation lifecycle instead of architecture decision work"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Make a small mechanical correction in one documentation file and commit it."
@@ -193,12 +192,12 @@ cases:
     expected_gates: [single_primary, intent_inference]
   - prompt: "Threat model the new admin privilege flow, including abuse cases and security requirements before implementation."
     expected_primary: secure-sdlc-and-threat-modeling
-    expected_behavior: "route to secure design and abuse-case review"
+    expected_behavior: "route to secure design and abuse-case reasoning"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Audit service identities, key rotation, and who can read production secrets for this service."
+  - prompt: "Map service identities, key rotation, and who can read production secrets for this service."
     expected_primary: identity-and-secrets
-    expected_behavior: "route to identity and secrets, not broad security review"
+    expected_behavior: "route to identity and secrets, not broad secure-design work"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Certificates expire next quarter, and the trust-chain change needs inventory, compatibility tests, renewal alerts, and revocation steps."
@@ -326,12 +325,12 @@ cases:
     expected_behavior: "route to LLM application security, not broad AI strategy"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Review a GenAI product for prompt injection, sensitive prompt redaction, prompt and response storage, retrieval leaks, and emergency stop controls."
+  - prompt: "Inspect a GenAI product for prompt injection, sensitive prompt redaction, prompt and response storage, retrieval leaks, and emergency stop controls."
     expected_primary: llm-application-security
     expected_behavior: "route GenAI application security controls to LLM application security"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "The model-backed app accepts file uploads and renders model-generated markdown links; review input validation, output handling, and unsafe sinks before launch."
+  - prompt: "The model-backed app accepts file uploads and renders model-generated markdown links; decide input validation, output handling, and unsafe-sink controls before launch."
     expected_primary: llm-application-security
     expected_behavior: "route multimodal and rendered-output risks to LLM application security"
     category: direct
@@ -366,9 +365,9 @@ cases:
     expected_behavior: "route prompt evaluation evidence to the LLM eval harness skill"
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
-  - prompt: "We need repo instructions for coding agents: allowed actions, protected paths, data boundaries, required tests, and review evidence."
+  - prompt: "We need repo instructions for coding agents: allowed actions, protected paths, data boundaries, required tests, and traceability evidence."
     expected_primary: ai-coding-governance
-    expected_behavior: "route to AI-assisted development governance instead of deployed LLM app security"
+    expected_behavior: "route to AI-assisted development controls instead of deployed LLM app security"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "The native mobile release should stop if crash-free users drop, startup regresses, or offline sync breaks during staged rollout."
@@ -448,29 +447,25 @@ cases:
     category: mixed_intent
     expected_gates: [single_primary, secondary_cap, intent_inference]
   - prompt: "Make alerts better for checkout."
-    expected_primary: staff-engineer-mode
-    expected_behavior: "ask what alert outcome and pain need fixing without naming specialists"
-    category: ambiguous
-    expected_gates: [ambiguity_check]
-    forbidden_in_response: [all_specialist_names]
+    expected_primary: observability-and-alerting
+    expected_behavior: "infer alert improvement for a checkout engineering surface without intake questions"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
   - prompt: "Improve the mobile app."
-    expected_primary: staff-engineer-mode
-    expected_behavior: "ask what engineering outcome is needed without naming specialists"
-    category: ambiguous
-    expected_gates: [ambiguity_check]
-    forbidden_in_response: [all_specialist_names]
+    expected_primary: mobile-release-engineering
+    expected_behavior: "infer mobile engineering quality and release guidance without intake questions"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
   - prompt: "Use staff engineer mode to troubleshoot a network issue."
-    expected_primary: staff-engineer-mode
-    expected_behavior: "ask diagnostic intake questions about symptoms, path, scope, timing, changes, and evidence without naming specialists"
-    category: ambiguous
-    expected_gates: [ambiguity_check]
-    forbidden_in_response: [all_specialist_names]
+    expected_primary: internal-service-networking
+    expected_behavior: "infer internal service networking investigation from an engineering network issue without intake questions"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
   - prompt: "Troubleshoot a network issue."
-    expected_primary: staff-engineer-mode
-    expected_behavior: "ask diagnostic intake questions about symptoms, path, scope, timing, changes, and evidence without naming specialists"
-    category: ambiguous
-    expected_gates: [ambiguity_check]
-    forbidden_in_response: [all_specialist_names]
+    expected_primary: internal-service-networking
+    expected_behavior: "infer internal service networking investigation from a terse network issue prompt without intake questions"
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
   - prompt: "Roll the database migration out safely while also adding checks that block future incompatible schema changes."
     expected_primary: database-operations
     expected_secondary: testing-and-quality-gates
@@ -485,22 +480,22 @@ cases:
     expected_gates: [single_primary, secondary_cap, intent_inference]
   - prompt: "Launch the new checkout service after we finish threat modeling, load testing, dashboards, rollback, and on-call docs."
     expected_primary: production-readiness-review
-    expected_behavior: "use readiness review as the aggregator because launch readiness is the requested artifact"
+    expected_behavior: "use readiness decision as the aggregator because launch readiness is the requested artifact"
     category: mixed_intent
     expected_gates: [single_primary, secondary_cap, intent_inference]
   - prompt: "Write a marketing launch plan for the new checkout feature."
     expected_primary: none
-    expected_behavior: "reframe as out of scope; ask whether the user wants engineering release controls"
+    expected_behavior: "decline out-of-scope marketing work without asking intake questions or naming specialists"
     category: out_of_scope
-    expected_gates: [scope_check, ambiguity_check]
+    expected_gates: [scope_check]
     forbidden_in_response: [all_specialist_names]
   - prompt: "How much should we pay engineers for being on call?"
     expected_primary: none
-    expected_behavior: "reframe as out of scope; ask whether the goal is technical page or toil reduction"
+    expected_behavior: "decline out-of-scope compensation work without asking intake questions or naming specialists"
     category: out_of_scope
-    expected_gates: [scope_check, ambiguity_check]
+    expected_gates: [scope_check]
     forbidden_in_response: [all_specialist_names]
-  - prompt: "Review this AI-generated diff and tell me what a senior pre-merge pass would catch before we merge it."
+  - prompt: "Inspect this AI-generated diff and tell me what a senior pre-merge pass would catch before we merge it."
     expected_primary: agent-pr-review
     expected_behavior: "route per-diff senior pre-merge review of agent output to agent PR review"
     category: direct
@@ -535,14 +530,14 @@ cases:
     expected_behavior: "route LLM cost attribution and prompt/response cache design to LLM serving cost and latency instead of generic FinOps"
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Audit this repo's module boundaries, names, and file sizes so an AI agent can locate the canonical implementation in one tool call."
+  - prompt: "Map this repo's module boundaries, names, and file sizes so an AI agent can locate the canonical implementation in one tool call."
     expected_primary: code-readability-for-agents
-    expected_behavior: "route repo-as-artifact legibility audit for AI comprehension to code readability for agents"
+    expected_behavior: "route repo-as-artifact legibility mapping for AI comprehension to code readability for agents"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Find names in this codebase that collide or mislead code search and propose renames an agent can rely on."
     expected_primary: code-readability-for-agents
-    expected_behavior: "route name-collision and code-search-misleading audits to code readability for agents instead of architecture review"
+    expected_behavior: "route name-collision and code-search-misleading checks to code readability for agents instead of architecture decisions"
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
   - prompt: "Inventory the fixtures this suite depends on, prove the anonymization policy holds, and define when each fixture must refresh."
@@ -575,17 +570,17 @@ cases:
     expected_behavior: "route runtime config drift with automation rollback controls to configuration safety"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Run a production-readiness review for this migration PR and identify launch blockers before we move traffic tomorrow."
+  - prompt: "Build a production-readiness decision for this migration PR and identify launch blockers before we move traffic tomorrow."
     expected_primary: production-readiness-review
-    expected_behavior: "route explicit readiness review before traffic movement to PRR instead of rollout sequencing"
+    expected_behavior: "route explicit readiness decision before traffic movement to PRR instead of rollout sequencing"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Review this dependency update and lockfile sweep for migration, hygiene, and rollback risks."
+  - prompt: "Inspect this dependency update and lockfile sweep for migration, hygiene, and rollback risks."
     expected_primary: dependency-and-code-hygiene
     expected_behavior: "route dependency update and lockfile sweep to dependency hygiene instead of generic PR review"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Review these on-call suppression rules and prove we are reducing page noise without hiding real user impact."
+  - prompt: "Inspect these on-call suppression rules and prove we are reducing page noise without hiding real user impact."
     expected_primary: oncall-health
     expected_behavior: "route suppression rules and page-noise reduction to oncall health instead of observability design"
     category: direct
@@ -612,7 +607,7 @@ cases:
     expected_gates: [single_primary, intent_inference]
   - prompt: "Define ML model-serving promotion evidence for this endpoint, including eval thresholds, training-serving skew, drift, rollback, tests, metrics, and deploy workflow."
     expected_primary: ml-reliability-and-evaluation
-    expected_behavior: "route ML model-serving promotion evidence to ML reliability instead of generic readiness review"
+    expected_behavior: "route ML model-serving promotion evidence to ML reliability instead of generic readiness aggregation"
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Inspect internal service-to-service routing config and keep this private dependency's traffic local when possible."

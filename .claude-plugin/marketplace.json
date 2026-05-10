@@ -1,13 +1,13 @@
 {
   "name": "staff-engineer-mode",
-  "description": "Senior engineering review pack for Claude Code. Routes design, delivery, reliability, security, API, data, and platform requests to specialist skills, then returns practical review artifacts: rollback plan, blast-radius summary, owner gaps, and backwards-compatibility risks.",
+  "description": "Staff-engineering decision guidance for Claude Code. Routes design, development, testing, release, operations, reliability, security, API, data, and platform work to specialist skills.",
   "owner": {
     "name": "sirmarkz"
   },
   "plugins": [
     {
       "name": "staff-engineer-mode",
-      "description": "Senior engineering review pack for Claude Code. Routes design, delivery, reliability, security, API, data, and platform requests to specialist skills, then returns practical review artifacts: rollback plan, blast-radius summary, owner gaps, and backwards-compatibility risks.",
+      "description": "Staff-engineering decision guidance for Claude Code. Routes design, development, testing, release, operations, reliability, security, API, data, and platform work to specialist skills.",
       "version": "1.1.0",
       "source": "./",
       "author": {

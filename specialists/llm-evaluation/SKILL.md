@@ -30,7 +30,7 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 
 - The main risk is prompt injection, tool misuse, data leakage, or unsafe actions; use `llm-application-security` instead.
 - The main work is classical ML drift, training-serving skew, or model-serving readiness; use `ml-reliability-and-evaluation` instead.
-- The request is broad AI coding-agent governance; use `ai-coding-governance` instead.
+- The request is broad AI coding-agent controls; use `ai-coding-governance` instead.
 - The request is product strategy for which model to choose with no engineering gate.
 
 ## Inputs To Collect
@@ -38,7 +38,7 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 - Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Workflow, user tasks, expected outputs, unacceptable failures, and release decision to support.
 - Eval cases, production examples, synthetic cases, edge cases, slices, and known regressions.
-- Scoring method, graders, rubrics, deterministic checks, human review, and tie-break rules.
+- Scoring method, graders, rubrics, deterministic checks, human judgment, and tie-break rules.
 - Thresholds, confidence needs, flake rate, baseline result, and comparison target.
 - Versioned prompts, models, retrieval inputs, tools, datasets, and harness code.
 - Failure triage workflow, severity, waiver rules, and re-run policy.
@@ -47,7 +47,7 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 
 1. **Name the decision.** State whether the eval gates merge, release, prompt change, model change, or rollback.
 2. **Build representative cases.** Include production-like tasks, edge cases, regressions, adversarial examples, and important user slices.
-3. **Separate scoring types.** Use exact checks for structured requirements, rubric scoring for judgment, and human review for ambiguous high-impact cases.
+3. **Separate scoring types.** Use exact checks for structured requirements, rubric scoring for judgment, and human judgment for ambiguous high-impact cases.
 4. **Control grader risk.** Define rubrics, blind comparisons where useful, calibration cases, and checks for scoring drift.
 5. **Set thresholds first.** Declare pass, warn, and block criteria before looking at the new result.
 6. **Version inputs.** Link prompts, model, retrieval corpus, tool policy, eval cases, graders, and harness code to the result.
@@ -68,13 +68,13 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Early prototypes may use exploratory evals if they are not release gates.
-- Human review can supplement automated scoring for high-impact or ambiguous tasks, but should use a written rubric.
+- Human judgment can supplement automated scoring for high-impact or ambiguous tasks, but should use a written rubric.
 - Low-risk copy changes may use a narrow regression set if output constraints and affected journeys are limited.
 
 ## Response Quality Bar
@@ -84,7 +84,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 - Make recommendations actionable with dataset changes, grader rules, pass/fail criteria, and rerun policy where relevant.
 - State required evidence such as eval cases, baseline runs, grader rubric, flake rate, slice results, versioned inputs, and failure log; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside model-backed evaluation gates. Route security, ML serving, or AI coding governance only when those risks dominate.
+- Stay inside model-backed evaluation gates. Route security, ML serving, or AI coding controls only when those risks dominate.
 - Be concise: prefer eval matrices and release gates over generic eval theory.
 
 ## Required Outputs
@@ -109,7 +109,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 
 - A single aggregate score hides critical slice regressions.
 - The grader rubric changes between baseline and candidate.
-- Eval cases are generated from the same prompt being tested with no review.
+- Eval cases are generated from the same prompt being tested with no independent check.
 - Failures are waived without reason, and expiry.
 - Production incidents do not become regression cases.
 

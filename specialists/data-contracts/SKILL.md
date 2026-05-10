@@ -23,7 +23,7 @@ Data contracts let projects change independently without guessing what consumers
 
 ## When To Use
 
-- The user asks about data contracts, schemas, domain interfaces, producer/consumer compatibility, schema governance, or contract testing across projects.
+- The user asks about data contracts, schemas, domain interfaces, producer/consumer compatibility, schema evolution rules, or contract testing across projects.
 - A field, event, dataset, file, stream, or service output is consumed outside the responsible component.
 - Producers and consumers deploy independently or interpret the same data differently.
 - Data meaning, compatibility, responsibility, or evolution rules are unclear.
@@ -42,7 +42,7 @@ Data contracts let projects change independently without guessing what consumers
 - Contract format, schema location, versioning policy, compatibility modes, and deprecation rules.
 - Required, optional, nullable, defaulted, derived, sensitive, and deprecated fields.
 - Consumer tests, sample payloads, production usage, validation failures, and unknown consumers.
-- Change workflow, review gates, migration windows, and rollback or dual-publish needs.
+- Change workflow, compatibility gates, migration windows, and rollback or dual-publish needs.
 
 ## Workflow
 
@@ -69,28 +69,28 @@ Use maintained, versioned, machine-checkable contracts for shared data boundarie
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Single-component data can use lighter contracts if no independent consumers exist.
-- Emergency corrections may break compatibility when wrong data is more dangerous, but need consumer impact review and repair plan.
+- Emergency corrections may break compatibility when wrong data is more dangerous, but need consumer impact analysis and repair plan.
 - Exploratory data products can start advisory, then harden before production consumers depend on them.
 
 ## Response Quality Bar
 
-- Lead with the contract review, compatibility decision, schema evolution plan, or consumer migration requested.
-- Cover consumers, semantics, compatibility class, validation, consumer tests, telemetry, and deprecation gates before optional governance detail.
+- Lead with the contract decision, compatibility decision, schema evolution plan, or consumer migration requested.
+- Cover consumers, semantics, compatibility class, validation, consumer tests, telemetry, and deprecation gates before optional registry detail.
 - Make recommendations actionable with compatibility matrix, change gates, migration batches, and removal criteria where relevant.
 - State required evidence such as consumer inventory, schema history, sample payloads, validation output, usage telemetry, and migration status; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside shared data interfaces. Use API, workflow, or pipeline skills only when that surface is the unresolved risk.
-- Be concise: prefer compact contract and compatibility matrices over generic governance prose.
+- Be concise: prefer compact contract and compatibility matrices over generic process prose.
 
 ## Required Outputs
 
-- Data contract review with producers, consumers, and domain meaning.
+- Data contract decision with producers, consumers, and domain meaning.
 - Compatibility matrix for fields, semantics, timing, quality, and versioning.
 - Validation and consumer-test plan.
 - Deprecation and migration plan with telemetry and removal gates.

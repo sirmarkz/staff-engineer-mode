@@ -8,10 +8,10 @@ description: "Use when features need threat models, trust boundaries, abuse case
 ## Iron Law
 
 ```
-NO SECURITY REVIEW WITHOUT TRUST BOUNDARIES, DATA FLOWS, THREATS, CONTROLS, AND TESTS
+NO SECURE DESIGN DECISION WITHOUT TRUST BOUNDARIES, DATA FLOWS, THREATS, CONTROLS, AND TESTS
 ```
 
-If threats do not map to controls and verification, the review is not actionable.
+If threats do not map to controls and verification, the decision is not actionable.
 
 ## Overview
 
@@ -21,7 +21,7 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 
 ## When To Use
 
-- The user asks for threat modeling, secure design, abuse cases, secure SDLC, input validation, authorization review, or application security requirements.
+- The user asks for threat modeling, secure design, abuse cases, secure SDLC, input validation, authorization decisions, or application security requirements.
 - A change crosses trust boundaries, handles sensitive data, exposes an interface, adds privileged operations, or changes operational access.
 - A design needs security acceptance criteria before implementation or launch.
 - The user asks what attackers can abuse or what controls must exist.
@@ -40,7 +40,7 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 - Data classification, sensitive fields, privacy constraints, logging/telemetry handling, and retention.
 - Entry points, APIs, background jobs, admin paths, operational access, and third-party integrations.
 - Abuse cases, attacker goals, known vulnerability classes, dependency assumptions, and misuse paths.
-- Existing controls, tests, self-review gates, scanning results, incidents, and residual risks.
+- Existing controls, tests, self-check gates, scanning results, incidents, and residual risks.
 
 ## Workflow
 
@@ -49,13 +49,13 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 3. **List abuse cases.** Write what an attacker or malicious/buggy client tries to accomplish, not only what component might fail.
 4. **Apply a threat frame.** Use spoofing, tampering, repudiation, disclosure, denial, privilege elevation, or equivalent categories to avoid blind spots.
 5. **Map controls.** Assign authentication, authorization, validation, output handling, rate limits, audit, secrets handling, encryption, and isolation controls.
-6. **Make controls testable.** Define unit/integration/security tests, self-review gates, runtime monitors, or operational evidence for each high-risk control.
+6. **Make controls testable.** Define unit/integration/security tests, self-check gates, runtime monitors, or operational evidence for each high-risk control.
 7. **Record residual risk.** State compensating control, expiry, acceptance condition, and explicit user risk acceptance.
 8. **Route specialized surfaces.** Identity/secrets, supply chain, LLM, tenant isolation, and vulnerability remediation go to their specialist skills when central.
 
 ## Synthesized Default
 
-Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, abuse cases, control mapping, test plan, and residual-risk register. Prefer controls that are enforced in code, configuration, self-review gates, runtime evidence, or deployment checks over prose-only policy.
+Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, abuse cases, control mapping, test plan, and residual-risk register. Prefer controls that are enforced in code, configuration, self-check gates, runtime evidence, or deployment checks over prose-only rules.
 
 
 
@@ -67,21 +67,21 @@ Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, a
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Low-risk internal changes can use a small abuse-case checklist if no trust boundary, data sensitivity, or privileged operation changes.
 - High-risk financial, privacy, safety, or admin paths need deeper evidence and explicit user risk acceptance.
-- Emergency fixes may document the minimal threat review first and complete residual-risk review immediately after mitigation.
+- Emergency fixes may document the minimal threat decision first and complete residual-risk mapping immediately after mitigation.
 - Legal/compliance requirements can constrain controls, but this skill remains focused on engineering implementation and evidence.
 
 ## Response Quality Bar
 
 - Lead with the threat-model decision, abuse-case table, control gap, or residual-risk register requested.
 - Cover trust boundaries, actors, data flows, privileged paths, abuse cases, control mapping, verification, and residual responsibility before optional security breadth.
-- Make recommendations actionable with control points, tests or self-review gates, stop criteria, compensating controls, and expiry where relevant.
+- Make recommendations actionable with control points, tests or self-check gates, stop criteria, compensating controls, and expiry where relevant.
 - State required evidence such as architecture/data-flow diagrams, auth paths, sensitive data stores, logs, deployment gates, security tests, and runtime checks; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside secure design and threat modeling. Use identity, supply-chain, tenant, LLM, or vulnerability skills only when the prompt makes that specialist surface central.
@@ -94,14 +94,14 @@ Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, a
 - Security requirements and control mapping.
 - Verification plan for controls.
 - Residual-risk register with explicit user acceptance and expiry.
-- Sensitive-data and logging review.
+- Sensitive-data and logging decision.
 - Follow-up checks for identity, supply-chain, tenant, LLM, or vulnerability work.
 
 ## Evidence Gates
 
 - `boundary_check`: actors, trust boundaries, data flows, and privileged paths are explicit.
 - `threat_coverage`: high-risk abuse cases map to controls.
-- `verification_check`: every high-risk control has a test, self-review gate, runtime check, or evidence source.
+- `verification_check`: every high-risk control has a test, self-check gate, runtime check, or evidence source.
 - `data_handling`: sensitive data storage, transmission, logging, and retention behavior is addressed.
 - `risk_responsibility`: residual risks have explicit user acceptance, expiry, and compensating control.
 
@@ -118,6 +118,6 @@ Use lightweight threat modeling tied to secure SDLC gates: trust-boundary map, a
 | Mistake | Correction |
 | --- | --- |
 | Starting from checklists | Start from trust boundaries and abuse cases. |
-| Treating security as final review | Add controls to requirements, code, tests, release, and operations. |
+| Treating security as a final checkpoint | Add controls to requirements, code, tests, release, and operations. |
 | Focusing only on external attackers | Include insider, compromised credential, confused deputy, and abusive tenant paths. |
 | Leaving controls as prose | Tie controls to tests, gates, or evidence. |

@@ -11,7 +11,7 @@ ROUTER_EVAL_FILES = [
     ROOT / "skills" / "staff-engineer-mode" / "references" / "router-phase-eval-set.yaml",
 ]
 REQUIRED_KEYS = {"prompt", "expected_primary", "expected_behavior", "category"}
-REQUIRED_CATEGORIES = {"direct", "paraphrase", "ambiguous", "mixed_intent", "out_of_scope"}
+REQUIRED_CATEGORIES = {"direct", "paraphrase", "mixed_intent", "out_of_scope"}
 REQUIRED_GATE_KEY = "expected_gates"
 FORBIDDEN_KEY = "forbidden_in_response"
 ALLOWED_GATES = {
@@ -128,7 +128,7 @@ def validate_common_cases(cases: list[dict[str, Any]], path: Path) -> tuple[set[
             fail(f"{path} case {index} has unknown expected_secondary {case['expected_secondary']!r}")
         if case["expected_primary"] == "staff-engineer-mode" and "without naming specialists" not in case["expected_behavior"]:
             fail(
-                f"{path} ambiguous case {index} must expect clarification questions without naming specialists"
+                f"{path} no-route case {index} must withhold routing without naming specialists"
             )
         gates = case.get(REQUIRED_GATE_KEY)
         if not isinstance(gates, list) or not gates:
@@ -170,8 +170,6 @@ def validate_main_fixture(cases: list[dict[str, Any]], path: Path) -> None:
         fail(f"{path} missing categories: {sorted(missing_categories)}")
     if "none" not in primaries:
         fail(f"{path} out-of-scope fixture must include expected_primary: none")
-    if "staff-engineer-mode" not in primaries:
-        fail(f"{path} ambiguous fixture must include router fallback cases")
     if secondary_cases < MIN_SECONDARY_CASES:
         fail(f"{path} expected at least {MIN_SECONDARY_CASES} expected_secondary cases, found {secondary_cases}")
 

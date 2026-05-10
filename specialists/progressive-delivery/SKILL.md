@@ -52,12 +52,12 @@ Produces a staged rollout plan with named blast radius per stage, predeclared ca
 3. **Promote one artifact.** Build once and promote the same artifact or immutable change set through stages.
 4. **Define compatibility.** Ensure old and new versions can coexist across clients, services, data, and messages during rollout.
 5. **Stage stateful changes.** Keep reader/writer compatibility across at least one-version skew; use expand/contract, dual-read/dual-write, delayed cleanup, and explicit schema/data ordering when state is involved.
-6. **Choose canary gates.** Select metrics before release. Include user-visible symptoms and correctness, not only process health. Scope each metric to the canary slice itself — fleet-aggregate metrics dilute the signal into the size of the unchanged deployment, so canary regression vanishes long before it crosses a fleet-wide threshold. Each gate needs a baseline window, minimum observation window, bake time, and enough exposed traffic or an alternate signal such as synthetic probes, extended bake time, or manual verification.
+6. **Choose canary gates.** Select metrics before release. Include user-visible symptoms and correctness, not only internal health. Scope each metric to the canary slice itself — fleet-aggregate metrics dilute the signal into the size of the unchanged deployment, so canary regression vanishes long before it crosses a fleet-wide threshold. Each gate needs a baseline window, minimum observation window, bake time, and enough exposed traffic or an alternate signal such as synthetic probes, extended bake time, or manual verification.
 7. **Gate each exposure step.** Start with a tiny production slice when possible, then move through rings, cohorts, partitions, stamps, deployment units, or locations only after health evidence says the previous step is safe. Within an ordinary rolling deployment, keep at least two-thirds of serving capacity healthy at all times unless an explicit capacity model proves a different threshold is safe; faster simultaneous replacement narrows surge headroom and risks turning the deployment itself into the saturation event.
 8. **Set stop and rollback rules.** Define thresholds, who can halt, and how rollback works. Pre-classify rollback safety per change: it is safe when the change is stateless, flag-gated, purely additive, or recently deployed with minimal state divergence; it is dangerous when a schema migration has run, a data format changed and new data is being written, external clients depend on the new contract, a stateful workflow is in flight, or a cache holds data in the new format. Choose forward-fix when rollback would cause more damage than the current impact, the fix is small and quickly deployable, or impact is confined to an isolatable subset. If user impact is active, route incident command to `incident-response-and-postmortems` while keeping rollback mechanics traceable here.
 9. **Handle forward-fix-only surfaces.** If rollback is structurally impossible, require a server-side kill switch or disable path, staged adoption metric, hotfix lane, and explicit user confirmation before first exposure.
 10. **Handle non-code changes as first class.** Validate config, stage flags, throttle migrations, and delay destructive cleanup.
-11. **Keep emergency flow familiar.** Hotfixes may move faster, but should use the same artifact identity, review, health gates, and traceable branch/change workflow where practical.
+11. **Keep emergency flow familiar.** Hotfixes may move faster, but should use the same artifact identity, health gates, and traceable branch/change workflow where practical.
 12. **Close the loop.** Record rollout evidence, remove temporary flags/paths, and update standards if the rollout found a new class of risk.
 
 ## Synthesized Default
@@ -74,7 +74,7 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -83,7 +83,7 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 - Some destructive data changes cannot be rolled back; they require backup/restore evidence, delayed cleanup, and forward-fix criteria.
 - Low-risk internal changes may use lighter gates if blast radius and user risk acceptance are explicit.
 - Client releases with slow adoption may require forward-fix and kill-switch strategy rather than true rollback.
-- Temporary experiment flags should expire within about 90 days by default; long-lived operational kill switches need a review cadence, and removal or renewal decision.
+- Temporary experiment flags should expire within about 90 days by default; long-lived operational kill switches need a renewal cadence and removal or renewal decision.
 
 ## Response Quality Bar
 
@@ -120,7 +120,7 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 - Canary metrics are picked after the rollout begins.
 - One rollout stage can affect multiple independent fault domains before prior stages bake.
 - Feature flags have no removal plan.
-- Configuration changes bypass review or staged rollout.
+- Configuration changes bypass validation or staged rollout.
 - Destructive cleanup happens in the same step as first exposure.
 
 ## Common Mistakes

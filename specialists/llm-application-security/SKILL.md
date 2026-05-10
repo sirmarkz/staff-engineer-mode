@@ -21,6 +21,7 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 
 ## When To Use
 
+- The user is designing or building LLM prompt, retrieval, tool, output, action, or data flows that cross security boundaries.
 - The user asks about prompt injection, tool permissions, retrieval boundaries, insecure output handling, sensitive prompt/response handling, agent actions, model/prompt/retrieval supply chain, emergency stop, or LLM eval security gates.
 - An LLM can retrieve private data, call tools, write files, send messages, execute actions, or influence decisions.
 - The system mixes instructions, user input, retrieved content, and tool output.
@@ -28,11 +29,11 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 
 ## When Not To Use
 
-- The request is broad AI governance, model strategy, or ethics policy outside engineering controls.
+- The request is broad AI strategy, model strategy, or ethics work outside engineering controls.
 - The work is classical ML evaluation or drift; use `ml-reliability-and-evaluation` instead.
 - The request is general application threat modeling without LLM-specific boundaries; use `secure-sdlc-and-threat-modeling` instead.
 - The issue is generic artifact provenance with no model/prompt/tool supply chain concern; use `software-supply-chain-security` instead.
-- The main work is personal-data lifecycle, retention, deletion, export, or prompt/response storage governance; use `privacy-and-data-lifecycle` instead unless LLM prompt, retrieval, tool, or output boundaries dominate.
+- The main work is personal-data lifecycle, retention, deletion, export, or prompt/response storage controls; use `privacy-and-data-lifecycle` instead unless LLM prompt, retrieval, tool, or output boundaries dominate.
 - The main work is tenant boundary enforcement outside LLM retrieval/session context; use `tenant-isolation` instead.
 - The main work is generic source, build, artifact, or model provenance with no prompt, tool, retrieval, or dataset workflow boundary; use `software-supply-chain-security` instead.
 - The main work is rollout, rollback, staged exposure, or release sequencing for a model-backed change; use `progressive-delivery` instead unless the emergency stop is an LLM-specific control gap.
@@ -80,7 +81,7 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -89,12 +90,12 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 - Human confirmation can mitigate high-impact actions, but confirmation UI must show trustworthy context and not model-manipulated summaries only.
 - Some logs must be minimized or redacted for privacy; keep enough traceability to investigate unsafe actions.
 - Classifiers or model judges can help detect attacks, but they are defense in depth and must not be the only enforcement boundary.
-- Broad AI policy questions are out of scope unless tied to deployable engineering controls.
+- Broad AI strategy questions are out of scope unless tied to deployable engineering controls.
 
 ## Response Quality Bar
 
 - Lead with the LLM threat model, tool-permission decision, eval gate, or blocker list requested.
-- For short design-review or pre-launch answers, include a compact release-gate list: prompt-injection mitigation plus verification; tool inventory plus per-tool authorization; sink-specific output validation before execution, querying, rendering, messaging, or downstream prompting; sensitive-info controls plus monitoring; adversarial abuse cases with pass/fail criteria; and audit logs for model invocations, tool calls, denials, user confirmations, and retention.
+- For short design or pre-launch answers, include a compact release-gate list: prompt-injection mitigation plus verification; tool inventory plus per-tool authorization; sink-specific output validation before execution, querying, rendering, messaging, or downstream prompting; sensitive-info controls plus monitoring; adversarial abuse cases with pass/fail criteria; and audit logs for model invocations, tool calls, denials, user confirmations, and retention.
 - Cover prompt/retrieval/tool/output boundaries, least privilege, tenant/data isolation, input and output validation, unsafe-action controls, sensitive-data handling, adversarial evals, logging, emergency rollback, and supply-chain records before optional AI-security breadth.
 - Make recommendations actionable with permission scopes, deterministic control points, eval cases, confirmation gates, stop criteria, and regression checks where relevant.
 - State required evidence such as retrieval IDs, tool scopes, action sinks, prompt versions, model versions, eval results, audit logs, and redaction rules; do not claim unseen evidence.
@@ -132,7 +133,7 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 - Retrieved documents can override system instructions.
 - The model can call broad tools with production privileges.
 - Model output is executed, queried, rendered, or sent without validation.
-- User input can include unbounded content, hidden instructions, unreviewed links, or unchecked files.
+- User input can include unbounded content, hidden instructions, unchecked links, or unchecked files.
 - Prompts and responses are stored broadly or exposed to human roles without purpose, retention, and access controls.
 - Prompt templates, retrieval corpora, indexes, tool permissions, or model configuration cannot be rolled back independently.
 - Shared conversation or retrieval state can leak between users, tenants, or requests.
@@ -145,7 +146,7 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 | --- | --- |
 | Trusting the model to follow policy | Enforce policy in deterministic application controls. |
 | Permission-checking after retrieval only | Check before retrieval and before action/use. |
-| Treating prompts as config only | Version and review prompts as behavior-changing artifacts. |
+| Treating prompts as config only | Version prompts as behavior-changing artifacts with release evidence. |
 | Treating guardrails as guarantees | Combine model-facing mitigations with deterministic application enforcement. |
 | Ignoring prompt storage | Prompts and responses need classification, retention, access, and audit controls. |
 | Evaluating model, not workflow | Test tool use, retrieval, output sinks, and confirmation paths. |

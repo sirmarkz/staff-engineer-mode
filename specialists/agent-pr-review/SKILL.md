@@ -31,7 +31,7 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 
 - The work is pre-design: there is no diff yet; use `architecture-decisions` or `secure-sdlc-and-threat-modeling` instead.
 - A live incident is underway; use `incident-response-and-postmortems` instead first.
-- The request is org-level policy for AI-assisted work, not a single diff; use `ai-coding-governance` instead.
+- The request is org-level rules for AI-assisted work, not a single diff; use `ai-coding-governance` instead.
 - The request is review routing, change-size policy, responsibility policy, or DORA workflow metrics — i.e. how review works, not the review itself; use `code-review-and-workflow` instead.
 - The request is launch readiness across multiple surfaces with an explicit launch event; use `production-readiness-review` instead.
 - The diff is one trivial fix the human author can self-review without a structured pass.
@@ -76,7 +76,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 - Testing: evaluate tests and failure evidence attached to an existing diff; route test strategy before code exists to the testing specialist.
 - Release: evaluate pre-merge release, rollout, and rollback evidence attached to the diff.
 - Maintenance: use only when a maintenance change has owners, drift context, and a concrete diff, branch, PR, or change set.
-- Review: evaluate an existing diff, branch, PR, or change set against the originating task as one mode.
+- Existing artifact: evaluate an existing diff, branch, PR, or change set as evidence for the pre-merge engineering decision; do not use this skill without the concrete change artifact.
 - Missing evidence: ask for the diff, task, assumptions, and test evidence; produce an evidence plan and do not invent findings against unseen code.
 
 ## Exceptions

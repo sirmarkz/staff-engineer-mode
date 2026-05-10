@@ -54,7 +54,7 @@ Cost is an operational signal, but reliability headroom is not waste by default.
 6. **Model commitment risk.** For committed capacity or discounts, state forecast confidence, lock-in window, unused commitment risk, exit path, and what reliability headroom is protected.
 7. **Model tradeoffs.** State expected savings, reliability impact, security/operations side effects, blast radius, rollback, and monitoring.
 8. **Add guardrails.** Alert on cost regressions, unit-cost anomalies, and reliability signals after changes.
-9. **Review continuously.** Treat cost anomalies like operational regressions with post-change verification.
+9. **Check continuously.** Treat cost anomalies like operational regressions with post-change verification.
 
 ## Synthesized Default
 
@@ -70,7 +70,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -84,7 +84,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 ## Response Quality Bar
 
 - Lead with the unit-cost model, cost driver, reliability tradeoff, optimization plan, or anomaly diagnosis requested.
-- Cover allocation, unit metrics, driver separation, SLO/headroom preservation, failure-condition capacity, rollback, anomaly monitoring, and review cadence before optional FinOps breadth.
+- Cover allocation, unit metrics, driver separation, SLO/headroom preservation, failure-condition capacity, rollback, anomaly monitoring, and refresh cadence before optional FinOps breadth.
 - Make recommendations actionable with metrics, savings ranges, risk acceptance, stop criteria, rollback steps, and post-change checks where relevant.
 - State required evidence such as spend by usage units, traffic, capacity headroom, SLOs, peak/failure demand, deploy markers, anomaly timeline, and retry/abuse signals; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
@@ -100,7 +100,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 - Optimization plan with savings estimate, risk, and rollback.
 - Commitment-risk record for reserved, prepaid, interruptible, or long-window capacity decisions.
 - Cost anomaly and unit-regression dashboard requirements.
-- Review cadence for cost signals.
+- Refresh cadence for cost signals.
 - Follow-up routes to capacity, edge defense, platform, or data skills as needed.
 
 ## Evidence Gates

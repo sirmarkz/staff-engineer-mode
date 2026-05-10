@@ -40,7 +40,7 @@ Removing or replacing a widely used system is a production change spread across 
 - Static references, runtime calls, traffic, tenants, clients, jobs, dashboards, alerts, docs, and third-party dependents.
 - Migration path, compatibility layer, dual-read/write needs, validation checks, and rollback/escape hatch.
 - Advisory versus compulsory policy, enforcement gates, exception process, and communication channel.
-- Backsliding prevention: build rules, lint/static checks, visibility controls, review warnings, templates, and docs.
+- Backsliding prevention: build rules, lint/static checks, visibility controls, change-time warnings, templates, and docs.
 - Disable and removal checklist: feature gates, traffic cutoffs, dark traffic, jobs, support tools, snapshots/exports, code, config, data, credentials, alerts, dashboards, runbooks, costs, and access paths.
 
 ## Workflow
@@ -50,8 +50,8 @@ Removing or replacing a widely used system is a production change spread across 
 3. **Classify dependents.** Separate easy mechanical users, risky dynamic users, abandoned critical paths, and external clients.
 4. **Choose migration mode.** Use advisory deprecation for low-risk nudges; use compulsory deadlines when responsibility and enforcement exist.
 5. **Provide paved migration.** Supply examples, compatibility shims, codemods, validation commands, and rollback/escape hatches.
-6. **Prevent backsliding.** Block or warn on new usage through review-time checks, build visibility, templates, docs, and policy gates.
-7. **Migrate incrementally.** Move dependents in batches small enough to review, test, and roll back; track progress with objective metrics.
+6. **Prevent backsliding.** Block or warn on new usage through change-time checks, build visibility, templates, docs, and policy gates.
+7. **Migrate incrementally.** Move dependents in batches small enough to understand, test, and roll back; track progress with objective metrics.
 8. **Disable before delete.** Stop or quarantine old runtime paths, watch for at least one representative business cycle, check dark traffic, jobs, support tools, and alerts, and keep an escape hatch until silence is proven.
 9. **Retire completely.** Remove runtime paths, data, config, credentials, dashboards, alerts, runbooks, docs, and cost artifacts after usage reaches the removal gate; preserve required snapshots/exports with retention, and disposal date.
 
@@ -69,12 +69,12 @@ Treat deprecation as an engineered migration, not an announcement. Use centraliz
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
-- Emergency removal may skip normal windows when security or data-loss risk dominates, but needs explicit impact review and repair plan.
+- Emergency removal may skip normal windows when security or data-loss risk dominates, but needs explicit impact analysis and repair plan.
 - External public clients may require longer overlap, stronger telemetry, and contractual support windows.
 - Advisory deprecation is acceptable for low-risk cleanup when maintenance cost is small and no deadline is required.
 - Abandoned dependents may require a user decision, compatibility shim, or replacement before removal.
@@ -104,7 +104,7 @@ Treat deprecation as an engineered migration, not an announcement. Use centraliz
 
 - `usage_inventory`: static and runtime usage are measured, or blind spots are named.
 - `replacement_ready`: replacement path is documented, supported, and validated for representative dependents.
-- `migration_batches`: dependents are grouped into maintained, reviewable, reversible batches.
+- `migration_batches`: dependents are grouped into maintained, traceable, reversible batches.
 - `backsliding_control`: new usage is blocked, warned, or explicitly exception-gated.
 - `retirement_check`: disable-before-delete, watch-window, code, config, data, credentials, alerts, runbooks, docs, and cost artifacts are removed or retained with an explicit reason.
 

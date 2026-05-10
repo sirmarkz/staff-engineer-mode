@@ -22,7 +22,7 @@ See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for prompts across every specialist.
 
 ## Compared To Alternatives
 
-> *agency-agents adds roles. Superpowers adds methodology. Staff Engineer Mode adds a senior reviewer.*
+> *agency-agents adds roles. Superpowers adds methodology. Staff Engineer Mode adds lifecycle engineering judgment.*
 
 The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these replace each other. Compose freely.
 

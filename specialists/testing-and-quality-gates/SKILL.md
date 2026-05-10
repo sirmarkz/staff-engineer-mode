@@ -53,10 +53,10 @@ Quality gates should catch real risk early without turning delivery into ritual.
 7. **Handle flakes ruthlessly.** A flaky blocker teaches people to ignore gates. Fix, quarantine, or downgrade with a dated expiry.
 8. **Use ratchets for legacy.** Prevent new critical findings and gradually reduce existing debt rather than requiring impossible cleanup.
 9. **Place high-assurance tests deliberately.** Bounded property tests on pure logic and ordinary fuzzing can live in this skill; concurrency/protocol invariants, model checking, deterministic simulation, and counterexample-driven proof route to formal validation.
-10. **Choose test data safely.** Use synthetic data for pre-merge by default, anonymized or captured production-like data in controlled release stages, and explicit privacy review for sensitive fixtures.
+10. **Choose test data safely.** Use synthetic data for pre-merge by default, anonymized or captured production-like data in controlled release stages, and explicit privacy checks for sensitive fixtures.
 11. **Use mutation testing selectively.** Apply it to safety, security, financial, or dense branch logic where coverage percentage is misleading; do not make it a universal gate.
-12. **Keep style mechanical.** Formatting and simple style should be automated, not debated in review.
-13. **Verify the strategy.** Confirm each critical risk has a gate, test, review artifact, or explicit exception.
+12. **Keep style mechanical.** Formatting and simple style should be automated, not debated manually.
+13. **Verify the strategy.** Confirm each critical risk has a gate, test, check artifact, or explicit exception.
 
 ## Synthesized Default
 
@@ -72,14 +72,14 @@ Use a risk-based test strategy with fast deterministic pre-merge gates, focused 
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Legacy systems may use non-regression ratchets before enforcing absolute thresholds.
 - Flaky tests should not block until fixed or quarantined with clear responsibility.
-- Safety-critical, financial, security-sensitive, or data-destructive paths may require deeper verification, formal review, or simulation.
+- Safety-critical, financial, security-sensitive, or data-destructive paths may require deeper verification, formal methods, or simulation.
 - Generated or third-party code may use contract and integration checks instead of unit-level responsibility.
 
 ## Response Quality Bar
@@ -108,7 +108,7 @@ Use a risk-based test strategy with fast deterministic pre-merge gates, focused 
 
 ## Evidence Gates
 
-- `risk_mapping`: every critical risk maps to a test, check, review artifact, or explicit exception.
+- `risk_mapping`: every critical risk maps to a test, check artifact, or explicit exception.
 - `gate_signal`: every blocking gate has high signal, and failure response.
 - `flake_policy`: flaky checks have fix, quarantine, downgrade, or expiry decision.
 - `stage_fit`: each gate runs at the earliest stage where it can prove the intended property.

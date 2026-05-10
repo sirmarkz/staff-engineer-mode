@@ -24,7 +24,7 @@ Resilience experiments test whether the system behaves the way the design claims
 - The user asks for a chaos experiment, game day, failover drill, disaster role play, fault injection, or resilience test plan.
 - You want evidence that retry, failover, overload, backup, or dependency-failure behavior works.
 - You need to exercise location, partition, deployment-unit, traffic-shift, startup, or recovery behavior before relying on it.
-- A production-readiness review needs controlled failure validation.
+- A launch readiness decision needs controlled failure validation.
 - Incident follow-up requires proving that a class of failure is now handled.
 
 ## When Not To Use
@@ -59,7 +59,7 @@ Resilience experiments test whether the system behaves the way the design claims
 
 ## Synthesized Default
 
-Use hypothesis-driven experiments that begin small, verify user-visible steady state, and expand only after evidence supports the previous scope. Treat shift-left experiments, shift-right production drills, and game days as engineering validation, not training theater.
+Use hypothesis-driven experiments that begin small, verify user-visible steady state, and expand only after evidence supports the previous scope. Treat shift-left experiments, shift-right production drills, and game days as engineering validation, not ritual.
 
 
 
@@ -71,7 +71,7 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions

@@ -21,7 +21,7 @@ Data architecture starts with semantics, not storage brands.
 
 ## When To Use
 
-- The user asks about storage choice, replication, consistency, transactions, sharding, hot keys, data correctness, distributed locks, or data responsibility.
+- The user is designing or changing storage choice, replication, consistency, transactions, sharding, hot keys, data correctness, distributed locks, or data responsibility.
 - A service boundary changes who is responsible for mutating data.
 - The design needs to choose between strong, eventual, read-your-writes, monotonic, causal, or quorum-style behavior.
 - The user asks whether stale reads, duplicate writes, or conflicts are acceptable.
@@ -68,7 +68,7 @@ Default to the simplest storage and consistency model that satisfies operation s
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions

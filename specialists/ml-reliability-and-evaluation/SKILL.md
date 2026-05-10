@@ -1,6 +1,6 @@
 ---
 name: ml-reliability-and-evaluation
-description: "Use when ML model-serving PRs or promotions need eval coverage, data validation, drift, skew, rollback, or gates"
+description: "Use when ML model-serving changes or promotions need evals, data validation, drift, skew, rollback, or gates"
 ---
 
 # ML Systems Reliability And Evaluation
@@ -69,14 +69,14 @@ Gate ML releases on data validation, eval results, threat-informed failure-mode 
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Non-production exploration may use lighter checks if isolated and clearly not used for decisions.
 - Some models lack immediate ground truth; use proxy metrics, delayed labels, human review, or guardrail metrics.
-- High-risk decisions may require human-in-the-loop, additional safety reviews, or stricter slice gates.
+- High-risk decisions may require human-in-the-loop, additional safety checks, or stricter slice gates.
 - Batch scoring may use pipeline freshness and output validation instead of synchronous serving latency.
 
 ## Response Quality Bar
@@ -106,7 +106,7 @@ Gate ML releases on data validation, eval results, threat-informed failure-mode 
 
 - `data_validation`: training and serving data have schema, freshness, distribution, and missingness checks.
 - `eval_gate`: promotion thresholds, regression checks, and slice criteria are stated.
-- `skew_check`: training-serving feature and transform differences are reviewed.
+- `skew_check`: training-serving feature and transform differences are checked.
 - `version_lineage`: model, code, data, features, config, and eval result are linked.
 - `monitoring_thresholds`: prediction drift, feature distribution drift, latency, freshness, saturation, or quota signals have alert thresholds and response paths.
 - `rollback_check`: prior model or safe fallback is available with trigger criteria.

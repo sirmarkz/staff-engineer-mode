@@ -67,7 +67,7 @@ Gate critical journeys with a named conformance target, automated checks, manual
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -82,7 +82,7 @@ Gate critical journeys with a named conformance target, automated checks, manual
 - Cover target, critical journeys, semantics, keyboard behavior, focus, assistive-technology checks, contrast, exceptions, and regression gates before optional design advice.
 - Name one concrete assistive-technology path for at least one critical journey, such as NVDA, VoiceOver, JAWS, TalkBack, Dragon, or switch control, with a pass/fail criterion for completing that journey.
 - Make recommendations actionable with severity, blocking status, retest steps, and release criteria where relevant.
-- For recurring defects or launch blockers, make the regression mechanism concrete: name the CI gate, lint rule, component test, or recurring manual checklist; include the verification check, the test that would fail without the change, covered environment inventory such as local, CI, staging, or production-like, docs-as-code checklist location, and review cadence.
+- For recurring defects or launch blockers, make the regression mechanism concrete: name the CI gate, lint rule, component test, or recurring manual checklist; include the verification check, the test that would fail without the change, covered environment inventory such as local, CI, staging, or production-like, docs-as-code checklist location, and refresh cadence.
 - State required evidence such as journey list, automated results, manual scripts, screenshots or recordings, defect history, and exception records; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them, explicitly requested tool-specific guidance, or a named assistive technology is needed for test evidence.
 - Stay inside accessibility engineering. Route performance, mobile rollout, or broad legal policy only when those are central.
@@ -103,7 +103,7 @@ Gate critical journeys with a named conformance target, automated checks, manual
 - `journey_complete`: users can complete critical flows through supported input and assistive paths.
 - `mixed_testing`: automated and manual evidence are both used where interaction quality matters.
 - `exception_responsibility`: every exception has severity, user-confirmed reason, expiry, and compensating path.
-- `regression_gate`: known failures have tests or review gates to prevent recurrence.
+- `regression_gate`: known failures have tests or checks to prevent recurrence.
 
 ## Red Flags - Stop And Rework
 

@@ -80,7 +80,7 @@ Prefer synthetic, parameterized fixtures generated at test time. Use captured pr
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -93,7 +93,7 @@ Prefer synthetic, parameterized fixtures generated at test time. Use captured pr
 
 ## Response Quality Bar
 
-- Lead with the fixture inventory, anonymization policy, freshness/determinism decision, drift-detection plan, or golden-governance rule requested.
+- Lead with the fixture inventory, anonymization rule, freshness/determinism decision, drift-detection plan, or golden-file rule requested.
 - Cover classification, scope, anonymization, restore procedure, drift detection, and golden regeneration before optional fixture-tooling breadth.
 - Make recommendations actionable with per-fixture path, classification, scope, refresh cadence, anonymization transform, restore procedure, and the local fix for each finding.
 - State required evidence such as the fixture inventory, capture timestamps, anonymization transforms, production-distribution measurements, and the regeneration procedure for each golden; do not claim restorability without the procedure.
@@ -107,7 +107,7 @@ Prefer synthetic, parameterized fixtures generated at test time. Use captured pr
 - Anonymization policy for captured data covering direct identifiers, quasi-identifiers, sensitive fields, free-text, and the transform applied per field type.
 - Freshness-versus-determinism decision per fixture class with the rule that governs each.
 - Drift-detection plan listing the fields tracked, the production source, the comparison cadence, the alert threshold, and the local triage procedure for a drift alert.
-- Golden-file governance: regeneration procedure, explicit checker, intentional-change-versus-drift rule, and the test path per golden.
+- Golden-file rule: regeneration procedure, explicit checker, intentional-change-versus-drift rule, and the test path per golden.
 - Orphan and responsibility report for fixtures with no callers or no recoverable source, with the remediation per fixture.
 - Hard-to-construct data plan: which scenarios use generators, the seed/version policy for reproducibility, and the generator path.
 - Restore-and-reproduce procedure per fixture class with documented steps and expected runtime.
@@ -121,7 +121,7 @@ Prefer synthetic, parameterized fixtures generated at test time. Use captured pr
 - `anonymization_applied`: every captured fixture has an applied anonymization transform sufficient against direct and quasi-identifier reidentification or an explicit recorded exception.
 - `restore_procedure`: every fixture has a documented restore-or-regenerate procedure and an estimated runtime.
 - `drift_detection_plan`: production-distribution comparison is defined for the fields the tests rely on, with cadence, threshold, and local triage procedure.
-- `golden_governance`: each golden file has a regeneration procedure, and intentional-change rule.
+- `golden_rule`: each golden file has a regeneration procedure, and intentional-change rule.
 - `orphan_culled`: fixtures with no callers or no recoverable source are listed with remediation.
 
 ## Red Flags - Stop And Rework

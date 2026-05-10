@@ -3,7 +3,7 @@ name: production-readiness-review
 description: "Use when launch, migration, tier change, major traffic shift, or release needs go/no-go readiness evidence"
 ---
 
-# Production Readiness Review
+# Production Readiness Decision
 
 ## Iron Law
 
@@ -23,7 +23,7 @@ Produces a tier-classified launch posture with an evidence matrix, a blocker lis
 
 - The user asks whether a service, feature, migration, tier upgrade, major traffic shift, or system is ready for production.
 - A launch touches multiple engineering surfaces and needs one readiness posture.
-- The user asks for production audit across responsibility, SLOs, rollout, security, capacity, recovery, and operations.
+- The user asks for production readiness across responsibility, SLOs, rollout, security, capacity, recovery, and operations.
 - You need blockers, exceptions, and follow-up routes before go/no-go.
 
 ## When Not To Use
@@ -51,7 +51,7 @@ Produces a tier-classified launch posture with an evidence matrix, a blocker lis
 1. **Classify launch tier and scope.** State what is launching, who is affected, and which standard applies.
 2. **Apply the default tier rubric.** Tier 1 means externally committed, customer-critical, sensitive-data, stateful, or safety-critical impact; Tier 2 means user-visible degradation with bounded blast radius; Tier 3 means internal or shared-service impact; Tier 4 means isolated prototype or experiment.
 3. **Collect artifacts.** Gather evidence from specialist domains instead of rewriting all domain work inside PRR.
-4. **Review architecture shape.** Identify the component diagram or textual map, production dependencies, and fault-domain map for the launch path; if these are missing for a customer-impacting launch, mark the architecture evidence gap explicitly.
+4. **Check architecture shape.** Identify the component diagram or textual map, production dependencies, and fault-domain map for the launch path; if these are missing for a customer-impacting launch, mark the architecture evidence gap explicitly.
 5. **Mark each domain.** Use Pass, Blocker, Exception, Follow-up, or Not Applicable. A gap is a Blocker when it can violate the tier's user, data, security, recovery, or rollback requirement before launch; it is a Follow-up only when launch risk remains bounded and the follow-up action, evidence path, and due date are explicit.
 6. **Check runtime readiness.** Require SLOs, journey health model, telemetry, alerts, runbooks, fallback path, diagnostics, and incident path for customer-impacting launches.
 7. **Check change readiness.** Require rollout, rollback, canary, compatibility, migration, and cleanup evidence.
@@ -62,7 +62,7 @@ Produces a tier-classified launch posture with an evidence matrix, a blocker lis
 
 ## Synthesized Default
 
-Use PRR as a cross-domain evidence review for launches and major changes. It should inspect available evidence, identify missing artifacts, expose cross-pillar tradeoffs, and route only the highest-risk gaps. It should not auto-load every specialist skill.
+Use PRR as a cross-domain readiness decision for launches and major changes. It should inspect available evidence, identify missing artifacts, expose cross-pillar tradeoffs, and route only the highest-risk gaps. It should not auto-load every specialist skill.
 
 
 
@@ -74,14 +74,14 @@ Use PRR as a cross-domain evidence review for launches and major changes. It sho
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Internal prototypes may use advisory PRR if they cannot affect customers, production data, or shared infrastructure.
 - Tier-1, regulated, stateful, or externally committed systems require stricter evidence and dated risk acceptance.
-- Emergency launches can proceed with documented risk when delaying is worse, but follow-up evidence and post-launch review are mandatory.
+- Emergency launches can proceed with documented risk when delaying is worse, but follow-up evidence and post-launch checks are mandatory.
 - A domain can be Not Applicable only with the disqualifying property, evidence, and reason, not by omission.
 
 ## Response Quality Bar
@@ -92,16 +92,16 @@ Use PRR as a cross-domain evidence review for launches and major changes. It sho
 - Make recommendations actionable with missing evidence, gates, due dates, stop criteria, user risk acceptance, and exception expiry where relevant.
 - State required evidence such as dashboards, SLOs, rollout plans, runbooks, load tests, restore proof, threat models, and vulnerability status; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside launch readiness. Route only the highest-risk specialist follow-ups and cap them at two unless the user asks for a full audit.
+- Stay inside launch readiness. Route only the highest-risk specialist follow-ups and cap them at two unless the user asks for a full evidence pack.
 - Be concise: avoid generic checklist prose and prefer compact evidence matrices, blocker tables, and exception registers.
 
 ## Required Outputs
 
 - PRR evidence matrix by domain and status.
-- Architecture review entry with component diagram or textual map, production dependencies, and fault-domain map.
+- Architecture evidence entry with component diagram or textual map, production dependencies, and fault-domain map.
 - Availability evidence row covering fault-domain independence, static capacity under loss, recovery mechanism, and drill evidence.
 - Launch blocker list with required evidence, file/path or artifact reference, and due date.
-- Exception register with user risk acceptance, expiry, compensating control, and review trigger.
+- Exception register with user risk acceptance, expiry, compensating control, and refresh trigger.
 - Advisory launch posture and risk summary.
 - Specialist follow-up routes, capped and prioritized.
 - Tier classification and advisory boundaries: what the skill can mark as blocker, exception, follow-up, or not applicable versus who decides launch.
@@ -115,7 +115,7 @@ Use PRR as a cross-domain evidence review for launches and major changes. It sho
 - `change_check`: rollout, rollback, canary metrics, compatibility, and cleanup are documented.
 - `availability_check`: customer-impacting systems have location/partition independence, static failed-domain capacity, recovery path, and validation evidence or an explicit exception.
 - `recovery_check`: stateful or tier-critical systems have restore/DR evidence or an explicit exception.
-- `exception_check`: every accepted risk has explicit user acceptance, expiry, compensating control, and review trigger.
+- `exception_check`: every accepted risk has explicit user acceptance, expiry, compensating control, and refresh trigger.
 
 ## Red Flags - Stop And Rework
 

@@ -30,7 +30,7 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 
 - The main issue is tenant boundary enforcement or noisy-neighbor isolation; use `tenant-isolation` instead.
 - The main issue is authentication, authorization, secrets, or cryptography; use `identity-and-secrets` instead.
-- The request is broad legal privacy policy, notice drafting, or regulator/auditor liaison; out of scope unless converted to concrete engineering controls.
+- The request is broad legal privacy statements, notice drafting, or regulator/auditor liaison; out of scope unless converted to concrete engineering controls.
 - The work is only control mapping; use `engineering-control-evidence` instead.
 
 ## Inputs To Collect
@@ -54,9 +54,9 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 5. **Control copies.** Apply privacy rules to logs, traces, metrics labels, crash reports, caches, search indexes, analytics, ML features, support tools, and third-party processors.
 6. **Engineer deletion and retention.** Define retention classes, delete propagation, deletion markers for asynchronous cleanup, derived-copy repair, backup expiry, audit trail, holds/exclusions, and failure handling.
 7. **Define the data-subject-rights workflow.** Specify how access, export, erasure, and portability requests are received, authenticated, scoped to stores and processors, completed within an SLA, verified for completeness, and closed with audit evidence.
-8. **Assess anonymization claims.** Do not call data anonymized unless reidentification risk has been assessed with an explicit method such as equivalence-class thresholds, diversity checks, noise-based aggregation, motivated-intruder review, or equivalent domain review; otherwise call it pseudonymized, aggregated, or tokenized.
+8. **Assess anonymization claims.** Do not call data anonymized unless reidentification risk has been assessed with an explicit method such as equivalence-class thresholds, diversity checks, noise-based aggregation, motivated-intruder assessment, or equivalent domain assessment; otherwise call it pseudonymized, aggregated, or tokenized.
 9. **Verify export and erasure.** Test that subject, tenant, or account-scoped export/deletion finds expected copies, includes required third-party paths, uses a defined output format, and reports known exclusions.
-10. **Prevent regressions.** Add review gates, schema checks, telemetry redaction tests, and data-lineage alerts for new sensitive fields.
+10. **Prevent regressions.** Add schema checks, telemetry redaction tests, data-lineage alerts, and release gates for new sensitive fields.
 
 ## Synthesized Default
 
@@ -72,7 +72,7 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -127,7 +127,7 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 
 | Mistake | Correction |
 | --- | --- |
-| Treating privacy as policy text | Convert policy decisions into code, config, checks, and audit. |
+| Treating privacy as legal text | Convert privacy decisions into code, config, checks, and evidence. |
 | Mapping only primary storage | Include telemetry, derived data, backups, exports, and support tools. |
 | Redacting after collection | Minimize or tokenize before broad propagation. |
 | Trusting manual deletion | Automate propagation and verify with evidence. |

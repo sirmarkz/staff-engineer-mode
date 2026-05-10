@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "type": "module",
   "main": ".opencode/plugins/staff-engineer-mode.js",
-  "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer and produces the artifact a careful staff engineer would insist on.",
+  "description": "Staff-engineering decision guidance for AI coding agents. Routes design, development, testing, release, operations, reliability, security, API, data, and platform work to the right specialist.",
   "license": "MIT",
   "repository": "https://github.com/sirmarkz/staff-engineer-mode",
   "homepage": "https://github.com/sirmarkz/staff-engineer-mode",

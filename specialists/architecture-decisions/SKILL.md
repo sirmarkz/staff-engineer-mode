@@ -1,9 +1,9 @@
 ---
 name: architecture-decisions
-description: "Use when system design, ADRs, service/module/worker boundaries, or architecture tradeoffs need review"
+description: "Use when making system design decisions, ADRs, service/module/worker boundaries, or architecture tradeoffs"
 ---
 
-# Architecture Review And Decision Records
+# Architecture Decisions And Decision Records
 
 ## Iron Law
 
@@ -11,15 +11,15 @@ description: "Use when system design, ADRs, service/module/worker boundaries, or
 NO ARCHITECTURE DECISION WITHOUT FORCES, ALTERNATIVES, AND A REVERSAL PLAN
 ```
 
-If the design lacks goals, constraints, alternatives considered, and an honest read on how hard the decision would be to undo, do not mark it as reviewed. Naming the responsibility path matters too; for solo work it is the user and agent evidence path, not an org chart.
+If the design lacks goals, constraints, alternatives considered, and an honest read on how hard the decision would be to undo, do not treat it as decided. Naming the responsibility path matters too; for solo work it is the user and agent evidence path, not an org chart.
 
 ## Overview
 
-Architecture review turns a design from "components and opinions" into explicit goals, tradeoffs, failure modes, and decisions future readers can understand. Works the same at any project size: the discipline is the forces-alternatives-reversal triple, not the org-chart artifact around it. Review decisions by the forces they must satisfy: user outcomes, constraints, data, reliability, security, operability, evolvability, and cost.
+Architecture decision work turns "components and opinions" into explicit goals, tradeoffs, failure modes, and decisions future readers can understand. Works the same at any project size: the discipline is the forces-alternatives-reversal triple, not the org-chart artifact around it. Shape decisions by the forces they must satisfy: user outcomes, constraints, data, reliability, security, operability, evolvability, and cost.
 
 ## When To Use
 
-- System design, architecture review, RFC/design-doc review, ADRs, service boundaries, dependency direction, or tradeoff analysis.
+- Making, shaping, or revisiting system design decisions, RFCs/design docs, ADRs, service boundaries, dependency direction, or tradeoff analysis.
 - A change affects data responsibility, public contracts, reliability, deployment topology, security boundaries, or operational responsibility.
 - Whether a monolith, module, service, workflow, platform component, or integration boundary "holds up".
 - A prior decision needs to be recorded or revisited with current constraints.
@@ -56,20 +56,20 @@ inferred field as ASSUMED so the user can correct it.
 ## Workflow
 
 1. **Frame the decision.** Write the decision as one clear question and list goals, non-goals, and constraints before evaluating solutions.
-2. **Emit a compact ADR-shaped first answer.** Before asking for more artifacts, give the user a usable review skeleton containing: decision question, context/forces with rationale, explicit decision status or decision, at least two rejected alternatives with reasons, positive and negative consequences, reversibility cost and reconsideration trigger, and responsibility path. Mark unknowns as `ASSUMED` or `NEEDS EVIDENCE` instead of omitting the section.
+2. **Emit a compact ADR-shaped first answer.** Before asking for more artifacts, give the user a usable decision skeleton containing: decision question, context/forces with rationale, explicit decision status or decision, at least two rejected alternatives with reasons, positive and negative consequences, reversibility cost and reconsideration trigger, and responsibility path. Mark unknowns as `ASSUMED` or `NEEDS EVIDENCE` instead of omitting the section.
 3. **Map the system.** Identify data flow, control flow, dependency direction, trust boundaries, failure domains, and operational checkpoints.
 4. **Map bounded contexts.** Produce a bounded-context map naming each context, its responsibility path, the language/model it uses, and the relationship to every adjacent context (upstream/downstream, conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways). Note where a context translates a neighbor's model and where it conforms.
 5. **Prefer simpler boundaries first.** Start with modular design and explicit contracts. Add distribution only for independent scaling, release cadence, responsibility, isolation, or blast-radius needs.
 6. **Compare alternatives.** Evaluate at least two real options plus the current state. Include consequences, rejected alternatives, and what would make the decision wrong later.
 7. **Specify fitness functions.** Write the architectural invariants the system must hold as testable checks. Each fitness function names: the property under test, the metric, the threshold or rule, the measurement source, the evaluation cadence, the failure response, and the local evidence path. Cover at minimum the dependency-direction rules, the public-contract compatibility rules, the latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant the design relies on.
-8. **Review runtime dependency responsibility.** For any critical runtime dependency, state how the user or agent can debug it, patch or change it, work around issues, and exit or degrade if it fails. Keep this at design-time adoption criteria; timeout/retry policy goes to `dependency-resilience`, and launch evidence goes to `production-readiness-review`.
-9. **Review cross-cutting risks.** Cover reliability, overload, data correctness, security, observability, deployment safety, recovery, cost, and maintainability.
-10. **Record the decision.** Create an ADR or design-review summary with status, context (≥2 forces with rationale), decision, consequences (split positive and negative), reversibility (cost + reconsideration trigger), evidence, fitness-function references, and follow-up checks.
+8. **Evaluate runtime dependency responsibility.** For any critical runtime dependency, state how the user or agent can debug it, patch or change it, work around issues, and exit or degrade if it fails. Keep this at design-time adoption criteria; timeout/retry policy goes to `dependency-resilience`, and launch evidence goes to `production-readiness-review`.
+9. **Evaluate cross-cutting risks.** Cover reliability, overload, data correctness, security, observability, deployment safety, recovery, cost, and maintainability.
+10. **Record the decision.** Create an ADR or design-decision summary with status, context (≥2 forces with rationale), decision, consequences (split positive and negative), reversibility (cost + reconsideration trigger), evidence, fitness-function references, and follow-up checks.
 11. **Use specialist checks internally.** Apply the SLO, HA, dependency resilience, secure design, rollout, or data consistency skill when the design exposes that surface.
 
 ## Synthesized Default
 
-Use a compact design review plus ADR. Keep the system modular and technology-agnostic until the design proves it needs distribution. When distribution is justified, make responsibility, contracts, failure modes, observability, and deployability explicit before endorsing the split.
+Use a compact design decision plus ADR. Keep the system modular and technology-agnostic until the design proves it needs distribution. When distribution is justified, make responsibility, contracts, failure modes, observability, and deployability explicit before endorsing the split.
 
 
 
@@ -81,7 +81,7 @@ Use a compact design review plus ADR. Keep the system modular and technology-agn
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -98,13 +98,13 @@ Use a compact design review plus ADR. Keep the system modular and technology-agn
 - Make recommendations actionable with evidence, gates, stop conditions, and follow-up decisions.
 - State required evidence such as SLOs, traffic, incidents, data contracts, threat boundaries, and migration proof; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside the design under review. Add at most two specialist follow-ups, only for material unresolved surfaces.
+- Stay inside the design or decision. Add at most two specialist follow-ups, only for material unresolved surfaces.
 - Be concise: prefer compact ADRs, decision tables, and risk registers over generic architecture theory.
 - For pre-build, ticketing, or milestone-readiness requests, distinguish implementation tasks from unresolved architecture decisions. Use compact decision, risk/tradeoff, alternative, responsibility, and gate tables; do not expand into a full narrative ADR unless asked.
 
 ## Required Outputs
 
-- Architecture review summary with context, goals, non-goals, and constraints.
+- Architecture decision summary with context, goals, non-goals, and constraints.
 - ADR with status, decision, alternatives, consequences, and a concrete responsibility value (user, agent evidence path, or supplied project role; if unknown, use `ASSUMED: <component> responsibility path` rather than a blank or `TBD`).
 - System map covering data flow, dependencies, trust boundaries, and responsibility.
 - Runtime dependency adoption criteria covering supportability, changeability, fallback, and exit/degradation path.

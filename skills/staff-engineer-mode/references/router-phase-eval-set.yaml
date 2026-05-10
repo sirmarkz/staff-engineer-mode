@@ -91,7 +91,7 @@ cases:
     expected_gates: [single_primary, intent_inference]
   - prompt: "Set maintenance rules for stale runbooks, source-of-truth owners, refresh triggers, and archival criteria."
     expected_primary: documentation-lifecycle
-    expected_behavior: "route maintenance governance for docs to documentation-lifecycle"
+    expected_behavior: "route maintenance controls for docs to documentation-lifecycle"
     expected_phase: maintenance
     category: direct
     expected_gates: [single_primary, intent_inference]
@@ -101,7 +101,7 @@ cases:
     expected_phase: ideation
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Review this concrete diff before merge for intent match, behavior evidence, edge cases, and deleted-but-still-used code."
+  - prompt: "Inspect this concrete diff before merge for intent match, behavior evidence, edge cases, and deleted-but-still-used code."
     expected_primary: agent-pr-review
     expected_behavior: "route concrete pre-merge diff review to agent-pr-review"
     category: direct
@@ -129,6 +129,24 @@ cases:
     expected_phase: design
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
+  - prompt: "Review the checkout API design before code exists for error shapes, idempotency, pagination, and compatibility."
+    expected_primary: api-design-and-compatibility
+    expected_behavior: "route design-review wording by API compatibility surface, not to agent-pr-review"
+    expected_phase: design
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Run a security review of the new admin export design before implementation: authorization, trust boundaries, unsafe inputs, and abuse cases."
+    expected_primary: secure-sdlc-and-threat-modeling
+    expected_behavior: "route security-review wording by threat-modeling surface when no diff exists"
+    expected_phase: design
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
+  - prompt: "Review the rollout plan for a staged release with canary metrics, abort criteria, and rollback before there is a go/no-go meeting."
+    expected_primary: progressive-delivery
+    expected_behavior: "route rollout-review wording by rollout surface until readiness is explicit"
+    expected_phase: release
+    category: paraphrase
+    expected_gates: [single_primary, intent_inference]
   - prompt: "Before implementing a new admin export, threat-model authorization gaps, unsafe inputs, trust boundaries, and abuse cases."
     expected_primary: secure-sdlc-and-threat-modeling
     expected_behavior: "route pre-code security design away from deployed vulnerability management"
@@ -141,7 +159,7 @@ cases:
     expected_phase: design
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Plan a staged feature rollout with canary metrics and rollback criteria before there is a launch date or readiness review."
+  - prompt: "Plan a staged feature rollout with canary metrics and rollback criteria before there is a launch date or readiness decision."
     expected_primary: progressive-delivery
     expected_behavior: "route rollout design away from production-readiness-review until there is a go/no-go event"
     expected_phase: release
@@ -199,5 +217,5 @@ cases:
     expected_primary: none
     expected_behavior: "decline product/editorial ideation without naming specialists"
     category: out_of_scope
-    expected_gates: [scope_check, ambiguity_check]
+    expected_gates: [scope_check]
     forbidden_in_response: [all_specialist_names]

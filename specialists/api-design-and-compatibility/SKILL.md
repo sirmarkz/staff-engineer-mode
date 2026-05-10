@@ -1,6 +1,6 @@
 ---
 name: api-design-and-compatibility
-description: "Use when API design, exposed behavior, response fields, deprecation, clients, or rollouts need compatibility review"
+description: "Use when API design, exposed behavior, response fields, deprecation, clients, or rollouts need compatibility decisions"
 ---
 
 # API Design And Compatibility
@@ -21,7 +21,7 @@ An API is a long-lived contract with unknown clients, retries, partial failures,
 
 ## When To Use
 
-- The user asks for API design, service contract review, operation naming, generated-client shape, versioning, compatibility, deprecation, pagination, filtering, batch operations, error models, idempotency, or client migration.
+- The user is designing or changing API behavior, service contracts, operation names, generated-client shape, versioning, compatibility, deprecation, pagination, filtering, batch operations, error models, idempotency, or client migration.
 - A change adds, removes, renames, retypes, or changes semantics of fields, operations, defaults, errors, events, or resources exposed to another component or client.
 - The user asks whether an endpoint, schema, interface, or service contract can evolve safely.
 - A retryable mutating operation needs idempotency behavior.
@@ -71,7 +71,7 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -90,14 +90,14 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the changed API surface. Mention pagination, rate limits, auth, audit, or tenant controls only when the prompt or risk makes them material.
 - Be concise: avoid generic API background and prefer compact compatibility matrices or checklists.
-- For naming or shape reviews, provide concrete operation/resource names, generated-client ergonomics notes, and compatibility rationale.
-- For PR, release-note, or copy-polish requests that hide contract changes, review safety before wording. If the contract is unsafe, lead with the blocker and give corrected release-note constraints only after the compatibility and idempotency fixes.
-- Keep narrow reviews bounded to one decision, the material blockers, and the minimum contract changes needed to make the rollout safe.
+- For naming or shape decisions, provide concrete operation/resource names, generated-client ergonomics notes, and compatibility rationale.
+- For PR, release-note, or copy-polish requests that hide contract changes, decide safety before wording. If the contract is unsafe, lead with the blocker and give corrected release-note constraints only after the compatibility and idempotency fixes.
+- Keep narrow answers bounded to one decision, the material blockers, and the minimum contract changes needed to make the rollout safe.
 
 ## Required Outputs
 
-- API contract review with consumers, compatibility class, and risks.
-- Operation/resource naming review and generated-client ergonomics notes.
+- API contract decision with consumers, compatibility class, and risks.
+- Operation/resource naming decision and generated-client ergonomics notes.
 - Compatibility matrix for each changed operation, field, default, enum, event, error, and status behavior.
 - Versioning and deprecation plan with telemetry and removal gates.
 - Error model with retryability, correlation, redaction, and client action.
@@ -132,7 +132,7 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 | Mistake | Correction |
 | --- | --- |
 | Versioning every change | Prefer additive compatible changes; reserve versions for semantic breaks. |
-| Treating generated clients as an afterthought | Review operation names and shapes as part of the public contract. |
+| Treating generated clients as an afterthought | Decide operation names and shapes as part of the public contract. |
 | Treating status codes as the error model | Include stable application error codes and retry guidance. |
 | Offset pagination on mutable data | Use stable cursors when inserts/deletes can shift results. |
 | Retrofitting bounds after launch | Set list, filter, batch, payload, and processing limits before clients depend on them. |

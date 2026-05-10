@@ -23,7 +23,7 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 
 - The user asks for outage handling, incident command, severity, status updates, response roles, timelines, postmortems, or action items.
 - A customer-impacting degradation, data issue, security event, or operational emergency is active or recently resolved.
-- You need a blameless review or follow-up tracker.
+- You need a blameless postmortem or follow-up tracker.
 - An incident exposed gaps in alerts, runbooks, responsibility, deployment safety, or architecture standards.
 
 ## When Not To Use
@@ -53,11 +53,11 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 6. **Communicate predictably.** Set status cadence by ticket severity; highest-severity incidents should update within 30 minutes or less, high-severity incidents within an hour, and lower severities by the user-confirmed cadence. Say what is known, unknown, impact, mitigation, and next update time.
 7. **Change strategy when stuck.** Use the user, available documentation, dependency status, or a narrower diagnostic skill when impact persists, mitigation authority is unclear, or a latent risk is not getting traction. Do not wait for a vendor or outside group before taking the safest available mitigation.
 8. **Checkpoint explicitly.** At every incident-commander or shift change, record state, current hypothesis, customer impact, in-flight actions, user decision point, comms cadence, and next decision point.
-9. **Use the normal hotfix path where possible.** Reduce context switching by keeping review, artifact, branch, and rollout mechanics traceable even under urgency.
-10. **Run security incidents as a protected track.** When confidentiality, integrity, identity, abuse, or data exposure may be involved, preserve evidence, restrict sensitive details to need-to-know responders, and keep operational facts separate from legal or policy conclusions.
-11. **Stabilize and verify.** Confirm recovery with user-visible metrics, not only process health.
-12. **Write a blameless postmortem.** Explain contributing factors across technical, operational, detection, review, and organizational layers.
-13. **Replace single-root-cause wording with layered factors.** If the user supplies "root cause: X", treat X as one technical trigger, then add process, detection, rollout, responsibility, or organizational defenses that allowed impact; mark inferred factors as candidates to verify.
+9. **Use the normal hotfix path where possible.** Reduce context switching by keeping artifact, branch, change, and rollout mechanics traceable even under urgency.
+10. **Run security incidents as a protected track.** When confidentiality, integrity, identity, abuse, or data exposure may be involved, preserve evidence, restrict sensitive details to need-to-know responders, and keep operational facts separate from legal conclusions.
+11. **Stabilize and verify.** Confirm recovery with user-visible metrics, not only internal health.
+12. **Write a blameless postmortem.** Explain contributing factors across technical, operational, detection, change, and organizational layers.
+13. **Replace single-root-cause wording with layered factors.** If the user supplies "root cause: X", treat X as one technical trigger, then add control, detection, rollout, responsibility, or organizational defenses that allowed impact; mark inferred factors as candidates to verify.
 14. **Create verified actions.** Every action needs due date, observable completion signal, and classification: prevent, detect, mitigate, or learn.
 15. **Feed standards.** Turn recurring classes into SLO, observability, safe-change, HA, dependency-resilience, or platform-improvement work.
 
@@ -75,21 +75,21 @@ Use role-based incident command during response and blameless, contributing-fact
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Security, privacy, legal, or safety incidents may have confidentiality constraints; keep operating from verified facts and user-provided requirements.
-- Very small internal incidents can use a lightweight review if impact, timeline, and action tracking remain explicit.
+- Very small internal incidents can use a lightweight postmortem if impact, timeline, and action tracking remain explicit.
 - If an incident is ongoing, delay final postmortem conclusions and keep outputs focused on response.
 - Customer-facing wording may need user confirmation, but operational status cadence and facts remain in scope.
 
 ## Response Quality Bar
 
 - Lead with the incident command plan, current mitigation posture, timeline, postmortem finding, or action register requested.
-- Cover impact, severity, roles, timeline, communications cadence, mitigation, contributing factors, missed defenses, and verified actions before optional incident-process breadth.
-- For postmortems, include a **Contributing Factors** section with at least three factors across at least two layers such as technical trigger, detection gap, rollout/process gap, responsibility/runbook gap, or organizational tradeoff; avoid presenting one root cause as the whole explanation.
+- Cover impact, severity, roles, timeline, communications cadence, mitigation, contributing factors, missed defenses, and verified actions before optional incident mechanics.
+- For postmortems, include a **Contributing Factors** section with at least three factors across at least two layers such as technical trigger, detection gap, rollout/control gap, responsibility/runbook gap, or organizational tradeoff; avoid presenting one root cause as the whole explanation.
 - Make recommendations actionable with user decision point, timestamps, next-update times, verification conditions, due dates, and follow-up gates where relevant.
 - State required evidence such as alerts, dashboards, logs, deploy markers, chat timeline, customer-impact data, mitigation commands, and action verification; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
@@ -119,7 +119,7 @@ Use role-based incident command during response and blameless, contributing-fact
 
 ## Red Flags - Stop And Rework
 
-- The incident review concludes "human error" without explaining system conditions.
+- The postmortem concludes "human error" without explaining system conditions.
 - Timeline is reconstructed from memory with no timestamps or evidence.
 - Action items say "be more careful", "monitor better", or "improve tests" without verification.
 - Status updates have no next-update time.
@@ -133,4 +133,4 @@ Use role-based incident command during response and blameless, contributing-fact
 | Root-cause hunting during impact | Mitigate first, analyze after stabilization. |
 | One action per symptom | Group by contributing factor and defense gap. |
 | Blameless means consequence-free | Focus accountability on system improvements and verified actions. |
-| Postmortem as paperwork | Feed findings into standards, platform, and reliability backlog. |
+| Postmortem as ritual | Feed findings into standards, platform, and reliability backlog. |

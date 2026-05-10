@@ -68,7 +68,7 @@ Treat critical pipelines like services: SLI/SLO, validation gates, lineage, idem
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -85,7 +85,7 @@ Treat critical pipelines like services: SLI/SLO, validation gates, lineage, idem
 - Make recommendations actionable with evidence, gates, stop conditions, and recovery actions where relevant.
 - State required evidence such as row counts, watermarks, late-event rates, reconciliation checks, and backfill proofs; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside pipeline reliability unless the prompt explicitly asks for warehouse architecture or governance.
+- Stay inside pipeline reliability unless the prompt explicitly asks for warehouse architecture or ownership controls.
 - Be concise: avoid generic data-quality background and prefer compact SLI/gate/replay tables.
 
 ## Required Outputs

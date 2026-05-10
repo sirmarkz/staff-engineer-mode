@@ -23,7 +23,7 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 
 - The user asks what reliability target, availability target, latency target, freshness target, correctness target, or durability target a service should meet.
 - The user asks what should page, how burn-rate alerts should work, or how to connect alerts to SLOs.
-- A launch, PRR, tier upgrade, or reliability review needs SLI/SLO evidence.
+- A launch, PRR, tier upgrade, or reliability decision needs SLI/SLO evidence.
 - Existing alerts are noisy because they monitor causes instead of user-visible symptoms.
 
 ## When Not To Use
@@ -70,7 +70,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions

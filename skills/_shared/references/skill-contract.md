@@ -38,10 +38,10 @@ Every specialist must state lifecycle behavior:
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
-Non-exception specialists must not be written as audit-only reviewers. They must
+Non-exception specialists must not be written as after-the-fact audit or review specialists. They must
 guide the next decision from context, artifact, surface, risk, and available
 evidence, even when the prompt does not name a formal phase.
 
@@ -60,7 +60,8 @@ evidence, even when the prompt does not name a formal phase.
 
 - Prefer one primary specialist.
 - Recommend at most two follow-up routes.
-- Ask one disambiguating question when intent is ambiguous.
+- Infer artifact, phase, surface, and risk from prompt, repo, files, branch context, and conversation before withholding routing.
+- Do not ask intake questions for artifact, phase, surface, or risk; withhold routing only when no in-scope engineering lifecycle/control frame is present.
 - Do not route to out-of-scope business, marketing, legal, procurement, staffing, compensation, or broad compliance-program work.
 - Eval-harness routing blocks are only for confident in-scope routing; low-confidence, ambiguous, and out-of-scope prompts must not emit routing blocks.
 - Keep the router `SKILL.md` compact; detailed routing boundary notes belong in `skills/staff-engineer-mode/references/routing-matrix.md`.

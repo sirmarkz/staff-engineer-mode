@@ -49,7 +49,7 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 1. **Inventory the fleet.** List versions, support windows, criticality, local responsibility evidence, and unknowns.
 2. **Define allowed skew.** State which old/new combinations are supported during rollout and for how long.
 3. **Communicate support deadlines.** Tell affected consumers when old versions leave support, what action they must take, and when reminders, follow-up, or enforcement start.
-4. **Find breaking changes.** Review behavior, config, interfaces, data formats, tooling, and operational assumptions.
+4. **Find breaking changes.** Check behavior, config, interfaces, data formats, tooling, and operational assumptions.
 5. **Prove compatibility.** Test mixed-version paths, upgrade order, downgrade or roll-forward behavior, and representative workloads.
 6. **Batch rollout.** Move low-risk cohorts first, then critical paths with gates, user confirmation, and monitoring.
 7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local evidence needed to close them.
@@ -70,12 +70,12 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
-- Emergency security upgrades may compress rollout stages, but still need compatibility risk review, consumer notice if deadlines change, user confirmation, and rollback or roll-forward decision.
+- Emergency security upgrades may compress rollout stages, but still need compatibility risk decision, consumer notice if deadlines change, user confirmation, and rollback or roll-forward decision.
 - Low-risk internal tools can use lighter gates if they are not production dependencies.
 - Some upgrades cannot roll back safely; require stronger preflight tests and roll-forward criteria.
 

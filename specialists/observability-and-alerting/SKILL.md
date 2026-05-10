@@ -21,7 +21,7 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 
 ## When To Use
 
-- The user asks for metrics, logs, traces, dashboards, alerting, runbooks, correlation IDs, telemetry fields, or production debugging.
+- The user is designing, building, or revising metrics, logs, traces, dashboards, alerting, runbooks, correlation IDs, telemetry fields, or production debugging paths.
 - A service cannot explain incidents from existing signals.
 - The user asks how to instrument a new service, dependency, queue, pipeline, or rollout.
 - Alert rules are the main deliverable and the work is not asking to connect them to SLO or error-budget policy.
@@ -71,7 +71,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions

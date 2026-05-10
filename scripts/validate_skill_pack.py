@@ -102,7 +102,7 @@ PHASE_BEHAVIOR_TERMS = {
     "testing": ["testing", "tests", "failure"],
     "release": ["release", "rollout", "rollback"],
     "maintenance": ["maintenance", "owners", "drift"],
-    "review": ["review", "existing", "one mode"],
+    "existing artifact": ["existing artifact", "evidence", "engineering decision"],
     "missing evidence": ["missing evidence", "assumptions", "evidence plan"],
 }
 
@@ -123,11 +123,34 @@ ROUTER_PHASE_TRIGGER_TERMS = [
 
 ROUTER_CONTEXT_APPLICABILITY_TERMS = [
     "context",
+    "repo",
+    "files",
+    "branch context",
+    "conversation",
     "artifact",
     "surface",
     "risk",
     "next decision",
     "signals, not hard gates",
+]
+
+ROUTER_INFERENCE_FIRST_TERMS = [
+    "inputs to infer",
+    "do not ask",
+    "intake fields",
+    "infer the safest narrow in-scope route",
+    "withhold routing only",
+]
+
+ROUTER_DESCRIPTION_TERMS = [
+    "engineering decisions",
+    "ideation",
+    "design",
+    "development",
+    "testing",
+    "release",
+    "operations",
+    "maintenance",
 ]
 
 ROUTER_EVAL_SCOPE_TERMS = [
@@ -156,10 +179,15 @@ AUDIT_ONLY_EXCEPTIONS = {
     "vulnerability-management",
 }
 
+SPECIALIST_DESCRIPTION_REVIEW_EXCEPTIONS = {
+    "agent-pr-review",
+    "code-review-and-workflow",
+}
+
 ROUTER_OPERATIONAL_SECTIONS = [
     "## When To Use",
     "## When Not To Use",
-    "## Inputs To Collect",
+    "## Inputs To Infer",
     "## Workflow",
     "## Synthesized Default",
     "## Exceptions",
@@ -370,6 +398,13 @@ def validate_router_context_applicability(text: str, path: Path) -> None:
         fail(f"{path} missing context-applicability routing terms: {', '.join(missing)}")
 
 
+def validate_router_inference_first(text: str, path: Path) -> None:
+    lowered = text.lower()
+    missing = [term for term in ROUTER_INFERENCE_FIRST_TERMS if term not in lowered]
+    if missing:
+        fail(f"{path} missing inference-first routing terms: {', '.join(missing)}")
+
+
 def validate_router_eval_scope(text: str, path: Path) -> None:
     lowered = text.lower()
     missing = [term for term in ROUTER_EVAL_SCOPE_TERMS if term not in lowered]
@@ -398,6 +433,12 @@ def validate_decision_guide_framing(text: str, path: Path) -> None:
 
 
 def validate_specialist_skill(text: str, path: Path) -> None:
+    slug = path.parent.name
+    description = parse_frontmatter(text, path)["description"].lower()
+    if slug not in SPECIALIST_DESCRIPTION_REVIEW_EXCEPTIONS:
+        for term in ["review", "audit"]:
+            if term in description:
+                fail(f"{path} description must trigger decision/design work, not {term}-only work")
     validate_operational_sections(text, path, SPECIALIST_OPERATIONAL_SECTIONS)
     validate_phase_behavior(text, path)
     validate_decision_guide_framing(text, path)
@@ -407,9 +448,17 @@ def validate_specialist_skill(text: str, path: Path) -> None:
 
 
 def validate_router_skill(text: str, path: Path) -> None:
+    frontmatter = parse_frontmatter(text, path)
+    description = frontmatter["description"].lower()
+    missing_description_terms = [term for term in ROUTER_DESCRIPTION_TERMS if term not in description]
+    if missing_description_terms:
+        fail(f"{path} router description missing trigger terms: {', '.join(missing_description_terms)}")
+    if "needs routing" in description or "need routing" in description:
+        fail(f"{path} router description must describe engineering decision work, not 'needs routing'")
     validate_operational_sections(text, path, ROUTER_OPERATIONAL_SECTIONS)
     validate_router_phase_triggers(text, path)
     validate_router_context_applicability(text, path)
+    validate_router_inference_first(text, path)
     validate_router_eval_scope(text, path)
     word_count = len(re.findall(r"\S+", text))
     if word_count > ROUTER_MAX_WORDS:
@@ -421,7 +470,7 @@ def validate_router_skill(text: str, path: Path) -> None:
     gate_bodies = evidence_gate_bodies(text, path)
     require_gate_terms(gate_bodies, "capability_translation", ["tool", "translated", "not repeated"], path)
     require_gate_terms(gate_bodies, "scope_check", ["out-of-scope", "without specialist names"], path)
-    require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "questions", "specialist names"], path)
+    require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "infer", "intake questions", "specialist names"], path)
 
 
 def validate_router_boundary_split(router_text: str, matrix_text: str, router_path: Path, matrix_path: Path) -> None:

@@ -68,7 +68,7 @@ Use tested restore evidence tied to RTO/RPO as the default. Protect backups and 
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -121,4 +121,4 @@ Use tested restore evidence tied to RTO/RPO as the default. Protect backups and 
 | Equating HA with DR | HA keeps serving; DR restores lost or corrupted state. |
 | Testing full restore only | Include partial restore, PITR, corruption repair, and location rebuild where relevant. |
 | Ignoring derived state | Decide whether indexes, caches, search, and analytics are backed up or rebuilt inside RTO. |
-| Treating drills as paperwork | Capture measured time, data loss, validation results, and remediation patches. |
+| Treating drills as ritual | Capture measured time, data loss, validation results, and remediation patches. |

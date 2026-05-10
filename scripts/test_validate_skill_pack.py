@@ -26,7 +26,7 @@ class ValidateSkillPackPhaseBehaviorTest(unittest.TestCase):
         validator = load_validator()
         text = """---
 name: example
-description: Use when example work needs routing
+description: Use when example work needs decisions
 ---
 
 # Example
@@ -51,7 +51,7 @@ description: Use when example work needs routing
         validator = load_validator()
         text = """---
 name: example
-description: Use when example work needs routing
+description: Use when example work needs decisions
 ---
 
 # Example
@@ -64,7 +64,7 @@ description: Use when example work needs routing
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 """
         with tempfile.TemporaryDirectory() as tmp:
@@ -79,7 +79,7 @@ description: Use when example work needs routing
 - The request asks for engineering design, review, delivery, operations, reliability, security, architecture, API, data, platform, or client guidance.
 - The user asks to guide ideation, design, development, testing, release, or maintenance decisions.
 - The user asks to plan implementation, guide development, de-risk an idea, or shape engineering decisions before code exists.
-- The router infers applicability from context, artifact, surface, risk, and the next decision; phase labels are signals, not hard gates.
+- The router infers applicability from context, repo, files, branch context, conversation, artifact, surface, risk, and the next decision; phase labels are signals, not hard gates.
 
 ## Workflow
 
@@ -90,6 +90,21 @@ description: Use when example work needs routing
             path.write_text(text)
             validator.validate_router_phase_triggers(text, path)
             validator.validate_router_context_applicability(text, path)
+
+    def test_router_requires_inference_first_intake_framing(self) -> None:
+        validator = load_validator()
+        text = """## Inputs To Infer
+
+Infer these from the prompt, repo, files, branch context, and conversation. Do not ask the user to supply them as intake fields.
+
+## Workflow
+
+1. If confidence is low, infer the safest narrow in-scope route from available evidence; withhold routing only when no engineering lifecycle/control frame is present.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            validator.validate_router_inference_first(text, path)
 
     def test_router_requires_eval_harness_scope_boundary(self) -> None:
         validator = load_validator()
@@ -118,7 +133,7 @@ description: Use when example work needs routing
         validator = load_validator()
         text = """---
 name: example
-description: Use when example work needs routing
+description: Use when example work needs decisions
 ---
 
 # Example

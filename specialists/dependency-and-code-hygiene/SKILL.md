@@ -11,7 +11,7 @@ description: "Use when dependency updates, dead-code removal, lockfile sweeps, c
 NO MAINTENANCE CHANGE WITHOUT SCOPE, REVERSIBILITY, AND NON-REGRESSION CHECKS
 ```
 
-If a cleanup cannot be reviewed, tested, rolled back, or bounded, it is not hygiene; it is uncontrolled refactoring.
+If a cleanup cannot be understood, tested, rolled back, or bounded, it is not hygiene; it is uncontrolled refactoring.
 
 ## Overview
 
@@ -22,7 +22,7 @@ Code health is maintained by routine, reversible, low-drama maintenance, not by 
 ## When To Use
 
 - The user asks about dependency updates, lockfiles, package deprecations, stale libraries, dead code, static-analysis backlog, codemods, or cleanup.
-- You need a recurring maintenance policy that does not block feature delivery.
+- You need recurring maintenance rules that do not block feature delivery.
 - Existing warnings or findings need a ratchet so new debt is prevented while old debt is reduced.
 - A mechanical refactor or dead-code removal needs safe execution.
 
@@ -38,25 +38,25 @@ Code health is maintained by routine, reversible, low-drama maintenance, not by 
 - Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Dependency inventory, direct/transitive responsibility, lockfiles, update cadence, and deprecated packages.
 - Current vulnerable or outdated dependencies, runtime exposure, and patch urgency.
-- Static-analysis findings, warning budgets, suppression policy, and existing baseline.
+- Static-analysis findings, warning budgets, suppression rules, and existing baseline.
 - Dead code candidates, usage telemetry, responsibility, and rollback plan.
-- Codemod/refactor scope, generated changes, test coverage, and review strategy.
-- Release process, canary options, and rollback capability for maintenance changes.
+- Codemod/refactor scope, generated changes, test coverage, and validation strategy.
+- Release flow, canary options, and rollback capability for maintenance changes.
 
 ## Workflow
 
 1. **Classify the work.** Separate routine updates, urgent patches, deprecations, static findings, dead code, codemods, and architecture-changing refactors.
-2. **Batch conservatively.** Keep updates small enough to review and roll back; separate risky runtime dependencies from safe dev-only updates.
-3. **Preserve reproducibility.** Update lockfiles or equivalent pinned inputs intentionally and review transitive changes.
+2. **Batch conservatively.** Keep updates small enough to understand and roll back; separate risky runtime dependencies from safe dev-only updates.
+3. **Preserve reproducibility.** Update lockfiles or equivalent pinned inputs intentionally and inspect transitive changes.
 4. **Use risk-aware cadence.** Apply routine updates regularly; keep enough dependency inventory to identify affected deployed artifacts; treat active vulnerabilities as vulnerability-management work.
 5. **Ratchet legacy findings.** Prevent new high-severity findings while gradually reducing the baseline.
 6. **Prove dead code is dead.** Use references, telemetry, responsibility confirmation, and staged deletion where risk is real.
-7. **Execute codemods safely.** Review the pattern, sample output, affected responsibility, and validation evidence before broad application.
+7. **Execute codemods safely.** Check the pattern, sample output, affected responsibility, and validation evidence before broad application.
 8. **Route trust controls.** If provenance, signing, or build trust becomes central, switch to supply-chain security.
 
 ## Synthesized Default
 
-Use continuous small-batch maintenance with pinned inputs, dependency inventory, automated update proposals, reviewable diffs, static-analysis ratchets, and reversible codemods. Treat routine hygiene separately from supply-chain integrity and deployed vulnerability remediation.
+Use continuous small-batch maintenance with pinned inputs, dependency inventory, automated update proposals, small diffs, static-analysis ratchets, and reversible codemods. Treat routine hygiene separately from supply-chain integrity and deployed vulnerability remediation.
 
 
 
@@ -68,13 +68,13 @@ Use continuous small-batch maintenance with pinned inputs, dependency inventory,
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Emergency security updates can bypass normal batching when active exploitation risk dominates; record follow-up cleanup.
-- Large mechanical codemods are acceptable when the pattern is reviewed, output is sampled, and validation is automated.
+- Large mechanical codemods are acceptable when the pattern is checked, output is sampled, and validation is automated.
 - Abandoned packages may require migration planning rather than direct update.
 - Dead-code deletion in rarely used paths may require staged disablement before removal.
 
@@ -90,11 +90,11 @@ Use continuous small-batch maintenance with pinned inputs, dependency inventory,
 
 ## Required Outputs
 
-- Dependency update policy and cadence.
+- Dependency update rules and cadence.
 - Dependency-vulnerability scan integrated into PR/release CI, with the severity threshold that blocks merge or promotion.
-- Lockfile or pinned-input review policy.
+- Lockfile or pinned-input inspection rule.
 - Deprecated package and migration plan.
-- Static-analysis backlog ratchet and suppression policy.
+- Static-analysis backlog ratchet and suppression rules.
 - Dead-code cleanup plan with evidence and rollback.
 - Codemod/refactor plan with scope, validation, and responsibility.
 - Selection rules to vulnerability management or supply-chain security.
@@ -103,7 +103,7 @@ Use continuous small-batch maintenance with pinned inputs, dependency inventory,
 
 - `scope_check`: maintenance work is classified and bounded.
 - `reversibility_check`: update, cleanup, or codemod has rollback or staged disablement plan.
-- `lockfile_check`: pinned input changes are reviewed intentionally.
+- `lockfile_check`: pinned input changes are inspected intentionally.
 - `ratchet_check`: legacy findings have non-regression rule and reduction step.
 - `route_check`: provenance/signing/dependency-inventory and deployed vulnerability work are routed to the correct specialist.
 
@@ -121,5 +121,5 @@ Use continuous small-batch maintenance with pinned inputs, dependency inventory,
 | --- | --- |
 | Big-bang cleanup | Use small batches and ratchets. |
 | Treating all dependencies alike | Separate runtime, build-time, test-only, and transitive risk. |
-| Blind codemods | Review the transform, sample output, responsibility, and validation. |
+| Blind codemods | Check the transform, sample output, responsibility, and validation. |
 | Suppression sprawl | Require reason, expiry, or baseline rule. |

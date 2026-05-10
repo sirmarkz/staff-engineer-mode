@@ -1,6 +1,6 @@
 ---
 name: code-readability-for-agents
-description: "Use when a repo needs AI-agent readability review: boundaries, name collisions, large files, or canonical code paths"
+description: "Use when repo structure, boundaries, naming, file size, or canonical paths affect AI-agent code comprehension"
 ---
 
 # Code Readability For Agents
@@ -15,12 +15,13 @@ Indirection that humans tolerate because they remember where things live becomes
 
 ## Overview
 
-Produces a legibility audit of a repository as an artifact for AI comprehension: a module-boundary map, a list of names that collide or mislead code search, a function-and-file size report against a defined budget, and a set of naming and layout patches that let an agent reach the canonical implementation in one tool call. Refuses to call code "clean" when an agent has to read three files to find where a behavior actually lives.
+Produces a repository legibility map for AI comprehension: a module-boundary map, a list of names that collide or mislead code search, a function-and-file size report against a defined budget, and a set of naming and layout patches that let an agent reach the canonical implementation in one tool call. Refuses to call code "clean" when an agent has to read three files to find where a behavior actually lives.
 
 **Core principle:** the repository is read by agents at least as often as by humans now. If the agent cannot find the canonical implementation deterministically, the structure is wrong, not the agent.
 
 ## When To Use
 
+- The user is shaping repo structure, module boundaries, names, or canonical paths so AI coding agents can find and modify the right code.
 - The user asks why their AI coding agent keeps editing the wrong file, recreating existing functions, or producing diffs that almost-but-not-quite match the local convention.
 - A codebase is being prepared for AI-assisted contribution and you want to reduce wrong-file edits and hallucinated helpers.
 - A repo has god files, files that exceed sensible read budgets, or modules whose names do not predict their contents.
@@ -32,11 +33,11 @@ Produces a legibility audit of a repository as an artifact for AI comprehension:
 
 - The work is broad architectural decision-making across services or system boundaries; use `architecture-decisions`.
 - The work is dependency cleanup, dead-code removal, or static-analysis findings on existing code; use `dependency-and-code-hygiene`.
-- The work is org-level policy for AI-assisted coding (review gates, acceptance rules, data boundaries); use `ai-coding-governance`.
-- The work is reviewing one specific agent diff before merge; use `agent-pr-review`.
+- The work is org-level rules for AI-assisted coding (acceptance gates, data boundaries, protected paths); use `ai-coding-governance`.
+- The work is checking one specific agent diff before merge; use `agent-pr-review`.
 - The work is documentation lifecycle, responsibility, or freshness of engineering docs; use `documentation-lifecycle`.
 - The work is API contract design or backwards compatibility on exposed surfaces; use `api-design-and-compatibility`.
-- The work is review routing, change size policy, or workflow metrics; use `code-review-and-workflow`.
+- The work is review routing, change-size limits, or workflow metrics; use `code-review-and-workflow`.
 
 ## Inputs To Collect
 
@@ -54,7 +55,7 @@ Produces a legibility audit of a repository as an artifact for AI comprehension:
 ## Workflow
 
 1. **Map the repo as the agent sees it.** List top-level modules and the verbs/nouns each exposes. Record any module whose name does not predict its responsibility.
-2. **Run the one-tool-call test.** For a list of representative behaviors ("how does authentication happen," "where is the rate limit applied," "what validates this input"), check whether a single grep, symbol search, or doc lookup lands on the canonical file. Behaviors that fail the test are the audit's first artifact.
+2. **Run the one-tool-call test.** For a list of representative behaviors ("how does authentication happen," "where is the rate limit applied," "what validates this input"), check whether a single grep, symbol search, or doc lookup lands on the canonical file. Behaviors that fail the test become the first findings.
 3. **Find name collisions.** Surface duplicate or near-duplicate function and class names across modules, especially common verbs (`process`, `handle`, `update`, `run`, `apply`, `save`). Each collision is a candidate disambiguation patch.
 4. **Identify god files.** List files that exceed the size budget, hold more than one responsibility, or mix public surface with internal helpers. Each is a candidate split.
 5. **Identify oversized functions.** List functions whose length, branching depth, or argument count exceed the budget. Long functions are unsearchable by behavior; an agent finds the file but not the responsibility within it.
@@ -80,24 +81,24 @@ Optimize the repository for one-tool-call discovery. Keep modules narrow and pre
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
-- Generated code may exceed the size budget if the generator is maintained and the file is not edited by hand; mark it generated and exclude it from the audit.
+- Generated code may exceed the size budget if the generator is maintained and the file is not edited by hand; mark it generated and exclude it from the legibility score.
 - Deliberately legacy modules under active replacement may keep their shape until cutover; record the exception, cutover condition, and concrete next patch.
 - Domain-driven naming may require domain words that look ambiguous to outsiders but are precise inside the domain; the disambiguation lives in the module-level doc.
 - Performance-critical code may justify a longer function or denser file when splitting would cost measured throughput; record the measurement and the evidence path that keeps the exception honest.
 
 ## Response Quality Bar
 
-- Lead with the legibility audit, the one-tool-call failures, the renaming or splitting patches, or the agent-search heuristic requested.
+- Lead with the legibility map, the one-tool-call failures, the renaming or splitting patches, or the agent-search heuristic requested.
 - Cover module-boundary findings, name collisions, file and function size against the budget, canonical-implementation duplications, and test/doc discoverability before optional refactor breadth.
 - Make recommendations actionable with file paths, exact rename targets, split boundaries, and the agent-search rule each patch protects.
 - State required evidence such as code-search hit counts, file/function size measurements, agent traces where available, and the representative behaviors used for the one-tool-call test; do not claim legibility without the test results.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside repository legibility for AI comprehension. Route system architecture, dead-code cleanup, doc lifecycle, agent governance, and per-diff review to the responsible specialist.
+- Stay inside repository legibility for AI comprehension. Route system architecture, dead-code cleanup, doc lifecycle, agent controls, and per-diff review to the responsible specialist.
 - Be concise: prefer compact finding tables and patch lists over generic clean-code prose.
 
 ## Required Outputs
@@ -114,7 +115,7 @@ Optimize the repository for one-tool-call discovery. Keep modules narrow and pre
 
 ## Evidence Gates
 
-- `boundary_map_present`: the audit lists modules with stated responsibility and contradictions are named.
+- `boundary_map_present`: the map lists modules with stated responsibility and contradictions are named.
 - `one_tool_call_test`: representative behaviors are tested for one-tool-call discovery; failures are listed with the search used.
 - `collision_inventory`: colliding or near-colliding names are listed with their modules and proposed disambiguations.
 - `size_budget_check`: a file and function size budget is stated and offenders are listed against it.
@@ -126,7 +127,7 @@ Optimize the repository for one-tool-call discovery. Keep modules narrow and pre
 ## Red Flags - Stop And Rework
 
 - The one-tool-call test is skipped because "you know where everything is."
-- A behavior has two plausible implementations and the audit picks one without consolidating the other.
+- A behavior has two plausible implementations and the recommendation picks one without consolidating the other.
 - Renames are proposed without sweeping callers, tests, and docs.
 - A god file is "split" by moving code to a new file with the same responsibility, leaving two god files.
 - The agent-search heuristic is written but contradicts the actual file layout the patches produce.
@@ -143,4 +144,4 @@ Optimize the repository for one-tool-call discovery. Keep modules narrow and pre
 | Splitting god files by line count | Split by responsibility; two equally-mixed files are not progress. |
 | Documenting modules with restated names | Document responsibility, public surface, and non-obvious invariants. |
 | Hiding tests in a parallel tree without convention | Co-locate or document the mapping rule so an agent can find tests by name. |
-| Treating legibility as a one-time refactor | Make the agent-search heuristic a contributor rule; review for regression. |
+| Treating legibility as a one-time refactor | Make the agent-search heuristic a contributor rule; guard against regression. |

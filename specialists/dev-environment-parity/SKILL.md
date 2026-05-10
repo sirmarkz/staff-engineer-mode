@@ -21,6 +21,7 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 
 ## When To Use
 
+- The user is designing or relying on local, CI, staging, preview, or production-like environments and needs to decide which differences are allowed.
 - The user reports a "works on my machine" failure or a green-CI-but-broken-staging failure.
 - A migration, dependency update, or configuration change behaves differently across environments and you need to know which differences matter.
 - A new environment (preview, ephemeral, branch-per-developer) is being introduced and you need to define how closely it must match the others.
@@ -80,7 +81,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -94,7 +95,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 ## Response Quality Bar
 
 - Lead with the parity matrix, drift budget, drift-detection plan, allowed-divergence taxonomy, or environment-failure reproduction requested.
-- When diagnosing a "passes here, fails there" failure, name the anti-pattern in plain language ("the local pass is a mocked happy-path result", "the fix is environment-only and does not count as shipped") AND name the enforcement that would have caught it (CI route-coverage check, readiness gate, lint, review checklist). Do not let the structured matrix replace the verdict.
+- When diagnosing a "passes here, fails there" failure, name the anti-pattern in plain language ("the local pass is a mocked happy-path result", "the fix is environment-only and does not count as shipped") AND name the enforcement that would have caught it (CI route-coverage check, readiness gate, lint, readiness checklist). Do not let the structured matrix replace the verdict.
 - Cover dependencies, configuration, data shape, time and clock, network policy, and secret handling before optional environment breadth.
 - Make recommendations actionable with per-dimension parity status, drift budget, detection cadence, action trigger, and the environment change path.
 - State required evidence such as dependency-lock comparisons, configuration snapshots, schema versions, clock settings, network reachability checks, and the drift signals that fired or did not fire; do not claim parity without the comparison.

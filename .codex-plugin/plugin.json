@@ -32,9 +32,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Review this service for production readiness.",
+      "Design the production readiness gates for this service.",
       "Make this architecture reliable and operable.",
-      "Route this engineering problem to the right Staff Engineer Mode skill."
+      "Decide the right engineering constraints for this change."
     ],
     "brandColor": "#1F6FEB"
   }

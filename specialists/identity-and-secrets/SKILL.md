@@ -1,6 +1,6 @@
 ---
 name: identity-and-secrets
-description: "Use when human or workload access, scopes, credential lifetime, secret storage, break-glass, or audit need design"
+description: "Use when designing human or workload access, scopes, credential lifetime, secret storage, or break-glass paths"
 ---
 
 # Zero Trust Identity And Secrets
@@ -24,14 +24,14 @@ Identity is the control plane for human and workload power.
 - The user asks about identity, zero trust, service accounts, workload identity, federation, multi-factor access, secrets, keys, encryption, cryptography, or access control.
 - A system grants human, service, admin, break-glass, tenant, or cross-environment access.
 - Secrets appear in code, logs, CI, images, config, tickets, or operational workflows.
-- A design needs key management, credential rotation, audit events, or least-privilege review.
+- A design needs key management, credential rotation, audit events, or least-privilege decisions.
 
 ## When Not To Use
 
 - The request is general app threat modeling without identity/secrets focus; use `secure-sdlc-and-threat-modeling` instead.
 - The main issue is artifact signing or build provenance; use `software-supply-chain-security` instead.
 - The main issue is tenant data isolation; use tenant isolation.
-- The request is staffing or policy-only access governance without engineering implementation; out of scope.
+- The request is staffing or access-program work without engineering implementation; out of scope.
 
 ## Inputs To Collect
 
@@ -41,7 +41,7 @@ Identity is the control plane for human and workload power.
 - Authorization model, permission granularity, default grants, just-in-time elevation, and break-glass process.
 - Secrets, tokens, keys, certificates, storage locations, rotation cadence, expiry, and consumers.
 - Encryption needs, key responsibility, key separation, data classification, and long-lived confidentiality requirements.
-- Audit events, log retention, alerting, access review cadence, and revocation path.
+- Audit events, log retention, alerting, access recertification cadence, and revocation path.
 
 ## Workflow
 
@@ -50,13 +50,13 @@ Identity is the control plane for human and workload power.
 3. **Minimize privileges.** Scope permissions by action, resource, tenant, environment, and duration.
 4. **Prefer workload identity and short-lived credentials.** Use managed identity where the runtime and resource share a trust domain; use workload identity federation when crossing platforms or organizations; use expiring tokens, rotation, and revocation over static long-lived secrets.
 5. **Protect secrets and keys.** Keep them out of source, logs, images, and broad config; separate key administration from data access where risk warrants it.
-6. **Design break-glass deliberately.** Require strong authentication, limited duration, justification, audit, and post-use review.
+6. **Design break-glass deliberately.** Require strong authentication, limited duration, justification, audit, and post-use verification.
 7. **Use vetted cryptography.** Prefer standard protocols and managed primitives; do not invent algorithms or key-handling schemes.
-8. **Audit and verify.** Emit access, privilege change, secret access, key use, and admin events with a user-visible review path.
+8. **Audit and verify.** Emit access, privilege change, secret access, key use, and admin events with a user-visible verification path.
 
 ## Synthesized Default
 
-Use zero-trust access with explicit identity, least privilege, workload identity for software, federation instead of copied secrets across trust boundaries, short-lived credentials, secure secret storage, strong human authentication, audited break-glass, and vetted cryptography. Treat access as continuously reviewable, not granted once forever.
+Use zero-trust access with explicit identity, least privilege, workload identity for software, federation instead of copied secrets across trust boundaries, short-lived credentials, secure secret storage, strong human authentication, traceable break-glass, and vetted cryptography. Treat access as continuously verifiable, not granted once forever.
 
 
 
@@ -68,7 +68,7 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
@@ -94,7 +94,7 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 - Human/service permission table with least-privilege decisions.
 - Secret and key inventory with storage, rotation, expiry, and consumers.
 - Break-glass and just-in-time access process.
-- Audit event and access-review requirements.
+- Audit event and access-recertification requirements.
 - Cryptography decision record.
 - Migration plan for overbroad or long-lived credentials.
 
@@ -103,7 +103,7 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 - `access_inventory`: human, workload, admin, emergency, and third-party access paths are listed.
 - `least_privilege`: permissions are scoped by action/resource/environment/tenant and default-deny is addressed.
 - `credential_lifetime`: secrets and tokens have storage, expiry, rotation, and revocation plan.
-- `audit_check`: high-risk access and privilege changes emit reviewable audit events.
+- `audit_check`: high-risk access and privilege changes emit traceable audit events.
 - `crypto_check`: cryptographic choices use vetted primitives and key responsibility is defined.
 
 ## Red Flags - Stop And Rework

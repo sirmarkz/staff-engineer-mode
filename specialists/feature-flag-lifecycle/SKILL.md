@@ -1,6 +1,6 @@
 ---
 name: feature-flag-lifecycle
-description: "Use when launched feature flags need expiry, orphan detection, debt scoring, rollback-safe cleanup, or removal"
+description: "Use when feature flags need lifecycle decisions: expiry, orphan detection, debt scoring, cleanup, or removal"
 ---
 
 # Feature Flag Lifecycle
@@ -21,7 +21,8 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 
 ## When To Use
 
-- The user asks to audit, inventory, classify, retire, clean up, or sunset feature flags.
+- The user is deciding how a feature flag should be created, categorized, expired, cleaned up, inventoried, retired, or sunset.
+- The user asks to inventory existing flags, assess flag debt, or set removal evidence.
 - A rollout has completed and the flag that gated it is still live.
 - An incident exposed a flag whose intended behavior has no current fallback or removal rule.
 - You ask how to stop accumulating flag debt or how to set expiry policy per flag class.
@@ -34,7 +35,7 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 - A flag itself is being changed as a configuration value with safety implications; use `configuration-and-automation-safety`.
 - Generic dead-code or dependency cleanup with no flag-specific gating; use `dependency-and-code-hygiene`.
 - The flag is an A/B experiment treatment under active analysis; use `experimentation-and-metric-guardrails`.
-- The change is an org-level policy for AI-assisted code that adds flags it never removes; use `ai-coding-governance`.
+- The change is an org-level rule for AI-assisted code that adds flags it never removes; use `ai-coding-governance`.
 - The work is broad release readiness across multiple surfaces; use `production-readiness-review`.
 
 ## Inputs To Collect
@@ -55,7 +56,7 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 
 1. **Build the inventory.** Reconcile flags discovered in code, in the flag service or config registry, and in environment overrides. A flag that exists in only one of those sources is the first orphan signal.
 2. **Classify each flag.** Assign exactly one category: release toggle (turns a shipped feature on), experiment (assigns variants for measurement), operational kill switch (disables a path under load or failure), permission or entitlement (gates access by tenant, plan, or role). A flag that resists classification is itself a finding.
-3. **Set expiry by category.** Release toggles default to short expiry tied to rollout completion. Experiment flags default to short expiry tied to readout date. Operational kill switches default to longer expiry but require rehearsal cadence. Permission flags may be long-lived but still need review and a safe fallback.
+3. **Set expiry by category.** Release toggles default to short expiry tied to rollout completion. Experiment flags default to short expiry tied to readout date. Operational kill switches default to longer expiry but require rehearsal cadence. Permission flags may be long-lived but still need renewal decisions and a safe fallback.
 4. **Check default-value safety.** Record the local default/fallback value for each flag and the behavior chosen if flag evaluation or the flag service is unavailable. The fallback should select the safest known production behavior, not an accidental SDK or config default.
 5. **Check rollout completion.** For each release toggle, confirm the rollout finished, the chosen value is the production default everywhere, and no environment still pins the legacy value without a documented reason.
 6. **Detect orphans.** Flag the following as orphans: declared in code but absent from the registry; present in registry but unreferenced in code; expiry exceeded with no removal action; both branches identical or one branch unreachable; not evaluated in production within a defined freshness window where evaluation telemetry exists.
@@ -63,11 +64,11 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 8. **Plan removal.** For each flag scheduled for removal, define: target value (the branch that stays), the order of cleanup (default flip, override sweep, code removal, registry removal, config-row removal), the rollback path if removal regresses behavior, and the verification step that proves no caller still selects the removed branch.
 9. **Stage the removal as a change.** Treat flag removal as a production change with separate blast radius and rollback. Use `progressive-delivery` as the internal lens when removal touches a tier-critical path.
 10. **Score the flag debt.** Produce a scorecard: total flags by category, percent past expiry, percent without orphan count, oldest live flag age, and removal velocity over the last review period.
-11. **Set the standing rule.** Establish per-category expiry defaults, a recurring review cadence, and the rule that adding a new flag requires declaring its category, expiry, and safe fallback value at creation time.
+11. **Set the standing rule.** Establish per-category expiry defaults, a recurring renewal cadence, and the rule that adding a new flag requires declaring its category, expiry, and safe fallback value at creation time.
 
 ## Synthesized Default
 
-Treat flags as time-bounded. Release toggles expire when the rollout completes. Experiment flags expire when the readout is accepted. Operational kill switches and permission flags may live longer but still require recurring review. Removal is a planned change, not a cleanup ticket. The inventory is the source of truth and is reconciled against code on a defined cadence. Every flag must also document its fallback/default value and what production behavior occurs if flag evaluation fails.
+Treat flags as time-bounded. Release toggles expire when the rollout completes. Experiment flags expire when the readout is accepted. Operational kill switches and permission flags may live longer but still require recurring renewal decisions. Removal is a planned change, not a cleanup ticket. The inventory is the source of truth and is reconciled against code on a defined cadence. Every flag must also document its fallback/default value and what production behavior occurs if flag evaluation fails.
 
 
 
@@ -79,13 +80,13 @@ Treat flags as time-bounded. Release toggles expire when the rollout completes. 
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Long-lived operational kill switches may exceed standard expiry if the disabled path is rehearsed on a recorded cadence.
-- Permission or entitlement flags tied to billing, plan, or regulatory access may be effectively permanent; they are not orphans but still need review, fallback behavior, and test evidence.
+- Permission or entitlement flags tied to billing, plan, or regulatory access may be effectively permanent; they are not orphans but still need renewal decisions, fallback behavior, and test evidence.
 - A flag protecting an in-progress migration may stay past its initial expiry with a renewed expiry date and completion condition.
 - Emergency kill switches added during an incident may bypass the create-time expiry rule but must be classified, dated, and assigned a safe fallback value within the postmortem follow-up.
 
@@ -107,7 +108,7 @@ Treat flags as time-bounded. Release toggles expire when the rollout completes. 
 - Per-tenant, per-location, or per-cohort override list with reason and removal condition for each non-default pin.
 - Branch map per retiring flag covering call sites, tests per branch, and dependent config rows.
 - Flag-debt scorecard with totals by category, percent past expiry, percent without orphan count, oldest live flag age, and removal velocity.
-- Standing policy: per-category expiry defaults, review cadence, and the create-time expiry/category/safe-fallback rule.
+- Standing rule: per-category expiry defaults, renewal cadence, and the create-time expiry/category/safe-fallback rule.
 - Follow-up routes to progressive delivery, configuration safety, dependency hygiene, or experimentation as needed.
 
 ## Evidence Gates

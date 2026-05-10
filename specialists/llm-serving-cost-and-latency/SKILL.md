@@ -21,7 +21,7 @@ Produces a per-route token and latency budget table, a cache strategy spec for p
 
 ## When To Use
 
-- The user is designing, reviewing, or operating a route, agent, or background job that calls a hosted or self-served language model.
+- The user is designing, building, or operating a route, agent, or background job that calls a hosted or self-served language model.
 - Spend on model inference is rising faster than traffic and the cause is unclear.
 - p95 or p99 latency on an LLM-backed path is unacceptable to users and you is choosing between caching, batching, smaller models, streaming, or removing calls.
 - A model provider had an outage or degraded response and the route had no fallback.
@@ -82,7 +82,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
 - Release: define rollout, observability, abort, rollback, and readiness evidence.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
 - Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
