@@ -1,13 +1,13 @@
 {
   "name": "staff-engineer-mode",
-  "description": "The senior reviewer your AI coding agent is missing.",
+  "description": "Senior engineering review pack for Claude Code. Routes design, delivery, reliability, security, API, data, and platform requests to specialist skills, then returns practical review artifacts: rollback plan, blast-radius summary, owner gaps, and backwards-compatibility risks.",
   "owner": {
     "name": "sirmarkz"
   },
   "plugins": [
     {
       "name": "staff-engineer-mode",
-      "description": "The senior reviewer your AI coding agent is missing. An engineering review pack with auto-routing.",
+      "description": "Senior engineering review pack for Claude Code. Routes design, delivery, reliability, security, API, data, and platform requests to specialist skills, then returns practical review artifacts: rollback plan, blast-radius summary, owner gaps, and backwards-compatibility risks.",
       "version": "0.10.1",
       "source": "./",
       "author": {

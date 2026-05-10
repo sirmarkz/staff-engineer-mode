@@ -1,6 +1,6 @@
 {
   "name": "staff-engineer-mode",
-  "description": "The senior reviewer your AI coding agent is missing. An engineering review pack that auto-routes work to the right reviewer and produces the artifact a careful staff engineer would insist on \u2014 rollback plan, missing-owner flag, backwards-compatibility note, blast-radius summary.",
+  "description": "Senior engineering review pack for Claude Code. Routes design, delivery, reliability, security, API, data, and platform requests to specialist skills, then returns practical review artifacts: rollback plan, blast-radius summary, owner gaps, and backwards-compatibility risks.",
   "version": "0.10.1",
   "author": {
     "name": "sirmarkz"
