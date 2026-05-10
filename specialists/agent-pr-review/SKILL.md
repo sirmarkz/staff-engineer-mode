@@ -32,7 +32,7 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 - The work is pre-design: there is no diff yet; use `architecture-decisions` or `secure-sdlc-and-threat-modeling` instead.
 - A live incident is underway; use `incident-response-and-postmortems` instead first.
 - The request is org-level rules for AI-assisted work, not a single diff; use `ai-coding-governance` instead.
-- The request is review routing, change-size policy, responsibility policy, or DORA workflow metrics — i.e. how review works, not the review itself; use `code-review-and-workflow` instead.
+- The request is review routing, change-size policy, responsibility policy, or workflow metrics rather than a concrete diff; no routed specialist applies unless the prompt names a concrete engineering surface.
 - The request is launch readiness across multiple surfaces with an explicit launch event; use `production-readiness-review` instead.
 - The diff is one trivial fix the human author can self-review without a structured pass.
 

@@ -27,7 +27,7 @@ Architecture decision work turns "components and opinions" into explicit goals, 
 ## When Not To Use
 
 - Live outage handling: use `incident-response-and-postmortems`.
-- Code style, naming, formatting, or local implementation review: use `code-review-and-workflow`.
+- Code style, naming, formatting, or local implementation review: use `agent-pr-review` only for a concrete diff; use `code-readability-for-agents` when repository legibility is the design problem.
 - Launch readiness aggregation: use `production-readiness-review`.
 - Narrow API compatibility issue: use `api-design-and-compatibility`.
 

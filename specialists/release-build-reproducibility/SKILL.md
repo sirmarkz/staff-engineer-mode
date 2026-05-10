@@ -30,7 +30,7 @@ Release engineering turns source changes into trustworthy artifacts.
 
 - The main topic is rollout stages, canaries, feature flags, rollback, or production exposure; use `progressive-delivery` instead.
 - The main topic is artifact signing, provenance maturity, dependency inventory, builder trust, or deploy admission; use `software-supply-chain-security` instead.
-- The main topic is code review latency or developer workflow policy; use `code-review-and-workflow` instead.
+- The main topic is generic code review latency or developer workflow policy, with no build or release artifact risk.
 - The main topic is an actively vulnerable deployed artifact; use `vulnerability-management` instead.
 
 ## Inputs To Collect

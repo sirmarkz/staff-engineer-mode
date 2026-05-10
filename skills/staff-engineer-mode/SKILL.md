@@ -51,7 +51,7 @@ Pick `primary` and `secondary` only from this exact list. Never invent, shorten,
 ```
 accessibility-gates, agent-pr-review, ai-coding-governance, api-design-and-compatibility,
 architecture-decisions, backup-and-recovery, caching-and-derived-data,
-code-readability-for-agents, code-review-and-workflow, configuration-and-automation-safety,
+code-readability-for-agents, configuration-and-automation-safety,
 cost-aware-reliability, cryptography-and-key-lifecycle, database-operations, data-contracts,
 data-pipeline-reliability, dependency-and-code-hygiene, dependency-resilience,
 dev-environment-parity, distributed-data-and-consistency, documentation-lifecycle,
@@ -99,7 +99,7 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 Treat "review" as a verb until the artifact proves otherwise.
 
 - Concrete PR, branch, patch, last commit, or diff review before merge routes to `agent-pr-review`.
-- Review-system design, reviewer routing, ownership, responsibility, change size, review latency, or DORA workflow routes to `code-review-and-workflow`.
+- Generic review-system design, reviewer routing, ownership, change size, review latency, or DORA workflow has no routed specialist unless a concrete engineering surface is present.
 - Launch readiness, go/no-go, tier upgrade, or broad release evidence routes to `production-readiness-review`.
 - Design review, architecture review, security review, API review, data review, rollout review, or test review without a concrete diff routes by the engineering surface, not by the word "review".
 - A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, safety, rollout, security, accessibility, data, or test evidence rather than a general diff verdict.

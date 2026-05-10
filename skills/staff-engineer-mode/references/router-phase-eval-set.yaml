@@ -124,11 +124,11 @@ cases:
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Before any code exists, design the team review system: ownership routing, change-size limits, self-review rules, and reviewer latency targets."
-    expected_primary: code-review-and-workflow
-    expected_behavior: "route review-system design away from diff-only agent-pr-review"
-    expected_phase: design
-    category: paraphrase
-    expected_gates: [single_primary, intent_inference]
+    expected_primary: none
+    expected_behavior: "withhold routing for generic review-system design with no concrete engineering surface"
+    category: out_of_scope
+    expected_gates: [scope_check]
+    forbidden_in_response: [all_specialist_names]
   - prompt: "Review the checkout API design before code exists for error shapes, idempotency, pagination, and compatibility."
     expected_primary: api-design-and-compatibility
     expected_behavior: "route design-review wording by API compatibility surface, not to agent-pr-review"

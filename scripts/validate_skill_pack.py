@@ -72,10 +72,10 @@ ROUTING_MATRIX_REQUIRED_BOUNDARIES = {
         "infrastructure-and-policy-as-code",
         "configuration-and-automation-safety",
     ],
-    "review workflow governance boundary": [
-        "system-level review rules",
-        "code-review-and-workflow",
-        "org-level ai coding rules",
+    "review workflow non-route boundary": [
+        "generic review",
+        "do not route",
+        "agent-pr-review",
         "ai-coding-governance",
     ],
 }
@@ -181,7 +181,6 @@ AUDIT_ONLY_EXCEPTIONS = {
 
 SPECIALIST_DESCRIPTION_REVIEW_EXCEPTIONS = {
     "agent-pr-review",
-    "code-review-and-workflow",
 }
 
 ROUTER_OPERATIONAL_SECTIONS = [

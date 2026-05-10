@@ -37,7 +37,7 @@ Produces a repository legibility map for AI comprehension: a module-boundary map
 - The work is checking one specific agent diff before merge; use `agent-pr-review`.
 - The work is documentation lifecycle, responsibility, or freshness of engineering docs; use `documentation-lifecycle`.
 - The work is API contract design or backwards compatibility on exposed surfaces; use `api-design-and-compatibility`.
-- The work is review routing, change-size limits, or workflow metrics; use `code-review-and-workflow`.
+- The work is generic review routing, change-size limits, or workflow metrics with no repository legibility issue; no routed specialist applies.
 
 ## Inputs To Collect
 

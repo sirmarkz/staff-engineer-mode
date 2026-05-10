@@ -12,7 +12,6 @@ fixture coverage, sample-prompt updates, install docs review, and release notes.
 | Current | Proposed | Decision | Reason |
 | --- | --- | --- | --- |
 | `agent-pr-review` | `pre-merge-risk-review` | defer | Diff-only scope is intentional; examples and lifecycle routing should point pre-code work to other specialists. |
-| `code-review-and-workflow` | `review-system-design` | test | Natural review-system design wording should still route to the current slug before any rename is considered. |
 | `engineering-control-evidence` | `engineering-evidence-mapping` | test | The current slug preserves the cross-surface control boundary; natural evidence-mapping prompts should prove whether it is too audit-shaped. |
 | `dependency-and-code-hygiene` | `codebase-maintenance` | test | More natural cleanup wording may help, but the replacement risks becoming too broad. |
 | `release-build-reproducibility` | `build-artifact-reproducibility` | test | Artifact wording is clearer; keep current slug if natural build-artifact prompts route correctly. |

@@ -28,7 +28,7 @@ Quality gates should catch real risk early without turning delivery into ritual.
 
 ## When Not To Use
 
-- The user asks about review behavior, responsibility routing, or review latency; use `code-review-and-workflow` instead.
+- The user asks about generic review behavior, responsibility routing, or review latency with no merge or release gate decision.
 - The user asks for canary or production rollout gates; use `progressive-delivery` instead.
 - The request is production chaos or failover testing; use `resilience-experiments` or `high-availability-design` instead.
 - The question is pure formatting/style enforcement; automate it and keep this skill focused on risk.
@@ -90,7 +90,7 @@ Use a risk-based test strategy with fast deterministic pre-merge gates, focused 
 - Make recommendations actionable with blocking/advisory status, validation commands, quarantine rules, stop criteria, and rollout of new gates where relevant.
 - State required evidence such as defect history, critical journeys, CI runtime, flake rate, coverage gaps, static findings, and release failure data; do not claim unseen evidence.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside verification and quality gates. Route production rollout gates, review workflow, or chaos testing only when they are the central unresolved risk.
+- Stay inside verification and quality gates. Route production rollout gates or chaos testing only when they are the central unresolved risk; generic review workflow has no routed specialist.
 - Be concise and prefer compact risk-to-gate matrices, but always state: a flake-rate metric paired with a quarantine timer, a coverage metric+target paired with a meaningful-vs-vanity caveat, a CI runtime target paired with how it is measured, and per-layer test ratios with rationale when test composition is in scope.
 
 ## Required Outputs

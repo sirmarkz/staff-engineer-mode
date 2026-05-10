@@ -170,10 +170,11 @@ cases:
     category: direct
     expected_gates: [single_primary, intent_inference]
   - prompt: "Reviews sit idle for days, responsibility paths are unclear, and large changes keep landing late in the cycle."
-    expected_primary: code-review-and-workflow
-    expected_behavior: "route to review-system workflow and responsibility"
-    category: direct
-    expected_gates: [single_primary, intent_inference]
+    expected_primary: none
+    expected_behavior: "withhold routing for generic review-workflow process with no concrete engineering surface"
+    category: out_of_scope
+    expected_gates: [scope_check]
+    forbidden_in_response: [all_specialist_names]
   - prompt: "Our runbooks and design docs contradict each other; we need responsibility paths, source of truth, freshness rules, and archive criteria."
     expected_primary: documentation-lifecycle
     expected_behavior: "route to engineering documentation lifecycle instead of architecture decision work"

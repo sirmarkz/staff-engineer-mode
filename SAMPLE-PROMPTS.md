@@ -153,13 +153,6 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the fleet inventory and find unsupported versions, owners, exceptions, and cleanup gates."
 - "Some services cannot move runtime versions until clients update; plan compatibility windows and exceptions."
 
-### `code-review-and-workflow`
-
-- "Inspect this large PR workflow and suggest change-size limits for splitting it without losing context."
-- "Inspect ownership files and recent changes to find why reviews are slow and what latency targets should change."
-- "Look at this shared repo and propose review ownership boundaries that match how the code actually changes."
-- "A team keeps rubber-stamping risky generated diffs; propose review-system rules and size limits that reduce latency without hiding risk."
-
 ### `agent-pr-review`
 
 - "Review this PR before merge and tell me what a senior reviewer would catch: intent match, behavior evidence, missing edge cases."

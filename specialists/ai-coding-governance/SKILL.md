@@ -31,9 +31,9 @@ Produces a repo-local rule set for coding agents: allowed and forbidden actions,
 - The request is per-PR, per-diff, or per-change pre-merge review ("review this PR before merge," "what did my agent miss here," "is this branch safe to merge") for any diff regardless of authorship; use `agent-pr-review`. This skill covers org-level and repo-level controls: allowed and forbidden actions, protected paths, secret and data boundaries, traceability, and the rules any diff must satisfy. `agent-pr-review` covers the senior review pass on a specific diff against those rules.
 - The main risk is prompt injection, tool access, retrieval, or deployed LLM app behavior; use `llm-application-security`.
 - The main issue is model eval harness design, graders, or regression gates for an LLM workflow; use `llm-evaluation`.
-- The request is review routing, responsibility, change-size policy, or DORA-style workflow metrics for human and agent code together; use `code-review-and-workflow`.
+- The request is generic review routing, responsibility, change-size policy, or workflow metrics for human and agent code together, with no AI-agent control decision.
 - The request is broad AI ethics, legal rules, procurement, or staffing; out of scope.
-- The task is ordinary code review with no AI-assisted workflow concern; use `code-review-and-workflow`.
+- The task is ordinary code review with no AI-assisted workflow concern; use `agent-pr-review` only when there is a concrete diff.
 
 ## Inputs To Collect
 

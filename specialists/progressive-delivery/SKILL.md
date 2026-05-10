@@ -29,7 +29,7 @@ Produces a staged rollout plan with named blast radius per stage, predeclared ca
 ## When Not To Use
 
 - A live incident needs immediate command and mitigation; route to `incident-response-and-postmortems` first.
-- The question is only code review or merge gates; use `testing-and-quality-gates` or `code-review-and-workflow` instead.
+- The question is only code review or merge gates; use `agent-pr-review` for a concrete diff or `testing-and-quality-gates` for blocking checks.
 - The question is build systems, release branches, packaging, or reproducible artifacts; use `release-build-reproducibility` instead.
 - The main risk is database lock/backfill execution; use `database-operations` instead for that detail and use this skill for rollout sequencing.
 - The request is product launch messaging or marketing; out of scope.

@@ -7,8 +7,8 @@ Lifecycle-aware specialist routing release.
 - Repositions the router and specialists for ideation, design, development,
   testing, release, operation, and maintenance guidance instead of
   after-the-fact review.
-- Clarifies review routing so concrete diffs, review-system design, readiness
-  decisions, and surface-specific design reviews route to the right specialist.
+- Clarifies review routing so concrete diffs, readiness decisions, and
+  surface-specific design reviews route to the right specialist.
 - Adds lifecycle and review-routing eval cases, plus live Claude and Codex smoke
   coverage for pre-code design routing.
 

@@ -32,7 +32,7 @@ Repeated pages and manual operations are engineering defects.
 - The user asks about staffing, compensation, rotation fairness, headcount, or HR process; out of scope unless reframed as technical toil reduction.
 - The main deliverable is new telemetry or alert construction; use `observability-and-alerting` instead.
 - The main work is defining SLOs or paging thresholds from scratch; use `slo-and-error-budgets` instead.
-- The request is generic developer productivity with no operational pain; use `code-review-and-workflow` instead.
+- The request is generic developer productivity with no operational pain; out of scope for routed specialists.
 
 ## Inputs To Collect
 

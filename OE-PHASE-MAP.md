@@ -46,7 +46,6 @@ This pack does not include a general "what is OE" skill. It starts with concrete
 - [agent-pr-review](specialists/agent-pr-review/SKILL.md) — Applies a senior pre-merge risk review to a specific diff or PR.
 - [ai-coding-governance](specialists/ai-coding-governance/SKILL.md) — Sets repo rules for coding agents, protected paths, data boundaries, verification evidence, and auditability.
 - [code-readability-for-agents](specialists/code-readability-for-agents/SKILL.md) — Audits module boundaries, naming, file size, and searchability so agents can find canonical code safely.
-- [code-review-and-workflow](specialists/code-review-and-workflow/SKILL.md) — Designs review routing, change-size policy, self-review rules, and workflow metrics with quality guardrails.
 - [data-contracts](specialists/data-contracts/SKILL.md) — Adds compatibility and contract-test discipline to shared producer-consumer data surfaces.
 - [data-pipeline-reliability](specialists/data-pipeline-reliability/SKILL.md) — Sets validation gates and replay checks before critical data is published to consumers.
 - [dependency-and-code-hygiene](specialists/dependency-and-code-hygiene/SKILL.md) — Plans dependency updates, lockfile changes, static-analysis ratchets, codemods, and dead-code cleanup in reversible batches.
@@ -118,7 +117,6 @@ This pack does not include a general "what is OE" skill. It starts with concrete
 - [accessibility-gates](specialists/accessibility-gates/SKILL.md) — Raises accessibility from ad hoc checks to repeatable conformance and regression gates for critical journeys.
 - [ai-coding-governance](specialists/ai-coding-governance/SKILL.md) — Improves agent-assisted development with repo-local boundaries, verification rules, and reviewable audit trails.
 - [code-readability-for-agents](specialists/code-readability-for-agents/SKILL.md) — Reduces wrong-file edits and duplicated helpers by improving codebase legibility for humans and agents.
-- [code-review-and-workflow](specialists/code-review-and-workflow/SKILL.md) — Tunes review systems for faster understanding, smaller changes, clearer responsibility, and quality guardrails.
 - [cost-aware-reliability](specialists/cost-aware-reliability/SKILL.md) — Improves reliability economics by preserving explicit SLO, capacity, and recovery targets while reducing waste.
 - [dependency-and-code-hygiene](specialists/dependency-and-code-hygiene/SKILL.md) — Turns dependency freshness, static findings, codemods, and dead-code removal into routine reversible maintenance.
 - [dev-environment-parity](specialists/dev-environment-parity/SKILL.md) — Reduces recurring environment drift with parity contracts, drift budgets, and action triggers.
