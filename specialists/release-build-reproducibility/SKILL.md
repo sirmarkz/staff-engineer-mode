@@ -35,6 +35,7 @@ Release engineering turns source changes into trustworthy artifacts.
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Source revision, branch/release-line model, release cadence, and supported versions.
 - Build graph, test graph, generated code, packaging steps, and artifact outputs.
 - Pinned dependencies, lockfiles, toolchains, build images, environment variables, and network access.
@@ -57,6 +58,19 @@ Release engineering turns source changes into trustworthy artifacts.
 ## Synthesized Default
 
 Use hermetic, reproducible, build-once promotion with pinned inputs, explicit artifact identity, fast automated checks, and traceable release metadata. Prefer trunk-compatible releases with short-lived topic branches and maintained release branches only when support windows require maintained release lines.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

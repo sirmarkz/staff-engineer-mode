@@ -36,6 +36,7 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Datastore type, topology, table/collection size, write rate, read patterns, and critical queries.
 - Proposed DDL/DML, index, backfill, cleanup, or maintenance operation.
 - Lock behavior, replication lag, write amplification, query-plan risks, and operational windows.
@@ -58,6 +59,19 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 ## Synthesized Default
 
 Use compatible expand/contract migrations, throttled idempotent backfills, explicit abort criteria, delayed destructive cleanup, and verification queries. Treat database operations as release events with telemetry, user confirmation for risky steps, and rollback evidence; include partitioning and shard-map effects when data placement changes.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

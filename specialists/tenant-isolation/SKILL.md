@@ -37,6 +37,7 @@ Multi-tenancy fails when tenant context is optional.
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Tenant model: silo, pool, bridge, organization/account hierarchy, shared services, and administrative boundaries.
 - Data classification, PII/sensitive fields, retention, deletion, export, and residency constraints.
 - Request, query, cache, event, batch, search, analytics, and support/admin paths that carry tenant data.
@@ -60,6 +61,19 @@ Multi-tenancy fails when tenant context is optional.
 ## Synthesized Default
 
 Make tenant context mandatory and enforce it at multiple layers: application, data access, cache/event/job processing, audit, and observability. Choose the weakest shared-tenancy model that still satisfies blast-radius and data-boundary requirements, then combine tenant quotas with privacy-aware logging and cross-tenant tests.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

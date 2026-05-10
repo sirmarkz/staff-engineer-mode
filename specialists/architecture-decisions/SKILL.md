@@ -33,6 +33,7 @@ Architecture review turns a design from "components and opinions" into explicit 
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Problem statement, users, goals, non-goals, constraints, success criteria.
 - Current and proposed architecture, data flows, trust boundaries, interfaces, dependencies, and runtime responsibility model.
 - Operability evidence: how the user or agent debugs, replaces, or degrades around the design, what the fallback path is, and where that path is tested or documented.
@@ -69,6 +70,19 @@ inferred field as ASSUMED so the user can correct it.
 ## Synthesized Default
 
 Use a compact design review plus ADR. Keep the system modular and technology-agnostic until the design proves it needs distribution. When distribution is justified, make responsibility, contracts, failure modes, observability, and deployability explicit before endorsing the split.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

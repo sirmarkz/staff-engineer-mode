@@ -64,6 +64,19 @@ Produces a tier-classified launch posture with an evidence matrix, a blocker lis
 
 Use PRR as a cross-domain evidence review for launches and major changes. It should inspect available evidence, identify missing artifacts, expose cross-pillar tradeoffs, and route only the highest-risk gaps. It should not auto-load every specialist skill.
 
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+
 ## Exceptions
 
 - Internal prototypes may use advisory PRR if they cannot affect customers, production data, or shared infrastructure.

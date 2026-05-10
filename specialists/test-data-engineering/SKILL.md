@@ -41,6 +41,7 @@ Produces a fixture inventory with scope and regeneration path per fixture, an an
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Fixture inventory source: which test layers (unit, component, contract, integration, end-to-end, performance, security, ML/LLM) hold fixtures, where each fixture lives, and how it is loaded.
 - Per-fixture metadata: name, scope (per test, per file, per suite, per process, per environment), generation source (hand-written, synthetic generator, captured production, derived golden), and refresh cadence.
 - Production-source captures: which fixtures are captured from production, when each was captured, what fields were included, and what anonymization or redaction was applied.
@@ -68,6 +69,19 @@ Produces a fixture inventory with scope and regeneration path per fixture, an an
 ## Synthesized Default
 
 Prefer synthetic, parameterized fixtures generated at test time. Use captured production data only when realism is required and the anonymization, refresh, and restore procedures are real. Default to per-test scope. Goldens are deterministic by construction and have a documented regeneration procedure. Drift detection compares fixture distributions to production at a defined cadence. Captured data without anonymization or restore procedure is removed.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

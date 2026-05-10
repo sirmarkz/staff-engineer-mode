@@ -2,21 +2,21 @@
 
 [![Release](https://img.shields.io/github/package-json/v/sirmarkz/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
 
-**Your AI coding agent ships fast. This makes it ship careful.**
+**Your AI coding agent ships fast. This makes it ship with judgment.**
 
-The senior reviewer your AI coding agent is missing.
+Staff-level routing for design, development, testing, release, and operations decisions.
 
 ## Why Now
 
-AI coding agents now write material amounts of production code. The bottleneck is no longer how fast the agent writes — it is whether the agent reasoned about what happens when the code runs at 3am. Agents will happily ship a migration with no rollback, an endpoint with no SLO, an alert with no owner, a config change with no canary. This pack closes that gap.
+AI coding agents now write material amounts of production code. The bottleneck is no longer how fast the agent writes — it is whether the agent reasoned about what happens when the code runs at 3am. Agents will happily design an endpoint without a compatibility plan, implement a migration with no rollback, add tests that miss the failure mode, or ship a config change with no canary. This pack closes that gap.
 
 ## How It Works
 
-Ask a normal engineering question. Hand the agent a task. The router reads the work, picks one specialist (occasionally one secondary), reads that specialist file, and returns concrete risks, gates, owners, evidence, and next steps. You never name a specialist.
+Ask a normal engineering question. Hand the agent a task, design, diff, incident, rollout, or maintenance problem. The router reads the work, picks one specialist (occasionally one secondary), reads that specialist file, and returns concrete decisions, risks, gates, owners, evidence, and next steps. You never name a specialist.
 
 Supported tools should list only the native `staff-engineer-mode` router. Specialist files live under `specialists/` and load only after routing.
 
-The router refuses to load every plausible specialist. One reviewer at a time, by default.
+The router refuses to load every plausible specialist. One primary specialist at a time, by default.
 
 See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for prompts across every specialist.
 
@@ -76,21 +76,17 @@ gemini extensions install https://github.com/sirmarkz/staff-engineer-mode
 
 Start a fresh session inside any open repo and ask one of:
 
+- "Before implementing partner webhooks, design the event contract, retry semantics, and compatibility gates."
+- "During development of the checkout inventory call, decide timeout, retry, fallback, and duplicate-work safeguards."
 - "Review my last commit and tell me what you would catch in PR review."
-- "Find risks in the diff I'm about to push."
-- "What did my agent miss in this branch?"
 
-The agent should load the router, choose a specialist, and respond with concrete risks, gates, owners, and evidence — not vibes.
+The agent should load the router, choose one specialist, and respond with concrete decisions, risks, gates, owners, and evidence — not vibes.
 
 ## What's Inside
 
 One native router skill: `staff-engineer-mode`. It routes to 55 specialist
 files under `specialists/`; those files are not installed or listed as separate
-native skills. Common routes:
-
-- [**`agent-pr-review`**](specialists/agent-pr-review/SKILL.md) — the default pre-merge review: applies a senior reviewer's checklist to any diff, human or AI-generated, before it merges.
-- [**`production-readiness-review`**](specialists/production-readiness-review/SKILL.md) — when a service, feature, migration, tier change, or traffic shift needs go/no-go evidence.
-- [**`code-review-and-workflow`**](specialists/code-review-and-workflow/SKILL.md) — when reviewer routing, change size, ownership, or workflow quality are the bottleneck.
+native skills.
 
 Examples by surface (the full catalog with prompts for every specialist file is in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md)):
 

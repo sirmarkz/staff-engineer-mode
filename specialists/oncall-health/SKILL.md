@@ -35,6 +35,7 @@ Repeated pages and manual operations are engineering defects.
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Page history: alert name, count, time, severity, duration, action taken, user impact, and fix path.
 - Toil inventory: manual, repetitive, automatable, tactical, interrupt-driven work.
 - Runbooks, fallback paths, responsibility, checkpoint notes, and incident/postmortem actions.
@@ -58,6 +59,19 @@ Repeated pages and manual operations are engineering defects.
 ## Synthesized Default
 
 Pages should be urgent, actionable, user-visible, and novel. Everything else should be ticketed, automated, grouped, suppressed, or removed. Toil reduction should produce engineering work with measured page or manual-effort reduction, and live-site responsibility should feed back into product engineering priorities.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

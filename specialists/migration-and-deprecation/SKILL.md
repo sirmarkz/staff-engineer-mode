@@ -35,6 +35,7 @@ Removing or replacing a widely used system is a production change spread across 
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Deprecated thing, replacement, reason, deadline, risk, and support window.
 - Static references, runtime calls, traffic, tenants, clients, jobs, dashboards, alerts, docs, and third-party dependents.
 - Migration path, compatibility layer, dual-read/write needs, validation checks, and rollback/escape hatch.
@@ -57,6 +58,19 @@ Removing or replacing a widely used system is a production change spread across 
 ## Synthesized Default
 
 Treat deprecation as an engineered migration, not an announcement. Use centralized expertise for broad changes, automate repetitive edits, preserve compatibility while dependents move, enforce no-new-usage, and treat final decommissioning as a high-risk production deployment.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

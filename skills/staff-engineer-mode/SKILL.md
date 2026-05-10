@@ -20,6 +20,9 @@ Users are not expected to know specialist names. Classify by artifact, phase, su
 ## When To Use
 
 - The request asks for engineering design, review, delivery, operations, reliability, security, architecture, API, data, platform, or client guidance.
+- The user asks to guide ideation, design, development, testing, release, or maintenance decisions.
+- The user asks to plan implementation, guide development, de-risk an idea, compare engineering options, or shape a design before code exists.
+- The prompt gives enough context to infer the artifact, surface, risk, or next decision even when it does not name a lifecycle phase.
 - The request is broad, vague, or spans multiple engineering surfaces.
 - No single specialist clearly dominates from the prompt.
 - The user asks for staff-engineer-level architecture, reliability, security, operations, delivery, data, platform, client, or cost guidance.
@@ -35,7 +38,7 @@ Users are not expected to know specialist names. Classify by artifact, phase, su
 ## Inputs To Collect
 
 - **Artifact:** decision, plan, gate, rollout, investigation, runbook, policy, migration, eval, evidence pack, or review.
-- **Phase:** design, before merge, launch, migration, active incident, post-incident, regression, audit/evidence, or maintenance.
+- **Phase:** ideation, design, development, testing, before merge, release, migration, active incident, post-incident, regression, audit/evidence, or maintenance.
 - **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, AI, accessibility, cost, or operator load.
 - **Risk/scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-location.
 
@@ -67,14 +70,16 @@ web-release-gates
 ## Workflow
 
 1. Identify the requested artifact and phase before naming any skill.
-2. Translate named tools into capabilities; routing outputs must use capability language, not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
-3. Pick `primary` (and any `secondary`) verbatim from the Bundled Specialist Slugs list above; if no listed slug fits, ask a clarification question instead of inventing or paraphrasing one.
-4. Choose the narrowest primary whose required outputs match the next artifact.
-5. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
-6. Read only `../../specialists/<slug>/SKILL.md`, or the same file under the platform-supplied specialist root.
-7. If confidence is low, ask only the missing intake questions needed to route and start useful work.
-8. Keep single-surface evidence with the matching specialist; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
-9. Reframe out-of-scope work as an engineering-control question only when that is plausible.
+2. If the work is in ideation, design, development, testing, release, or maintenance and has an engineering surface, route by the decision or artifact the specialist should guide; do not require concrete files unless the chosen specialist is intentionally diff-only.
+3. Treat phase labels as signals, not hard gates; infer applicability from context, artifact, surface, risk, and the next decision.
+4. Translate named tools into capabilities; routing outputs must use capability language, not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
+5. Pick `primary` (and any `secondary`) verbatim from the Bundled Specialist Slugs list above; if no listed slug fits, ask a clarification question instead of inventing or paraphrasing one.
+6. Choose the narrowest primary whose required outputs match the next artifact.
+7. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
+8. Read only `../../specialists/<slug>/SKILL.md`, or the same file under the platform-supplied specialist root.
+9. If confidence is low, ask only the missing intake questions needed to route and start useful work.
+10. Keep single-surface evidence with the matching specialist; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
+11. Reframe out-of-scope work as an engineering-control question only when that is plausible.
 
 ## Synthesized Default
 
@@ -91,7 +96,7 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 - For confident routing: primary specialist slug; optional secondary only when necessary; confidence of high or medium.
 - Inferred intent: requested artifact, dominant surface, work phase, and one-sentence rationale.
-- For explicit eval-harness runs only: include a fenced `routing` block containing a JSON object with `primary`, `secondary`, `confidence`, `artifact`, `surface`, `phase`, and `rationale`; JSON text fields must not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
+- For explicit eval-harness runs only: include a fenced `routing` block only for confident in-scope routing; never emit a routing block for low-confidence, ambiguous, or out-of-scope prompts. The block contains a JSON object with `primary`, `secondary`, `confidence`, `artifact`, `surface`, `phase`, and `rationale`; JSON text fields must not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
 - For low-confidence routing: questions only; no primary, secondary, confidence label, routing draft, candidate list, or specialist names.
 - Out-of-scope reframe when applicable, without specialist names or candidate routes.
 

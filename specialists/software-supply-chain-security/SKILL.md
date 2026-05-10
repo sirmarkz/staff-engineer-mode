@@ -35,6 +35,7 @@ Production should run artifacts whose source, build, dependencies, and confirmat
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Repositories, branches, code review rules, merge rights, and source protection.
 - Build system, workers, isolation, inputs, dependencies, environment, and reproducibility needs.
 - Artifact types, registries, signing, checksums, provenance, dependency inventories, and retention.
@@ -59,6 +60,19 @@ Production should run artifacts whose source, build, dependencies, and confirmat
 ## Synthesized Default
 
 Use reviewed source, governed production pipelines, isolated builds, provenance, signed or integrity-verified artifacts, dependency inventory, least-privilege automation, secret scanning, and deployment admission checks for production paths. Keep routine dependency hygiene and deployed vulnerability remediation as adjacent but separate workflows.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

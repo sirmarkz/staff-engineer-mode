@@ -6,8 +6,9 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-ROUTER_EVAL_CANDIDATES = [
+ROUTER_EVAL_FILES = [
     ROOT / "skills" / "staff-engineer-mode" / "references" / "router-eval-set.yaml",
+    ROOT / "skills" / "staff-engineer-mode" / "references" / "router-phase-eval-set.yaml",
 ]
 REQUIRED_KEYS = {"prompt", "expected_primary", "expected_behavior", "category"}
 REQUIRED_CATEGORIES = {"direct", "paraphrase", "ambiguous", "mixed_intent", "out_of_scope"}
@@ -23,6 +24,33 @@ ALLOWED_GATES = {
 }
 MIN_CASES = 35
 MIN_SECONDARY_CASES = 8
+PHASE_EVAL_MIN_CASES = 30
+REQUIRED_PHASES = {"ideation", "design", "development", "testing", "release", "maintenance"}
+PHASE_BOUNDARY_SPECIALISTS = {
+    "agent-pr-review",
+    "incident-response-and-postmortems",
+    "production-readiness-review",
+    "vulnerability-management",
+}
+EXPLICIT_PHASE_WORDS = [
+    "ideation",
+    "ideating",
+    "idea",
+    "design",
+    "development",
+    "develop",
+    "implementation",
+    "implement",
+    "testing",
+    "test",
+    "release",
+    "rollout",
+    "launch",
+    "maintenance",
+    "maintain",
+    "review",
+    "audit",
+]
 
 
 def fail(message: str) -> None:
@@ -79,15 +107,7 @@ def skill_names() -> set[str]:
     return {"staff-engineer-mode"} | {path.parent.name for path in specialists_dir.glob("*/SKILL.md")}
 
 
-def main() -> int:
-    router_eval = next((path for path in ROUTER_EVAL_CANDIDATES if path.exists()), None)
-    if router_eval is None:
-        checked = ", ".join(str(path.relative_to(ROOT)) for path in ROUTER_EVAL_CANDIDATES)
-        fail(f"missing router eval fixture; checked {checked}")
-    cases = parse_cases(router_eval.read_text())
-    if len(cases) < MIN_CASES:
-        fail(f"expected at least {MIN_CASES} cases, found {len(cases)}")
-
+def validate_common_cases(cases: list[dict[str, Any]], path: Path) -> tuple[set[str], set[str], int]:
     categories = set()
     primaries = set()
     secondary_cases = 0
@@ -97,58 +117,117 @@ def main() -> int:
     for index, case in enumerate(cases, 1):
         missing = REQUIRED_KEYS - set(case)
         if missing:
-            fail(f"case {index} missing keys: {sorted(missing)}")
+            fail(f"{path} case {index} missing keys: {sorted(missing)}")
         if not case["prompt"]:
-            fail(f"case {index} prompt is empty")
+            fail(f"{path} case {index} prompt is empty")
         if not case["expected_behavior"]:
-            fail(f"case {index} expected_behavior is empty")
+            fail(f"{path} case {index} expected_behavior is empty")
         if case["expected_primary"] not in valid_primary_names:
-            fail(f"case {index} has unknown expected_primary {case['expected_primary']!r}")
+            fail(f"{path} case {index} has unknown expected_primary {case['expected_primary']!r}")
         if "expected_secondary" in case and case["expected_secondary"] not in valid_skill_names:
-            fail(f"case {index} has unknown expected_secondary {case['expected_secondary']!r}")
+            fail(f"{path} case {index} has unknown expected_secondary {case['expected_secondary']!r}")
         if case["expected_primary"] == "staff-engineer-mode" and "without naming specialists" not in case["expected_behavior"]:
             fail(
-                f"ambiguous case {index} must expect clarification questions without naming specialists"
+                f"{path} ambiguous case {index} must expect clarification questions without naming specialists"
             )
         gates = case.get(REQUIRED_GATE_KEY)
         if not isinstance(gates, list) or not gates:
-            fail(f"case {index} must include non-empty {REQUIRED_GATE_KEY}")
+            fail(f"{path} case {index} must include non-empty {REQUIRED_GATE_KEY}")
         unknown_gates = set(gates) - ALLOWED_GATES
         if unknown_gates:
-            fail(f"case {index} has unknown expected gates: {sorted(unknown_gates)}")
+            fail(f"{path} case {index} has unknown expected gates: {sorted(unknown_gates)}")
         if case["expected_primary"] not in {"staff-engineer-mode", "none"}:
             for gate in ["single_primary", "intent_inference"]:
                 if gate not in gates:
-                    fail(f"case {index} must include expected gate {gate}")
+                    fail(f"{path} case {index} must include expected gate {gate}")
         if "expected_secondary" in case and "secondary_cap" not in gates:
-            fail(f"case {index} with expected_secondary must include secondary_cap")
+            fail(f"{path} case {index} with expected_secondary must include secondary_cap")
         if "expected_secondary" in case:
             secondary_cases += 1
         if case["expected_primary"] == "staff-engineer-mode" and "ambiguity_check" not in gates:
-            fail(f"ambiguous case {index} must include ambiguity_check")
+            fail(f"{path} ambiguous case {index} must include ambiguity_check")
         if case["expected_primary"] == "none" and "scope_check" not in gates:
-            fail(f"out-of-scope case {index} must include scope_check")
+            fail(f"{path} out-of-scope case {index} must include scope_check")
         if case["category"] in {"ambiguous", "out_of_scope"}:
             forbidden = case.get(FORBIDDEN_KEY)
             if not isinstance(forbidden, list) or not forbidden:
-                fail(f"case {index} must include non-empty {FORBIDDEN_KEY}")
+                fail(f"{path} case {index} must include non-empty {FORBIDDEN_KEY}")
             unknown_forbidden = set(forbidden) - valid_forbidden_names
             if unknown_forbidden:
-                fail(f"case {index} has unknown forbidden names: {sorted(unknown_forbidden)}")
+                fail(f"{path} case {index} has unknown forbidden names: {sorted(unknown_forbidden)}")
         categories.add(case["category"])
         primaries.add(case["expected_primary"])
+    return categories, primaries, secondary_cases
+
+
+def validate_main_fixture(cases: list[dict[str, Any]], path: Path) -> None:
+    if len(cases) < MIN_CASES:
+        fail(f"{path} expected at least {MIN_CASES} cases, found {len(cases)}")
+    categories, primaries, secondary_cases = validate_common_cases(cases, path)
 
     missing_categories = REQUIRED_CATEGORIES - categories
     if missing_categories:
-        fail(f"missing categories: {sorted(missing_categories)}")
+        fail(f"{path} missing categories: {sorted(missing_categories)}")
     if "none" not in primaries:
-        fail("out-of-scope fixture must include expected_primary: none")
+        fail(f"{path} out-of-scope fixture must include expected_primary: none")
     if "staff-engineer-mode" not in primaries:
-        fail("ambiguous fixture must include router fallback cases")
+        fail(f"{path} ambiguous fixture must include router fallback cases")
     if secondary_cases < MIN_SECONDARY_CASES:
-        fail(f"expected at least {MIN_SECONDARY_CASES} expected_secondary cases, found {secondary_cases}")
+        fail(f"{path} expected at least {MIN_SECONDARY_CASES} expected_secondary cases, found {secondary_cases}")
 
-    print(f"router eval fixture validation passed: {len(cases)} cases, {len(categories)} categories")
+
+def has_explicit_phase_word(prompt: str) -> bool:
+    prompt_lower = prompt.lower()
+    return any(word in prompt_lower for word in EXPLICIT_PHASE_WORDS)
+
+
+def validate_phase_fixture(cases: list[dict[str, Any]], path: Path) -> None:
+    if len(cases) < PHASE_EVAL_MIN_CASES:
+        fail(f"{path} expected at least {PHASE_EVAL_MIN_CASES} cases, found {len(cases)}")
+    categories, primaries, _secondary_cases = validate_common_cases(cases, path)
+    if "none" not in primaries:
+        fail(f"{path} out-of-scope fixture must include expected_primary: none")
+
+    phases = {
+        str(case["expected_phase"])
+        for case in cases
+        if case["expected_primary"] not in {"staff-engineer-mode", "none"} and "expected_phase" in case
+    }
+    missing_phases = REQUIRED_PHASES - phases
+    if missing_phases:
+        fail(f"{path} missing expected_phase coverage: {sorted(missing_phases)}")
+
+    missing_boundaries = PHASE_BOUNDARY_SPECIALISTS - primaries
+    if missing_boundaries:
+        fail(f"{path} missing boundary specialist coverage: {sorted(missing_boundaries)}")
+
+    context_only_cases = [
+        index
+        for index, case in enumerate(cases, 1)
+        if case["category"] == "paraphrase" and not has_explicit_phase_word(str(case["prompt"]))
+    ]
+    if len(context_only_cases) < 4:
+        fail(f"{path} needs at least 4 context-only paraphrase cases; found {context_only_cases}")
+
+    if "out_of_scope" not in categories:
+        fail(f"{path} must include an out_of_scope case")
+
+
+def main() -> int:
+    total_cases = 0
+    for router_eval in ROUTER_EVAL_FILES:
+        if not router_eval.exists():
+            fail(f"missing router eval fixture {router_eval.relative_to(ROOT)}")
+        cases = parse_cases(router_eval.read_text())
+        if router_eval.name == "router-eval-set.yaml":
+            validate_main_fixture(cases, router_eval)
+        elif router_eval.name == "router-phase-eval-set.yaml":
+            validate_phase_fixture(cases, router_eval)
+        else:
+            fail(f"unknown router eval fixture {router_eval}")
+        total_cases += len(cases)
+
+    print(f"router eval fixture validation passed: {len(ROUTER_EVAL_FILES)} files, {total_cases} cases")
     return 0
 
 

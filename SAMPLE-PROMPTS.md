@@ -43,7 +43,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 - "Inspect this deployment config and fault-domain topology for what still fails if one hosting location goes down."
 - "Review the failover code path, static capacity, and runbook, then list the availability assumptions we still need to prove."
-- "Trace the dependencies in this repo and identify which single dependency loss could break high availability for the whole feature."
+- "Trace the serving path and fault-domain map, then identify which shared dependency or control-plane loss could break high availability for the whole feature."
 - "During a zone evacuation, this feature still needs reads and writes; inspect which components share a failover dependency."
 
 ### `dependency-resilience`
@@ -186,7 +186,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Find all uses of this deprecated dependency and plan a small-batch hygiene cleanup with lockfile and codemod safety checks."
 - "Review this dependency update and lockfile sweep for migration, hygiene, and rollback risks."
 - "Inspect the static-analysis backlog and changed files, then prioritize fixes that reduce real maintenance risk."
-- "The static analyzer warns on a deprecated helper across five packages; plan the smallest cleanup batches."
+- "The static analyzer warns on a deprecated helper across five packages; plan small hygiene cleanup batches with codemod safety checks and rollback evidence."
 
 ## Operations And Observability
 
@@ -387,7 +387,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 - "Review this UI PR for loading, responsiveness, layout stability, runtime errors, and payload growth."
 - "Inspect field and lab performance signals before rolling out this frontend change."
-- "Add release gates and telemetry for this client-side change using the files in this repo."
+- "For this browser client-side change, add release gates and telemetry for loading, interaction readiness, layout stability, runtime errors, and payload growth."
 - "The checkout bundle gained a heavy dependency; set gates for interaction readiness and runtime errors."
 
 ### `accessibility-gates`

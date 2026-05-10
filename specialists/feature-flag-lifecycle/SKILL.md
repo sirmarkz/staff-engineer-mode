@@ -39,6 +39,7 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Flag inventory source: code search, flag-service registry, config files, environment overrides, and any per-tenant or per-location overrides.
 - Per-flag metadata: name, declaration site, default value, current production value per environment, last evaluation timestamp where available, and number of branches gated.
 - Stated category for each flag: release toggle, experiment, operational kill switch, or permission/entitlement.
@@ -67,6 +68,19 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 ## Synthesized Default
 
 Treat flags as time-bounded. Release toggles expire when the rollout completes. Experiment flags expire when the readout is accepted. Operational kill switches and permission flags may live longer but still require recurring review. Removal is a planned change, not a cleanup ticket. The inventory is the source of truth and is reconciled against code on a defined cadence. Every flag must also document its fallback/default value and what production behavior occurs if flag evaluation fails.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

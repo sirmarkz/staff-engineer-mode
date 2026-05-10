@@ -40,6 +40,7 @@ Produces a legibility audit of a repository as an artifact for AI comprehension:
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Repository scope: which directories are in scope, which are vendored or generated and excluded, and which are intentionally legacy.
 - Agent traces if available: examples of recent agent runs where the agent edited the wrong file, missed the canonical implementation, or recreated a helper.
 - Current module map: top-level packages or directories, stated responsibilities, and the actual exports each exposes.
@@ -68,6 +69,19 @@ Produces a legibility audit of a repository as an artifact for AI comprehension:
 ## Synthesized Default
 
 Optimize the repository for one-tool-call discovery. Keep modules narrow and predictably named. Keep files and functions inside a defined size budget. Disambiguate common verbs in names. Co-locate tests and docs. Maintain a single canonical implementation per behavior. Document the agent-search heuristic so contributors keep it true. Treat repository legibility as a first-class engineering quality, not a refactor that happens "when there is time."
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

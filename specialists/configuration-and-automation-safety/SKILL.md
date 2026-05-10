@@ -36,6 +36,7 @@ Configuration and automation can change production faster than code review can n
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Config or automation surface, consumers, environments, affected production state, and local change path.
 - Schema, allowed values, defaults, invariants, dependency ordering, and unsafe combinations.
 - Change path, review path, user confirmation, preview or dry-run output, execution identity, and audit record.
@@ -58,6 +59,19 @@ Configuration and automation can change production faster than code review can n
 ## Synthesized Default
 
 Use typed config contracts, deterministic validation, effect preview, small execution batches, explicit user confirmation for production-impacting work, audit records, drift checks, and tested recovery paths. Automation should be idempotent by default and should fail closed when it cannot prove the intended target.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

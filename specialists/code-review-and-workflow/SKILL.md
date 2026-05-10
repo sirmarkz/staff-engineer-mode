@@ -37,6 +37,7 @@ Produces a code review or self-review policy tied to responsibility, plus a metr
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Current review policy, responsibility metadata, review assignment method, and confirmation requirements.
 - Change size, review latency, rework rate, revert rate, escaped defects, and blocked-time data.
 - Automated checks, style/format enforcement, static analysis, and pre-merge gates.
@@ -58,6 +59,19 @@ Produces a code review or self-review policy tied to responsibility, plus a metr
 ## Synthesized Default
 
 Use small changes, explicit responsibility, automated mechanical checks, protected mainline integration, risk-based review routing, and guarded metrics. Optimize for the review quickly showing whether the change improves the system, not for minimizing review as a ritual.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

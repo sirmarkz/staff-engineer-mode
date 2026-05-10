@@ -35,6 +35,7 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Critical user journeys, SLOs, service tier, and incident history.
 - Request paths, dependency map, queues, data stores, batch jobs, and external integrations.
 - Existing metrics, logs, traces, dashboards, alerts, runbooks, and known blind spots.
@@ -59,6 +60,19 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 ## Synthesized Default
 
 Use SLO/user-journey symptoms, layered health models, golden signals, fault-domain labels, structured events, distributed context, deployment markers, and dependency signals as the default telemetry set. Page only when action is required now; use dashboards and tickets for investigation and slow-burn work.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

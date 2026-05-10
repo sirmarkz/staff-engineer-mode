@@ -35,6 +35,7 @@ Engineering documentation is useful only when it is findable, maintained, curren
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Doc type, audience, source of truth, repo or system link, and user decision point.
 - Current doc set, duplicates, stale pages, search paths, and missing operational references.
 - Change triggers: code responsibility, service behavior, alerts, runbooks, interfaces, migrations, and deprecations.
@@ -55,6 +56,19 @@ Engineering documentation is useful only when it is findable, maintained, curren
 ## Synthesized Default
 
 Use a lightweight documentation lifecycle: classify by user job, assign define source of truth, tie updates to system changes, add freshness signals, and archive stale material. Critical runbooks and launch docs should be checked as part of delivery, not after outages prove they were wrong.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

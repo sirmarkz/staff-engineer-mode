@@ -35,6 +35,7 @@ Asynchronous systems trade call-time coupling for delivery, ordering, replay, an
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Producers, consumers, topics/queues/streams, and event purpose.
 - Event type: notification, state transfer, event-sourced fact, command, reply, or workflow step.
 - Schema, compatibility rules, required fields, versioning, and responsibility.
@@ -57,6 +58,19 @@ Asynchronous systems trade call-time coupling for delivery, ordering, replay, an
 ## Synthesized Default
 
 Use at-least-once delivery with idempotent consumers as the default mental model. Use outbox or equivalent for atomic publish, sagas or workflow state for multi-step processes, schema compatibility for evolution, durable queueing for rate mismatch, and explicit replay/correction for recovery. Treat event sourcing as a high-complexity pattern, not a default persistence style.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

@@ -35,6 +35,7 @@ Accessibility is a release quality property, not a post-launch polish pass.
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Critical journeys, user surfaces, target conformance level, supported input modes, and assistive technologies.
 - Changed components, labels, roles, focus behavior, keyboard paths, error handling, contrast, and dynamic content.
 - Existing automated checks, manual test scripts, defect history, and release-blocking rules.
@@ -55,6 +56,19 @@ Accessibility is a release quality property, not a post-launch polish pass.
 ## Synthesized Default
 
 Gate critical journeys with a named conformance target, automated checks, manual assistive-technology scripts, keyboard completion tests, dated exceptions with repair criteria, and regression tests for known defects. Accessibility evidence should be part of launch readiness for user-facing changes.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

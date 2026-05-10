@@ -35,6 +35,7 @@ An API is a long-lived contract with unknown clients, retries, partial failures,
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Consumers, client release cadence, compatibility expectations, and deprecation tolerance.
 - Operations/resources, generated-client method shape, request and response fields, event shapes, status/error semantics, defaults, and side effects.
 - Authentication, authorization, rate limits, quotas, tenant context, audit requirements, and abuse cases.
@@ -59,6 +60,19 @@ An API is a long-lived contract with unknown clients, retries, partial failures,
 ## Synthesized Default
 
 Design APIs around domain contracts and generated-client ergonomics, not internal storage shape. Use additive compatibility first and explicit versions only when semantics must break. Mutations that can be retried need idempotency. Lists, filters, batches, and unbounded inputs need explicit limits and stable semantics at launch. Errors should be structured, stable, safe to expose, and tied to retry behavior. Deprecation requires telemetry, migration support, and a removal gate.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

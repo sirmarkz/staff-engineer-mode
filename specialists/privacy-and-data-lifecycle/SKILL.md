@@ -35,6 +35,7 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Data inventory: fields, classifications, purpose, source, users, and downstream copies.
 - Collection points, transformations, derived data, logs, telemetry, exports, backups, caches, and support views.
 - Retention requirements, deletion triggers, legal holds if any, archival behavior, and backup expiration model.
@@ -60,6 +61,19 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 ## Synthesized Default
 
 Use privacy-by-design as engineering controls: data inventory, classification, minimization, purpose enforcement, privacy-safe telemetry, retention/deletion automation, data-subject-rights workflow with SLA, export/erasure verification, and audit. Make user/control-plane deletion and retention behavior explicit across primary, derived, and archived copies. Keep legal interpretation outside the skill; make the agreed control enforceable and testable.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

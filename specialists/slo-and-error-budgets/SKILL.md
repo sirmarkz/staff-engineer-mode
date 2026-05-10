@@ -35,6 +35,7 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Critical user journeys, API operations, tenants, customer tiers, and response paths.
 - Candidate SLIs for availability, latency, freshness, correctness, durability, and data loss.
 - Current metrics, logs, traces, dashboards, alerts, and incident history.
@@ -58,6 +59,19 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 ## Synthesized Default
 
 Use the standard SRE sequence as the default: user journey -> health model -> SLI -> SLO -> error budget -> multi-window burn-rate alert -> release and reliability policy. Treat reliability targets as design inputs and error budgets as a guardrail on change velocity rather than as a reason to stop delivery permanently.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

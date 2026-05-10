@@ -66,6 +66,19 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 
 Use a structured pre-merge review pass: verify stated intent matches actual diff, check that changed behavior is exercised by a test that would fail without the change, scan for hallucinated APIs and deleted-but-used code, classify scope creep, and require evidence plus next action for every blocker. Treat any author or agent self-summary as a hypothesis, not a finding. Use narrower specialist skills only as internal lenses when their surface dominates.
 
+
+
+## Phase Behavior
+
+- Ideation: do not use this specialist for risks or options before code exists; route pre-code risk shaping to the appropriate design, security, rollout, test, API, data, or architecture specialist.
+- Design: do not use this specialist for tradeoffs or gates unless a concrete diff, branch, or patch already exists.
+- Development: use only after development sequencing produces a diff or change set that needs pre-merge checks and review.
+- Testing: evaluate tests and failure evidence attached to an existing diff; route test strategy before code exists to the testing specialist.
+- Release: evaluate pre-merge release, rollout, and rollback evidence attached to the diff.
+- Maintenance: use only when a maintenance change has owners, drift context, and a concrete diff, branch, PR, or change set.
+- Review: evaluate an existing diff, branch, PR, or change set against the originating task as one mode.
+- Missing evidence: ask for the diff, task, assumptions, and test evidence; produce an evidence plan and do not invent findings against unseen code.
+
 ## Exceptions
 
 - Throwaway prototypes isolated from production may use a lighter pass focused on hallucinated APIs and unmotivated edits.

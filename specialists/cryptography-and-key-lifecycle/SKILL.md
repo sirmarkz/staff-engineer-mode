@@ -35,6 +35,7 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Inventory of certificates, keys, algorithms, trust roots, consumers, expiry dates, and renewal paths.
 - Usage context: authentication, encryption, signing, verification, storage, transport, or partner integration.
 - Rotation process, automation, manual steps, confirmation, audit, and emergency revocation path.
@@ -57,6 +58,19 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 ## Synthesized Default
 
 Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support transition windows, compatibility gates, emergency revocation plan, and exception register. Prefer designs where cryptographic material can be replaced independently of full application redeploys.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

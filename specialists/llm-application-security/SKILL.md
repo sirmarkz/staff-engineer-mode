@@ -39,6 +39,7 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - LLM workflow, actors, prompts, system instructions, retrieved data, tools, actions, and output sinks.
 - Trust boundaries among user input, developer instructions, retrieved documents, model output, tool results, and external systems.
 - Data classification, tenant boundaries, permissions, secrets, and privacy constraints.
@@ -68,6 +69,19 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 ## Synthesized Default
 
 Use least-privilege tools, permission-checked retrieval, input validation, untrusted-output handling, sensitive-data controls, session isolation, adversarial eval gates, audit logs, emergency rollback, and versioned AI workflow inputs. Test the workflow against realistic attacker goals, then make deterministic application controls decide what is allowed.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

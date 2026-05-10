@@ -35,6 +35,7 @@ Code health is maintained by routine, reversible, low-drama maintenance, not by 
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Dependency inventory, direct/transitive responsibility, lockfiles, update cadence, and deprecated packages.
 - Current vulnerable or outdated dependencies, runtime exposure, and patch urgency.
 - Static-analysis findings, warning budgets, suppression policy, and existing baseline.
@@ -56,6 +57,19 @@ Code health is maintained by routine, reversible, low-drama maintenance, not by 
 ## Synthesized Default
 
 Use continuous small-batch maintenance with pinned inputs, dependency inventory, automated update proposals, reviewable diffs, static-analysis ratchets, and reversible codemods. Treat routine hygiene separately from supply-chain integrity and deployed vulnerability remediation.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

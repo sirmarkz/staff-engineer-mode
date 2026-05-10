@@ -35,6 +35,7 @@ Cost is an operational signal, but reliability headroom is not waste by default.
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Service tier, SLOs, traffic, capacity model, failover headroom, and degradation behavior.
 - Unit metrics: request, tenant, job, dataset, device, model inference, or business transaction.
 - Cost allocation: environment, tenant/customer, feature, location, and workload class.
@@ -58,6 +59,19 @@ Cost is an operational signal, but reliability headroom is not waste by default.
 ## Synthesized Default
 
 Optimize unit cost with allocation, anomaly detection, right-sizing, and capacity-mix decisions, while preserving SLOs, required headroom, and recovery posture. Reliability-risk tradeoffs must be explicit and user-accepted; cheapest is not automatically cost-optimized.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

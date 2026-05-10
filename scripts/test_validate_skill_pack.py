@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import importlib.util
+import io
+import tempfile
+import unittest
+from contextlib import redirect_stderr
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+VALIDATOR_PATH = ROOT / "scripts" / "validate_skill_pack.py"
+
+
+def load_validator():
+    spec = importlib.util.spec_from_file_location("validate_skill_pack", VALIDATOR_PATH)
+    if spec is None or spec.loader is None:
+        raise AssertionError("could not load validate_skill_pack.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class ValidateSkillPackPhaseBehaviorTest(unittest.TestCase):
+    def test_specialist_phase_behavior_requires_lifecycle_guidance(self) -> None:
+        validator = load_validator()
+        text = """---
+name: example
+description: Use when example work needs routing
+---
+
+# Example
+
+## Phase Behavior
+
+- Ideation: identify risks.
+- Ideation: compare options.
+- Design: shape the target artifact.
+- Design: name tradeoffs and gates.
+- Release: define rollout checks.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            stderr = io.StringIO()
+            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+                validator.validate_phase_behavior(text, path)
+            self.assertIn("development", stderr.getvalue())
+
+    def test_specialist_phase_behavior_accepts_full_lifecycle_guidance(self) -> None:
+        validator = load_validator()
+        text = """---
+name: example
+description: Use when example work needs routing
+---
+
+# Example
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            validator.validate_phase_behavior(text, path)
+
+    def test_router_requires_lifecycle_and_context_triggers(self) -> None:
+        validator = load_validator()
+        text = """## When To Use
+
+- The request asks for engineering design, review, delivery, operations, reliability, security, architecture, API, data, platform, or client guidance.
+- The user asks to guide ideation, design, development, testing, release, or maintenance decisions.
+- The user asks to plan implementation, guide development, de-risk an idea, or shape engineering decisions before code exists.
+- The router infers applicability from context, artifact, surface, risk, and the next decision; phase labels are signals, not hard gates.
+
+## Workflow
+
+1. Identify the requested artifact and phase before naming any skill.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            validator.validate_router_phase_triggers(text, path)
+            validator.validate_router_context_applicability(text, path)
+
+    def test_router_requires_eval_harness_scope_boundary(self) -> None:
+        validator = load_validator()
+        text = """## Required Outputs
+
+- For explicit eval-harness runs only: include a fenced routing block containing route details.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            stderr = io.StringIO()
+            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+                validator.validate_router_eval_scope(text, path)
+            self.assertIn("eval-harness scope", stderr.getvalue())
+
+        valid = """## Required Outputs
+
+- For explicit eval-harness runs only: include a fenced routing block only for confident in-scope routing; never emit a routing block for low-confidence, ambiguous, or out-of-scope prompts.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(valid)
+            validator.validate_router_eval_scope(valid, path)
+
+    def test_non_exception_specialist_rejects_audit_only_framing(self) -> None:
+        validator = load_validator()
+        text = """---
+name: example
+description: Use when example work needs routing
+---
+
+# Example
+
+## When To Use
+
+- Use only after a PR exists and review existing artifacts only, even when a decision and assumptions are needed.
+
+## Inputs To Collect
+
+- Existing diff, test evidence, and assumptions.
+
+## Workflow
+
+1. Review existing artifacts only and ignore the next decision.
+
+## Required Outputs
+
+- Findings from the existing diff, with decision evidence and assumptions.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "example" / "SKILL.md"
+            path.parent.mkdir()
+            path.write_text(text)
+            stderr = io.StringIO()
+            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+                validator.validate_decision_guide_framing(text, path)
+            self.assertIn("audit-only", stderr.getvalue())
+
+
+if __name__ == "__main__":
+    unittest.main()

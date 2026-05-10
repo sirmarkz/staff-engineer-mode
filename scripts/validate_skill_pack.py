@@ -18,6 +18,7 @@ MAX_DESCRIPTION_CHARS = 120
 SAMPLE_PROMPTS_PER_SPECIALIST = 4
 ROUTER_MAX_WORDS = 1600
 ROUTER_TIEBREAKER_MAX_WORDS = 260
+SAMPLE_PROMPT_RE = re.compile(r'^- ".+"$')
 ROUTER_EVIDENCE_GATES = {
     "single_primary",
     "secondary_cap",
@@ -85,6 +86,7 @@ SPECIALIST_OPERATIONAL_SECTIONS = [
     "## Inputs To Collect",
     "## Workflow",
     "## Synthesized Default",
+    "## Phase Behavior",
     "## Exceptions",
     "## Response Quality Bar",
     "## Required Outputs",
@@ -92,6 +94,67 @@ SPECIALIST_OPERATIONAL_SECTIONS = [
     "## Red Flags - Stop And Rework",
     "## Common Mistakes",
 ]
+
+PHASE_BEHAVIOR_TERMS = {
+    "ideation": ["ideation", "risks", "options"],
+    "design": ["design", "tradeoffs", "gates"],
+    "development": ["development", "sequencing", "checks"],
+    "testing": ["testing", "tests", "failure"],
+    "release": ["release", "rollout", "rollback"],
+    "maintenance": ["maintenance", "owners", "drift"],
+    "review": ["review", "existing", "one mode"],
+    "missing evidence": ["missing evidence", "assumptions", "evidence plan"],
+}
+
+ROUTER_PHASE_TRIGGER_TERMS = [
+    "guide",
+    "ideation",
+    "design",
+    "development",
+    "testing",
+    "release",
+    "maintenance",
+    "decisions",
+    "plan implementation",
+    "guide development",
+    "de-risk an idea",
+    "before code exists",
+]
+
+ROUTER_CONTEXT_APPLICABILITY_TERMS = [
+    "context",
+    "artifact",
+    "surface",
+    "risk",
+    "next decision",
+    "signals, not hard gates",
+]
+
+ROUTER_EVAL_SCOPE_TERMS = [
+    "eval-harness",
+    "confident in-scope routing",
+    "never emit a routing block",
+    "low-confidence",
+    "ambiguous",
+    "out-of-scope",
+]
+
+AUDIT_ONLY_ANTI_PATTERNS = [
+    "requires an existing",
+    "requires a diff",
+    "requires a branch",
+    "requires a pr",
+    "post-merge only",
+    "after deployment only",
+    "review existing artifacts only",
+]
+
+AUDIT_ONLY_EXCEPTIONS = {
+    "agent-pr-review",
+    "incident-response-and-postmortems",
+    "production-readiness-review",
+    "vulnerability-management",
+}
 
 ROUTER_OPERATIONAL_SECTIONS = [
     "## When To Use",
@@ -284,8 +347,60 @@ def require_gate_terms(gate_bodies: dict[str, str], gate_id: str, terms: list[st
         fail(f"{path} gate {gate_id!r} missing behavior terms: {', '.join(missing)}")
 
 
+def validate_phase_behavior(text: str, path: Path) -> None:
+    body = section_body(text, "## Phase Behavior", path)
+    lowered = body.lower()
+    for label, terms in PHASE_BEHAVIOR_TERMS.items():
+        missing = [term for term in terms if term not in lowered]
+        if missing:
+            fail(f"{path} Phase Behavior missing {label} terms: {', '.join(missing)}")
+
+
+def validate_router_phase_triggers(text: str, path: Path) -> None:
+    lowered = text.lower()
+    missing = [term for term in ROUTER_PHASE_TRIGGER_TERMS if term not in lowered]
+    if missing:
+        fail(f"{path} missing lifecycle routing trigger terms: {', '.join(missing)}")
+
+
+def validate_router_context_applicability(text: str, path: Path) -> None:
+    lowered = text.lower()
+    missing = [term for term in ROUTER_CONTEXT_APPLICABILITY_TERMS if term not in lowered]
+    if missing:
+        fail(f"{path} missing context-applicability routing terms: {', '.join(missing)}")
+
+
+def validate_router_eval_scope(text: str, path: Path) -> None:
+    lowered = text.lower()
+    missing = [term for term in ROUTER_EVAL_SCOPE_TERMS if term not in lowered]
+    if missing:
+        fail(f"{path} missing eval-harness scope terms: {', '.join(missing)}")
+
+
+def validate_decision_guide_framing(text: str, path: Path) -> None:
+    slug = path.parent.name
+    if slug in AUDIT_ONLY_EXCEPTIONS:
+        return
+    sections = [
+        section_body(text, "## When To Use", path),
+        section_body(text, "## Inputs To Collect", path),
+        section_body(text, "## Workflow", path),
+        section_body(text, "## Required Outputs", path),
+    ]
+    joined = "\n".join(sections).lower()
+    required = ["decision", "evidence", "assumptions"]
+    missing = [term for term in required if term not in joined]
+    if missing:
+        fail(f"{path} decision-guide framing missing: {', '.join(missing)}")
+    for pattern in AUDIT_ONLY_ANTI_PATTERNS:
+        if pattern in joined:
+            fail(f"{path} has audit-only framing pattern: {pattern}")
+
+
 def validate_specialist_skill(text: str, path: Path) -> None:
     validate_operational_sections(text, path, SPECIALIST_OPERATIONAL_SECTIONS)
+    validate_phase_behavior(text, path)
+    validate_decision_guide_framing(text, path)
     gates = evidence_gate_ids(text, path)
     if len(gates) < 3:
         fail(f"{path} needs at least three evidence gates under ## Evidence Gates")
@@ -293,6 +408,9 @@ def validate_specialist_skill(text: str, path: Path) -> None:
 
 def validate_router_skill(text: str, path: Path) -> None:
     validate_operational_sections(text, path, ROUTER_OPERATIONAL_SECTIONS)
+    validate_router_phase_triggers(text, path)
+    validate_router_context_applicability(text, path)
+    validate_router_eval_scope(text, path)
     word_count = len(re.findall(r"\S+", text))
     if word_count > ROUTER_MAX_WORDS:
         fail(f"{path} is {word_count} words; compact router skills must stay under {ROUTER_MAX_WORDS}")
@@ -435,7 +553,7 @@ def validate_sample_prompts(skill_files: list[Path]) -> None:
                 sections[current] = count
             current = heading.group(1)
             count = 0
-        elif current is not None and line.startswith("- "):
+        elif current is not None and SAMPLE_PROMPT_RE.match(line):
             count += 1
     if current is not None:
         sections[current] = count

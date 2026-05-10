@@ -37,6 +37,7 @@ Some bugs are too subtle for example-based tests and too expensive to discover i
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - State machine, actors, operations, messages, retries, timers, crashes, recovery, and concurrency points.
 - Safety properties: what must never happen.
 - Liveness properties: what must eventually happen, and under which assumptions.
@@ -58,6 +59,19 @@ Some bugs are too subtle for example-based tests and too expensive to discover i
 ## Synthesized Default
 
 Use lightweight formal or semi-formal validation for high-stakes stateful behavior. Start with plain-language invariants and counterexample search, then select tools proportional to risk. Do not require formal proof everywhere; require explicit properties where ordinary tests cannot cover the state space.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

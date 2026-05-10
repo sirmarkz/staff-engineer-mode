@@ -37,6 +37,7 @@ Produces a repo-local rule set for coding agents: allowed and forbidden actions,
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Agent capabilities, allowed actions, repo instructions, protected paths, and responsibility rules.
 - Sensitive data boundaries, secrets handling, dependency rules, and generated-content restrictions.
 - Required review, tests, validation, traceability, commit hygiene, and release gates.
@@ -57,6 +58,19 @@ Produces a repo-local rule set for coding agents: allowed and forbidden actions,
 ## Synthesized Default
 
 Use repo-local agent instructions, least-privilege tool access, protected-path rules, sensitive-data boundaries, small diffs, mandatory verification evidence, and human responsibility for production changes. Treat AI-generated code as untrusted until tests, review, and source-specific evidence prove it fits the system.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

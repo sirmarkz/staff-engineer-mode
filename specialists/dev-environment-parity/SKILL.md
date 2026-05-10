@@ -41,6 +41,7 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Environment inventory: local developer machines, CI runners, ephemeral or preview environments, staging, production, and any tier in between, with the person or script responsible for changing each environment.
 - Dependency manifest per environment: language runtime version, system library versions, package lockfile state, and how each environment resolves them.
 - Configuration manifest per environment: feature flags, environment variables, defaults, overrides, and the rule for how production-like each non-prod environment is.
@@ -68,6 +69,19 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 ## Synthesized Default
 
 Define required parity and allowed divergence per dimension. Detect drift on parity-required dimensions on a defined cadence. Bound divergence with a budget and a named action when the budget is exceeded. Treat ephemeral and preview environments as parity-explicit, not parity-by-vibes. Reproduce environment-divergent failures in every tier before declaring a fix. Update the contract after every drift-rooted incident.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

@@ -36,6 +36,7 @@ Produces a staged rollout plan with named blast radius per stage, predeclared ca
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Change type, responsible change path, affected users, blast radius, tier, and reversibility.
 - Artifact identity and promotion path from build to environments.
 - Rollout unit: instance, ring, cohort, partition, deployment unit, location, tenant, percentage, device group, or internal-only group.
@@ -62,6 +63,19 @@ Produces a staged rollout plan with named blast radius per stage, predeclared ca
 ## Synthesized Default
 
 Use build-once promotion, progressive exposure, predeclared health and canary metrics, automated or explicit stop criteria, reversible changes, and cleanup responsibility. Prefer small production slices, bake time, and independent fault-domain waves over parallel broad exposure. Prefer compatibility and expand/contract patterns over big-bang cutovers. Treat deploy, exposure, and customer-visible release as separate control points.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

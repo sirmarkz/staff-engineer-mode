@@ -37,6 +37,7 @@ Data contracts let projects change independently without guessing what consumers
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Producers, consumers, domain meaning, critical fields, and consumer release cadence.
 - Contract format, schema location, versioning policy, compatibility modes, and deprecation rules.
 - Required, optional, nullable, defaulted, derived, sensitive, and deprecated fields.
@@ -57,6 +58,19 @@ Data contracts let projects change independently without guessing what consumers
 ## Synthesized Default
 
 Use maintained, versioned, machine-checkable contracts for shared data boundaries. Prefer additive evolution, tolerant readers, producer validation, consumer compatibility tests, usage telemetry, and explicit deprecation gates. Treat semantic changes as breaking even when the field shape stays the same.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 

@@ -35,6 +35,7 @@ Public traffic must be filtered and shaped before abusive load reaches expensive
 
 ## Inputs To Collect
 
+- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
 - Public endpoints, routes, origins, DNS/traffic steering, identity signals, and bypass paths.
 - Traffic patterns, known attacks, request costs, tenant/customer priorities, and false-positive tolerance.
 - Existing edge rules, rate limits, bot controls, challenges, allow/deny lists, and emergency controls.
@@ -57,6 +58,19 @@ Public traffic must be filtered and shaped before abusive load reaches expensive
 ## Synthesized Default
 
 Use layered edge protection: origin isolation, traffic steering, caching where correct, rate limits, bot/abuse controls, DDoS response planning, edge telemetry, staged rule rollout, and reversible emergency mitigations.
+
+
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Review: evaluate an existing diff, design, runbook, evidence, or system behavior as one mode.
+- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
 
 ## Exceptions
 
