@@ -17,12 +17,66 @@ MAX_SKILL_LINES = 300
 MAX_DESCRIPTION_CHARS = 120
 SAMPLE_PROMPTS_PER_SPECIALIST = 4
 ROUTER_MAX_WORDS = 1600
+ROUTER_TIEBREAKER_MAX_WORDS = 260
 ROUTER_EVIDENCE_GATES = {
     "single_primary",
     "secondary_cap",
     "capability_translation",
     "scope_check",
     "ambiguity_check",
+}
+ROUTING_MATRIX_REQUIRED_BOUNDARIES = {
+    "active incident precedence": [
+        "active incident",
+        "incident-response-and-postmortems",
+    ],
+    "narrow route precedence": [
+        "narrow routes beat",
+        "broad neighbors",
+    ],
+    "production-affecting rollout plans": [
+        "production-affecting",
+        "progressive-delivery",
+        "configuration-and-automation-safety",
+    ],
+    "tenant incident boundary": [
+        "tenant-boundary",
+        "tenant-isolation",
+        "incident-response-and-postmortems",
+    ],
+    "service ownership boundary": [
+        "service/module/worker",
+        "architecture-decisions",
+        "dependency-resilience",
+    ],
+    "distributed data boundary": [
+        "data model splits",
+        "distributed-data-and-consistency",
+        "database-operations",
+    ],
+    "workflow storage boundary": [
+        "cross-service workflows",
+        "state-machine-correctness",
+    ],
+    "client release boundary": [
+        "ui pr review",
+        "web-release-gates",
+        "mobile-release-engineering",
+    ],
+    "declarative infrastructure boundary": [
+        "declarative infrastructure",
+        "policy checks",
+        "drift detection",
+        "reconciliation",
+        "infrastructure-and-policy-as-code",
+        "configuration-and-automation-safety",
+    ],
+    "review workflow governance boundary": [
+        "system-level review rules",
+        "code-review-and-workflow",
+        "org-level ai coding rules",
+        "ai-coding-governance",
+    ],
 }
 
 SPECIALIST_OPERATIONAL_SECTIONS = [
@@ -247,8 +301,29 @@ def validate_router_skill(text: str, path: Path) -> None:
     if missing:
         fail(f"{path} missing router evidence gates: {', '.join(sorted(missing))}")
     gate_bodies = evidence_gate_bodies(text, path)
-    require_gate_terms(gate_bodies, "capability_translation", ["tool", "translated"], path)
+    require_gate_terms(gate_bodies, "capability_translation", ["tool", "translated", "not repeated"], path)
+    require_gate_terms(gate_bodies, "scope_check", ["out-of-scope", "without specialist names"], path)
     require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "questions", "specialist names"], path)
+
+
+def validate_router_boundary_split(router_text: str, matrix_text: str, router_path: Path, matrix_path: Path) -> None:
+    tiebreaker_body = section_body(router_text, "## Routing Tiebreakers", router_path)
+    word_count = len(re.findall(r"\S+", tiebreaker_body))
+    if word_count > ROUTER_TIEBREAKER_MAX_WORDS:
+        fail(
+            f"{router_path} Routing Tiebreakers is {word_count} words; "
+            f"keep detailed boundary rules in {matrix_path.relative_to(ROOT)}"
+        )
+    if "Load `references/routing-matrix.md`" not in tiebreaker_body:
+        fail(f"{router_path} Routing Tiebreakers must point to references/routing-matrix.md")
+
+    normalized_lines = [line.lower() for line in matrix_text.splitlines()]
+    for boundary, terms in ROUTING_MATRIX_REQUIRED_BOUNDARIES.items():
+        if not any(all(term in line for term in terms) for line in normalized_lines):
+            fail(
+                f"{matrix_path} missing {boundary} routing boundary terms: "
+                f"{', '.join(terms)}"
+            )
 
 
 def validate_no_duplicate_fragments(text: str, path: Path) -> None:
@@ -425,6 +500,7 @@ def main() -> int:
         fail("router eval fixture is missing")
     if not routing_matrix.exists():
         fail("router routing matrix is missing")
+    validate_router_boundary_split(router_file.read_text(), routing_matrix.read_text(), router_file, routing_matrix)
 
     validate_skill_contract()
     validate_sample_prompts(skill_files)
