@@ -1,5 +1,18 @@
 # Staff Engineer Mode Release Notes
 
+## 1.3.0 - 2026-05-10
+
+Routing boundary and alert-language release.
+
+- Tightens live-tested router boundaries for deprecation PRs, ML promotion,
+  frontend release gates, static-analysis hygiene, cross-service storage
+  correctness, and high-availability failover evidence.
+- Removes paging/page wording from engineering-surface specialists where
+  responder interrupt policy is not the primary workflow, with validation that
+  page language stays limited to workflow, readiness, and evidence specialists.
+- Updates Claude, Codex, Cursor, OpenCode, Gemini, and package metadata to the
+  1.3.0 release line.
+
 ## 1.2.0 - 2026-05-10
 
 Lifecycle-aware specialist routing release.
