@@ -147,7 +147,7 @@ maintaining complex software systems.
 - Capture the SHA only after the release commit lands and is tagged: bump
   version, validate, commit `chore(release): X.Y.Z`, tag `vX.Y.Z`, push commit
   and tag, publish the hosted release, then read the release commit SHA with
-  `git rev-parse vX.Y.Z`. A SHA captured before the release commit is stale and
+  `git rev-parse vX.Y.Z^{}`. A SHA captured before the release commit is stale and
   must be amended in the directory PR.
 - This repo's own manifests carry the version string but not the SHA. Only the
   directory-side entry needs a SHA.
