@@ -31,7 +31,7 @@ The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these
 ### Claude Code
 
 ```text
-/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode
+/plugin marketplace add sirmarkz/staff-engineer-mode
 /plugin install staff-engineer-mode@staff-engineer-mode
 ```
 

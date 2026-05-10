@@ -246,8 +246,10 @@ def validate_ci_workflow() -> None:
         "python3 -m py_compile",
         "scripts/run_router_eval.py",
         "scripts/test_run_router_eval.py",
+        "scripts/test_validate_platform_support.py",
         "bash -n scripts/bump-version.sh",
         "python3 -m unittest scripts/test_run_router_eval.py",
+        "python3 -m unittest scripts/test_validate_platform_support.py",
         "scripts/bump-version.sh --check",
         "scripts/bump-version.sh --audit",
         "python3 scripts/validate_source_quality.py",
@@ -268,10 +270,10 @@ def validate_docs() -> None:
     readme = (ROOT / "README.md").read_text()
     if "staff-engineer-mode" not in readme:
         fail("README.md must document the router entrypoint")
-    if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode" not in readme:
-        fail("README.md must use the HTTPS Claude marketplace add command")
-    if "/plugin marketplace add sirmarkz/staff-engineer-mode" in readme:
-        fail("README.md must not use the SSH-prone Claude owner/repo marketplace shorthand")
+    if "/plugin marketplace add sirmarkz/staff-engineer-mode" not in readme:
+        fail("README.md must use the Claude GitHub owner/repo marketplace add command")
+    if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode" in readme:
+        fail("README.md must not use the legacy HTTPS Claude marketplace add command")
     codex_install = (ROOT / ".codex" / "INSTALL.md").read_text()
     if "~/.agents/skills/staff-engineer-mode" not in codex_install:
         fail(".codex/INSTALL.md must use the native ~/.agents/skills/staff-engineer-mode install path")
