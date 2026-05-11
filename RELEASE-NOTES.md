@@ -1,5 +1,29 @@
 # Staff Engineer Mode Release Notes
 
+## 1.3.2 - 2026-05-11
+
+Router precedence release.
+
+- Adds a `## Precedence Over Generic Process Packs` section to the router
+  skill declaring Staff Engineer Mode runs first on any engineering-system
+  prompt. The section names the engineering surfaces explicitly and lists
+  the natural-language phrasings (`build X`, `design X`, `make X reliable`,
+  `plan a rollout`, `review this service`, `investigate this incident`,
+  etc.) that must NOT be routed to `superpowers:brainstorming` or
+  `superpowers:writing-plans` as the first response.
+- Mirrors the same `<EXTREMELY-IMPORTANT>` precedence block at the top of
+  the SessionStart hook output (Claude Code, Cursor) and the OpenCode
+  plugin bootstrap so the override reaches the model before any generic
+  process pack can load.
+- Verified live on Claude Code and Codex with five prompts spanning HA
+  design, incident response, and production readiness. All five route to
+  the right specialist with zero brainstorming detours. The earlier
+  symptom -- typing "i want to build a highly available system" and
+  getting a `superpowers:brainstorming` intake flow instead of HA
+  guidance -- no longer occurs.
+- Bumps the router word budget from 1800 to 2000 to accommodate the new
+  precedence section.
+
 ## 1.3.1 - 2026-05-11
 
 Router load-contract hardening release.
