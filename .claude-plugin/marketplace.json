@@ -12,8 +12,8 @@
       "source": {
         "source": "github",
         "repo": "sirmarkz/staff-engineer-mode",
-        "ref": "v1.3.0",
-        "sha": "bfe33b634c01a45e6cb130a6424aabe4d8687dcd"
+        "ref": "v1.3.1",
+        "sha": "e3bf0e9348cf973d54db03fe6da16831917f9b45"
       },
       "author": {
         "name": "sirmarkz"
