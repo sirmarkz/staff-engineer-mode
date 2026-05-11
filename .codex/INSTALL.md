@@ -57,6 +57,18 @@ Users should not need to name individual specialists. Broad engineering
 requests route through `staff-engineer-mode`, which then reads the selected
 specialist file from `~/.codex/staff-engineer-mode/specialists/<slug>/SKILL.md`.
 
+## Specialist Loading
+
+Codex does not currently fire a SessionStart hook for this pack, so no
+`SPECIALIST_ROOT` environment variable is published at session start. The
+**Load Contract** in `skills/staff-engineer-mode/SKILL.md` is the source of
+truth: it tells the model to `Read` from
+`~/.codex/staff-engineer-mode/specialists/<slug>/SKILL.md` whenever
+`SPECIALIST_ROOT` is unavailable. Never call the Skill tool on a specialist
+slug -- specialists are files, not registered Codex skills, and a `Skill`
+invocation will fail with `Unknown skill`. No per-user wiring is required;
+the contract is router-borne.
+
 ## Verify
 
 ```bash

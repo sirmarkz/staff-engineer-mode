@@ -16,7 +16,7 @@ CODEX_MAX_SKILL_NAME_LENGTH = 64
 MAX_SKILL_LINES = 300
 MAX_DESCRIPTION_CHARS = 120
 SAMPLE_PROMPTS_PER_SPECIALIST = 4
-ROUTER_MAX_WORDS = 1600
+ROUTER_MAX_WORDS = 1800
 ROUTER_TIEBREAKER_MAX_WORDS = 260
 SAMPLE_PROMPT_RE = re.compile(r'^- ".+"$')
 PROCESS_PAGE_RE = re.compile(r"\b(?:pages?|paging)\b", re.IGNORECASE)
@@ -171,6 +171,23 @@ ROUTER_EVAL_SCOPE_TERMS = [
     "low-confidence",
     "ambiguous",
     "out-of-scope",
+]
+
+ROUTER_LOAD_CONTRACT_RULE_TERMS = [
+    "Read tool",
+    "Do not use the Skill tool",
+    "before producing engineering guidance",
+    "without a matching Read",
+]
+
+ROUTER_LOAD_CONTRACT_PLATFORM_TERMS = [
+    "SPECIALIST_ROOT=",
+    "Codex:",
+    "Gemini:",
+]
+
+ROUTER_LOAD_CONTRACT_BANNED_SUBSTRINGS = [
+    "../../specialists/",
 ]
 
 AUDIT_ONLY_ANTI_PATTERNS = [
@@ -415,6 +432,35 @@ def validate_router_inference_first(text: str, path: Path) -> None:
         fail(f"{path} missing inference-first routing terms: {', '.join(missing)}")
 
 
+def validate_router_load_contract(text: str, path: Path) -> None:
+    iron_law_pos = text.find("## Iron Law")
+    load_contract_pos = text.find("## Load Contract")
+    overview_pos = text.find("## Overview")
+    if load_contract_pos < 0:
+        fail(f"{path} must declare a '## Load Contract' section after '## Iron Law'")
+    if iron_law_pos < 0 or overview_pos < 0:
+        fail(f"{path} must contain both '## Iron Law' and '## Overview' sections")
+    if not (iron_law_pos < load_contract_pos < overview_pos):
+        fail(
+            f"{path} Load Contract must sit between '## Iron Law' and '## Overview' "
+            f"(found positions iron_law={iron_law_pos}, load_contract={load_contract_pos}, "
+            f"overview={overview_pos})"
+        )
+    body = section_body(text, "## Load Contract", path)
+    missing_rules = [term for term in ROUTER_LOAD_CONTRACT_RULE_TERMS if term not in body]
+    if missing_rules:
+        fail(f"{path} Load Contract missing required rule fragments: {', '.join(missing_rules)}")
+    missing_platforms = [term for term in ROUTER_LOAD_CONTRACT_PLATFORM_TERMS if term not in body]
+    if missing_platforms:
+        fail(f"{path} Load Contract missing platform fallback markers: {', '.join(missing_platforms)}")
+    for banned in ROUTER_LOAD_CONTRACT_BANNED_SUBSTRINGS:
+        if banned in text:
+            fail(
+                f"{path} contains obsolete relative path {banned!r}; "
+                f"remove it and rely on the Load Contract"
+            )
+
+
 def validate_router_eval_scope(text: str, path: Path) -> None:
     lowered = text.lower()
     missing = [term for term in ROUTER_EVAL_SCOPE_TERMS if term not in lowered]
@@ -475,6 +521,7 @@ def validate_router_skill(text: str, path: Path) -> None:
     validate_router_context_applicability(text, path)
     validate_router_inference_first(text, path)
     validate_router_eval_scope(text, path)
+    validate_router_load_contract(text, path)
     word_count = len(re.findall(r"\S+", text))
     if word_count > ROUTER_MAX_WORDS:
         fail(f"{path} is {word_count} words; compact router skills must stay under {ROUTER_MAX_WORDS}")

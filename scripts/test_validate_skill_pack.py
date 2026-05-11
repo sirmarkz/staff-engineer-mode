@@ -129,6 +129,123 @@ Infer these from the prompt, repo, files, branch context, and conversation. Do n
             path.write_text(valid)
             validator.validate_router_eval_scope(valid, path)
 
+    def test_router_load_contract_requires_section_after_iron_law(self) -> None:
+        validator = load_validator()
+        missing_text = """# Router
+
+## Iron Law
+
+Stay narrow.
+
+## Overview
+
+Body.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(missing_text)
+            stderr = io.StringIO()
+            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+                validator.validate_router_load_contract(missing_text, path)
+            self.assertIn("Load Contract", stderr.getvalue())
+
+    def test_router_load_contract_requires_three_rule_fragments(self) -> None:
+        validator = load_validator()
+        text = """# Router
+
+## Iron Law
+
+Stay narrow.
+
+## Load Contract
+
+Use SPECIALIST_ROOT=, Codex: , Gemini: paths. No rules listed.
+
+## Overview
+
+Body.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            stderr = io.StringIO()
+            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+                validator.validate_router_load_contract(text, path)
+            self.assertIn("rule fragments", stderr.getvalue())
+
+    def test_router_load_contract_requires_platform_fallback_markers(self) -> None:
+        validator = load_validator()
+        text = """# Router
+
+## Iron Law
+
+Stay narrow.
+
+## Load Contract
+
+Use the Read tool. Do not use the Skill tool. Complete the Read before producing engineering guidance for routed work. A confidently-routed answer without a matching Read in the same turn is a failure.
+
+## Overview
+
+Body.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            stderr = io.StringIO()
+            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+                validator.validate_router_load_contract(text, path)
+            self.assertIn("platform fallback markers", stderr.getvalue())
+
+    def test_router_load_contract_rejects_obsolete_relative_path(self) -> None:
+        validator = load_validator()
+        text = """# Router
+
+## Iron Law
+
+Stay narrow.
+
+## Load Contract
+
+Use the Read tool. Do not use the Skill tool. Complete the Read before producing engineering guidance for routed work. A confidently-routed answer without a matching Read in the same turn is a failure. SPECIALIST_ROOT=, Codex:, Gemini: ../../specialists/foo/SKILL.md
+
+## Overview
+
+Body.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            stderr = io.StringIO()
+            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+                validator.validate_router_load_contract(text, path)
+            self.assertIn("obsolete relative path", stderr.getvalue())
+
+    def test_router_load_contract_accepts_complete_section(self) -> None:
+        validator = load_validator()
+        text = """# Router
+
+## Iron Law
+
+Stay narrow.
+
+## Load Contract
+
+Resolve via SPECIALIST_ROOT= when present. Otherwise: Codex: ~/.codex/.../specialists. Gemini: relative to GEMINI.md.
+
+- Use the Read tool. Do not use the Skill tool.
+- Complete the Read before producing engineering guidance for routed work.
+- A confidently-routed answer without a matching Read in the same turn is a routing failure.
+
+## Overview
+
+Body.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "SKILL.md"
+            path.write_text(text)
+            validator.validate_router_load_contract(text, path)
+
     def test_non_exception_specialist_rejects_audit_only_framing(self) -> None:
         validator = load_validator()
         text = """---

@@ -176,7 +176,12 @@ def parse_sample_prompts(path: Path = SAMPLE_PROMPTS) -> list[dict[str, Any]]:
                     "expected_primary": current,
                     "expected_behavior": "route sample prompt to its grouped specialist",
                     "category": "sample_prompt",
-                    "expected_gates": ["single_primary", "intent_inference"],
+                    "expected_gates": [
+                        "single_primary",
+                        "intent_inference",
+                        "no_skill_invoke",
+                        "read_load",
+                    ],
                 }
             )
 

@@ -30,7 +30,10 @@ When Staff Engineer Mode skills reference tools you do not have, substitute Open
 
 Use OpenCode's native \`skill\` tool only for the router. After routing, read the selected specialist reference file from \`${specialistsDir}/<slug>/SKILL.md\`.`;
 
-  return `<EXTREMELY_IMPORTANT>
+  return `SPECIALIST_ROOT=${specialistsDir}
+LOAD: Read \${SPECIALIST_ROOT}/<slug>/SKILL.md before producing engineering guidance for routed work. Never call the Skill tool on a specialist slug -- specialists are files, not registered skills.
+
+<EXTREMELY_IMPORTANT>
 You have staff-engineer-mode.
 
 Users are not expected to know or invoke individual Staff Engineer Mode specialist names. For engineering lifecycle, DevOps, operations, reliability, resilience, security, architecture, data, platform, client, and cost-aware reliability requests, apply the router instructions below. After routing, read only the selected specialist reference file from \`${specialistsDir}/<slug>/SKILL.md\` before giving detailed guidance.

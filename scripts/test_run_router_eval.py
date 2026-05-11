@@ -90,5 +90,144 @@ class RouterEvalHarnessTests(unittest.TestCase):
         self.assertIn("capability_translation gate failed: repeated tool term 'istio'", result.failures)
 
 
+    def test_no_skill_invoke_gate_fails_on_specialist_skill_call(self) -> None:
+        runner = load_runner()
+        case = {
+            "prompt": "Design a highly available checkout service.",
+            "expected_primary": "high-availability-design",
+            "expected_behavior": "route to HA",
+            "category": "sample_prompt",
+            "expected_gates": ["single_primary", "intent_inference", "no_skill_invoke"],
+        }
+        response = """```routing
+{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability plan."}
+```
+
+Skill(staff-engineer-mode:high-availability-design)
+"""
+        result = runner.score_case(case, response, ["high-availability-design"])
+        self.assertFalse(result.passed)
+        self.assertTrue(
+            any("no_skill_invoke" in f for f in result.failures),
+            f"expected no_skill_invoke failure, got {result.failures}",
+        )
+
+    def test_no_skill_invoke_gate_catches_quoted_skill_call(self) -> None:
+        runner = load_runner()
+        case = {
+            "prompt": "Design a highly available checkout service.",
+            "expected_primary": "high-availability-design",
+            "expected_behavior": "route to HA",
+            "category": "sample_prompt",
+            "expected_gates": ["single_primary", "intent_inference", "no_skill_invoke"],
+        }
+        for invocation in (
+            'Skill("staff-engineer-mode:high-availability-design")',
+            "Skill: high-availability-design",
+            "Skill 'high-availability-design'",
+            'Skill("high-availability-design")',
+        ):
+            response = (
+                "```routing\n"
+                '{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability."}\n'
+                "```\n\n"
+                + invocation
+                + "\n"
+            )
+            result = runner.score_case(case, response, ["high-availability-design"])
+            self.assertFalse(
+                result.passed,
+                f"expected failure for invocation {invocation!r}, got pass",
+            )
+            self.assertTrue(
+                any("no_skill_invoke" in f for f in result.failures),
+                f"expected no_skill_invoke failure for {invocation!r}, got {result.failures}",
+            )
+
+    def test_no_skill_invoke_gate_passes_without_skill_call(self) -> None:
+        runner = load_runner()
+        case = {
+            "prompt": "Design a highly available checkout service.",
+            "expected_primary": "high-availability-design",
+            "expected_behavior": "route to HA",
+            "category": "sample_prompt",
+            "expected_gates": ["single_primary", "intent_inference", "no_skill_invoke"],
+        }
+        response = """```routing
+{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability plan."}
+```
+
+Read(/abs/path/specialists/high-availability-design/SKILL.md)
+"""
+        result = runner.score_case(case, response, ["high-availability-design"])
+        self.assertTrue(result.passed, result.failures)
+
+    def test_read_load_gate_fails_on_substantive_answer_without_read(self) -> None:
+        runner = load_runner()
+        case = {
+            "prompt": "Design a highly available checkout service.",
+            "expected_primary": "high-availability-design",
+            "expected_behavior": "route to HA",
+            "category": "sample_prompt",
+            "expected_gates": ["single_primary", "intent_inference", "read_load"],
+        }
+        body = (
+            "Here is the high-availability design. "
+            + "Use multiple fault domains and partition state with replicas across zones, sized for static capacity. " * 2
+        )
+        response = (
+            "```routing\n"
+            '{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability."}\n'
+            "```\n\n"
+            + body
+        )
+        result = runner.score_case(case, response, ["high-availability-design"])
+        self.assertFalse(result.passed)
+        self.assertTrue(
+            any("read_load" in f for f in result.failures),
+            f"expected read_load failure, got {result.failures}",
+        )
+
+    def test_read_load_gate_passes_with_matching_read(self) -> None:
+        runner = load_runner()
+        case = {
+            "prompt": "Design a highly available checkout service.",
+            "expected_primary": "high-availability-design",
+            "expected_behavior": "route to HA",
+            "category": "sample_prompt",
+            "expected_gates": ["single_primary", "intent_inference", "read_load"],
+        }
+        body = (
+            "Here is the high-availability design. "
+            + "Use multiple fault domains and partition state with replicas across zones, sized for static capacity. " * 2
+        )
+        response = (
+            "```routing\n"
+            '{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability."}\n'
+            "```\n\n"
+            "Read(/abs/path/specialists/high-availability-design/SKILL.md)\n\n"
+            + body
+        )
+        result = runner.score_case(case, response, ["high-availability-design"])
+        self.assertTrue(result.passed, result.failures)
+
+    def test_read_load_gate_passes_when_body_below_threshold(self) -> None:
+        runner = load_runner()
+        case = {
+            "prompt": "Design a highly available checkout service.",
+            "expected_primary": "high-availability-design",
+            "expected_behavior": "route to HA",
+            "category": "sample_prompt",
+            "expected_gates": ["single_primary", "intent_inference", "read_load"],
+        }
+        response = (
+            "```routing\n"
+            '{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability."}\n'
+            "```\n"
+        )
+        result = runner.score_case(case, response, ["high-availability-design"])
+        self.assertTrue(result.passed, result.failures)
+
+
 if __name__ == "__main__":
     unittest.main()

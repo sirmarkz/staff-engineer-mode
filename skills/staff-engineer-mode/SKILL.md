@@ -13,6 +13,22 @@ ONE PRIMARY SPECIALIST BY DEFAULT; INFER ROUTING CONTEXT BEFORE WITHHOLDING
 
 Loading many plausible specialists is a routing failure.
 
+## Load Contract
+
+To load a specialist, **Read** the file at `<specialist-root>/<slug>/SKILL.md`. Resolve `<specialist-root>` in this order:
+
+1. If a `SPECIALIST_ROOT=` line is present in this session's additional context (Claude Code, Cursor, OpenCode), use that absolute path.
+2. Otherwise use the platform default:
+   - Codex: `~/.codex/staff-engineer-mode/specialists`
+   - Gemini: the `specialists` directory next to the loaded `GEMINI.md`
+   - Any other host: the `specialists/` directory at the router skill's install root.
+
+Three rules, all mandatory:
+
+- **Use the Read tool. Do not use the Skill tool.** Specialists are not registered skills on any supported platform. `Skill staff-engineer-mode:<slug>` returns `Unknown skill` and is a routing failure.
+- **Complete the Read before producing engineering guidance for routed work.** Do not answer routed engineering prompts from priors.
+- **A confidently-routed answer without a matching Read in the same turn is a routing failure even when the slug is correct.**
+
 ## Overview
 
 Users are not expected to know specialist names. Classify by artifact, phase, surface, and risk, then quietly select the specialist whose outputs fit the next useful artifact.
@@ -78,7 +94,7 @@ web-release-gates
 5. Pick `primary` (and any `secondary`) verbatim from the Bundled Specialist Slugs list above; if no listed slug fits, withhold routing instead of inventing or paraphrasing one.
 6. Choose the narrowest primary whose required outputs match the next artifact.
 7. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
-8. Read only `../../specialists/<slug>/SKILL.md`, or the same file under the platform-supplied specialist root.
+8. Load the chosen specialist per the Load Contract above before producing detailed guidance.
 9. If confidence is low, infer the safest narrow in-scope route from available evidence; withhold routing only when no engineering lifecycle/control frame is present.
 10. Keep single-surface evidence with the matching specialist; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
 11. Reframe out-of-scope work as an engineering-control question only when that is plausible.

@@ -199,6 +199,32 @@ def score_case(case: dict[str, Any], response: str, names: list[str], index: int
     if "scope_check" in gates and expected_primary == "none" and block is not None:
         failures.append("scope_check gate failed: routed out-of-scope prompt")
 
+    if "no_skill_invoke" in gates:
+        skill_pattern = re.compile(
+            r"""\bSkill\s*[\(\s:'"]+(?:staff-engineer-mode:)?["']?([a-z0-9-]+)""",
+            re.IGNORECASE,
+        )
+        for match in skill_pattern.finditer(response):
+            candidate = match.group(1)
+            if candidate in names:
+                failures.append(
+                    f"no_skill_invoke gate failed: response invokes Skill tool on specialist {candidate!r}"
+                )
+                break
+
+    if "read_load" in gates and expected_primary not in LOW_CONFIDENCE_PRIMARIES and expected_primary != "none":
+        body_without_routing = ROUTING_BLOCK_RE.sub("", response).strip()
+        if len(body_without_routing) >= 200:
+            read_pattern = re.compile(
+                rf"\bRead\b[^\n]*?{re.escape(expected_primary)}/SKILL\.md",
+                re.IGNORECASE,
+            )
+            if not read_pattern.search(response):
+                failures.append(
+                    f"read_load gate failed: substantive answer without Read of "
+                    f"specialists/{expected_primary}/SKILL.md"
+                )
+
     return CaseResult(
         case_id=case_id(index, case),
         category=category,
