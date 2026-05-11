@@ -1,5 +1,40 @@
 # Staff Engineer Mode Release Notes
 
+## 1.3.1 - 2026-05-11
+
+Router load-contract hardening release.
+
+- Adds a top-level `## Load Contract` block to the router skill spelling out
+  three mandatory rules: use the Read tool to open the routed specialist,
+  never call the Skill tool on a specialist slug, and complete the Read
+  before producing routed engineering guidance.
+- Drops the obsolete `../../specialists/<slug>/SKILL.md` relative path from
+  the router workflow; the Load Contract now carries platform-specific
+  absolute path fallbacks for Codex, Gemini, and any host that does not
+  publish `SPECIALIST_ROOT` at session start.
+- Front-loads `SPECIALIST_ROOT=` and an explicit `LOAD:` directive in the
+  Claude Code SessionStart hook, the Cursor SessionStart hook (shared
+  script), and the OpenCode plugin bootstrap so the load path is the first
+  signal the model sees on those hosts.
+- Documents the router-borne contract in `GEMINI.md` and `.codex/INSTALL.md`
+  for hosts that have no runtime hook today.
+- Adds the `no_skill_invoke` and `read_load` gates to the router eval
+  scorer. The Skill-call detector catches plain, quoted, and colon-form
+  invocations against any specialist slug; the Read-load detector flags
+  substantive answers that lack a Read of the routed slug's `SKILL.md`.
+  Every confidently-routed sample prompt now requires both gates.
+- Extends the skill-pack validator with a Load Contract assertion: the
+  section must sit between `## Iron Law` and `## Overview`, contain all
+  three rule fragments, mention the platform fallback markers, and not
+  carry the obsolete relative path.
+- Bumps the router word budget from 1600 to 1800 to accommodate the new
+  section.
+- Verified live on Claude Code (Read of
+  `specialists/high-availability-design/SKILL.md` captured via stream-json,
+  zero Skill calls) and Codex (specialist file loaded via the host's native
+  file-read verb, zero Skill calls) after a clean uninstall and reinstall
+  from the v1.3.1 tag.
+
 ## 1.3.0 - 2026-05-10
 
 Engineering-surface cleanup and live-routing hardening release.

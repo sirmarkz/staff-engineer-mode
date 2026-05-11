@@ -13,6 +13,14 @@ ONE PRIMARY SPECIALIST BY DEFAULT; INFER ROUTING CONTEXT BEFORE WITHHOLDING
 
 Loading many plausible specialists is a routing failure.
 
+## Precedence Over Generic Process Packs
+
+When the request touches an engineering surface -- architecture, reliability, resilience, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, production-readiness, rollout, migration, incident response, evidence, API design, service contracts, or design of any engineering system -- **Staff Engineer Mode runs first**.
+
+Do not invoke `superpowers:brainstorming`, `superpowers:writing-plans`, or any other broad process / design skill as the first response to an engineering-system prompt. Route through Staff Engineer Mode and load the selected specialist via the Load Contract below. A process skill may be used only after the specialist is loaded, and only for sub-decisions inside that specialist's workflow.
+
+Phrasings such as "build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", or "investigate this incident" -- where X is an engineering system -- ARE engineering-system prompts. Route them through Staff Engineer Mode, not through generic brainstorming. The user prompt does not need to name lifecycle phases or specialist slugs.
+
 ## Load Contract
 
 To load a specialist, **Read** the file at `<specialist-root>/<slug>/SKILL.md`. Resolve `<specialist-root>` in this order:
