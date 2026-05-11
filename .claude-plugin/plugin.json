@@ -1,7 +1,7 @@
 {
   "name": "staff-engineer-mode",
   "description": "Staff-engineering decision guidance for Claude Code. Routes design, development, testing, release, operations, reliability, security, API, data, and platform work to specialist skills.",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "author": {
     "name": "sirmarkz"
   },
