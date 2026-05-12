@@ -1,6 +1,6 @@
 ---
 name: data-pipeline-reliability
-description: "Use when batch or streaming pipelines need freshness SLIs, validation gates, lineage, or replay paths"
+description: "Use when batch or streaming pipelines need freshness SLIs, validation checks, lineage, or replay paths"
 ---
 
 # Data Pipeline Reliability
@@ -21,7 +21,7 @@ Critical data pipelines are production systems whose users notice stale, missing
 
 ## When To Use
 
-- The user asks about batch or streaming pipeline freshness, correctness, completeness, lineage, missed runs, backfills, data-quality gates, or warehouse/ETL SLAs.
+- The user asks about batch or streaming pipeline freshness, correctness, completeness, lineage, missed runs, backfills, data-quality checks, or warehouse/ETL SLAs.
 - Dashboards, reports, downstream services, or decisions depend on timely and correct data.
 - A pipeline needs replay, reprocessing, backfill, or recovery behavior.
 - The user asks how to alert on stalled or stale datasets.
@@ -33,22 +33,22 @@ Critical data pipelines are production systems whose users notice stale, missing
 - The work is application database backfill execution; use `database-operations` instead.
 - The question is primary data consistency semantics; use `distributed-data-and-consistency` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Pipeline graph, datasets, consumers, schedules, triggers, and dependencies.
 - Freshness, completeness, correctness, latency, backlog age, and processing-error expectations.
 - Source data contracts, schemas, watermarks, checkpoints, transform versions, and publish criteria.
 - Validation checks, data-quality rules, anomaly detection, and known false-positive tolerance.
 - Replay/backfill capability, idempotency, side effects, retention, and correction process.
-- Lineage, audit trail, downstream impact, and incident history.
+- Lineage, change history, downstream impact, and incident history.
 
 ## Workflow
 
 1. **Identify critical datasets.** Name consumers, business use, local responsibility path, and consequence of stale or wrong data.
 2. **Define data SLIs.** Use freshness, completeness, correctness, latency, backlog age, and processing errors where relevant.
 3. **Map lineage.** Record source, transform version, schedule/watermark, publish step, and downstream consumers.
-4. **Gate publication.** Validate schema, required fields, ranges, referential integrity, duplicates, and business invariants before publish.
+4. **Check publication.** Validate schema, required fields, ranges, referential integrity, duplicates, and business invariants before publish.
 5. **Make replay safe.** Ensure reprocessing is idempotent or explicitly handles duplicates and side effects.
 6. **Alert on symptoms.** Trigger urgent alerts or tickets on freshness, backlog, stalled watermarks, and quality failures, not only job failure.
 7. **Create recovery runbooks.** Include backfill, replay, quarantine, correction, republish, and consumer notification.
@@ -56,20 +56,20 @@ Critical data pipelines are production systems whose users notice stale, missing
 
 ## Synthesized Default
 
-Treat critical pipelines like services: SLI/SLO, validation gates, lineage, idempotent replay, symptom alerts, and recovery runbooks. A successful job is not enough if published data is stale, incomplete, or wrong.
+Treat critical pipelines like services: SLI/SLO, validation checks, lineage, idempotent replay, symptom alerts, and recovery runbooks. A successful job is not enough if published data is stale, incomplete, or wrong.
 
 
 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -81,27 +81,27 @@ Treat critical pipelines like services: SLI/SLO, validation gates, lineage, idem
 ## Response Quality Bar
 
 - Lead with the pipeline reliability target, blocker list, or replay plan requested.
-- Cover freshness, completeness, correctness, lineage, replay, and quality gates before optional data-platform breadth.
-- Make recommendations actionable with evidence, gates, stop conditions, and recovery actions where relevant.
-- State required evidence such as row counts, watermarks, late-event rates, reconciliation checks, and backfill proofs; do not claim unseen evidence.
+- Cover freshness, completeness, correctness, lineage, replay, and quality checks before optional data-platform breadth.
+- Make recommendations actionable with checks, stop conditions, and recovery actions where relevant.
+- Name the details to inspect, such as row counts, watermarks, late-event rates, reconciliation checks, and backfill proofs; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside pipeline reliability unless the prompt explicitly asks for warehouse architecture or ownership controls.
-- Be concise: avoid generic data-quality background and prefer compact SLI/gate/replay tables.
+- Be concise: avoid generic data-quality background and prefer compact SLI/check/replay tables.
 
 ## Required Outputs
 
 - Pipeline SLI/SLO table.
 - Dataset responsibility and lineage map.
-- Validation and publish-gate plan.
+- Validation and publish-check plan.
 - Replay/backfill/reprocessing runbook.
 - Freshness, backlog, error, and quality alert policy.
 - Consumer impact and notification plan.
 - Recovery evidence or test plan.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `freshness_sli`: every critical dataset has freshness or watermark target and measurement source.
-- `validation_gate`: publish path has data-quality checks and failure behavior.
+- `publish_check`: publish path has data-quality checks and failure behavior.
 - `lineage_responsibility`: source, transform, and consumers are recorded.
 - `replay_safety`: replay/backfill is idempotent or duplicate/side-effect risk is controlled.
 - `recovery_runbook`: stalled, bad, or late data has recovery steps and consumer communication path.
@@ -121,4 +121,4 @@ Treat critical pipelines like services: SLI/SLO, validation gates, lineage, idem
 | Treating data pipelines as cron jobs | Treat them as services with SLIs, validation, and recovery paths. |
 | Monitoring runtime only | Monitor freshness, completeness, correctness, and backlog. |
 | Backfilling blindly | Make replay idempotent and validate output. |
-| Publishing bad data fast | Gate publish and quarantine failures. |
+| Publishing bad data fast | Check publish and quarantine failures. |

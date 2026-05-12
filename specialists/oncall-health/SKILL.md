@@ -34,9 +34,9 @@ Repeated pages and manual operations are engineering defects.
 - The main work is defining SLOs or paging thresholds from scratch; use `slo-and-error-budgets` instead.
 - The request is generic developer productivity with no operational pain; out of scope for routed specialists.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Page history: alert name, count, time, severity, duration, action taken, user impact, and fix path.
 - Toil inventory: manual, repetitive, automatable, tactical, interrupt-driven work.
 - Runbooks, fallback paths, responsibility, checkpoint notes, and incident/postmortem actions.
@@ -66,13 +66,13 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -86,7 +86,7 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 - Lead with the page classification, toil inventory, alert-change decision, or automation backlog requested.
 - Cover urgency, actionability, user visibility, novelty, runbook quality, repeated manual work, responsibility, and measurement before optional on-call breadth.
 - Make recommendations actionable with page/ticket/remove decisions, runbook fixes, automation tasks, expiry dates, and measured reduction targets where relevant.
-- State required evidence such as alert history, pages per responder, after-hours volume, runbook links, toil hours, manual steps, suppression rules, and incident outcomes; do not claim unseen evidence.
+- Name the details to inspect, such as alert history, pages per responder, after-hours volume, runbook links, toil hours, manual steps, suppression rules, and incident outcomes; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside technical on-call health and toil. Mark staffing, compensation, and HR questions out of scope unless translated into engineering controls.
 - Be concise: avoid generic on-call advice and prefer compact page inventories and remediation backlogs.
@@ -103,7 +103,7 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 - Numeric page-rate / interruption budget per shift with the measurement window and source.
 - Runbook coverage AND freshness check (last-verified date, freshness cadence) for each paging alert.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `page_classification`: each page is classified by urgency, actionability, user visibility, and novelty.
 - `toil_inventory`: repeated manual work has frequency, and elimination or automation plan.

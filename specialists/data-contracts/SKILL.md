@@ -35,14 +35,14 @@ Data contracts let projects change independently without guessing what consumers
 - Pipeline freshness, reprocessing, or lineage is central; use `data-pipeline-reliability` instead.
 - The data model is fully private to one component and has no external consumers.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Producers, consumers, domain meaning, critical fields, and consumer release cadence.
 - Contract format, schema location, versioning policy, compatibility modes, and deprecation rules.
 - Required, optional, nullable, defaulted, derived, sensitive, and deprecated fields.
 - Consumer tests, sample payloads, production usage, validation failures, and unknown consumers.
-- Change workflow, compatibility gates, migration windows, and rollback or dual-publish needs.
+- Change workflow, compatibility checks, migration windows, and rollback or dual-publish needs.
 
 ## Workflow
 
@@ -52,25 +52,25 @@ Data contracts let projects change independently without guessing what consumers
 4. **Version deliberately.** Use versions when semantics break; prefer additive changes when consumers can tolerate them.
 5. **Test both sides.** Add producer validation and consumer-focused compatibility checks before merge or release.
 6. **Measure adoption.** Track consumer usage, validation failures, deprecated fields, and migration progress.
-7. **Plan deprecation.** Keep overlap, telemetry, consumer notice, and removal gates for breaking or semantic changes.
+7. **Plan deprecation.** Keep overlap, telemetry, consumer notice, and removal checks for breaking or semantic changes.
 8. **Use adjacent checks.** Use API, event workflow, or pipeline reliability skills when execution details dominate.
 
 ## Synthesized Default
 
-Use maintained, versioned, machine-checkable contracts for shared data boundaries. Prefer additive evolution, tolerant readers, producer validation, consumer compatibility tests, usage telemetry, and explicit deprecation gates. Treat semantic changes as breaking even when the field shape stays the same.
+Use maintained, versioned, machine-checkable contracts for shared data boundaries. Prefer additive evolution, tolerant readers, producer validation, consumer compatibility tests, usage telemetry, and explicit deprecation checks. Treat semantic changes as breaking even when the field shape stays the same.
 
 
 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -81,9 +81,9 @@ Use maintained, versioned, machine-checkable contracts for shared data boundarie
 ## Response Quality Bar
 
 - Lead with the contract decision, compatibility decision, schema evolution plan, or consumer migration requested.
-- Cover consumers, semantics, compatibility class, validation, consumer tests, telemetry, and deprecation gates before optional registry detail.
-- Make recommendations actionable with compatibility matrix, change gates, migration batches, and removal criteria where relevant.
-- State required evidence such as consumer inventory, schema history, sample payloads, validation output, usage telemetry, and migration status; do not claim unseen evidence.
+- Cover consumers, semantics, compatibility class, validation, consumer tests, telemetry, and deprecation checks before optional registry detail.
+- Make recommendations actionable with compatibility matrix, change checks, migration batches, and removal criteria where relevant.
+- Name the details to inspect, such as consumer inventory, schema history, sample payloads, validation output, usage telemetry, and migration status; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside shared data interfaces. Use API, workflow, or pipeline skills only when that surface is the unresolved risk.
 - Be concise: prefer compact contract and compatibility matrices over generic process prose.
@@ -93,17 +93,17 @@ Use maintained, versioned, machine-checkable contracts for shared data boundarie
 - Data contract decision with producers, consumers, and domain meaning.
 - Compatibility matrix for fields, semantics, timing, quality, and versioning.
 - Validation and consumer-test plan.
-- Deprecation and migration plan with telemetry and removal gates.
+- Deprecation and migration plan with telemetry and removal checks.
 - Sensitive-data handling notes for shared fields.
 - Follow-up checks for API, workflow, or pipeline execution where needed.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `consumer_inventory`: known consumers and unknown-consumer risk are explicit.
 - `contract_defined`: field meaning, shape, requiredness, validity, and sensitivity are stated.
 - `compatibility_class`: every change is classified as compatible, conditional, or breaking.
 - `consumer_check`: compatibility is tested against real or representative consumer expectations.
-- `migration_gate`: deprecated or breaking changes have adoption telemetry and removal criteria.
+- `migration_check`: deprecated or breaking changes have adoption telemetry and removal criteria.
 
 ## Red Flags - Stop And Rework
 
@@ -111,7 +111,7 @@ Use maintained, versioned, machine-checkable contracts for shared data boundarie
 - Producers say "nobody uses this" without usage evidence.
 - Consumers parse undocumented fields or rely on incidental ordering.
 - Validation checks shape but not required semantics.
-- Deprecated fields have no removal gate.
+- Deprecated fields have no removal check.
 
 ## Common Mistakes
 
@@ -120,4 +120,4 @@ Use maintained, versioned, machine-checkable contracts for shared data boundarie
 | Treating schema as semantics | Document meaning, units, defaults, and validity. |
 | Producer-only tests | Add consumer compatibility checks. |
 | Guessing consumers | Use telemetry and responsibility discovery. |
-| Breaking by cleanup | Plan overlap and removal gates. |
+| Breaking by cleanup | Plan overlap and removal checks. |

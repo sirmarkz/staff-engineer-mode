@@ -34,9 +34,9 @@ Asynchronous systems trade call-time coupling for delivery, ordering, replay, an
 - The work is batch/warehouse freshness and lineage; use `data-pipeline-reliability` instead.
 - The issue is cache invalidation only; use `caching-and-derived-data` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Producers, consumers, topics/queues/streams, and event purpose.
 - Event type: notification, state transfer, event-sourced fact, command, reply, or workflow step.
 - Schema, compatibility rules, required fields, versioning, and responsibility.
@@ -65,13 +65,13 @@ Use at-least-once delivery with idempotent consumers as the default mental model
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -84,8 +84,8 @@ Use at-least-once delivery with idempotent consumers as the default mental model
 
 - Lead with the workflow state model, failure handling plan, or blockers.
 - Cover idempotency, ordering, retries, DLQ/poison handling, compensation, and reconciliation before optional event-system topics.
-- Make recommendations actionable with evidence, gates, stop conditions, and replay controls where relevant.
-- State required evidence such as event keys, retry counts, duplicate rates, DLQ age, consumer lag, and replay proof; do not claim unseen evidence.
+- Make recommendations actionable with checks, stop conditions, and replay controls where relevant.
+- Name the details to inspect, such as event keys, retry counts, duplicate rates, DLQ age, consumer lag, and replay proof; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the workflow and event contract. Route broad API or data consistency issues only when material.
 - Be concise: avoid generic event-driven background and prefer compact state/retry/DLQ tables.
@@ -100,7 +100,7 @@ Use at-least-once delivery with idempotent consumers as the default mental model
 - Replay, correction, and manual repair plan.
 - Observability requirements for age, lag, depth, errors, and replay.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `contract_check`: event meaning, schema, and compatibility rules are documented.
 - `idempotency_check`: every consumer side effect is duplicate-safe or explicitly non-retryable.

@@ -21,7 +21,7 @@ Produces a staged rollout plan with named blast radius per stage, predeclared ca
 
 ## When To Use
 
-- The user asks how to roll out, rollback, canary, phase, stage, gate, migrate, or release a change.
+- The user asks how to roll out, rollback, canary, phase, stage, check, migrate, or release a change.
 - A change involves configuration, feature flags, schema/data migration, dependency update, model change, infrastructure change, or client-visible behavior.
 - The user asks how to reduce production risk from deployments or release trains.
 - PRR or launch evidence needs rollout, rollback, and canary details.
@@ -29,14 +29,14 @@ Produces a staged rollout plan with named blast radius per stage, predeclared ca
 ## When Not To Use
 
 - A live incident needs immediate command and mitigation; route to `incident-response-and-postmortems` first.
-- The question is only code review or merge gates; use `agent-pr-review` for a concrete diff or `testing-and-quality-gates` for blocking checks.
+- The question is only code review or merge checks; use `agent-pr-review` for a concrete diff or `testing-and-quality-gates` for blocking checks.
 - The question is build systems, release branches, packaging, or reproducible artifacts; use `release-build-reproducibility` instead.
 - The main risk is database lock/backfill execution; use `database-operations` instead for that detail and use this skill for rollout sequencing.
 - The request is product launch messaging or marketing; out of scope.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Change type, responsible change path, affected users, blast radius, tier, and reversibility.
 - Artifact identity and promotion path from build to environments.
 - Rollout unit: instance, ring, cohort, partition, deployment unit, location, tenant, percentage, device group, or internal-only group.
@@ -52,12 +52,12 @@ Produces a staged rollout plan with named blast radius per stage, predeclared ca
 3. **Promote one artifact.** Build once and promote the same artifact or immutable change set through stages.
 4. **Define compatibility.** Ensure old and new versions can coexist across clients, services, data, and messages during rollout.
 5. **Stage stateful changes.** Keep reader/writer compatibility across at least one-version skew; use expand/contract, dual-read/dual-write, delayed cleanup, and explicit schema/data ordering when state is involved.
-6. **Choose canary gates.** Select metrics before release. Include user-visible symptoms and correctness, not only internal health. Scope each metric to the canary slice itself — fleet-aggregate metrics dilute the signal into the size of the unchanged deployment, so canary regression vanishes long before it crosses a fleet-wide threshold. Each gate needs a baseline window, minimum observation window, bake time, and enough exposed traffic or an alternate signal such as synthetic probes, extended bake time, or manual verification.
-7. **Gate each exposure step.** Start with a tiny production slice when possible, then move through rings, cohorts, partitions, stamps, deployment units, or locations only after health evidence says the previous step is safe. Within an ordinary rolling deployment, keep at least two-thirds of serving capacity healthy at all times unless an explicit capacity model proves a different threshold is safe; faster simultaneous replacement narrows surge headroom and risks turning the deployment itself into the saturation event.
+6. **Choose canary checks.** Select metrics before release. Include user-visible symptoms and correctness, not only internal health. Scope each metric to the canary slice itself — fleet-aggregate metrics dilute the signal into the size of the unchanged deployment, so canary regression vanishes long before it crosses a fleet-wide threshold. Each check needs a baseline window, minimum observation window, bake time, and enough exposed traffic or an alternate signal such as synthetic probes, extended bake time, or manual verification.
+7. **Check each exposure step.** Start with a tiny production slice when possible, then move through rings, cohorts, partitions, stamps, deployment units, or locations only after health signals say the previous step is safe. Within an ordinary rolling deployment, keep at least two-thirds of serving capacity healthy at all times unless an explicit capacity model proves a different threshold is safe; faster simultaneous replacement narrows surge headroom and risks turning the deployment itself into the saturation event.
 8. **Set stop and rollback rules.** Define thresholds, who can halt, and how rollback works. Pre-classify rollback safety per change: it is safe when the change is stateless, flag-gated, purely additive, or recently deployed with minimal state divergence; it is dangerous when a schema migration has run, a data format changed and new data is being written, external clients depend on the new contract, a stateful workflow is in flight, or a cache holds data in the new format. Choose forward-fix when rollback would cause more damage than the current impact, the fix is small and quickly deployable, or impact is confined to an isolatable subset. If user impact is active, route incident command to `incident-response-and-postmortems` while keeping rollback mechanics traceable here.
 9. **Handle forward-fix-only surfaces.** If rollback is structurally impossible, require a server-side kill switch or disable path, staged adoption metric, hotfix lane, and explicit user confirmation before first exposure.
 10. **Handle non-code changes as first class.** Validate config, stage flags, throttle migrations, and delay destructive cleanup.
-11. **Keep emergency flow familiar.** Hotfixes may move faster, but should use the same artifact identity, health gates, and traceable branch/change workflow where practical.
+11. **Keep emergency flow familiar.** Hotfixes may move faster, but should use the same artifact identity, health checks, and traceable branch/change workflow where practical.
 12. **Close the loop.** Record rollout evidence, remove temporary flags/paths, and update standards if the rollout found a new class of risk.
 
 ## Synthesized Default
@@ -69,19 +69,19 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Emergency fixes may use a narrower or faster rollout when waiting is riskier than release, but stop criteria and rollback evidence still apply.
-- Some destructive data changes cannot be rolled back; they require backup/restore evidence, delayed cleanup, and forward-fix criteria.
-- Low-risk internal changes may use lighter gates if blast radius and user risk acceptance are explicit.
+- Some destructive data changes cannot be rolled back; they require backup/restore test results, delayed cleanup, and forward-fix criteria.
+- Low-risk internal changes may use lighter checks if blast radius and user risk acceptance are explicit.
 - Client releases with slow adoption may require forward-fix and kill-switch strategy rather than true rollback.
 - Temporary experiment flags should expire within about 90 days by default; long-lived operational kill switches need a renewal cadence and removal or renewal decision.
 
@@ -90,7 +90,7 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 - Lead with the rollout plan, halt criteria, rollback path, or exposure decision requested.
 - Cover blast radius, artifact identity, canary metrics, compatibility, feature/config lifecycle, migration safety, and cleanup before optional delivery topics.
 - Make recommendations actionable with stage thresholds, windows, stop criteria, rollback or forward-fix actions, and cleanup expiry where relevant.
-- State required evidence such as artifact IDs, deploy markers, canary baselines, SLO/error signals, migration checks, rollback proof, and flag inventory; do not claim unseen evidence.
+- Name the details to inspect, such as artifact IDs, deploy markers, canary baselines, SLO/error signals, migration checks, rollback proof, and flag inventory; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside progressive exposure and safe change. Route build reproducibility, API compatibility, or data migration depth only when they materially block rollout safety.
 - Be concise: avoid generic CD background and prefer compact rollout, metric, and rollback tables.
@@ -103,9 +103,9 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 - Compatibility plan for old/new code, clients, data, messages, config, and stateful reader/writer skew.
 - Feature flag/config lifecycle plan with expiry and removal condition.
 - Migration and cleanup plan for temporary paths or data structures.
-- Verification commands or evidence links for each gate.
+- Verification commands or check links for each check.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `blast_radius`: every rollout stage names affected users/systems and maximum impact.
 - `artifact_identity`: the release identifies the artifact/change set and promotion path.

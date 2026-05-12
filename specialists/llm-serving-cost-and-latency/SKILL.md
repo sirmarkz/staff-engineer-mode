@@ -33,15 +33,15 @@ Produces a per-route token and latency budget table, a cache strategy spec for p
 ## When Not To Use
 
 - The risk is prompt injection, tool-call exfiltration, retrieval-boundary leakage, or unsafe sinks; use `llm-application-security`.
-- The work is dataset construction, graders, regression thresholds, or eval gates; use `llm-evaluation`.
+- The work is dataset construction, graders, regression thresholds, or eval checks; use `llm-evaluation`.
 - The model is a custom-trained or fine-tuned production ML model with training/serving skew, drift, and rollback as the dominant concern; use `ml-reliability-and-evaluation`.
 - The conversation is generic backend latency, queueing, or saturation with no model-specific behavior; use `performance-and-capacity`.
 - The conversation is generic dollar cost without LLM-specific token and tier choices; use `cost-aware-reliability`.
 - The conversation is generic remote-call resilience that happens to call a model; use `dependency-resilience` for circuit breakers, timeouts, and idempotency once the LLM-specific budgets and fallback are set here.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Route inventory: each LLM-backed user-facing route, agent loop, and background job, with caller, expected QPS, peak factor, and tier.
 - Per-route prompt structure: system prompt size, context inserted per request, retrieved-document size and count, conversation history retained, tool definitions included, and structured-output schema where used.
 - Model tier choice per route: which model is the default, which is the fallback or smaller alternative, and whether cascading or routing across tiers is in use.
@@ -77,13 +77,13 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -98,9 +98,9 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 - Lead with the per-route budget table, cache strategy, degradation policy, or attribution model requested.
 - Cover token budget, latency budget, model-tier choice, cache layers, retry and timeout bounds, degradation path, and attribution before optional model breadth.
 - Make recommendations actionable with per-route numbers, cache scopes and TTLs, fallback conditions, retry caps, and the alerts that catch regression.
-- State required evidence such as per-route token histograms, latency percentiles, cache hit rates, fallback rate, retry rate, and per-tag spend; do not claim a budget without the data behind it.
+- Name the details to inspect, such as per-route token histograms, latency percentiles, cache hit rates, fallback rate, retry rate, and per-tag spend; do not claim a budget without the data behind it.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside model-serving cost and latency. Route prompt-injection and tool-access risk, eval gates, generic backend performance, and generic dollar-cost optimization to the responsible specialist.
+- Stay inside model-serving cost and latency. Route prompt-injection and tool-access risk, eval checks, generic backend performance, and generic dollar-cost optimization to the responsible specialist.
 - Be concise: prefer compact route, cache, and fallback tables over generic LLM exposition.
 
 ## Required Outputs
@@ -115,7 +115,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 - Alert and guardrail set: token-budget breach, tail-latency regression, cache-hit regression, fallback rate, retry amplification, and per-tenant cost anomaly.
 - Rehearsal plan for the degraded path with cadence and verification path.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `token_budget_present`: every LLM-backed route has an input-token cap, an output-token cap, and a defined action when the cap is exceeded.
 - `latency_budget_present`: every LLM-backed route has p50/p95/p99 targets and, where streaming, a time-to-first-token target.

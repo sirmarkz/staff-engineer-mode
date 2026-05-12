@@ -33,12 +33,12 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 - The main topic is secure design broadly; use `secure-sdlc-and-threat-modeling` instead.
 - The request is abstract cryptographic research with no engineering lifecycle decision.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Inventory of certificates, keys, algorithms, trust roots, consumers, expiry dates, and renewal paths.
 - Usage context: authentication, encryption, signing, verification, storage, transport, or partner integration.
-- Rotation process, automation, manual steps, confirmation, audit, and emergency revocation path.
+- Rotation process, automation, manual steps, confirmation, access logs, and emergency revocation path.
 - Client and dependency compatibility, trust-store update path, fallback behavior, and rollback or roll-forward limits.
 - Monitoring, alert thresholds, test environment coverage, and prior expiry or rotation incidents.
 - Deprecation deadline, transition target, exception and compensating controls.
@@ -50,40 +50,40 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 3. **Assess agility.** Determine whether each dependency can be renewed, rotated, revoked, or replaced without coordinated outage.
 4. **Prove compatibility.** Test old/new material and algorithm combinations with representative clients and workloads.
 5. **Automate renewal carefully.** Use monitored renewal paths with alerting, audit, and failed-renewal response. Trigger renewal well before expiry — for example, at roughly two-thirds of the credential's lifetime — so that a single failed renewal cycle has time to be detected and retried before the credential expires.
-6. **Rotate without coordinated downtime.** Default to a dual-credential overlap sequence: issue the new credential, configure verifiers to accept both old and new, migrate producers and clients to the new credential, prove zero traffic uses the old, then revoke. The verify-zero-old-traffic gate is what makes the rotation zero-downtime; rotations that skip it convert routine rotation into an outage.
-7. **Plan transitions.** Define overlap, dual support, rollout order, client migration, and retirement gates for deprecated algorithms or trust roots.
+6. **Rotate without coordinated downtime.** Default to a dual-credential overlap sequence: issue the new credential, configure verifiers to accept both old and new, migrate producers and clients to the new credential, prove zero traffic uses the old, then revoke. The verify-zero-old-traffic check is what makes the rotation zero-downtime; rotations that skip it convert routine rotation into an outage.
+7. **Plan transitions.** Define overlap, dual support, rollout order, client migration, and retirement checks for deprecated algorithms or trust roots.
 8. **Prepare emergency response.** Document revocation, compromise response, rollback or roll-forward, and communication path.
 9. **Close exceptions.** Track unsupported material with expiry, risk, and compensating controls.
 
 ## Synthesized Default
 
-Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support transition windows, compatibility gates, emergency revocation plan, and exception register. Prefer designs where cryptographic material can be replaced independently of full application redeploys.
+Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support transition windows, compatibility checks, emergency revocation plan, and exception register. Prefer designs where cryptographic material can be replaced independently of full application redeploys.
 
 
 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
-- Emergency compromise response may skip ordinary rollout windows, but must preserve audit, and recovery evidence.
-- Legacy clients may require overlap windows; keep them time-bound with usage telemetry and migration gates.
+- Emergency compromise response may skip ordinary rollout windows, but must preserve audit, and recovery results.
+- Legacy clients may require overlap windows; keep them time-bound with usage telemetry and migration checks.
 - Low-risk development material can use lighter monitoring if isolated from production trust paths.
 
 ## Response Quality Bar
 
 - Lead with the lifecycle risk, rotation plan, transition decision, or expiry blocker requested.
 - Cover inventory, responsibility, expiry, rotation, compatibility, monitoring, emergency revocation, transition windows, and exceptions before optional cryptographic detail.
-- Make recommendations actionable with dates, gates, alert thresholds, compatibility tests, and retirement criteria where relevant.
-- State required evidence such as inventory, expiry data, consumer list, rotation test output, renewal logs, alert rules, and exception records; do not claim unseen evidence.
+- Make recommendations actionable with dates, checks, alert thresholds, compatibility tests, and retirement criteria where relevant.
+- Name the details to inspect, such as inventory, expiry data, consumer list, rotation test output, renewal logs, alert rules, and exception records; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside cryptographic lifecycle. Use identity, supply-chain, or secure-design skills only when those surfaces drive the main decision.
 - Be concise: prefer inventory and transition matrices over broad cryptography explanation.
@@ -99,13 +99,13 @@ Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support 
 - Emergency revocation and compromise response.
 - Exception register with expiry, and compensating control.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `inventory_owned`: cryptographic material, algorithms, trust roots, consumers, and expiry dates are visible.
 - `rotation_test`: renewal, rotation, or replacement is tested for representative consumers.
 - `compatibility_window`: old/new compatibility and overlap duration are explicit.
 - `expiry_monitoring`: expiry and failed-renewal alerts have a response path.
-- `transition_gate`: deprecated algorithms or trust roots have migration and retirement criteria.
+- `transition_check`: deprecated algorithms or trust roots have migration and retirement criteria.
 
 ## Red Flags - Stop And Rework
 
@@ -122,4 +122,4 @@ Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support 
 | Inventory only at issuance | Continuously track consumers, and expiry. |
 | Rotation without compatibility | Test old/new overlap before rollout. |
 | Renewal without alerting | Monitor expiry and failed automation. |
-| Permanent exceptions | Require risk, and retirement gate. |
+| Permanent exceptions | Require risk, and retirement check. |

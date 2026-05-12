@@ -11,7 +11,7 @@ description: "Use when model-backed changes need eval datasets, graders, thresho
 NO MODEL-BACKED CHANGE WITHOUT EVAL CASES, SCORING RULES, THRESHOLDS, REGRESSION HISTORY, AND FAILURE TRIAGE
 ```
 
-If you cannot say what got better, what got worse, and which failures block release, the eval is not a gate.
+If you cannot say what got better, what got worse, and which failures block release, the eval is not a release check.
 
 ## Overview
 
@@ -21,7 +21,7 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 
 ## When To Use
 
-- The user asks about LLM evals, prompt tests, agent evals, graders, regression sets, acceptance thresholds, or model-backed workflow quality gates.
+- The user asks about LLM evals, prompt tests, agent evals, graders, regression sets, acceptance thresholds, or model-backed workflow quality checks.
 - A prompt, model, retrieval source, tool policy, or agent workflow changes and needs release evidence.
 - Existing evals are flaky, too small, too easy, judge-biased, or disconnected from production failures.
 - You need repeatable evidence for quality, safety, refusal, formatting, task completion, or user-impact slices.
@@ -31,11 +31,11 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 - The main risk is prompt injection, tool misuse, data leakage, or unsafe actions; use `llm-application-security` instead.
 - The main work is classical ML drift, training-serving skew, or model-serving readiness; use `ml-reliability-and-evaluation` instead.
 - The request is broad AI coding-agent controls; use `ai-coding-governance` instead.
-- The request is product strategy for which model to choose with no engineering gate.
+- The request is product strategy for which model to choose with no engineering check.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Workflow, user tasks, expected outputs, unacceptable failures, and release decision to support.
 - Eval cases, production examples, synthetic cases, edge cases, slices, and known regressions.
 - Scoring method, graders, rubrics, deterministic checks, human judgment, and tie-break rules.
@@ -45,7 +45,7 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 
 ## Workflow
 
-1. **Name the decision.** State whether the eval gates merge, release, prompt change, model change, or rollback.
+1. **Name the decision.** State whether the eval checks merge, release, prompt change, model change, or rollback.
 2. **Build representative cases.** Include production-like tasks, edge cases, regressions, adversarial examples, and important user slices.
 3. **Separate scoring types.** Use exact checks for structured requirements, rubric scoring for judgment, and human judgment for ambiguous high-impact cases.
 4. **Control grader risk.** Define rubrics, blind comparisons where useful, calibration cases, and checks for scoring drift.
@@ -63,29 +63,29 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
-- Early prototypes may use exploratory evals if they are not release gates.
+- Early prototypes may use exploratory evals if they are not release checks.
 - Human judgment can supplement automated scoring for high-impact or ambiguous tasks, but should use a written rubric.
 - Low-risk copy changes may use a narrow regression set if output constraints and affected journeys are limited.
 
 ## Response Quality Bar
 
-- Lead with the eval harness design, release gate, failure triage, or threshold decision requested.
+- Lead with the eval harness design, release check, failure triage, or threshold decision requested.
 - Cover decision, cases, slices, scoring, thresholds, versioning, regression history, and failure handling before optional model discussion.
 - Make recommendations actionable with dataset changes, grader rules, pass/fail criteria, and rerun policy where relevant.
-- State required evidence such as eval cases, baseline runs, grader rubric, flake rate, slice results, versioned inputs, and failure log; do not claim unseen evidence.
+- Name the details to inspect, such as eval cases, baseline runs, grader rubric, flake rate, slice results, versioned inputs, and failure log; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside model-backed evaluation gates. Route security, ML serving, or AI coding controls only when those risks dominate.
-- Be concise: prefer eval matrices and release gates over generic eval theory.
+- Stay inside model-backed evaluation checks. Route security, ML serving, or AI coding controls only when those risks dominate.
+- Be concise: prefer eval matrices and release checks over generic eval theory.
 
 ## Required Outputs
 
@@ -97,7 +97,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 - Failure triage table with disposition and next action.
 - Regression history and case-promotion policy.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `decision_named`: eval result maps to a merge, release, rollback, or investigation decision.
 - `case_coverage`: representative cases include critical tasks, slices, and known regressions.

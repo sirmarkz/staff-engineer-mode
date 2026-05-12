@@ -35,16 +35,16 @@ Resilience experiments test whether the system behaves the way the design claims
 - The main deliverable is timeout, retry, queue, or overload policy; use `dependency-resilience` instead.
 - The work is only unit/integration testing without runtime failure injection.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - System tier, SLOs, critical journeys, known failure modes, and previous incident classes.
 - Existing fault-domain map, dependency matrix, capacity model, and recovery runbooks.
 - Steady-state signals: availability, latency, correctness, freshness, saturation, queue age, and user-impact indicators.
 - Experiment target, injected fault, blast radius, duration, traffic scope, customer exposure, and abort criteria.
 - Production cadence or trigger for recurring drills, based on tier and change rate.
 - Participants, on-call coverage, communication channel, user decision point, and rollback/fallback actions.
-- Evidence to capture, expected outcome, safety constraints, and follow-up tracking path.
+- What to record, expected outcome, safety constraints, and follow-up tracking path.
 
 ## Workflow
 
@@ -67,13 +67,13 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -87,7 +87,7 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 - Lead with the experiment hypothesis, blast-radius boundary, abort criteria, or evidence plan requested.
 - Cover steady state, fault method, scope, telemetry, participant/communication plan, rollback actions, evidence capture, and learning loop before optional chaos-program breadth.
 - Make recommendations actionable with exact fault injection, thresholds, stop trigger, rollback commands, evidence to capture, and rerun criteria where relevant.
-- State required evidence such as dashboards, SLO signals, deployment markers, runbooks, dependency health, experiment logs, findings, and fix paths; do not claim unseen evidence.
+- Name the details to inspect, such as dashboards, SLO signals, deployment markers, runbooks, dependency health, experiment logs, findings, and fix paths; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside resilience experiment design and execution. Route HA redesign or DR strategy only when the experiment exposes those as central gaps.
 - Be concise: avoid generic chaos-engineering background and prefer compact experiment plans and findings tables.
@@ -103,7 +103,7 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 - Evidence capture checklist.
 - Findings, fixes, and rerun condition.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `hypothesis_check`: experiment states failure, expected behavior, and resilience mechanism.
 - `blast_radius`: affected users, partitions, tenants, shards, locations, or traffic percentage are bounded.

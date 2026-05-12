@@ -33,15 +33,15 @@ Data architecture starts with semantics, not storage brands.
 - The work is service event choreography; use `event-workflows` instead.
 - The request is warehouse/ETL freshness rather than application data correctness; use `data-pipeline-reliability` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
-- Data classes: money, authz, user settings, content, cache, derived state, analytics, notifications, audit, or ML features.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
+- Data classes: money, authz, user settings, content, cache, derived state, analytics, notifications, access logs, or ML features.
 - Operations: create, update, delete, read, list, search, reconcile, compensate, and repair.
 - Correctness expectations: uniqueness, ordering, freshness, read-your-writes, conflict handling, idempotency, and durability.
 - Access patterns, read/write volume, fanout, hot keys, tenant/shard routing, and growth forecast.
 - Failure modes: partial writes, failover, replication lag, split brain, retries, duplicate leaders, and operator repair.
-- Migration constraints, responsibility, auditability, and backup/restore requirements.
+- Migration constraints, responsibility, change history needs, and backup/restore requirements.
 
 ## Workflow
 
@@ -63,13 +63,13 @@ Default to the simplest storage and consistency model that satisfies operation s
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -82,8 +82,8 @@ Default to the simplest storage and consistency model that satisfies operation s
 
 - Lead with the consistency decision, tradeoff, or unresolved blocker.
 - Cover data semantics, stale-read impact, conflicts, failure behavior, and operational cost before optional distributed-systems breadth.
-- Make recommendations actionable with evidence, gates, stop conditions, and validation criteria where relevant.
-- State required evidence such as invariants, latency budgets, conflict rates, replication behavior, and failure assumptions; do not claim unseen evidence.
+- Make recommendations actionable with checks, stop conditions, and validation criteria where relevant.
+- Name the details to inspect, such as invariants, latency budgets, conflict rates, replication behavior, and failure assumptions; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the data consistency decision. Mention caches, workflows, or schema execution only when they materially change semantics.
 - Be concise: avoid generic CAP/PACELC exposition and prefer decision matrices.
@@ -98,13 +98,13 @@ Default to the simplest storage and consistency model that satisfies operation s
 - Transaction, outbox, saga, or reconciliation plan.
 - Correctness verification and repair plan.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `semantics_check`: every critical operation has freshness, ordering, idempotency, conflict, and durability semantics.
 - `consistency_choice`: chosen guarantees are justified by user consequence and failure behavior.
 - `responsibility_check`: every data class has an explicit mutation boundary and repair path.
 - `partition_check`: shard/tenant key, hot-key risk, and resharding approach are addressed where scale requires it.
-- `repair_check`: invariants, reconciliation, audit, or manual repair path exists for known inconsistency modes.
+- `repair_check`: invariants, reconciliation, change history, or manual repair path exists for known inconsistency modes.
 
 ## Red Flags - Stop And Rework
 

@@ -34,9 +34,9 @@ Most cascading failures are dependency failures amplified by callers.
 - The main issue is topology and fault-domain survival; use `high-availability-design` instead.
 - The problem is p99 optimization without dependency safety changes; use `performance-and-capacity` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Dependency matrix: caller, callee, operation, protocol, tier, and criticality.
 - End-to-end request deadline, per-hop timeout, connection timeout, and cancellation behavior.
 - Retry count, retry locations, backoff, jitter, retryable status codes/errors, adaptive retry budget, and overload signals that stop retries.
@@ -67,13 +67,13 @@ Use bounded timeouts/retries with jitter, idempotent APIs, adaptive retry budget
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -88,7 +88,7 @@ Use bounded timeouts/retries with jitter, idempotent APIs, adaptive retry budget
 - For short design answers, still include concrete values or placeholders for per-dependency timeout, retry count/backoff/idempotency, circuit-breaker open/half-open/recovery thresholds, and the degraded user behavior.
 - Cover deadlines, retry safety, idempotency, backpressure, load shedding, health checks, fallbacks, and failure tests before optional resilience breadth.
 - Make recommendations actionable with thresholds, budgets, queue limits, stop criteria, tests, and rollback or disablement steps where relevant.
-- State required evidence such as dependency p95/p99 latency, error classes, retry counts, queue age, saturation, health-check behavior, and failure-test results; do not claim unseen evidence.
+- Name the details to inspect, such as dependency p95/p99 latency, error classes, retry counts, queue age, saturation, health-check behavior, and failure-test results; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside dependency resilience and overload. Route API contract or capacity-model work only when it materially blocks the failure-mode decision.
 - Be concise: avoid generic retry guidance and prefer compact dependency matrices and budget tables.
@@ -104,11 +104,11 @@ Use bounded timeouts/retries with jitter, idempotent APIs, adaptive retry budget
 - Health-check design separating liveness, readiness, startup, and dependency checks.
 - Failure-mode tests or experiments for slow, erroring, overloaded, and unavailable dependencies.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `dependency_matrix`: every remote dependency and queue has timeout, retry, and failure behavior.
 - `deadline_budget`: per-hop timeouts fit inside the end-to-end caller deadline.
-- `retry_safety`: retryable calls, mutations, batch items, and consumers have retry budgets plus idempotency or dedupe evidence.
+- `retry_safety`: retryable calls, mutations, batch items, and consumers have retry budgets plus idempotency or dedupe behavior.
 - `overload_bound`: queues are bounded and overload behavior is observable before saturation cascades.
 - `health_check_safety`: health checks cannot remove the whole fleet because a shared dependency is unhealthy.
 

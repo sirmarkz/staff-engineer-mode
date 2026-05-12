@@ -33,22 +33,22 @@ Engineering controls are useful only when they are close to the work and produce
 ## When Not To Use
 
 - The request is single-launch, single-traffic-shift, or tier-change readiness; use `production-readiness-review`.
-- A single specialist covers the needed evidence directly: deployed vulnerability evidence belongs to `vulnerability-management`; build-path provenance belongs to `software-supply-chain-security`; identity, secrets, and access evidence belongs to `identity-and-secrets`; reliability target evidence belongs to `slo-and-error-budgets`; alert and telemetry evidence belongs to `observability-and-alerting`; backup and restore evidence belongs to `backup-and-recovery`; tenant boundary evidence belongs to `tenant-isolation`; data lifecycle evidence belongs to `privacy-and-data-lifecycle`; data pipeline evidence belongs to `data-pipeline-reliability`; threat-model evidence belongs to `secure-sdlc-and-threat-modeling`; AI-assisted change evidence belongs to `ai-coding-governance`.
+- A single specialist covers the needed evidence directly: deployed vulnerability evidence belongs to `vulnerability-management`; build-path provenance belongs to `software-supply-chain-security`; identity, secrets, and access evidence belongs to `identity-and-secrets`; reliability target evidence belongs to `slo-and-error-budgets`; alert and telemetry evidence belongs to `observability-and-alerting`; backup and restore test results belongs to `backup-and-recovery`; tenant boundary evidence belongs to `tenant-isolation`; data lifecycle evidence belongs to `privacy-and-data-lifecycle`; data pipeline evidence belongs to `data-pipeline-reliability`; threat-model evidence belongs to `secure-sdlc-and-threat-modeling`; AI-assisted change evidence belongs to `ai-coding-governance`.
 - The user asks for evidence but actually wants a single-domain answer; use the matching specialist above.
 - The request is broad compliance, legal, procurement, vendor risk, auditor-liaison program management, or business program management outside engineering lifecycle and operations.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
-- Engineering standards, systems in scope, delivery decisions, and evidence consumers.
-- Existing artifacts: PRs, CI logs, tests, scans, attestations, deployments, runbooks, incidents, access reviews, and dashboards.
-- Evidence refresh cadence, exception rules, and risk acceptance authority.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
+- Engineering standards, systems in scope, delivery decisions, and who needs the records.
+- Existing artifacts: PRs, CI logs, tests, scans, build records, deployments, runbooks, incidents, access reviews, and dashboards.
+- Refresh cadence, exception rules, and who can accept the risk.
 - Current scorecards, manual collection burden, gaps, incidents, and recurring findings.
 - Required engineering expectations or internal guidelines and how they map to engineering behavior.
 
 ## Workflow
 
-1. **Gate on cross-surface scope.** Confirm the work spans at least two specialist engineering surfaces and that no single specialist covers the full evidence set. If the request is single-launch readiness, use `production-readiness-review`. If the request is single-domain evidence, use the matching specialist and stop.
+1. **Check cross-surface scope.** Confirm the work spans at least two specialist engineering surfaces and that no single specialist covers the full record set. If the request is single-launch readiness, use `production-readiness-review`. If the request is single-domain evidence, use the matching specialist and stop.
 2. **Map expectations to behavior.** Express each expectation as something engineers do, prevent, detect, confirm, test, or verify.
 3. **Locate evidence near engineering work.** Prefer generated records from changes, CI, deploys, access systems, scanners, runbooks, and incidents.
 4. **Assign responsibility and cadence.** Every evidence source needs an owner, refresh cadence, and failure response.
@@ -66,13 +66,13 @@ Keep evidence close to engineering workflows and automate collection where possi
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -86,7 +86,7 @@ Keep evidence close to engineering workflows and automate collection where possi
 - Lead with the expectation-to-evidence map, scorecard, exception register, or evidence-pack outline requested.
 - Cover engineering behavior, repeatable evidence sources, cadence, pass/fail states, exceptions, and workflow fit before optional program breadth.
 - Make recommendations actionable with artifact sources, collection cadence, failure response, automation backlog, and exception expiry where relevant.
-- State required evidence such as CI results, deploy records, configuration snapshots, change records, incident records, control outputs, and source artifact links; do not claim unseen evidence.
+- Name the details to inspect, such as CI results, deploy records, configuration snapshots, change records, incident records, control outputs, and source artifact links; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside engineering evidence. Do not make legal, procurement, staffing, or external-assurance claims.
 - Be concise: avoid generic compliance language and prefer compact engineering evidence matrices.
@@ -100,13 +100,13 @@ Keep evidence close to engineering workflows and automate collection where possi
 - Evidence pack outline linked to source artifacts.
 - Standards update backlog with gap source, engineering expectation, severity, expected fix path, and target date.
 
-## Evidence Gates
+## Checks Before Moving On
 
-- `scope_check`: request explicitly spans two or more engineering surfaces, no single specialist covers the full evidence set, and non-engineering program management is excluded.
-- `evidence_source`: every expectation maps to a repeatable engineering artifact source.
-- `cadence_check`: every evidence source has refresh cadence and failure response.
+- `scope_check`: request explicitly spans two or more engineering surfaces, no single specialist covers the full record set, and non-engineering program management is excluded.
+- `record_source`: every expectation maps to a repeatable engineering artifact source.
+- `cadence_check`: every record source has refresh cadence and failure response.
 - `exception_check`: exceptions have expiry, compensating control, and refresh trigger.
-- `workflow_fit`: evidence is collected from normal engineering workflows where possible.
+- `workflow_fit`: records are captured from normal engineering workflows where possible.
 
 ## Red Flags - Stop And Rework
 

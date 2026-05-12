@@ -33,15 +33,15 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 - The user asks for cost optimization without reliability targets; use `cost-aware-reliability` instead.
 - A live outage is underway; route to `incident-response-and-postmortems` first.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Critical user journeys, API operations, tenants, customer tiers, and response paths.
 - Candidate SLIs for availability, latency, freshness, correctness, durability, and data loss.
 - Current metrics, logs, traces, dashboards, alerts, and incident history.
 - Traffic shape: request volume, batch cadence, peak/seasonal behavior, and dependency fanout.
 - External commitments or contractual SLAs, support tier, business-critical periods, and known customer commitments.
-- Release process: canary gates, freeze rules, rollback authority, and reliability-work intake.
+- Release process: canary checks, freeze rules, rollback authority, and reliability-work intake.
 
 ## Workflow
 
@@ -65,13 +65,13 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -85,8 +85,8 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 
 - Lead with the SLO table, alert policy, budget-state decision, or telemetry blocker requested.
 - Cover user journeys, SLIs, health states, target/window math, burn alerts, dashboards, release policy, and observability gaps before optional SRE breadth.
-- Make recommendations actionable with metric definitions, thresholds, windows, alert routes, budget consequences, and follow-up gates where relevant.
-- State required evidence such as request/event sources, numerator/denominator definitions, traffic volume, deployment markers, current burn, urgent-alert history, and dashboard links; do not claim unseen evidence.
+- Make recommendations actionable with metric definitions, thresholds, windows, alert routes, budget consequences, and follow-up checks where relevant.
+- Name the details to inspect, such as request/event sources, numerator/denominator definitions, traffic volume, deployment markers, current burn, urgent-alert history, and dashboard links; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside SLO and error-budget engineering. Route rollout policy, observability instrumentation, or PRR only when they are the central unresolved risk.
 - Be concise: avoid generic SRE exposition and prefer compact SLI/SLO and burn-policy tables.
@@ -102,7 +102,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - Budget-state release policy and reliability-work triggers.
 - Assumptions, proxy risks, blockers, and follow-up routes.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `journey_coverage`: every tier-1 or explicitly requested journey has a SLI, and user-visible success definition.
 - `health_state`: the SLO can distinguish successful, degraded, unavailable, and excluded events where users experience partial failure.

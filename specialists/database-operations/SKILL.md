@@ -34,15 +34,15 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 - The primary concern is recovery after corruption or destructive change; use `backup-and-recovery` instead.
 - The work is warehouse/ETL freshness; use `data-pipeline-reliability` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Datastore type, topology, table/collection size, write rate, read patterns, and critical queries.
 - Proposed DDL/DML, index, backfill, cleanup, or maintenance operation.
 - Lock behavior, replication lag, write amplification, query-plan risks, and operational windows.
 - Backfill batch size, throttle rules, pause/abort controls, checkpointing, and idempotency.
 - Verification queries, counts, checksums, invariants, and sampled correctness checks.
-- Rollback versus forward-fix options, backup/restore evidence, and destructive cleanup delay.
+- Rollback versus forward-fix options, backup/restore test results, and destructive cleanup delay.
 - Monitoring: latency, errors, lock waits, lag, slow queries, saturation, job progress, and user impact.
 
 ## Workflow
@@ -65,13 +65,13 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -84,8 +84,8 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 
 - Lead with the migration safety decision, blockers, or execution plan requested.
 - Cover locks, query plans, backfill throttling, replication lag, verification, and rollback before optional database topics.
-- Make recommendations actionable with evidence, gates, stop conditions, and rollback or pause criteria where relevant.
-- State required evidence such as table size, write rate, lock behavior, replica lag, batch metrics, and validation queries; do not claim unseen evidence.
+- Make recommendations actionable with checks, stop conditions, and rollback or pause criteria where relevant.
+- Name the details to inspect, such as table size, write rate, lock behavior, replica lag, batch metrics, and validation queries; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside database change execution. Route broader distributed consistency only when semantic consistency is unresolved.
 - Be concise: avoid generic database background and prefer compact phased runbooks.
@@ -98,9 +98,9 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 - Verification query/invariant plan.
 - Monitoring and alert additions for the change window.
 - Rollback or forward-fix decision record.
-- Cleanup plan with delay, and evidence gate.
+- Cleanup plan with delay, and check.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `lock_lag_check`: lock behavior, replication lag, and write amplification are assessed.
 - `throttle_abort`: batch size, throttle, pause, abort, and confirmation point are defined.

@@ -15,7 +15,7 @@ A flag without all three is orphan debt. Orphan flags become dead branches, cont
 
 ## Overview
 
-Produces a flag inventory with category and expiry per flag, an orphan report for flags whose features no longer exist, and a removal plan with rollback for each retiring flag. Refuses to count a feature as shipped while a flag still gates it.
+Produces a flag inventory with category and expiry per flag, an orphan report for flags whose features no longer exist, and a removal plan with rollback for each retiring flag. Refuses to count a feature as shipped while a flag still controls it.
 
 **Core principle:** every live flag is unfinished work. After a rollout completes, the flag, its branches, and its config rows are decision debt that compounds until someone explicitly removes them.
 
@@ -38,11 +38,11 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 - The change is an org-level rule for AI-assisted code that adds flags it never removes; use `ai-coding-governance`.
 - The work is broad release readiness across multiple surfaces; use `production-readiness-review`.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Flag inventory source: code search, flag-service registry, config files, environment overrides, and any per-tenant or per-location overrides.
-- Per-flag metadata: name, declaration site, default value, current production value per environment, last evaluation timestamp where available, and number of branches gated.
+- Per-flag metadata: name, declaration site, default value, current production value per environment, last evaluation timestamp where available, and number of branches behind the flag.
 - Stated category for each flag: release toggle, experiment, operational kill switch, or permission/entitlement.
 - Responsibility path per flag, fallback path, and user decision point for removal.
 - Expiry policy by category and whether the flag has exceeded it.
@@ -55,7 +55,7 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 ## Workflow
 
 1. **Build the inventory.** Reconcile flags discovered in code, in the flag service or config registry, and in environment overrides. A flag that exists in only one of those sources is the first orphan signal.
-2. **Classify each flag.** Assign exactly one category: release toggle (turns a shipped feature on), experiment (assigns variants for measurement), operational kill switch (disables a path under load or failure), permission or entitlement (gates access by tenant, plan, or role). A flag that resists classification is itself a finding.
+2. **Classify each flag.** Assign exactly one category: release toggle (turns a shipped feature on), experiment (assigns variants for measurement), operational kill switch (disables a path under load or failure), permission or entitlement (controls access by tenant, plan, or role). A flag that resists classification is itself a finding.
 3. **Set expiry by category.** Release toggles default to short expiry tied to rollout completion. Experiment flags default to short expiry tied to readout date. Operational kill switches default to longer expiry but require rehearsal cadence. Permission flags may be long-lived but still need renewal decisions and a safe fallback.
 4. **Check default-value safety.** Record the local default/fallback value for each flag and the behavior chosen if flag evaluation or the flag service is unavailable. The fallback should select the safest known production behavior, not an accidental SDK or config default.
 5. **Check rollout completion.** For each release toggle, confirm the rollout finished, the chosen value is the production default everywhere, and no environment still pins the legacy value without a documented reason.
@@ -75,13 +75,13 @@ Treat flags as time-bounded. Release toggles expire when the rollout completes. 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -94,8 +94,8 @@ Treat flags as time-bounded. Release toggles expire when the rollout completes. 
 
 - Lead with the flag inventory, orphan list, removal plan, or flag-debt scorecard requested.
 - Cover classification, responsibility, expiry, default-value safety, branch mapping, removal sequencing, and rollback before optional flag-system breadth.
-- Make recommendations actionable with per-flag expiry, target value, fallback/default value, outage behavior, removal step, rollback step, and verification evidence.
-- State required evidence such as code-search results, flag-registry export, environment overrides, evaluation telemetry where available, and incident history; do not claim flag state from prose alone.
+- Make recommendations actionable with per-flag expiry, target value, fallback/default value, outage behavior, removal step, rollback step, and verification results.
+- Name the details to inspect, such as code-search results, flag-registry export, environment overrides, evaluation telemetry where available, and incident history; do not claim flag state from prose alone.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside post-rollout flag lifecycle. Route in-flight rollout sequencing, generic dead-code cleanup, experiment analysis, and config-change safety to the responsible specialist.
 - Be concise: prefer compact inventory and removal tables over running narrative about flag philosophy.
@@ -111,7 +111,7 @@ Treat flags as time-bounded. Release toggles expire when the rollout completes. 
 - Standing rule: per-category expiry defaults, renewal cadence, and the create-time expiry/category/safe-fallback rule.
 - Follow-up routes to progressive delivery, configuration safety, dependency hygiene, or experimentation as needed.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `flag_inventory_present`: a single inventory reconciles flags found in code, in the registry, and in environment overrides; mismatches are listed.
 - `category_assigned`: every live flag has exactly one category from release, experiment, operational kill switch, or permission.
@@ -144,4 +144,4 @@ Treat flags as time-bounded. Release toggles expire when the rollout completes. 
 | Ignoring flag-evaluation failure | Record the fallback/default value and confirm outage behavior is safe. |
 | Removing the code path but leaving the flag | Sweep registry rows, overrides, and dependent config in the same change. |
 | Letting kill switches drift untested | Rehearse the disabled path or downgrade the switch to documented inert. |
-| Adding new flags faster than removing them | Track removal velocity in the scorecard and gate new-flag creation on declared expiry. |
+| Adding new flags faster than removing them | Track removal velocity in the scorecard and require declared expiry before new-flag creation. |

@@ -33,9 +33,9 @@ Production should run artifacts whose source, build, dependencies, and confirmat
 - The question is runtime authorization or service access; use `identity-and-secrets` instead.
 - The request is broad compliance program management; out of scope unless framed as engineering evidence.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Repositories, branches, change acceptance rules, merge rights, and source protection.
 - Build system, workers, isolation, inputs, dependencies, environment, and reproducibility needs.
 - Artifact types, registries, signing, checksums, provenance, dependency inventories, and retention.
@@ -66,13 +66,13 @@ Use accepted source, controlled production pipelines, isolated builds, provenanc
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -86,8 +86,8 @@ Use accepted source, controlled production pipelines, isolated builds, provenanc
 
 - Lead with the source-to-deploy risk, control gap, provenance plan, or exception register requested.
 - Cover source acceptance, builder trust, artifact integrity, provenance, dependency inventory, deployment admission, automation credentials, and secret scanning before optional supply-chain breadth.
-- Make recommendations actionable with control locations, validation commands, admission gates, exception expiry, and remediation steps where relevant.
-- State required evidence such as protected branch settings, build identity, isolation model, artifact metadata, signatures or digests, dependency-inventory consumers, deploy policy, and credential scopes; do not claim unseen evidence.
+- Make recommendations actionable with control locations, validation commands, admission checks, exception expiry, and remediation steps where relevant.
+- Name the details to inspect, such as protected branch settings, build identity, isolation model, artifact metadata, signatures or digests, dependency-inventory consumers, deploy policy, and credential scopes; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside supply-chain integrity. Route routine dependency hygiene or deployed vulnerability remediation only when those are the central unresolved risk.
 - Be concise: avoid generic framework background and prefer compact control matrices and evidence maps.
@@ -102,7 +102,7 @@ Use accepted source, controlled production pipelines, isolated builds, provenanc
 - Secret scanning and exposure response plan.
 - Exceptions with expiry, and compensating controls.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `source_acceptance`: production source changes require accepted source and protected merge path.
 - `builder_trust`: build environment identity, isolation, and credential scope are documented.

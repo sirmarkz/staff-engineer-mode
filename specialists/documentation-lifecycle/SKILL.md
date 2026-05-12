@@ -34,14 +34,14 @@ Engineering documentation is useful only when it is findable, maintained, curren
 - The request is marketing, sales, or public positioning copy.
 - The request is routine editorial or mechanical documentation maintenance with no source-of-truth dispute, operational guidance gap, stale-doc risk, or lifecycle decision.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Doc type, audience, source of truth, repo or system link, and user decision point.
 - Current doc set, duplicates, stale pages, search paths, and missing operational references.
 - Change triggers: code responsibility, service behavior, alerts, runbooks, interfaces, migrations, and deprecations.
 - Verification cadence, freshness signal, archival rule, and exception path.
-- Evidence that users can find and apply the doc during real work.
+- Signs that users can find and apply the doc during real work.
 
 ## Workflow
 
@@ -50,7 +50,7 @@ Engineering documentation is useful only when it is findable, maintained, curren
 3. **Assign responsibility.** Give every critical doc a user/agent responsibility path and an update trigger tied to the system lifecycle. Anonymous docs become stale silently.
 4. **Pick the source of truth.** Remove or mark duplicates so readers know where authority lives.
 5. **Add freshness signals.** Include last-verified state, lifecycle stage, change trigger, and archive rule.
-6. **Connect docs to delivery.** Link docs to code, alerts, dashboards, runbooks, release gates, or decision records where they are used.
+6. **Connect docs to delivery.** Link docs to code, alerts, dashboards, runbooks, release checks, or decision records where they are used.
 7. **Test usability.** Verify a fresh agent or the user from a clean clone can find and follow the doc under realistic conditions.
 8. **Retire stale docs.** Archive misleading content rather than keeping it searchable with no current source of truth.
 
@@ -63,13 +63,13 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -79,10 +79,10 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 
 ## Response Quality Bar
 
-- Lead with the doc lifecycle, inventory, rewrite plan, or freshness gate requested.
+- Lead with the doc lifecycle, inventory, rewrite plan, or freshness check requested.
 - Cover audience, source of truth, doc type, update trigger, discoverability, and archival rule before optional style advice.
-- Make recommendations actionable with verification cadence, stale-doc handling, and delivery gates where relevant.
-- State required evidence such as current docs, usage paths, responsibility paths, stale pages, runbook tests, and change triggers; do not claim unseen evidence.
+- Make recommendations actionable with verification cadence, stale-doc handling, and delivery checks where relevant.
+- Name the details to inspect, such as current docs, usage paths, responsibility paths, stale pages, runbook tests, and change triggers; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside engineering documentation. Route architecture decisions, incident writeups, or marketing copy only when they are central.
 - Be concise: prefer doc inventories and lifecycle rules over broad writing theory.
@@ -98,16 +98,16 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 - Stale-doc cleanup plan.
 - Usability and findability checks.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `audience_job`: each critical doc names its reader and supported task.
 - `doc_source`: responsibility path and source of truth are explicit.
 - `quadrant_classification`: every doc in the inventory **table carries a visible quadrant label** (tutorial / how-to / reference / explanation); runbooks and decision records tagged separately as operational/architectural. Mixed-quadrant docs are split.
 - `no_duplication_rule`: source-of-truth section states an explicit rule against duplication, not just "remove duplicates."
 - `staleness_signal`: freshness policy names both a cadence and the signal that flips a doc to stale.
-- `docs_as_code`: doc changes flow through traceable changes AND automated checks (lint, link-check, or CI).
+- `docs_as_code`: doc changes flow through linked changes AND automated checks (lint, link-check, or CI).
 - `freshness_rule`: change trigger, lifecycle state, and archive rule exist.
-- `delivery_link`: docs required for operation or launch are tied to delivery gates.
+- `delivery_link`: docs required for operation or launch are tied to delivery checks.
 - `usability_check`: someone can find and use the doc without tribal knowledge.
 
 ## Red Flags - Stop And Rework

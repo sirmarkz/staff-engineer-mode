@@ -33,9 +33,9 @@ Cost is an operational signal, but reliability headroom is not waste by default.
 - The issue is public abuse causing cost; use `edge-traffic-and-ddos-defense` instead too.
 - The request is financial reporting not tied to engineering decisions.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Service tier, SLOs, traffic, capacity model, failover headroom, and degradation behavior.
 - Unit metrics: request, tenant, job, dataset, device, model inference, or business transaction.
 - Cost allocation: environment, tenant/customer, feature, location, and workload class.
@@ -65,13 +65,13 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -86,7 +86,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 - Lead with the unit-cost model, cost driver, reliability tradeoff, optimization plan, or anomaly diagnosis requested.
 - Cover allocation, unit metrics, driver separation, SLO/headroom preservation, failure-condition capacity, rollback, anomaly monitoring, and refresh cadence before optional FinOps breadth.
 - Make recommendations actionable with metrics, savings ranges, risk acceptance, stop criteria, rollback steps, and post-change checks where relevant.
-- State required evidence such as spend by usage units, traffic, capacity headroom, SLOs, peak/failure demand, deploy markers, anomaly timeline, and retry/abuse signals; do not claim unseen evidence.
+- Name the details to inspect, such as spend by usage units, traffic, capacity headroom, SLOs, peak/failure demand, deploy markers, anomaly timeline, and retry/abuse signals; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside cost-aware reliability. Route capacity, edge defense, platform, or data work only when those are the central unresolved risk.
 - Be concise: avoid generic cost advice and prefer compact unit-cost, driver, and tradeoff tables.
@@ -103,7 +103,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 - Refresh cadence for cost signals.
 - Follow-up routes to capacity, edge defense, platform, or data skills as needed.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `unit_check`: cost metric maps to an engineering unit and response path.
 - `slo_headroom`: SLO, peak, and failure-condition headroom are preserved or risk is accepted.

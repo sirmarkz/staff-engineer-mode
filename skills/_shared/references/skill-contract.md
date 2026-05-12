@@ -10,14 +10,14 @@ Every specialist file must be concise, triggerable, and artifact-oriented.
 - `## Iron Law`
 - `## When To Use`
 - `## When Not To Use`
-- `## Inputs To Collect`
+- `## Info To Gather`
 - `## Workflow`
 - `## Synthesized Default`
 - `## Phase Behavior`
 - `## Exceptions`
 - `## Response Quality Bar`
 - `## Required Outputs`
-- `## Evidence Gates`
+- `## Checks Before Moving On`
 - `## Red Flags - Stop And Rework`
 - `## Common Mistakes`
 
@@ -33,17 +33,17 @@ tool-specific guidance.
 Every specialist must state lifecycle behavior:
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 Non-exception specialists must not be written as after-the-fact audit or review specialists. They must
 guide the next decision from context, artifact, surface, risk, and available
-evidence, even when the prompt does not name a formal phase.
+details, even when the prompt does not name a formal phase.
 
 ## Output Schema
 
@@ -53,7 +53,7 @@ evidence, even when the prompt does not name a formal phase.
 - `exceptions`
 - `standard_decisions`
 - `required_artifacts`
-- `evidence_gates`
+- `checks_before_moving_on`
 - `follow_up_routes`
 
 ## Routing Rules

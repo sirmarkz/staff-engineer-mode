@@ -35,13 +35,13 @@ Multi-tenancy fails when tenant context is optional.
 - The main issue is public abuse or DDoS at the edge; use `edge-traffic-and-ddos-defense` instead.
 - The work is only supply-chain or artifact integrity; use `software-supply-chain-security` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Tenant model: silo, pool, bridge, organization/account hierarchy, shared services, and administrative boundaries.
 - Data classification, PII/sensitive fields, retention, deletion, export, and residency constraints.
 - Request, query, cache, event, batch, search, analytics, and support/admin paths that carry tenant data.
-- Access controls, tenant context propagation, audit events, row/object boundaries, and break-glass behavior.
+- Access controls, tenant context propagation, activity logs, row/object boundaries, and break-glass behavior.
 - Quotas, rate limits, concurrency caps, noisy-neighbor risks, and per-tenant isolation needs.
 - Logging, metrics, traces, crash/error reports, and support tooling that may expose sensitive data.
 
@@ -55,7 +55,7 @@ Multi-tenancy fails when tenant context is optional.
 6. **Control noisy neighbors.** Add per-tenant quotas, rate limits, concurrency caps, and load-shedding rules where shared capacity exists.
 7. **Protect privacy surfaces.** Minimize, redact, tokenize, encrypt, or segregate sensitive data in logs, telemetry, exports, and support views.
 8. **Handle tenant offboarding.** Propagate deletion and access removal through stores, caches, indexes, derived data, exports, backup expiry, and support tooling.
-9. **Audit high-risk access.** Record administrative, support, export, deletion, and cross-tenant operations in tenant-scoped audit logs; define retention long enough for investigation, compliance, and incident investigation.
+9. **Audit high-risk access.** Record administrative, support, export, deletion, and cross-tenant operations in tenant-scoped activity logs; define retention long enough for investigation, compliance, and incident investigation.
 10. **Verify isolation.** Use tests, probes, reviews, and monitoring for cross-tenant reads/writes and capacity abuse.
 
 ## Synthesized Default
@@ -67,13 +67,13 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -86,8 +86,8 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 
 - Lead with the isolation model, cross-tenant risk, boundary-control plan, or test gap requested.
 - Cover tenant context propagation, data access boundaries, cache/event/job paths, quotas, privacy-safe telemetry, support access, and cross-tenant tests before optional tenancy breadth.
-- Make recommendations actionable with enforcement layers, query/key rules, quotas, tenant-scoped audit logs with retention, test cases, and stop criteria where relevant.
-- State required evidence such as request flows, schema keys, cache keys, job payloads, event envelopes, support-tool logs, quota metrics, audit retention settings, and cross-tenant test results; do not claim unseen evidence.
+- Make recommendations actionable with enforcement layers, query/key rules, quotas, tenant-scoped activity logs with retention, test cases, and stop criteria where relevant.
+- Name the details to inspect, such as request flows, schema keys, cache keys, job payloads, event envelopes, support-tool logs, quota metrics, audit retention settings, and cross-tenant test results; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside tenant isolation and data protection. Route general privacy or identity work only when it materially changes the isolation decision.
 - Be concise: avoid generic multi-tenancy background and prefer compact propagation maps and boundary-control tables.
@@ -105,13 +105,13 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 - Tenant-scoped audit log requirements, including covered events, protected fields, retention period or retention policy, and review responsibility.
 - Cross-tenant test requirements, including forced-tenant mismatch, missing-tenant-filter detection, random tenant-ID probes, and cache-key assertions.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `tenant_context`: every request/query/job/event/cache path preserves tenant context or is explicitly tenant-neutral.
 - `data_boundary`: data access controls enforce tenant isolation where shared stores exist.
 - `privacy_check`: sensitive data handling is defined for logs, traces, metrics, errors, exports, and support tools.
 - `quota_check`: shared capacity has tenant-aware quotas or an explicit risk acceptance.
-- `audit_check`: tenant-scoped audit logs cover high-risk access and define retention for forensics and incident investigation.
+- `activity_log_check`: tenant-scoped activity logs cover high-risk access and define retention for forensics and incident investigation.
 - `cross_tenant_test`: tests or probes cover unauthorized cross-tenant read/write paths.
 
 ## Red Flags - Stop And Rework

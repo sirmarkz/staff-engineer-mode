@@ -34,11 +34,11 @@ Users experience tail latency, not averages.
 - The user asks pure billing/procurement questions; out of scope.
 - The work is SLO target selection without performance investigation; use `slo-and-error-budgets` instead.
 - The regression is explicitly tied to a query plan, index, or schema migration; use `database-operations` instead.
-- The request is browser field/lab release gating for a frontend rollout; use `web-release-gates` instead.
+- The request is browser field/lab release checks for a frontend rollout; use `web-release-gates` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - User journeys, SLOs, latency percentiles, throughput targets, and acceptable degradation behavior.
 - Traffic model: current, peak, forecast, burstiness, tenant skew, payload size, and fanout.
 - Resource signals: CPU, memory, IO, network, lock contention, connection pools, thread pools, queue depth, queue age, and GC.
@@ -68,13 +68,13 @@ Optimize around tail percentiles, saturation, queue age, and headroom rather tha
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -87,8 +87,8 @@ Optimize around tail percentiles, saturation, queue age, and headroom rather tha
 
 - Lead with the capacity model, tail-latency diagnosis, load-test plan, or headroom decision requested.
 - Cover traffic shape, fanout, tail budgets, saturation signals, load shedding, test evidence, failure-domain headroom, and cost tradeoffs when relevant before optional performance breadth.
-- Make recommendations actionable with thresholds, test scenarios, stop criteria, scaling limits, rollback actions, and regression gates where relevant.
-- State required evidence such as p95/p99 metrics, peak/burst traffic, concurrency, queue age, resource saturation, downstream limits, load-test results, and unit cost; do not claim unseen evidence.
+- Make recommendations actionable with thresholds, test scenarios, stop criteria, scaling limits, rollback actions, and regression checks where relevant.
+- Name the details to inspect, such as p95/p99 metrics, peak/burst traffic, concurrency, queue age, resource saturation, downstream limits, load-test results, and unit cost; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside capacity, performance, and tail latency. Route data pipelines, dependency resilience, or FinOps only when they materially change the decision.
 - Be concise: avoid generic performance advice and prefer compact capacity models, latency budgets, and test matrices.
@@ -105,12 +105,12 @@ Every answer — including narrow regression diagnoses — must state, in this o
 6. **Hot-path / hot-key analysis**: the suspected hot path or hot key and its mitigation.
 7. Capacity model (normal/peak/burst/failure-domain), latency budget by hop, regression analysis, and cost/headroom tradeoff when cost is in scope.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `tail_metric`: target percentile, window, and journey are stated.
 - `traffic_model`: peak, burst, concurrency, fanout, and tenant skew are modeled or marked unknown.
 - `saturation_signals`: resource, queue, pool, and downstream saturation metrics are identified.
-- `test_evidence`: load or regression test has scenario, stop criteria, result, and evidence path.
+- `test_result`: load or regression test has scenario, stop criteria, result, and check path.
 - `headroom_check`: capacity includes peak and expected failure-domain conditions, with static capacity separated from emergency scaling.
 
 ## Red Flags - Stop And Rework

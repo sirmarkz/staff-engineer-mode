@@ -1,6 +1,6 @@
 ---
 name: mobile-release-engineering
-description: "Use when mobile rollouts need staged release, crash-free gates, startup, hangs, offline behavior, or kill switches"
+description: "Use when mobile rollouts need staged release, crash-free checks, startup, hangs, offline behavior, or kill switches"
 ---
 
 # Mobile Release Engineering And Crash Budgets
@@ -15,7 +15,7 @@ If the release cannot be halted or repaired under app-store/client constraints, 
 
 ## Overview
 
-Mobile releases are hard to roll back, so stability gates must be conservative before broad rollout.
+Mobile releases are hard to roll back, so stability checks must be conservative before broad rollout.
 
 **Core principle:** use staged rollout, crash/hang budgets, device/OS segmentation, startup/offline checks, privacy-safe telemetry, and forward-fix plans.
 
@@ -31,11 +31,11 @@ Mobile releases are hard to roll back, so stability gates must be conservative b
 - The request is responsive web or browser performance; use `web-release-gates` instead.
 - The issue is backend-only latency or availability; use `performance-and-capacity` or `slo-and-error-budgets` instead.
 - The work is mobile product strategy, acquisition, store listing optimization, or UX roadmap.
-- The question is general CI gate policy without mobile release constraints; use `testing-and-quality-gates` instead.
+- The question is general CI check policy without mobile release constraints; use `testing-and-quality-gates` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Platforms, release train, app versions, staged rollout percentages, and store review constraints.
 - Stability metrics: crash-free users/sessions, hang rate, startup failures, fatal/non-fatal error rate, and watchdog events.
 - Device/OS/app-version/network segmentation and known high-risk cohorts.
@@ -46,9 +46,9 @@ Mobile releases are hard to roll back, so stability gates must be conservative b
 ## Workflow
 
 1. **Define mobile SLIs.** Use crash-free users/sessions, hang rate, startup success, and critical journey success.
-2. **Segment the rollout.** Gate by platform, app version, device class, OS version, geography/network, or cohort where risk warrants it.
+2. **Segment the rollout.** Check by platform, app version, device class, OS version, geography/network, or cohort where risk warrants it.
 3. **Set staged thresholds.** Define metrics and sample-size requirements for each widening step.
-4. **Use explicit stability gates.** If local budgets are missing, propose provisional gates with windows: crash-free users at least 99.5%, crash-free sessions at least 99.9%, hang/ANR rate no worse than baseline plus 10% and below the app's severe-alert threshold, measured over each 24-hour rollout step before widening.
+4. **Use explicit stability checks.** If local budgets are missing, propose provisional checks with windows: crash-free users at least 99.5%, crash-free sessions at least 99.9%, hang/ANR rate no worse than baseline plus 10% and below the app's severe-alert threshold, measured over each 24-hour rollout step before widening.
 5. **Check compatibility.** Verify backend, API, schema, feature flag, and config compatibility with old and new app versions.
 6. **Plan offline and sync behavior.** Test intermittent network, stale config, retry, conflict, and data-loss scenarios.
 7. **Protect privacy.** Avoid sensitive data in crash reports, logs, breadcrumbs, and custom keys.
@@ -57,25 +57,25 @@ Mobile releases are hard to roll back, so stability gates must be conservative b
 
 ## Synthesized Default
 
-Use staged mobile rollout with crash-free, hang, startup, and critical-journey budgets as release gates. Account for slow upgrade curves and limited rollback by keeping kill switches, compatibility windows, and forward-fix paths ready.
+Use staged mobile rollout with crash-free, hang, startup, and critical-journey budgets as release checks. Account for slow upgrade curves and limited rollback by keeping kill switches, compatibility windows, and forward-fix paths ready.
 
 
 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Emergency security or compliance fixes may move faster, but staged telemetry and rollback/forward-fix criteria still apply.
-- Very small internal distributions can use lighter gates if users and devices are known.
+- Very small internal distributions can use lighter checks if users and devices are known.
 - Some app-store constraints force forward-fix rather than rollback; document this before broad rollout.
 - Privacy constraints may limit telemetry detail; preserve enough aggregate signal to detect regressions.
 
@@ -83,9 +83,9 @@ Use staged mobile rollout with crash-free, hang, startup, and critical-journey b
 
 - Lead with the staged rollout decision, halt criteria, or stability budget requested.
 - Cover crash-free, hangs, startup, critical journey, segmentation, and repair path before optional mobile release topics.
-- Include numeric stability thresholds and measurement windows when recommending rollout gates; clearly label provisional defaults if the user has not supplied project-specific budgets.
-- Make recommendations actionable with evidence, gates, stop conditions, and forward-fix or kill-switch actions where relevant.
-- State required evidence such as crash-free sessions/users, OS/device cohorts, sample sizes, app versions, and telemetry readiness; do not claim unseen evidence.
+- Include numeric stability thresholds and measurement windows when recommending rollout checks; clearly label provisional defaults if the user has not supplied project-specific budgets.
+- Make recommendations actionable with checks, stop conditions, and forward-fix or kill-switch actions where relevant.
+- Name the details to inspect, such as crash-free sessions/users, OS/device cohorts, sample sizes, app versions, and telemetry readiness; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside mobile release risk. Mention backend/API/config compatibility only where it affects client rollout safety.
 - Be concise: avoid generic mobile-release background and prefer compact rollout tables.
@@ -100,7 +100,7 @@ Use staged mobile rollout with crash-free, hang, startup, and critical-journey b
 - Halt, rollback, kill-switch, and forward-fix criteria.
 - Privacy-safe mobile telemetry checklist.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `stability_budget`: crash-free, hang, startup, and critical journey thresholds are defined.
 - `segment_check`: device, OS, app version, and network/cohort segmentation is considered.

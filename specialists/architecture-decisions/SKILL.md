@@ -11,7 +11,7 @@ description: "Use when making system design decisions, ADRs, service/module/work
 NO ARCHITECTURE DECISION WITHOUT FORCES, ALTERNATIVES, AND A REVERSAL PLAN
 ```
 
-If the design lacks goals, constraints, alternatives considered, and an honest read on how hard the decision would be to undo, do not treat it as decided. Naming the responsibility path matters too; for solo work it is the user and agent evidence path, not an org chart.
+If the design lacks goals, constraints, alternatives considered, and an honest read on how hard the decision would be to undo, do not treat it as decided. Naming the responsibility path matters too; for solo work it is the user and agent check path, not an org chart.
 
 ## Overview
 
@@ -31,12 +31,12 @@ Architecture decision work turns "components and opinions" into explicit goals, 
 - Launch readiness aggregation: use `production-readiness-review`.
 - Narrow API compatibility issue: use `api-design-and-compatibility`.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Problem statement, users, goals, non-goals, constraints, success criteria.
 - Current and proposed architecture, data flows, trust boundaries, interfaces, dependencies, and runtime responsibility model.
-- Operability evidence: how the user or agent debugs, replaces, or degrades around the design, what the fallback path is, and where that path is tested or documented.
+- Operability notes: how the user or agent debugs, replaces, or degrades around the design, what the fallback path is, and where that path is tested or documented.
 - Alternatives considered, including "do nothing", "keep modular", "split later".
 - Reliability, security, privacy, deploy, data consistency, migration, operational risks.
 - Existing incidents, SLOs, costs, scale limits, compliance constraints, roadmap pressures.
@@ -61,7 +61,7 @@ inferred field as ASSUMED so the user can correct it.
 4. **Map bounded contexts.** Produce a bounded-context map naming each context, its responsibility path, the language/model it uses, and the relationship to every adjacent context (upstream/downstream, conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways). Note where a context translates a neighbor's model and where it conforms.
 5. **Prefer simpler boundaries first.** Start with modular design and explicit contracts. Add distribution only for independent scaling, release cadence, responsibility, isolation, or blast-radius needs.
 6. **Compare alternatives.** Evaluate at least two real options plus the current state. Include consequences, rejected alternatives, and what would make the decision wrong later.
-7. **Specify fitness functions.** Write the architectural invariants the system must hold as testable checks. Each fitness function names: the property under test, the metric, the threshold or rule, the measurement source, the evaluation cadence, the failure response, and the local evidence path. Cover at minimum the dependency-direction rules, the public-contract compatibility rules, the latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant the design relies on.
+7. **Specify fitness functions.** Write the architectural invariants the system must hold as testable checks. Each fitness function names: the property under test, the metric, the threshold or rule, the measurement source, the evaluation cadence, the failure response, and the local check path. Cover at minimum the dependency-direction rules, the public-contract compatibility rules, the latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant the design relies on.
 8. **Evaluate runtime dependency responsibility.** For any critical runtime dependency, state how the user or agent can debug it, patch or change it, work around issues, and exit or degrade if it fails. Keep this at design-time adoption criteria; timeout/retry policy goes to `dependency-resilience`, and launch evidence goes to `production-readiness-review`.
 9. **Evaluate cross-cutting risks.** Cover reliability, overload, data correctness, security, observability, deployment safety, recovery, cost, and maintainability.
 10. **Record the decision.** Create an ADR or design-decision summary with status, context (≥2 forces with rationale), decision, consequences (split positive and negative), reversibility (cost + reconsideration trigger), evidence, fitness-function references, and follow-up checks.
@@ -76,18 +76,18 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Exploratory prototypes can use a lightweight decision note if explicitly non-production and disposable.
-- Regulated, security-sensitive, or tier-1 systems need a fuller risk register and evidence trail.
+- Regulated, security-sensitive, or tier-1 systems need a fuller risk register and change trail.
 - Reversible local implementation choices may be documented in code or PR context instead of an ADR.
 - If the system is already failing operationally, incident or reliability work may precede full architecture cleanup.
 
@@ -95,32 +95,32 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 
 - Lead with the architecture decision, decision status, or highest-severity blockers.
 - Cover goals, alternatives, responsibility, boundaries, data flow, and failure modes before optional architecture breadth.
-- Make recommendations actionable with evidence, gates, stop conditions, and follow-up decisions.
-- State required evidence such as SLOs, traffic, incidents, data contracts, threat boundaries, and migration proof; do not claim unseen evidence.
+- Make recommendations actionable with checks, stop conditions, and follow-up decisions.
+- Name the details to inspect, such as SLOs, traffic, incidents, data contracts, threat boundaries, and migration proof; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the design or decision. Add at most two specialist follow-ups, only for material unresolved surfaces.
 - Be concise: prefer compact ADRs, decision tables, and risk registers over generic architecture theory.
-- For pre-build, ticketing, or milestone-readiness requests, distinguish implementation tasks from unresolved architecture decisions. Use compact decision, risk/tradeoff, alternative, responsibility, and gate tables; do not expand into a full narrative ADR unless asked.
+- For pre-build, ticketing, or milestone-readiness requests, distinguish implementation tasks from unresolved architecture decisions. Use compact decision, risk/tradeoff, alternative, responsibility, and check tables; do not expand into a full narrative ADR unless asked.
 
 ## Required Outputs
 
 - Architecture decision summary with context, goals, non-goals, and constraints.
-- ADR with status, decision, alternatives, consequences, and a concrete responsibility value (user, agent evidence path, or supplied project role; if unknown, use `ASSUMED: <component> responsibility path` rather than a blank or `TBD`).
+- ADR with status, decision, alternatives, consequences, and a concrete responsibility value (user, agent check path, or supplied project role; if unknown, use `ASSUMED: <component> responsibility path` rather than a blank or `TBD`).
 - System map covering data flow, dependencies, trust boundaries, and responsibility.
 - Runtime dependency adoption criteria covering supportability, changeability, fallback, and exit/degradation path.
 - Bounded-context map listing each context with fields: name, responsibility path, model/language, upstream contexts, downstream contexts, relationship to each neighbor (conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways), and the translation surface where a neighbor's model is adapted.
-- Fitness-function specification listing each architectural invariant with fields: property under test, metric, threshold or rule, measurement source, evaluation cadence, failure response, and local evidence path. Cover dependency-direction rules, public-contract compatibility, latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant.
+- Fitness-function specification listing each architectural invariant with fields: property under test, metric, threshold or rule, measurement source, evaluation cadence, failure response, and local check path. Cover dependency-direction rules, public-contract compatibility, latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant.
 - Risk register with likelihood, impact, mitigation, and evidence.
 - Decision table showing default, alternatives rejected, and exception conditions.
 - Follow-up checks capped at two, each tied to a specific unresolved surface.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `decision_record`: the ADR states context, decision, status, alternatives, and consequences.
 - `goal_alignment`: every recommended architecture element maps to a goal, constraint, or risk.
 - `boundary_check`: service/module boundaries have responsibility, contracts, data responsibility, and failure behavior.
 - `context_map`: every named context has a model, upstream and downstream neighbors, and the relationship pattern to each neighbor; translation surfaces are explicit where neighbors disagree on the model.
-- `fitness_functions`: every architectural invariant the design depends on has a property, metric, threshold or rule, measurement source, evaluation cadence, failure response, and local evidence path; vague "should be fast" or "should be loosely coupled" entries are rejected as not testable.
+- `fitness_functions`: every architectural invariant the design depends on has a property, metric, threshold or rule, measurement source, evaluation cadence, failure response, and local check path; vague "should be fast" or "should be loosely coupled" entries are rejected as not testable.
 - `risk_coverage`: reliability, security, data, deploy, observability, and operations risks are considered.
 - `dependency_responsibility`: critical runtime dependencies have supportability, change path, fallback path, and exit or degradation plan.
 - `follow_up_cap`: no more than two follow-up skills are recommended unless the output is a sequencing plan.

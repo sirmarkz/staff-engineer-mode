@@ -29,15 +29,15 @@ Some bugs are too subtle for example-based tests and too expensive to discover i
 
 ## When Not To Use
 
-- The request is normal unit, integration, end-to-end, or CI merge-gate design with no state-machine or invariant under test; use `testing-and-quality-gates`.
+- The request is normal unit, integration, end-to-end, or CI merge-check design with no state-machine or invariant under test; use `testing-and-quality-gates`.
 - The fuzz target is purely a parser, format decoder, or input validator with no protocol or state-machine surface; use `testing-and-quality-gates`.
 - The main question is storage choice, database-backed workflow correctness, or consistency semantics; use `distributed-data-and-consistency` unless high-assurance validation of the storage protocol itself is central.
 - The main question is retry, timeout, circuit-breaker, or backoff policy rather than correctness of the underlying state machine; use `dependency-resilience`.
 - The system is low-risk and ordinary example-based testing is proportional.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - State machine, actors, operations, messages, retries, timers, crashes, recovery, and concurrency points.
 - Safety properties: what must never happen.
 - Liveness properties: what must eventually happen, and under which assumptions.
@@ -65,13 +65,13 @@ Use lightweight formal or semi-formal validation for high-stakes stateful behavi
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -84,8 +84,8 @@ Use lightweight formal or semi-formal validation for high-stakes stateful behavi
 
 - Lead with the invariant set, model boundary, counterexample, validation method, or blocker requested.
 - Cover safety/liveness properties, state actors, messages, timing, failures, retries, recovery, code mapping, and runtime checks before optional formal-methods breadth.
-- Make recommendations actionable with model scope, properties to test, counterexample handling, recovery cases, gates, and stop criteria where relevant.
-- State required evidence such as protocol states, transition rules, failure assumptions, trace logs, property-test results, simulation output, model checker traces, and code links; do not claim unseen evidence.
+- Make recommendations actionable with model scope, properties to test, counterexample handling, recovery cases, checks, and stop criteria where relevant.
+- Name the details to inspect, such as protocol states, transition rules, failure assumptions, trace logs, property-test results, simulation output, model checker traces, and code links; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside correctness validation. Route distributed-data consistency, tenant isolation, or cryptography only when those are the central unresolved risk.
 - Be concise: avoid generic formal-methods advocacy and prefer compact property lists, model boundaries, and counterexample tables.
@@ -100,7 +100,7 @@ Use lightweight formal or semi-formal validation for high-stakes stateful behavi
 - Recovery/interleaving test plan.
 - Runtime invariant or reconciliation plan.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `invariant_list`: critical safety and liveness properties are written in plain, testable language.
 - `model_boundary`: actors, state, messages, timing, and failure assumptions are explicit.

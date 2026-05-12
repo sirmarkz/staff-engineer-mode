@@ -33,14 +33,14 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 - The user asks only to define telemetry; use `observability-and-alerting` instead.
 - The user asks only to reduce alert fatigue; use `oncall-health` instead.
 
-## Inputs To Collect
+## Info To Gather
 
 - Impact: affected users, journeys, severity, start/end times, data loss/corruption, and business-critical periods.
 - Current state: active, mitigated, resolved, monitoring, or postmortem-only.
 - Responders, roles, fallback path, user decision point, and communication channels.
 - Available docs, dependency status, and user-provided contacts that can inform mitigation without blocking on an outside party.
 - Timeline events: detection, triage, mitigation, customer communication, resolution, and recurrence.
-- Mitigations attempted, evidence observed, dashboards/logs/traces used, and changes during the window.
+- Mitigations attempted, signals observed, dashboards/logs/traces used, and changes during the window.
 - Contributing factors, missed signals, runbook gaps, responsibility gaps, and action-item candidates.
 
 ## Workflow
@@ -70,13 +70,13 @@ Use role-based incident command during response and blameless, contributing-fact
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -90,8 +90,8 @@ Use role-based incident command during response and blameless, contributing-fact
 - Lead with the incident command plan, current mitigation posture, timeline, postmortem finding, or action register requested.
 - Cover impact, severity, roles, timeline, communications cadence, mitigation, contributing factors, missed defenses, and verified actions before optional incident mechanics.
 - For postmortems, include a **Contributing Factors** section with at least three factors across at least two layers such as technical trigger, detection gap, rollout/control gap, responsibility/runbook gap, or organizational tradeoff; avoid presenting one root cause as the whole explanation.
-- Make recommendations actionable with user decision point, timestamps, next-update times, verification conditions, due dates, and follow-up gates where relevant.
-- State required evidence such as alerts, dashboards, logs, deploy markers, chat timeline, customer-impact data, mitigation commands, and action verification; do not claim unseen evidence.
+- Make recommendations actionable with user decision point, timestamps, next-update times, verification conditions, due dates, and follow-up checks where relevant.
+- Name the details to inspect, such as alerts, dashboards, logs, deploy markers, chat timeline, customer-impact data, mitigation commands, and action verification; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside incident response and postmortems. Use security/privacy constraints or specialist reliability checks only when they are central to the next action.
 - Be concise: avoid generic blameless-postmortem theory and prefer compact timelines, status updates, and action tables.
@@ -108,7 +108,7 @@ Use role-based incident command during response and blameless, contributing-fact
 - Action-item register with due date, observable verification signal, and category.
 - Follow-up engineering checks for the relevant skill surfaces.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `impact_check`: user impact, severity, start/end or current state, and affected journeys are stated.
 - `role_check`: response roles and user decision point are assigned or explicitly not needed.

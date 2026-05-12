@@ -37,9 +37,9 @@ Internal networking should solve concrete traffic, identity, policy, and observa
 - The main topic is API contract design; use `api-design-and-compatibility` instead.
 - The work is broad identity/secrets beyond network identity; use `identity-and-secrets` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Service topology, traffic flows, protocols, locations, fault domains, partitions, dependencies, and responsibility.
 - Concrete problem: service identity, encrypted transport, authorization, traffic splitting, locality, failover, observability, policy, or debugging.
 - Current service discovery, load balancing, DNS/routing, ingress/egress, and network boundaries.
@@ -67,13 +67,13 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -88,7 +88,7 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 - For quick design or troubleshooting answers, still include one compact per-edge baseline: `<caller> -> <callee>` discovery/routing mechanism and stale/unavailable behavior; service-to-service authentication mechanism and scope, such as mutual-authentication transport workload identity, mesh identity, or a signed service token for that edge; per-request authorization decision criteria, such as caller identity plus method/resource/action; default-deny service policy with user-confirmed exception rule; RED metrics (request rate, error rate, latency) with dashboard and alert; and runnable debug command or procedure.
 - Cover concrete repeated needs, traffic map, routing/locality/failover, identity/encrypted transport/authorization, retry responsibility, telemetry, upgrades, rollback, and cost/latency tradeoffs before optional mesh breadth.
 - Make recommendations actionable with policy locations, rollout stages, config checks, failure tests, rollback steps, and operational runbooks where relevant.
-- State required evidence such as dependency maps, route config, retry/timeout settings, control-plane health, proxy versions, identity claims, latency/egress data, and incident history; do not claim unseen evidence.
+- Name the details to inspect, such as dependency maps, route config, retry/timeout settings, control-plane health, proxy versions, identity claims, latency/egress data, and incident history; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside internal traffic and service mesh decisions. Route dependency resilience or zero-trust work only when it materially changes the mesh decision.
 - Be concise: avoid generic mesh advocacy and prefer compact decision records and routing matrices.
@@ -103,7 +103,7 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 - Network telemetry and debugging requirements.
 - Cost and latency tradeoff notes for cross-boundary traffic.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `problem_check`: mesh or routing layer adoption maps to concrete repeated needs.
 - `failure_model`: data-plane, control-plane, config, and upgrade failure modes are addressed.

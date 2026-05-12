@@ -33,12 +33,12 @@ An API is a long-lived contract with unknown clients, retries, partial failures,
 - The request is broad secure design; use `secure-sdlc-and-threat-modeling` instead unless API contract is central.
 - The request is event schema evolution inside an asynchronous workflow; use `event-workflows` instead unless the external API contract is the main surface.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Consumers, client release cadence, compatibility expectations, and deprecation tolerance.
 - Operations/resources, generated-client method shape, request and response fields, event shapes, status/error semantics, defaults, and side effects.
-- Authentication, authorization, rate limits, quotas, tenant context, audit requirements, and abuse cases.
+- Authentication, authorization, rate limits, quotas, tenant context, activity-log needs, and abuse cases.
 - Retry behavior, idempotency needs, duplicate suppression, and replay windows.
 - Pagination, filtering, ordering, sorting, cursor stability, and consistency expectations.
 - Versioning policy, migration telemetry, usage by client/version, and existing deprecation process.
@@ -54,25 +54,25 @@ An API is a long-lived contract with unknown clients, retries, partial failures,
 7. **Handle collections deliberately.** Prefer stable cursor-style pagination for mutable collections; define ordering, filtering, empty results, cursor-token expiration, and list item summaries that avoid needless follow-up calls.
 8. **Bound filters and payloads.** Keep filters explicit, bounded, commutative, and limited to fields the caller may see; define unknown, malformed, duplicate, and over-limit behavior. Publish maxima for variable inputs, payloads, and inner lists at launch.
 9. **Shape batch operations intentionally.** Use batch APIs only for repeated same-action work. Shape each item like the singular operation, include per-item correlation, separate successes from errors, define partial-success behavior, and reject whole invalid batches before attempting items.
-10. **Plan migration.** Use telemetry to identify clients, publish deprecation windows, support overlap, and define removal gates.
+10. **Plan migration.** Use telemetry to identify clients, publish deprecation windows, support overlap, and define removal checks.
 11. **Check security and abuse.** Include authorization, rate limits, tenant isolation, audit events, and input validation as part of the contract.
 
 ## Synthesized Default
 
-Design APIs around domain contracts and generated-client ergonomics, not internal storage shape. Use additive compatibility first and explicit versions only when semantics must break. Mutations that can be retried need idempotency. Lists, filters, batches, and unbounded inputs need explicit limits and stable semantics at launch. Errors should be structured, stable, safe to expose, and tied to retry behavior. Deprecation requires telemetry, migration support, and a removal gate.
+Design APIs around domain contracts and generated-client ergonomics, not internal storage shape. Use additive compatibility first and explicit versions only when semantics must break. Mutations that can be retried need idempotency. Lists, filters, batches, and unbounded inputs need explicit limits and stable semantics at launch. Errors should be structured, stable, safe to expose, and tied to retry behavior. Deprecation requires telemetry, migration support, and a removal check.
 
 
 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -85,8 +85,8 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 
 - Lead with the concrete decision, blocker list, or migration plan requested.
 - Cover all compatibility, error, idempotency, and migration risks before optional API topics.
-- Make recommendations actionable with evidence, gates, stop conditions, and removal criteria where relevant.
-- State required evidence such as client telemetry, version usage, retry behavior, and migration readiness; do not claim unseen evidence.
+- Make recommendations actionable with checks, stop conditions, and removal criteria where relevant.
+- Name the details to inspect, such as client telemetry, version usage, retry behavior, and migration readiness; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the changed API surface. Mention pagination, rate limits, auth, audit, or tenant controls only when the prompt or risk makes them material.
 - Be concise: avoid generic API background and prefer compact compatibility matrices or checklists.
@@ -99,13 +99,13 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 - API contract decision with consumers, compatibility class, and risks.
 - Operation/resource naming decision and generated-client ergonomics notes.
 - Compatibility matrix for each changed operation, field, default, enum, event, error, and status behavior.
-- Versioning and deprecation plan with telemetry and removal gates.
+- Versioning and deprecation plan with telemetry and removal checks.
 - Error model with retryability, correlation, redaction, and client action.
 - Idempotency policy for retryable mutations.
 - Pagination, filtering, ordering, bounded-input, batch, and rate-limit policy.
 - Security and audit requirements for the exposed surface.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `compatibility_class`: every contract change is classified as additive, compatible, conditionally compatible, or breaking.
 - `operation_shape`: operations have one customer-visible action, stable resource terms, generated-client readability, and explicit side effects.
@@ -113,8 +113,8 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 - `error_model`: errors define machine code, human detail, retryability, correlation, and safe disclosure.
 - `collection_contract`: lists and filters define pagination, ordering, empty results, field visibility, bounds, token stability, and expiration.
 - `batch_semantics`: batch APIs define item limits, item correlation, partial success, per-item errors, and whole-request rejection rules.
-- `migration_telemetry`: deprecation or breaking changes have client usage telemetry and removal gates.
-- `abuse_boundary`: authz, rate limits, tenant context, audit, and validation are addressed where relevant.
+- `migration_telemetry`: deprecation or breaking changes have client usage telemetry and removal criteria.
+- `abuse_boundary`: authz, rate limits, tenant context, activity logging, and validation are addressed where relevant.
 
 ## Red Flags - Stop And Rework
 
@@ -137,4 +137,4 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 | Offset pagination on mutable data | Use stable cursors when inserts/deletes can shift results. |
 | Retrofitting bounds after launch | Set list, filter, batch, payload, and processing limits before clients depend on them. |
 | Hiding per-item batch failures | Echo request identifiers and separate successes from errors. |
-| Ignoring slow clients | Plan overlap, telemetry, and explicit removal gates. |
+| Ignoring slow clients | Plan overlap, telemetry, and explicit removal checks. |

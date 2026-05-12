@@ -33,15 +33,15 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 - The request is broad legal privacy statements, notice drafting, or regulator/auditor liaison; out of scope unless converted to concrete engineering controls.
 - The work is only control mapping; use `engineering-control-evidence` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Data inventory: fields, classifications, purpose, source, users, and downstream copies.
 - Collection points, transformations, derived data, logs, telemetry, exports, backups, caches, and support views.
 - Retention requirements, deletion triggers, legal holds if any, archival behavior, and backup expiration model.
 - Data residency, cross-border transfer constraints, third-party processors, and subprocessors that store or receive personal data.
 - Consent or purpose constraints that must be enforced by code, configuration, policy, or workflow.
-- Access paths, audit events, break-glass behavior, and privacy incident history.
+- Access paths, activity logs, break-glass behavior, and privacy incident history.
 - Data-subject request intake path, identity/account scope, response SLA, export format, erasure trigger, verification method, and exception handling.
 - Validation approach for minimization, redaction, deletion, export correctness, and regression prevention.
 
@@ -50,13 +50,13 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 1. **Inventory the flow.** Map personal data from collection through storage, processing, telemetry, derived data, export, support, backup, and deletion.
 2. **Classify fields.** Mark sensitivity, purpose, allowed uses, residency, retention, and whether the field can be tokenized, redacted, aggregated, or omitted.
 3. **Minimize collection.** Remove fields that are not needed; prefer derived, aggregated, tokenized, or on-device/local processing when it satisfies the purpose.
-4. **Constrain use.** Enforce purpose, consent, and access constraints in code, data jobs, schemas, policy, or workflow gates.
+4. **Constrain use.** Enforce purpose, consent, and access constraints in code, data jobs, schemas, policy, or workflow checks.
 5. **Control copies.** Apply privacy rules to logs, traces, metrics labels, crash reports, caches, search indexes, analytics, ML features, support tools, and third-party processors.
 6. **Engineer deletion and retention.** Define retention classes, delete propagation, deletion markers for asynchronous cleanup, derived-copy repair, backup expiry, audit trail, holds/exclusions, and failure handling.
 7. **Define the data-subject-rights workflow.** Specify how access, export, erasure, and portability requests are received, authenticated, scoped to stores and processors, completed within an SLA, verified for completeness, and closed with audit evidence.
 8. **Assess anonymization claims.** Do not call data anonymized unless reidentification risk has been assessed with an explicit method such as equivalence-class thresholds, diversity checks, noise-based aggregation, motivated-intruder assessment, or equivalent domain assessment; otherwise call it pseudonymized, aggregated, or tokenized.
 9. **Verify export and erasure.** Test that subject, tenant, or account-scoped export/deletion finds expected copies, includes required third-party paths, uses a defined output format, and reports known exclusions.
-10. **Prevent regressions.** Add schema checks, telemetry redaction tests, data-lineage alerts, and release gates for new sensitive fields.
+10. **Prevent regressions.** Add schema checks, telemetry redaction tests, data-lineage alerts, and release checks for new sensitive fields.
 
 ## Synthesized Default
 
@@ -67,13 +67,13 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -86,9 +86,9 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 
 - Lead with the data-flow finding, privacy control design, retention/deletion plan, data-subject-rights workflow, or blocker list requested.
 - Cover inventory, classification, minimization, purpose/access enforcement, telemetry/support controls, retention/deletion propagation, and verification before optional privacy breadth.
-- For access, erasure, export, or portability requests, state the request workflow, responsible control points, SLA, store coverage, exception list, verification method, and closure audit event.
-- Make recommendations actionable with field-level decisions, control points, test gates, failure handling, and retention or exception expiry where relevant.
-- State required evidence such as field inventories, data stores, logs, caches, derived copies, consent/purpose rules, deletion traces, export tests, and backup behavior; do not claim unseen evidence.
+- For access, erasure, export, or portability requests, state the request workflow, responsible control points, SLA, store coverage, exception list, verification method, and closure notes event.
+- Make recommendations actionable with field-level decisions, control points, test checks, failure handling, and retention or exception expiry where relevant.
+- Name the details to inspect, such as field inventories, data stores, logs, caches, derived copies, consent/purpose rules, deletion traces, export tests, and backup behavior; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside engineering controls for data lifecycle. Leave legal interpretation out unless the user supplies a requirement to implement.
 - Be concise: avoid generic privacy principles and prefer compact field inventories, flow maps, and verification plans.
@@ -103,17 +103,17 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 - Data-subject-rights workflow for access, erasure, export, and portability with intake, scope, SLA, verification, exclusions, and audit closure.
 - Anonymization or pseudonymization risk assessment when those claims are made.
 - Export/erasure verification plan with store coverage, third-party coverage, output format, exclusion list, and completeness evidence.
-- Regression gates and audit events.
+- Regression checks and activity logs.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `data_inventory`: personal and sensitive fields are mapped through primary and derived copies.
 - `minimization_check`: every collected field has purpose, and keep/remove/tokenize decision.
 - `copy_control`: logs, metrics, traces, caches, exports, support tools, and analytics have privacy handling.
 - `deletion_path`: retention, deletion trigger, propagation, backup behavior, and failure handling are defined.
-- `dsr_workflow`: access, erasure, export, or portability requests have intake, SLA, scope, verification, exclusions, and closure audit.
+- `dsr_workflow`: access, erasure, export, or portability requests have intake, SLA, scope, verification, exclusions, and closure notes.
 - `anonymization_check`: anonymized or pseudonymized outputs state reidentification-risk method and residual limits.
-- `verification_plan`: export, erasure, redaction, or minimization controls have tests or audit evidence.
+- `verification_plan`: export, erasure, redaction, or minimization controls have tests or review results.
 
 ## Red Flags - Stop And Rework
 

@@ -33,15 +33,15 @@ Identity is the control plane for human and workload power.
 - The main issue is tenant data isolation; use tenant isolation.
 - The request is staffing or access-program work without engineering implementation; out of scope.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Human identities, workload identities, roles, privileges, environments, tenants, and admin paths.
 - Authentication factors, federation, session lifetime, device/context signals, and step-up requirements.
 - Authorization model, permission granularity, default grants, just-in-time elevation, and break-glass process.
 - Secrets, tokens, keys, certificates, storage locations, rotation cadence, expiry, and consumers.
 - Encryption needs, key responsibility, key separation, data classification, and long-lived confidentiality requirements.
-- Audit events, log retention, alerting, access recertification cadence, and revocation path.
+- Activity logs, log retention, alerting, access recertification cadence, and revocation path.
 
 ## Workflow
 
@@ -63,13 +63,13 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -82,8 +82,8 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 
 - Lead with the access model, secret-risk decision, migration plan, or blocker list requested.
 - Cover identity boundaries, least privilege, credential lifetime, break-glass, audit, and cryptography before optional security breadth.
-- Make recommendations actionable with permission scopes, rotation steps, audit events, stop criteria, and migration gates where relevant.
-- State required evidence such as access inventories, service identities, secret locations, key rotation history, audit logs, and break-glass records; do not claim unseen evidence.
+- Make recommendations actionable with permission scopes, rotation steps, audit events, stop criteria, and migration checks where relevant.
+- Name the details to inspect, such as access inventories, service identities, secret locations, key rotation history, audit logs, and break-glass records; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside identity, secrets, and cryptography. Route privacy, supply-chain, or tenant isolation only when those are the central unresolved risk.
 - Be concise: avoid generic zero-trust background and prefer compact access matrices, secret inventories, and migration checklists.
@@ -98,18 +98,18 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 - Cryptography decision record.
 - Migration plan for overbroad or long-lived credentials.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `access_inventory`: human, workload, admin, emergency, and third-party access paths are listed.
 - `least_privilege`: permissions are scoped by action/resource/environment/tenant and default-deny is addressed.
 - `credential_lifetime`: secrets and tokens have storage, expiry, rotation, and revocation plan.
-- `audit_check`: high-risk access and privilege changes emit traceable audit events.
+- `activity_log_check`: high-risk access and privilege changes emit linked activity logs.
 - `crypto_check`: cryptographic choices use vetted primitives and key responsibility is defined.
 
 ## Red Flags - Stop And Rework
 
 - Production access depends on network location alone.
-- Long-lived shared secrets have no rotation plan or evidence path.
+- Long-lived shared secrets have no rotation plan or check path.
 - Break-glass access is permanent or unaudited.
 - Secrets can appear in logs, build output, images, or client-visible config.
 - Custom cryptography is proposed.

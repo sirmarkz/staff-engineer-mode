@@ -30,12 +30,12 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 
 - The main question is blast radius, rollback, canary, or operational rollout; use `progressive-delivery` instead.
 - The main question is service reliability objectives or alerting policy; use `slo-and-error-budgets` instead.
-- The main question is LLM evals or model release gates; use `llm-evaluation` or `ml-reliability-and-evaluation` instead.
+- The main question is LLM evals or model release checks; use `llm-evaluation` or `ml-reliability-and-evaluation` instead.
 - The request is product strategy with no engineering measurement artifact.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Hypothesis, decision to make, target population, unit of assignment, treatment, control, and exposure rule.
 - Primary metric, guardrail metrics, diagnostic metrics, minimum effect, runtime, and stopping rule.
 - Assignment implementation, eligibility filters, ramp plan, holdout policy, and contamination risks.
@@ -50,7 +50,7 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 4. **Predeclare metrics.** Name primary, guardrail, diagnostic, and segment metrics before reading results.
 5. **Check validity.** Test assignment balance, sample-ratio mismatch, missing telemetry, logging defects, and eligibility drift.
 6. **Plan interactions.** Identify overlapping experiments, long-lived holdouts, novelty effects, and downstream metric coupling.
-7. **Gate ramps.** Combine experiment outcomes with operational guardrails; do not let positive primary metrics hide safety regressions.
+7. **Check ramps.** Combine experiment outcomes with operational guardrails; do not let positive primary metrics hide safety regressions.
 8. **Record decision evidence.** Capture result, caveats, decision, rollback trigger, and follow-up measurement.
 
 ## Synthesized Default
@@ -62,13 +62,13 @@ Use predeclared hypotheses, stable assignment, exposure-based analysis, primary 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -81,7 +81,7 @@ Use predeclared hypotheses, stable assignment, exposure-based analysis, primary 
 - Lead with the experiment design, validity finding, ramp decision, or metric guardrail requested.
 - Cover hypothesis, assignment, exposure, metrics, guardrails, validity checks, slices, interactions, and decision rule before optional statistics detail.
 - Make recommendations actionable with metric definitions, stop criteria, invalidation triggers, and readout dates where relevant.
-- State required evidence such as assignment logs, exposure events, metric definitions, balance checks, missingness, segment results, and prior experiment interactions; do not claim unseen evidence.
+- Name the details to inspect, such as assignment logs, exposure events, metric definitions, balance checks, missingness, segment results, and prior experiment interactions; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside experimentation and metric trust. Use rollout safety, service SLO, or AI eval skills only when those surfaces drive the decision.
 - Be concise: prefer experiment design and readout tables over generic testing background.
@@ -95,7 +95,7 @@ Use predeclared hypotheses, stable assignment, exposure-based analysis, primary 
 - Interaction and holdout notes.
 - Decision record with caveats and follow-up measurement.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `hypothesis_named`: experiment maps to a clear decision and expected effect.
 - `assignment_valid`: unit, eligibility, and balance checks are defined.

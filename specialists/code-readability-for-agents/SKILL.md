@@ -33,15 +33,15 @@ Produces a repository legibility map for AI comprehension: a module-boundary map
 
 - The work is broad architectural decision-making across services or system boundaries; use `architecture-decisions`.
 - The work is dependency cleanup, dead-code removal, or static-analysis findings on existing code; use `dependency-and-code-hygiene`.
-- The work is org-level rules for AI-assisted coding (acceptance gates, data boundaries, protected paths); use `ai-coding-governance`.
+- The work is org-level rules for AI-assisted coding (acceptance checks, data boundaries, protected paths); use `ai-coding-governance`.
 - The work is checking one specific agent diff before merge; use `agent-pr-review`.
 - The work is documentation lifecycle, responsibility, or freshness of engineering docs; use `documentation-lifecycle`.
 - The work is API contract design or backwards compatibility on exposed surfaces; use `api-design-and-compatibility`.
 - The work is generic review routing, change-size limits, or workflow metrics with no repository legibility issue; no routed specialist applies.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Repository scope: which directories are in scope, which are vendored or generated and excluded, and which are intentionally legacy.
 - Agent traces if available: examples of recent agent runs where the agent edited the wrong file, missed the canonical implementation, or recreated a helper.
 - Current module map: top-level packages or directories, stated responsibilities, and the actual exports each exposes.
@@ -76,27 +76,27 @@ Optimize the repository for one-tool-call discovery. Keep modules narrow and pre
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Generated code may exceed the size budget if the generator is maintained and the file is not edited by hand; mark it generated and exclude it from the legibility score.
 - Deliberately legacy modules under active replacement may keep their shape until cutover; record the exception, cutover condition, and concrete next patch.
 - Domain-driven naming may require domain words that look ambiguous to outsiders but are precise inside the domain; the disambiguation lives in the module-level doc.
-- Performance-critical code may justify a longer function or denser file when splitting would cost measured throughput; record the measurement and the evidence path that keeps the exception honest.
+- Performance-critical code may justify a longer function or denser file when splitting would cost measured throughput; record the measurement and the check path that keeps the exception honest.
 
 ## Response Quality Bar
 
 - Lead with the legibility map, the one-tool-call failures, the renaming or splitting patches, or the agent-search heuristic requested.
 - Cover module-boundary findings, name collisions, file and function size against the budget, canonical-implementation duplications, and test/doc discoverability before optional refactor breadth.
 - Make recommendations actionable with file paths, exact rename targets, split boundaries, and the agent-search rule each patch protects.
-- State required evidence such as code-search hit counts, file/function size measurements, agent traces where available, and the representative behaviors used for the one-tool-call test; do not claim legibility without the test results.
+- Name the details to inspect, such as code-search hit counts, file/function size measurements, agent traces where available, and the representative behaviors used for the one-tool-call test; do not claim legibility without the test results.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside repository legibility for AI comprehension. Route system architecture, dead-code cleanup, doc lifecycle, agent controls, and per-diff review to the responsible specialist.
 - Be concise: prefer compact finding tables and patch lists over generic clean-code prose.
@@ -113,7 +113,7 @@ Optimize the repository for one-tool-call discovery. Keep modules narrow and pre
 - Agent-search heuristic documenting where canonical handlers, validators, adapters, and tests live in this repo, with the contributor rule that keeps it true.
 - Legibility scorecard: percent passing the one-tool-call test, collision count, god-file count, oversized-function count, and stale-doc count.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `boundary_map_present`: the map lists modules with stated responsibility and contradictions are named.
 - `one_tool_call_test`: representative behaviors are tested for one-tool-call discovery; failures are listed with the search used.

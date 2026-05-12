@@ -33,10 +33,10 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 - The main risk is exposed API compatibility; use `api-design-and-compatibility` instead.
 - The main task is broad service retirement; use `migration-and-deprecation` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
-- Fleet inventory: components, versions, environments, criticality, support status, and local responsibility evidence when available.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
+- Fleet inventory: components, versions, environments, criticality, support status, and local ownership info when available.
 - Version-skew policy, compatibility matrix, upgrade order, and blocked combinations.
 - Tests for mixed versions, client/server compatibility, data compatibility, and operational tooling.
 - Rollout batches, maintenance windows, traffic exposure, rollback or roll-forward path, and freeze dates.
@@ -46,46 +46,46 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 
 ## Workflow
 
-1. **Inventory the fleet.** List versions, support windows, criticality, local responsibility evidence, and unknowns.
+1. **Inventory the fleet.** List versions, support windows, criticality, local ownership info, and unknowns.
 2. **Define allowed skew.** State which old/new combinations are supported during rollout and for how long.
 3. **Communicate support deadlines.** Tell affected consumers when old versions leave support, what action they must take, and when reminders, follow-up, or enforcement start.
 4. **Find breaking changes.** Check behavior, config, interfaces, data formats, tooling, and operational assumptions.
 5. **Prove compatibility.** Test mixed-version paths, upgrade order, downgrade or roll-forward behavior, and representative workloads.
-6. **Batch rollout.** Move low-risk cohorts first, then critical paths with gates, user confirmation, and monitoring.
+6. **Batch rollout.** Move low-risk cohorts first, then critical paths with checks, user confirmation, and monitoring.
 7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local evidence needed to close them.
 8. **Update operations.** Refresh runbooks, alerts, dashboards, and local operating procedures for the new version.
 9. **Close old paths.** Remove compatibility shims, stale versions, and exceptions after adoption is proven.
 
 ## Synthesized Default
 
-Use a support-window inventory, explicit version-skew policy, compatibility matrix, staged rollout, support-deadline communication plan, exception register, operational runbook update, and retirement gate for old versions. Prefer proving mixed-version behavior before the first production batch.
+Use a support-window inventory, explicit version-skew policy, compatibility matrix, staged rollout, support-deadline communication plan, exception register, operational runbook update, and retirement check for old versions. Prefer proving mixed-version behavior before the first production batch.
 
 
 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
 - Emergency security upgrades may compress rollout stages, but still need compatibility risk decision, consumer notice if deadlines change, user confirmation, and rollback or roll-forward decision.
-- Low-risk internal tools can use lighter gates if they are not production dependencies.
+- Low-risk internal tools can use lighter checks if they are not production dependencies.
 - Some upgrades cannot roll back safely; require stronger preflight tests and roll-forward criteria.
 
 ## Response Quality Bar
 
 - Lead with the upgrade plan, skew decision, support-window risk, or blocker list requested.
 - Cover inventory, support status, skew policy, compatibility tests, rollout batches, rollback or roll-forward, exceptions, consumer communication, and operations updates before optional detail.
-- Make recommendations actionable with dates, gates, batch order, test evidence, consumer action requirements, and exception expiry where relevant.
+- Make recommendations actionable with dates, checks, batch order, test evidence, consumer action requirements, and exception expiry where relevant.
 - For end-of-support or support-window risk, include a short consumer communication timeline: announcement, deadline, required action from affected components or consumers, reminder cadence, and user-confirmed follow-up date.
-- State required evidence such as version inventory, support deadlines, compatibility matrix, test output, rollout status, communication status, and runbook changes; do not claim unseen evidence.
+- Name the details to inspect, such as version inventory, support deadlines, compatibility matrix, test output, rollout status, communication status, and runbook changes; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside fleet upgrade and version-skew management. Route dependency hygiene, API compatibility, or deprecation work only when that surface dominates.
 - Be concise: prefer upgrade matrices and batch plans over broad migration prose.
@@ -93,25 +93,25 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 
 ## Required Outputs
 
-- Fleet inventory with version, criticality, support status, and local responsibility evidence when available.
+- Fleet inventory with version, criticality, support status, and local ownership info when available.
 - Version-skew and compatibility matrix.
 - Upgrade order as an explicit tier list (e.g., control plane → data plane / nodes → clients/operators), with one-line rationale per tier and the allowed skew range between tiers stated as a numeric window with breakage criteria.
 - End-of-support / support-window communication plan with announcement date, final support date, affected consumers, required consumer action, reminder cadence, and follow-up or enforcement path.
 - Rollout batches (waves) with progression criteria per wave.
 - Mixed-version test plan and evidence requirements.
 - Rollback or roll-forward plan stating both the procedure and the state-compatibility note (which prior state is restorable, which is not).
-- Exception register with expiry, compensating control, and closure evidence.
+- Exception register with expiry, compensating control, and closure note.
 - Operations update checklist.
-- Old-version retirement gate.
+- Old-version retirement check.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `inventory_complete`: supported, unsupported, unknown, and critical versions are visible.
 - `skew_policy`: allowed mixed-version combinations and duration are explicit.
 - `support_comms`: affected consumers, support deadline, required action, reminder cadence, and follow-up date are visible.
 - `compatibility_test`: representative old/new paths are tested before broad rollout.
-- `rollout_responsibility`: every batch has user confirmation, gate, and halt criteria.
-- `exception_expiry`: blocked components have risk, compensating control, expiry, and closure evidence.
+- `rollout_responsibility`: every batch has user confirmation, check, and halt criteria.
+- `exception_expiry`: blocked components have risk, compensating control, expiry, and closure note.
 
 ## Red Flags - Stop And Rework
 
@@ -129,4 +129,4 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 | No skew policy | Define supported old/new combinations. |
 | Silent support deadline | Announce the deadline, required consumer action, reminders, and enforcement path. |
 | Ignoring operators | Update runbooks, alerts, and tooling. |
-| Leaving old versions | Add retirement gates and cleanup. |
+| Leaving old versions | Add retirement checks and cleanup. |

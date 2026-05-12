@@ -38,7 +38,7 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 - The request is static-analysis, warning, dead-code, or maintenance-risk prioritization over changed files; use `dependency-and-code-hygiene` instead.
 - The diff is one trivial fix the human author can self-review without a structured pass.
 
-## Inputs To Collect
+## Info To Gather
 
 - **Diff scope:** files changed, lines added/removed, public-surface changes, generated-file changes, and deleted code.
 - **Authorship context:** human, AI agent, or mixed; which agent or contributor produced the diff; what prompt or task it was given; what the task summary claims it did.
@@ -52,12 +52,12 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 
 1. **Reconstruct intent.** Restate what the change is supposed to do in one sentence, sourced from the task or PR description, not from the author's self-summary. Anchor the intent in the actual diff with at least one concrete file/function/line signal when available. Note any gap between intent and the diff's actual surface area.
 2. **Map the diff.** Group changes by purpose: behavior change, refactor, test, generated/mechanical, dependency, configuration, deletion. Flag any group the stated intent does not justify as scope creep.
-3. **Pin evidence anchors.** Before writing the verdict, select at least two separate changed locations from the diff and cite them as `file:line` in the final review. Prefer line-numbered changed files; if only a patch is available, cite the hunk file and added-line number from the patch. These anchors should include the most important behavior or risk locations, not just file names.
+3. **Pin review anchors.** Before writing the verdict, select at least two separate changed locations from the diff and cite them as `file:line` in the final review. Prefer line-numbered changed files; if only a patch is available, cite the hunk file and added-line number from the patch. These anchors should include the most important behavior or risk locations, not just file names.
 4. **Run the failure-mode pass.** For each change, check for: silent assumptions, plausible-but-wrong logic, hallucinated APIs or imports, deleted-but-still-used code, unmotivated edits, missing edge cases a careful review would consider, mismatched error handling, and copied-pattern code that does not match the local convention. These checks apply whether the diff is human, AI, or mixed; AI-assisted code raises the prior probability of each.
 5. **Verify behavior is exercised.** Confirm the changed behavior has tests that fail without the change. New behavior without a failing-without-the-change test is treated as unverified.
 6. **Check correctness on real inputs.** Look for boundary conditions, null/empty/large/concurrent inputs, error paths, and idempotency. Confirm the diff was not tested only against the happy path the author imagined.
 7. **Check code-quality dimensions.** Compactly assess design, functionality, complexity, tests, naming, comments, and style as issue, OK, or not applicable based on the diff and surrounding code. Do not invent findings just to fill a dimension.
-8. **Check responsibility and surface.** Confirm changed files fit the user's stated scope or local responsibility evidence. Files touched outside the stated scope need an explicit reason or get flagged as out-of-scope.
+8. **Check responsibility and surface.** Confirm changed files fit the user's stated scope or local ownership info. Files touched outside the stated scope need an explicit reason or get flagged as out-of-scope.
 9. **Check public-surface and contract impact.** Identify breaking changes to APIs, schemas, configs, on-disk formats, events, or shared modules. Confirm consumer impact has been considered.
 10. **Check operational artifacts.** Identify missing rollback path, missing telemetry for new behavior, missing runbook update, missing migration safety, missing SLO/error-budget consideration, missing threat consideration for new trust-boundary changes, and missing docs.
 11. **Classify findings.** For each finding, record category, evidence (file:line or behavior), recommended next action, and risk level (blocker, must-fix-before-merge, follow-up, or accepted with rationale).
@@ -73,13 +73,13 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 ## Phase Behavior
 
 - Ideation: do not use this specialist for risks or options before code exists; route pre-code risk shaping to the appropriate design, security, rollout, test, API, data, or architecture specialist.
-- Design: do not use this specialist for tradeoffs or gates unless a concrete diff, branch, or patch already exists.
+- Design: do not use this specialist for tradeoffs or checks unless a concrete diff, branch, or patch already exists.
 - Development: use only after development sequencing produces a diff or change set that needs pre-merge checks and review.
-- Testing: evaluate tests and failure evidence attached to an existing diff; route test strategy before code exists to the testing specialist.
-- Release: evaluate pre-merge release, rollout, and rollback evidence attached to the diff.
+- Testing: evaluate tests and failure details attached to an existing diff; route test strategy before code exists to the testing specialist.
+- Release: evaluate pre-merge release, rollout, and rollback details attached to the diff.
 - Maintenance: use only when a maintenance change has owners, drift context, and a concrete diff, branch, PR, or change set.
-- Existing artifact: evaluate an existing diff, branch, PR, or change set as evidence for the pre-merge engineering decision; do not use this skill without the concrete change artifact.
-- Missing evidence: ask for the diff, task, assumptions, and test evidence; produce an evidence plan and do not invent findings against unseen code.
+- Existing artifact: evaluate an existing diff, branch, PR, or change set as context for the pre-merge engineering decision; do not use this skill without the concrete change artifact.
+- Missing details: ask for the diff, task, assumptions, and test results; say what to check next and do not invent findings against unseen code.
 
 ## Exceptions
 
@@ -91,19 +91,19 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 ## Response Quality Bar
 
 - Lead with the structured review artifact, blocker list, or scope-creep finding requested.
-- Start the artifact with an `Evidence anchors` line containing at least two changed `file:line` citations when the diff has two or more changed lines; one anchor may support intent, but blocker and must-fix findings still need separate cited evidence.
+- Start the artifact with an `Review anchors` line containing at least two changed `file:line` citations when the diff has two or more changed lines; one anchor may support intent, but blocker and must-fix findings still need separate cited evidence.
 - Cover intent verification, failure-mode pass, behavior-exercise evidence, responsibility/scope evidence, public-surface impact, and missing operational artifacts before optional review breadth.
 - Include a compact code-quality dimensions pass that explicitly covers design, functionality, complexity, tests, naming, comments, and style with issue, OK, or not applicable status tied to the diff.
 - Make findings actionable with file/line evidence, recommended next action, and risk classification; do not produce vibes-only review.
 - Include at least two concrete diff anchors when the diff has enough changed lines: file:line citations, file:function references, or short quoted code excerpts. One anchor may support intent reconstruction; blocker and must-fix findings still need separate evidence.
-- State required evidence such as the diff itself, the originating task or prompt, the test results, and the author's stated summary; do not claim findings against unseen code.
+- Name the details to inspect, such as the diff itself, the originating task or prompt, the test results, and the author's stated summary; do not claim findings against unseen code.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside pre-merge review of a single diff. Route security depth, database migration depth, rollout safety, accessibility, and contract evolution to their responsible specialists rather than absorbing them here.
 - Be concise: prefer a single structured artifact with categorized findings over running narrative.
 
 ## Required Outputs
 
-- Evidence anchors: at least two changed `file:line` citations from the diff, unless the diff itself has fewer than two changed lines.
+- Review anchors: at least two changed `file:line` citations from the diff, unless the diff itself has fewer than two changed lines.
 - One-sentence reconstructed intent and one-sentence assessment of whether the diff matches it, anchored to at least one changed file, function, or line when available.
 - Explicit merge verdict: ready to merge, request changes, or block, with reasons tied to observed issues or their absence.
 - Code-quality dimensions summary covering design, functionality, complexity, tests, naming, comments, and style, each marked issue, OK, or not applicable with brief evidence or reason.
@@ -115,13 +115,13 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 - Specialist follow-up routes, capped and prioritized.
 - Risk classification per finding (blocker, must-fix-before-merge, follow-up, accepted with rationale and user confirmation).
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `intent_match`: stated intent is restated and compared to the actual diff; scope creep is named when present.
 - `failure_mode_pass`: silent assumptions, hallucinated APIs, deleted-but-used code, unmotivated edits, and missing edge cases have each been considered explicitly.
 - `behavior_exercised`: every changed behavior is tied to a test or an explicit unverified-behavior finding.
 - `quality_dimensions`: design, functionality, complexity, tests, naming, comments, and style have each been explicitly addressed or marked not applicable with a diff-based reason.
-- `evidence_per_finding`: every finding has file/line or behavior evidence and a recommended next action.
+- `finding_support`: every finding points to a file, line, or behavior and has a recommended next action.
 - `risk_classified`: every finding has a risk level and a recommended next action.
 - `surface_check`: public-surface, contract, schema, config, event, and shared-module impact has been addressed or marked not applicable with reason.
 - `artifact_check`: missing rollback, telemetry, runbook, migration safety, threat consideration, and docs are listed when relevant.
@@ -137,7 +137,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 - Hallucinated APIs, types, or imports are not checked even though the author (human or AI) could have invented them.
 - Specialist concerns (security, migration, rollout) are absorbed into this review instead of routed to the responsible specialist.
 - The review produces prose only, with no categorized findings, evidence, next actions, or risk levels.
-- The final verdict is given with fewer than two changed `file:line` evidence anchors when the diff contains enough changed lines.
+- The final verdict is given with fewer than two changed `file:line` review anchors when the diff contains enough changed lines.
 
 ## Common Mistakes
 

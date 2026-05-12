@@ -33,14 +33,14 @@ Release engineering turns source changes into trustworthy artifacts.
 - The main topic is generic code review latency or developer workflow policy, with no build or release artifact risk.
 - The main topic is an actively vulnerable deployed artifact; use `vulnerability-management` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Source revision, branch/release-line model, release cadence, and supported versions.
 - Build graph, test graph, generated code, packaging steps, and artifact outputs.
 - Pinned dependencies, lockfiles, toolchains, build images, environment variables, and network access.
-- Cache strategy, cache keys, invalidation rules, remote/local differences, and flaky build evidence.
-- Release gates: tests, static checks, compatibility checks, security checks, and confirmation requirements.
+- Cache strategy, cache keys, invalidation rules, remote/local differences, and flaky build examples.
+- Release checks: tests, static checks, compatibility checks, security checks, and confirmation requirements.
 - Artifact identity, metadata, storage, promotion path, deployment consumers, and rollback path.
 
 ## Workflow
@@ -52,7 +52,7 @@ Release engineering turns source changes into trustworthy artifacts.
 5. **Build once, promote many.** Create an immutable artifact once and move the same artifact through validation, staging, and production.
 6. **Define release lines.** Choose trunk release, release branch, train, or candidate flow based on support window and rollback needs.
 7. **Keep main recoverable.** Prefer short-lived topic branches, protected main, and release branches with explicit cherry-pick/backport policy so hotfixes do not disappear from the next release.
-8. **Gate releases deliberately.** Keep gates fast and signal-rich; quarantine flaky checks, but do not let flakes silently weaken release evidence.
+8. **Check releases deliberately.** Keep checks fast and signal-rich; quarantine flaky checks, but do not let flakes silently weaken release evidence.
 9. **Record traceability.** Link artifact, source, build logs, checks, release decision, deployment, and rollback target.
 
 ## Synthesized Default
@@ -64,17 +64,17 @@ Use hermetic, reproducible, build-once promotion with pinned inputs, explicit ar
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
-- Emergency fixes may use a shortened gate path, but artifact identity, pinned inputs, and rollback target still apply.
+- Emergency fixes may use a shortened check path, but artifact identity, pinned inputs, and rollback target still apply.
 - Long-lived support branches are appropriate when customers, platforms, or compliance commitments require maintained versions.
 - Some generated artifacts cannot be byte-identical across platforms; require semantic reproducibility and record the allowed nondeterminism.
 - Experimental internal tools may use lighter packaging if they do not create production artifacts.
@@ -82,9 +82,9 @@ Use hermetic, reproducible, build-once promotion with pinned inputs, explicit ar
 ## Response Quality Bar
 
 - Lead with the release pipeline decision, reproducibility gap, flaky-build diagnosis, or release-cut plan requested.
-- Cover pinned inputs, hermeticity, artifact identity, cache safety, release gates, promotion, and rollback traceability before optional release topics.
-- Make recommendations actionable with build metadata, validation commands, gates, stop criteria, and rollback artifact references where relevant.
-- State required evidence such as source revision, lockfiles, toolchain versions, build images, cache keys, build logs, artifact metadata, and promotion records; do not claim unseen evidence.
+- Cover pinned inputs, hermeticity, artifact identity, cache safety, release checks, promotion, and rollback traceability before optional release topics.
+- Make recommendations actionable with build metadata, validation commands, checks, stop criteria, and rollback artifact references where relevant.
+- Name the details to inspect, such as source revision, lockfiles, toolchain versions, build images, cache keys, build logs, artifact metadata, and promotion records; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside build and release engineering. Route rollout/canary behavior or supply-chain signing only when those are the central unresolved risk.
 - Be concise: avoid generic release-process background and prefer compact pipeline maps, hermeticity checklists, and traceability tables.
@@ -96,16 +96,16 @@ Use hermetic, reproducible, build-once promotion with pinned inputs, explicit ar
 - Artifact identity and metadata standard.
 - Release branch/train/candidate policy.
 - Build cache and invalidation policy.
-- Release gate list with required versus advisory checks.
+- Release check list with required versus advisory checks.
 - Promotion and rollback traceability plan.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `input_pinning`: source, dependencies, toolchains, generated inputs, and build environment are pinned or explicitly exempted.
 - `hermeticity_check`: build does not depend on undeclared local files, ambient network, machine state, or unscoped credentials.
 - `artifact_identity`: artifact has immutable identifier, source revision, build metadata, and storage location.
 - `cache_safety`: cache keys and invalidation rules prove stale output cannot satisfy changed inputs.
-- `release_trace`: promotion and rollback path link artifact, checks, deployment, and verification evidence.
+- `release_record`: promotion and rollback path link artifact, checks, deployment, and verification results.
 
 ## Red Flags - Stop And Rework
 
@@ -122,4 +122,4 @@ Use hermetic, reproducible, build-once promotion with pinned inputs, explicit ar
 | Treating deploy as release | Build and deploy artifacts separately from user exposure. |
 | Chasing speed before determinism | Make the build correct and reproducible, then optimize graph and cache. |
 | Ignoring generated code | Treat generators and generated outputs as declared build inputs. |
-| Letting flakes erode gates | Quarantine, assign, and fix flakes with expiry. |
+| Letting flakes erode checks | Quarantine, assign, and fix flakes with expiry. |

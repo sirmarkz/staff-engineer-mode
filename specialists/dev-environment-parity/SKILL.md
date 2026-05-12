@@ -25,7 +25,7 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 - The user reports a "works on my machine" failure or a green-CI-but-broken-staging failure.
 - A migration, dependency update, or configuration change behaves differently across environments and you need to know which differences matter.
 - A new environment (preview, ephemeral, branch-per-developer) is being introduced and you need to define how closely it must match the others.
-- You are moving to ephemeral preview environments and needs a parity contract before relying on them as a release gate.
+- You are moving to ephemeral preview environments and needs a parity contract before relying on them as a release check.
 - An incident's root cause was a divergence (different library version, different timezone, different network egress) and you want to prevent the next one.
 - A new contributor's local setup keeps producing diffs that fail CI for environment reasons rather than logic reasons.
 - An AI coding agent is editing in an environment whose parity to CI or production is undeclared, and its diffs pass locally but break elsewhere.
@@ -40,9 +40,9 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 - The work is internal service mesh, discovery, or routing; use `internal-service-networking`.
 - The work is an active production incident whose triage cannot wait for parity analysis; use `incident-response-and-postmortems`.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Environment inventory: local developer machines, CI runners, ephemeral or preview environments, staging, production, and any tier in between, with the person or script responsible for changing each environment.
 - Dependency manifest per environment: language runtime version, system library versions, package lockfile state, and how each environment resolves them.
 - Configuration manifest per environment: feature flags, environment variables, defaults, overrides, and the rule for how production-like each non-prod environment is.
@@ -76,13 +76,13 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -95,10 +95,10 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 ## Response Quality Bar
 
 - Lead with the parity matrix, drift budget, drift-detection plan, allowed-divergence taxonomy, or environment-failure reproduction requested.
-- When diagnosing a "passes here, fails there" failure, name the anti-pattern in plain language ("the local pass is a mocked happy-path result", "the fix is environment-only and does not count as shipped") AND name the enforcement that would have caught it (CI route-coverage check, readiness gate, lint, readiness checklist). Do not let the structured matrix replace the verdict.
+- When diagnosing a "passes here, fails there" failure, name the anti-pattern in plain language ("the local pass is a mocked happy-path result", "the fix is environment-only and does not count as shipped") AND name the enforcement that would have caught it (CI route-coverage check, readiness check, lint, readiness checklist). Do not let the structured matrix replace the verdict.
 - Cover dependencies, configuration, data shape, time and clock, network policy, and secret handling before optional environment breadth.
 - Make recommendations actionable with per-dimension parity status, drift budget, detection cadence, action trigger, and the environment change path.
-- State required evidence such as dependency-lock comparisons, configuration snapshots, schema versions, clock settings, network reachability checks, and the drift signals that fired or did not fire; do not claim parity without the comparison.
+- Name the details to inspect, such as dependency-lock comparisons, configuration snapshots, schema versions, clock settings, network reachability checks, and the drift signals that fired or did not fire; do not claim parity without the comparison.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside running-environment parity. Route release-artifact reproducibility, infrastructure desired state, platform templates, single-environment configuration safety, secret lifecycle, internal mesh, and incident command to the responsible specialist.
 - Be concise: prefer compact parity matrices and budget tables over generic environment-management prose.
@@ -115,7 +115,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 - Reproduction protocol for "works here, fails there" failures with the order of tiers to reproduce in and the dimension-isolation steps.
 - Follow-up routes to release reproducibility, infrastructure-as-code, platform paths, configuration safety, identity, internal networking, or incident response as needed.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `environment_inventory_present`: every environment a developer or CI uses is named with change path and tier of confidence.
 - `parity_matrix_present`: parity status is recorded per dimension per environment pair; unknowns are listed as findings.

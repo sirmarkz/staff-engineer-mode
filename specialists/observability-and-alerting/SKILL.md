@@ -1,6 +1,6 @@
 ---
 name: observability-and-alerting
-description: "Use when telemetry, dashboards, alert rules, or runbooks need design outside SLO or release-gate policy"
+description: "Use when telemetry, dashboards, alert rules, or runbooks need design outside SLO or release-check policy"
 ---
 
 # Observability And Alerting
@@ -33,9 +33,9 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 - The user is in a live incident; route to `incident-response-and-postmortems` first.
 - The work is only local development logging without production operations impact.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Critical user journeys, SLOs, service tier, and incident history.
 - Request paths, dependency map, queues, data stores, batch jobs, and external integrations.
 - Existing metrics, logs, traces, dashboards, alerts, runbooks, and known blind spots.
@@ -66,13 +66,13 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -85,8 +85,8 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 
 - Lead with the dashboard spec, alert classification, telemetry gap, or runbook requirement requested.
 - Cover user journeys, health states, golden signals, dependency context, deployment markers, privacy-safe events, urgent-alert policy, and runbooks before optional observability breadth.
-- Make recommendations actionable with metric/log/trace names, thresholds, routes, runbook links, failure response, and rollout gates where relevant.
-- State required evidence such as SLOs, metric sources, log fields, trace context, alert history, runbook content, deploy markers, and sensitive-data handling; do not claim unseen evidence.
+- Make recommendations actionable with metric/log/trace names, thresholds, routes, runbook links, failure response, and rollout checks where relevant.
+- Name the details to inspect, such as SLOs, metric sources, log fields, trace context, alert history, runbook content, deploy markers, and sensitive-data handling; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside observability and alerting. Route SLO definition, on-call policy, or incident response only when those are the central unresolved risk.
 - Be concise: avoid generic telemetry lists and prefer compact journey-to-signal and alert-policy tables.
@@ -102,7 +102,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 - Runbook requirements for every urgent alert.
 - Gaps and follow-up routes to SLO, on-call, incident, or platform work.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `symptom_first`: urgent alerts map to SLO burn or direct user-visible impact.
 - `health_model`: component and dependency signals aggregate into critical-journey and workload health states.

@@ -22,7 +22,7 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 ## When To Use
 
 - The user is designing or building LLM prompt, retrieval, tool, output, action, or data flows that cross security boundaries.
-- The user asks about prompt injection, tool permissions, retrieval boundaries, insecure output handling, sensitive prompt/response handling, agent actions, model/prompt/retrieval supply chain, emergency stop, or LLM eval security gates.
+- The user asks about prompt injection, tool permissions, retrieval boundaries, insecure output handling, sensitive prompt/response handling, agent actions, model/prompt/retrieval supply chain, emergency stop, or LLM eval security checks.
 - An LLM can retrieve private data, call tools, write files, send messages, execute actions, or influence decisions.
 - The system mixes instructions, user input, retrieved content, and tool output.
 - A launch needs security tests for AI workflow behavior.
@@ -38,13 +38,13 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 - The main work is generic source, build, artifact, or model provenance with no prompt, tool, retrieval, or dataset workflow boundary; use `software-supply-chain-security` instead.
 - The main work is rollout, rollback, staged exposure, or release sequencing for a model-backed change; use `progressive-delivery` instead unless the emergency stop is an LLM-specific control gap.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - LLM workflow, actors, prompts, system instructions, retrieved data, tools, actions, and output sinks.
 - Trust boundaries among user input, developer instructions, retrieved documents, model output, tool results, and external systems.
 - Data classification, tenant boundaries, permissions, secrets, and privacy constraints.
-- Tool capabilities, scopes, rate limits, user confirmations, side effects, and audit events.
+- Tool capabilities, scopes, rate limits, user confirmations, side effects, and activity logs.
 - Input and output validation needs: length, file type, links, hidden/control characters, rendered content, feedback forms, and downstream consumers.
 - Eval set: prompt injection, data exfiltration, unsafe actions, over-permission, output injection, and regression cases.
 - Logging, redaction, prompt/response storage, retention, human access, and incident response expectations.
@@ -54,7 +54,7 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 ## Workflow
 
 1. **Map boundaries.** Identify every place untrusted text can influence prompts, retrieval, tool calls, code paths, messages, or stored state.
-2. **Constrain tools.** Give tools minimum permissions, explicit schemas, rate limits, loop/depth limits, side-effect boundaries, and confirmation gates for high-risk actions.
+2. **Constrain tools.** Give tools minimum permissions, explicit schemas, rate limits, loop/depth limits, side-effect boundaries, and confirmation checks for high-risk actions.
 3. **Protect retrieval.** Enforce tenant/data permissions before retrieval and again before answer/action use.
 4. **Treat output as untrusted by sink.** Commands need allowlisted operations and dry-run/confirmation where risky; queries need parameterization and scoped credentials; rendered text needs contextual encoding; structured tool inputs need schema validation; documents/messages need destination policy checks; downstream prompts need boundary markers and instruction-isolation.
 5. **Validate inputs and feedback.** Bound length and tokens, validate uploaded files by content and declared type, normalize or reject hidden/control characters, set an explicit link/URL policy, redact or block sensitive data by purpose, and apply the same controls to free-form feedback.
@@ -69,20 +69,20 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 
 ## Synthesized Default
 
-Use least-privilege tools, permission-checked retrieval, input validation, untrusted-output handling, sensitive-data controls, session isolation, adversarial eval gates, audit logs, emergency rollback, and versioned AI workflow inputs. Test the workflow against realistic attacker goals, then make deterministic application controls decide what is allowed.
+Use least-privilege tools, permission-checked retrieval, input validation, untrusted-output handling, sensitive-data controls, session isolation, adversarial eval checks, audit logs, emergency rollback, and versioned AI workflow inputs. Test the workflow against realistic attacker goals, then make deterministic application controls decide what is allowed.
 
 
 
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -94,11 +94,11 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 
 ## Response Quality Bar
 
-- Lead with the LLM threat model, tool-permission decision, eval gate, or blocker list requested.
-- For short design or pre-launch answers, include a compact release-gate list: prompt-injection mitigation plus verification; tool inventory plus per-tool authorization; sink-specific output validation before execution, querying, rendering, messaging, or downstream prompting; sensitive-info controls plus monitoring; adversarial abuse cases with pass/fail criteria; and audit logs for model invocations, tool calls, denials, user confirmations, and retention.
+- Lead with the LLM threat model, tool-permission decision, eval check, or blocker list requested.
+- For short design or pre-launch answers, include a compact release-check list: prompt-injection mitigation plus verification; tool inventory plus per-tool authorization; sink-specific output validation before execution, querying, rendering, messaging, or downstream prompting; sensitive-info controls plus monitoring; adversarial abuse cases with pass/fail criteria; and audit logs for model invocations, tool calls, denials, user confirmations, and retention.
 - Cover prompt/retrieval/tool/output boundaries, least privilege, tenant/data isolation, input and output validation, unsafe-action controls, sensitive-data handling, adversarial evals, logging, emergency rollback, and supply-chain records before optional AI-security breadth.
-- Make recommendations actionable with permission scopes, deterministic control points, eval cases, confirmation gates, stop criteria, and regression checks where relevant.
-- State required evidence such as retrieval IDs, tool scopes, action sinks, prompt versions, model versions, eval results, audit logs, and redaction rules; do not claim unseen evidence.
+- Make recommendations actionable with permission scopes, deterministic control points, eval cases, confirmation checks, stop criteria, and regression checks where relevant.
+- Name the details to inspect, such as retrieval IDs, tool scopes, action sinks, prompt versions, model versions, eval results, audit logs, and redaction rules; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside deployable LLM application controls. Route privacy lifecycle, tenant isolation, rollout sequencing, and generic supply-chain trust away unless prompt, retrieval, tool, or output boundaries are the dominant risk.
 - Be concise: avoid generic prompt-injection background and prefer compact boundary maps, permission matrices, and eval tables.
@@ -117,16 +117,16 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 - Session isolation and cross-user leakage test plan.
 - Model/prompt/tool/data supply-chain record with artifact ID, version, source, integrity evidence, eval result, rollback target, and retire-by date.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `boundary_map`: prompt, user input, retrieved data, tool output, model output, and action sinks are mapped.
 - `least_privilege`: tools and retrieval are scoped by user, tenant, action, and side effect.
 - `input_validation`: prompt, feedback, file, link, hidden/control-character, and size/token controls are defined before model use.
 - `output_handling`: model output is validated, encoded, or constrained before use in sensitive sinks.
-- `eval_gate`: prompt injection, leakage, unsafe-action, and regression tests exist.
-- `sensitive_data_control`: prompt/response storage, redaction, retention, human access, and audit are defined.
+- `adversarial_check`: prompt injection, leakage, unsafe-action, and regression tests exist.
+- `sensitive_data_control`: prompt/response storage, redaction, retention, and human access rules are defined.
 - `rollback_control`: prompt, model/config, retrieval, tool-permission, and training/fine-tuning inputs can be disabled or rolled back independently.
-- `audit_check`: tool calls, user confirmations, retrieval IDs, and outcomes are traceable without leaking sensitive data.
+- `activity_log_check`: tool calls, user confirmations, retrieval IDs, and outcomes are linked without leaking sensitive data.
 
 ## Red Flags - Stop And Rework
 

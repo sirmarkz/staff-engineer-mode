@@ -33,9 +33,9 @@ Infrastructure is safer when desired state, policy checks, drift handling, and r
 - The main topic is artifact provenance or signing; use `software-supply-chain-security` instead.
 - The request is one-off architecture without reusable infrastructure policy.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Infrastructure resources, environments, responsible change path, desired-state repositories, and change workflow.
 - Policy requirements: security, reliability, identity, network, secrets, tagging, cost, and operational standards.
 - Deployment/admission points, promotion model, user confirmations, and emergency-change path.
@@ -66,13 +66,13 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -85,8 +85,8 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 
 - Lead with the infrastructure workflow, policy decision, drift finding, or emergency-change procedure requested.
 - Cover desired-state scope, traceability, plan/diff evidence, policy checks, enforcement mode, drift response, rollback or roll-forward, and emergency reconciliation before optional GitOps breadth.
-- Make recommendations actionable with source-of-truth paths, policy rules, exception workflow, detection cadence, reconciliation steps, and evidence gates where relevant.
-- State required evidence such as repo paths, plans/diffs, user confirmations, policy outputs, drift reports, reconciliation logs, break-glass records, and deployment status; do not claim unseen evidence.
+- Make recommendations actionable with source-of-truth paths, policy rules, exception workflow, detection cadence, reconciliation steps, and checks where relevant.
+- Name the details to inspect, such as repo paths, plans/diffs, user confirmations, policy outputs, drift reports, reconciliation logs, break-glass records, and deployment status; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside infrastructure workflow and policy-as-code. Route platform product work or supply-chain controls only when they are central to the decision.
 - Be concise: avoid generic GitOps background and prefer compact workflow and control matrices.
@@ -103,14 +103,14 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 - Desired-state and state-store protection plan.
 - Evidence links for change, policy, drift, and deployment.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `desired_state`: managed infrastructure scope and source of truth are explicit.
-- `change_trace_check`: changes are traceable with plan/diff, responsible change path, and confirmation path.
+- `change_record`: changes are linked to a plan/diff, responsible change path, and confirmation path.
 - `secret_check`: desired state and change artifacts do not expose plaintext secrets.
 - `policy_check`: policies map to engineering standards and enforcement/advisory mode.
 - `drift_check`: drift detection and reconciliation response are defined.
-- `emergency_check`: manual break-glass changes require separate identity, expiry, traceability, reconciliation, and re-locking.
+- `emergency_check`: manual break-glass changes require separate identity, expiry, change history, reconciliation, and re-locking.
 
 ## Red Flags - Stop And Rework
 

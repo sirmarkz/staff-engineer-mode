@@ -27,11 +27,11 @@ Produces a fixture inventory with scope and regeneration path per fixture, an an
 - A schema change in production broke a contract test, integration test, or migration that ran on stale fixtures.
 - You need to decide between freshly captured production data, snapshotted captures, hand-built fixtures, or synthetic generation for a given test layer.
 - A regression appears in production that fixtures did not cover because the fixture predated the data shape that caused it.
-- An ML or analytics fixture is drifting from production distribution and graders, thresholds, or correctness gates are losing signal.
+- An ML or analytics fixture is drifting from production distribution and graders, thresholds, or correctness checks are losing signal.
 
 ## When Not To Use
 
-- The work is overall test strategy, gate placement, runtime budgets, or flake policy; use `testing-and-quality-gates`.
+- The work is overall test strategy, check placement, runtime budgets, or flake policy; use `testing-and-quality-gates`.
 - The work is privacy retention, deletion, export, erasure, or data classification across systems; use `privacy-and-data-lifecycle`.
 - The work is a producer/consumer schema contract evolution decision; use `data-contracts`.
 - The work is a production batch or streaming pipeline's freshness, lineage, or replay; use `data-pipeline-reliability`.
@@ -39,9 +39,9 @@ Produces a fixture inventory with scope and regeneration path per fixture, an an
 - The work is ML model training or serving drift detection on production traffic; use `ml-reliability-and-evaluation`.
 - The work is producing eval datasets and graders for an LLM workflow; use `llm-evaluation`.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Fixture inventory source: which test layers (unit, component, contract, integration, end-to-end, performance, security, ML/LLM) hold fixtures, where each fixture lives, and how it is loaded.
 - Per-fixture metadata: name, scope (per test, per file, per suite, per process, per environment), generation source (hand-written, synthetic generator, captured production, derived golden), and refresh cadence.
 - Production-source captures: which fixtures are captured from production, when each was captured, what fields were included, and what anonymization or redaction was applied.
@@ -75,13 +75,13 @@ Prefer synthetic, parameterized fixtures generated at test time. Use captured pr
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -96,9 +96,9 @@ Prefer synthetic, parameterized fixtures generated at test time. Use captured pr
 - Lead with the fixture inventory, anonymization rule, freshness/determinism decision, drift-detection plan, or golden-file rule requested.
 - Cover classification, scope, anonymization, restore procedure, drift detection, and golden regeneration before optional fixture-tooling breadth.
 - Make recommendations actionable with per-fixture path, classification, scope, refresh cadence, anonymization transform, restore procedure, and the local fix for each finding.
-- State required evidence such as the fixture inventory, capture timestamps, anonymization transforms, production-distribution measurements, and the regeneration procedure for each golden; do not claim restorability without the procedure.
+- Name the details to inspect, such as the fixture inventory, capture timestamps, anonymization transforms, production-distribution measurements, and the regeneration procedure for each golden; do not claim restorability without the procedure.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside the data layer of testing. Route gate placement and flake policy, privacy program work, schema-contract evolution, pipeline freshness, migration safety, ML drift, and LLM eval datasets to the responsible specialist.
+- Stay inside the data layer of testing. Route check placement and flake policy, privacy program work, schema-contract evolution, pipeline freshness, migration safety, ML drift, and LLM eval datasets to the responsible specialist.
 - Be concise: prefer compact inventory and decision tables over generic fixture-management prose.
 
 ## Required Outputs
@@ -113,11 +113,11 @@ Prefer synthetic, parameterized fixtures generated at test time. Use captured pr
 - Restore-and-reproduce procedure per fixture class with documented steps and expected runtime.
 - Follow-up routes to test strategy, privacy lifecycle, data contracts, pipeline reliability, database operations, ML reliability, or LLM evaluation as needed.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `fixture_inventory_present`: a single inventory reconciles fixtures across the test tree, CI storage, and any capture store; mismatches are listed.
 - `classification_assigned`: every fixture has one class from hand-built, synthetic, captured, derived golden, or shared seeded.
-- `scope_documented`: every fixture has a stated scope and shared state has isolation and teardown evidence.
+- `scope_documented`: every fixture has a stated scope and shared state has isolation and teardown checks.
 - `anonymization_applied`: every captured fixture has an applied anonymization transform sufficient against direct and quasi-identifier reidentification or an explicit recorded exception.
 - `restore_procedure`: every fixture has a documented restore-or-regenerate procedure and an estimated runtime.
 - `drift_detection_plan`: production-distribution comparison is defined for the fields the tests rely on, with cadence, threshold, and local triage procedure.

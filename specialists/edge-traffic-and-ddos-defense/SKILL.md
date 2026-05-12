@@ -33,9 +33,9 @@ Public traffic must be filtered and shaped before abusive load reaches expensive
 - The main topic is application authorization; use `secure-sdlc-and-threat-modeling` or `identity-and-secrets` instead.
 - The work is internal service mesh/routing; use `internal-service-networking` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Public endpoints, routes, origins, DNS/traffic steering, identity signals, and bypass paths.
 - Traffic patterns, known attacks, request costs, tenant/customer priorities, and false-positive tolerance.
 - Existing edge rules, rate limits, bot controls, challenges, allow/deny lists, and emergency controls.
@@ -64,13 +64,13 @@ Use layered edge protection: origin isolation, traffic steering, caching where c
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -85,7 +85,7 @@ Use layered edge protection: origin isolation, traffic steering, caching where c
 - Cover origin isolation, route cost, identity-aware limits, bot/abuse controls, false-positive handling, edge telemetry, staged enforcement, rollback, and expiry before optional edge breadth.
 - Make recommendations actionable with rule scopes, thresholds, dry-run/enforce stages, rollback commands, verification windows, and emergency authority where relevant.
 - Include a compact rate-rule table for public APIs: route or route class, identity key (IP/session/user/tenant/API key), window, threshold, breach action, rollout mode, user-confirmed exception, and rollback.
-- State required evidence such as DNS/origin exposure, route inventory, request rates, tenant/user identity, rule logs, false-positive samples, origin saturation, and mitigation history; do not claim unseen evidence.
+- Name the details to inspect, such as DNS/origin exposure, route inventory, request rates, tenant/user identity, rule logs, false-positive samples, origin saturation, and mitigation history; do not claim details you have not seen.
 - Stay vendor/product-agnostic, but DO name the standard edge primitives by category: rate-limit breach action (e.g., 429, deny, challenge), bot-detection mechanism (challenge, fingerprint, behavioral, reputation-based) with false-positive handling, origin-shielding mechanism (edge-IP allowlist, signed origin headers, private connectivity, mutual-authentication transport) with a verification step, and load-shedding criteria with priority preservation (e.g., shed unauthenticated/low-priority before authenticated critical).
 - Stay inside edge traffic and DDoS defense. Route broader capacity or abuse-product policy only when they materially block defense decisions.
 - Be concise: avoid generic DDoS background and prefer compact edge maps, rule tables, and runbooks.
@@ -100,7 +100,7 @@ Use layered edge protection: origin isolation, traffic steering, caching where c
 - Emergency mitigation runbook.
 - Rule responsibility, expiry, and rollback plan.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `origin_check`: origins cannot be trivially bypassed from public networks.
 - `rate_policy`: rate limits or abuse controls are tied to identity, route cost, and false-positive tolerance.

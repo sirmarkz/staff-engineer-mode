@@ -34,9 +34,9 @@ High availability is the ability to keep serving through expected failures witho
 - The work is only unit, integration, or CI testing.
 - The request is about generic uptime targets; define SLOs first via `slo-and-error-budgets`.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Service tier, SLOs, critical user journeys, and maximum tolerable interruption.
 - Current topology: hosts, deployment units, locations, partitions, shards, queues, load balancers, stores, and control planes.
 - Fault domains: process, node, rack, location, deployment unit, administrative boundary, cluster, deployment ring, tenant, data partition, dependency, and operator action.
@@ -65,13 +65,13 @@ Use fault-domain independence, static stability, and explicit fault-domain isola
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -84,8 +84,8 @@ Use fault-domain independence, static stability, and explicit fault-domain isola
 
 - Lead with the availability decision, survivability claim, fault-domain gap, or validation plan requested.
 - Cover serving paths, fault domains, static capacity, blast radius, hidden dependencies, failover behavior, data semantics, and validation before optional HA breadth.
-- Make recommendations actionable with survival targets, capacity calculations, trigger/authority rules, abort criteria, and validation evidence where relevant.
-- State required evidence such as topology, traffic split, quotas, shared dependencies, failover drills, capacity under loss, replication behavior, and SLO/RTO/RPO targets; do not claim unseen evidence.
+- Make recommendations actionable with survival targets, capacity calculations, trigger/authority rules, abort criteria, and validation results where relevant.
+- Name the details to inspect, such as topology, traffic split, quotas, shared dependencies, failover drills, capacity under loss, replication behavior, and SLO/RTO/RPO targets; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside HA design and validation. Route backup/restore, chaos execution, or distributed consistency only when they are central to the decision.
 - Be concise: avoid generic active-active discussion and prefer compact fault-domain maps and survivability tables.
@@ -101,14 +101,14 @@ Use fault-domain independence, static stability, and explicit fault-domain isola
 - Failover decision record with trigger, authority, data behavior, and rollback.
 - Validation plan with scope, abort criteria, telemetry, and evidence to capture.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `fault_domain_map`: expected failure domains and hidden shared dependencies are enumerated.
 - `location_independence`: serving, startup, deploy, scale, and recovery paths avoid synchronous cross-location or globally coupled dependencies, or document the exception and fallback.
 - `static_capacity`: remaining domains can serve target traffic after the claimed failure without emergency scaling.
 - `blast_radius_bound`: a single fault cannot exceed the documented partition, tenant, shard, or location impact boundary.
 - `failover_behavior`: trigger, authority, data consistency, traffic behavior, and rollback are written down.
-- `validation_plan`: failover, game day, or chaos test has scope, abort criteria, telemetry, and evidence path.
+- `validation_plan`: failover, game day, or chaos test has scope, abort criteria, telemetry, and check path.
 
 ## Red Flags - Stop And Rework
 

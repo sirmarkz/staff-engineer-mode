@@ -33,9 +33,9 @@ Caching is a correctness path disguised as a performance optimization.
 - The issue is warehouse/ETL pipeline freshness; use `data-pipeline-reliability` instead.
 - The problem is generic dependency overload without cache mechanics; use `dependency-resilience` instead.
 
-## Inputs To Collect
+## Info To Gather
 
-- Current lifecycle phase, next decision, available evidence, and assumptions when evidence is missing.
+- Current work phase, next decision, what is known, and assumptions where details are missing.
 - Cached objects, keys, writers, invalidators, readers, and responsibility paths.
 - Freshness requirement, TTL, negative caching, versioning, and stale-read tolerance.
 - Backing dependency capacity, miss amplification, hot keys, and cache population path.
@@ -64,13 +64,13 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 ## Phase Behavior
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
-- Design: shape the target artifact, tradeoffs, gates, and evidence to collect.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
 - Development: guide sequencing, code boundaries, checks, and acceptance criteria.
 - Testing: define release-blocking tests, evals, fixtures, and failure probes.
-- Release: define rollout, observability, abort, rollback, and readiness evidence.
+- Release: define rollout, observability, abort, rollback, and readiness details.
 - Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
-- Existing artifact: use current code, docs, telemetry, incidents, or diffs as evidence for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
-- Missing evidence: state assumptions and produce the evidence plan instead of blocking lifecycle guidance.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
 
 ## Exceptions
 
@@ -83,8 +83,8 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 
 - Lead with the cache correctness decision, mitigation plan, or production blockers.
 - Cover freshness, invalidation, stampede behavior, fallback, source-of-truth semantics, and observability before optional cache topics.
-- Make recommendations actionable with evidence, gates, stop conditions, and rollback or bypass actions where relevant.
-- State required evidence such as TTLs, hit/miss rates, source update events, stale-read bounds, and dependency saturation; do not claim unseen evidence.
+- Make recommendations actionable with checks, stop conditions, and rollback or bypass actions where relevant.
+- Name the details to inspect, such as TTLs, hit/miss rates, source update events, stale-read bounds, and dependency saturation; do not claim details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside cache and derived-data behavior. Route broader storage consistency or dependency overload only when materially unresolved.
 - Be concise: avoid generic caching background and prefer compact consistency and mitigation tables.
@@ -99,7 +99,7 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 - Metrics and alerts for freshness, stale reads, rebuilds, and downstream load.
 - Repair/rebuild runbook and verification checks.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `freshness_check`: max staleness, TTL, and user-visible stale behavior are explicit.
 - `invalidation_map`: writers, invalidators, readers, and versioning/repair paths are documented.

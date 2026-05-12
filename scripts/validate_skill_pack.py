@@ -94,27 +94,27 @@ ROUTING_MATRIX_REQUIRED_BOUNDARIES = {
 SPECIALIST_OPERATIONAL_SECTIONS = [
     "## When To Use",
     "## When Not To Use",
-    "## Inputs To Collect",
+    "## Info To Gather",
     "## Workflow",
     "## Synthesized Default",
     "## Phase Behavior",
     "## Exceptions",
     "## Response Quality Bar",
     "## Required Outputs",
-    "## Evidence Gates",
+    "## Checks Before Moving On",
     "## Red Flags - Stop And Rework",
     "## Common Mistakes",
 ]
 
 PHASE_BEHAVIOR_TERMS = {
     "ideation": ["ideation", "risks", "options"],
-    "design": ["design", "tradeoffs", "gates"],
+    "design": ["design", "tradeoffs", "checks"],
     "development": ["development", "sequencing", "checks"],
     "testing": ["testing", "tests", "failure"],
     "release": ["release", "rollout", "rollback"],
     "maintenance": ["maintenance", "owners", "drift"],
-    "existing artifact": ["existing artifact", "evidence", "engineering decision"],
-    "missing evidence": ["missing evidence", "assumptions", "evidence plan"],
+    "existing artifact": ["existing artifact", "context", "engineering decision"],
+    "missing details": ["missing details", "assumptions", "check next"],
 }
 
 ROUTER_PHASE_TRIGGER_TERMS = [
@@ -382,16 +382,16 @@ def validate_operational_sections(text: str, path: Path, headings: list[str]) ->
             fail(f"{path} section {heading} must include operational guidance")
 
 
-def evidence_gate_ids(text: str, path: Path) -> list[str]:
-    evidence_body = section_body(text, "## Evidence Gates", path)
-    return re.findall(r"^- `([^`]+)`:", evidence_body, re.MULTILINE)
+def check_ids(text: str, path: Path, heading: str) -> list[str]:
+    body = section_body(text, heading, path)
+    return re.findall(r"^- `([^`]+)`:", body, re.MULTILINE)
 
 
-def evidence_gate_bodies(text: str, path: Path) -> dict[str, str]:
-    evidence_body = section_body(text, "## Evidence Gates", path)
+def check_bodies(text: str, path: Path, heading: str) -> dict[str, str]:
+    body = section_body(text, heading, path)
     return {
         match.group("id"): match.group("body")
-        for match in re.finditer(r"^- `(?P<id>[^`]+)`:\s*(?P<body>.+)$", evidence_body, re.MULTILINE)
+        for match in re.finditer(r"^- `(?P<id>[^`]+)`:\s*(?P<body>.+)$", body, re.MULTILINE)
     }
 
 
@@ -474,12 +474,12 @@ def validate_decision_guide_framing(text: str, path: Path) -> None:
         return
     sections = [
         section_body(text, "## When To Use", path),
-        section_body(text, "## Inputs To Collect", path),
+        section_body(text, "## Info To Gather", path),
         section_body(text, "## Workflow", path),
         section_body(text, "## Required Outputs", path),
     ]
     joined = "\n".join(sections).lower()
-    required = ["decision", "evidence", "assumptions"]
+    required = ["decision", "assumptions"]
     missing = [term for term in required if term not in joined]
     if missing:
         fail(f"{path} decision-guide framing missing: {', '.join(missing)}")
@@ -503,9 +503,9 @@ def validate_specialist_skill(text: str, path: Path) -> None:
     validate_operational_sections(text, path, SPECIALIST_OPERATIONAL_SECTIONS)
     validate_phase_behavior(text, path)
     validate_decision_guide_framing(text, path)
-    gates = evidence_gate_ids(text, path)
+    gates = check_ids(text, path, "## Checks Before Moving On")
     if len(gates) < 3:
-        fail(f"{path} needs at least three evidence gates under ## Evidence Gates")
+        fail(f"{path} needs at least three checks under ## Checks Before Moving On")
 
 
 def validate_router_skill(text: str, path: Path) -> None:
@@ -525,11 +525,11 @@ def validate_router_skill(text: str, path: Path) -> None:
     word_count = len(re.findall(r"\S+", text))
     if word_count > ROUTER_MAX_WORDS:
         fail(f"{path} is {word_count} words; compact router skills must stay under {ROUTER_MAX_WORDS}")
-    gate_ids = set(evidence_gate_ids(text, path))
+    gate_ids = set(check_ids(text, path, "## Evidence Gates"))
     missing = ROUTER_EVIDENCE_GATES - gate_ids
     if missing:
         fail(f"{path} missing router evidence gates: {', '.join(sorted(missing))}")
-    gate_bodies = evidence_gate_bodies(text, path)
+    gate_bodies = check_bodies(text, path, "## Evidence Gates")
     require_gate_terms(gate_bodies, "capability_translation", ["tool", "translated", "not repeated"], path)
     require_gate_terms(gate_bodies, "scope_check", ["out-of-scope", "without specialist names"], path)
     require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "infer", "intake questions", "specialist names"], path)
