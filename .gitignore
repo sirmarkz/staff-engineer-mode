@@ -1,16 +1,10 @@
-# Python
+# Python/runtime caches
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
 
-# Node/tooling caches
+# Node dependencies
 node_modules/
-.npm/
-.pnpm-store/
 
 # Local environments and secrets
 .env
@@ -19,14 +13,6 @@ node_modules/
 .venv/
 venv/
 
-# OS/editor noise
-.DS_Store
-Thumbs.db
-*.swp
-*.swo
-.idea/
-.vscode/
-
 # Logs/temp
 *.log
 tmp/
@@ -34,6 +20,3 @@ temp/
 
 # Local docs scratchpad (not part of the skill pack)
 docs/
-
-# Local agent instructions
-AGENTS.md
