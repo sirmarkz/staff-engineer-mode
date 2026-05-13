@@ -1,5 +1,22 @@
 # Staff Engineer Mode Release Notes
 
+## 1.4.0 - 2026-05-13
+
+Specialist language simplification release.
+
+- Rewrites specialist intake and completion sections in everyday developer
+  language, replacing formal control wording with plainer "info to gather" and
+  "checks before moving on" framing across the routed specialist pack.
+- Tightens specialist Iron Laws and trigger descriptions so new-system design
+  work and existing-system review work both route to the right specialist when
+  applicable.
+- Updates sample prompts to cover both new and existing systems where relevant,
+  and verifies the full 216-prompt sample set live through Claude Code and
+  Codex.
+- Clarifies README sources and influences as the intersection of strongest
+  publicly documented practices from leading software engineering
+  organizations, with stable source IDs retained in the shared source index.
+
 ## 1.3.2 - 2026-05-11
 
 Router precedence release.
