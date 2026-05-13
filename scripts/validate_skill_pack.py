@@ -30,7 +30,7 @@ PROCESS_PAGE_ALLOWED_SPECIALISTS = {
     "platform-golden-paths",
     "production-readiness-review",
 }
-ROUTER_EVIDENCE_GATES = {
+ROUTER_ROUTING_CHECKS = {
     "single_primary",
     "secondary_cap",
     "capability_translation",
@@ -142,7 +142,7 @@ ROUTER_CONTEXT_APPLICABILITY_TERMS = [
     "surface",
     "risk",
     "next decision",
-    "signals, not hard gates",
+    "signals, not hard requirements",
 ]
 
 ROUTER_INFERENCE_FIRST_TERMS = [
@@ -219,7 +219,7 @@ ROUTER_OPERATIONAL_SECTIONS = [
     "## Synthesized Default",
     "## Exceptions",
     "## Required Outputs",
-    "## Evidence Gates",
+    "## Checks Before Moving On",
     "## Routing Tiebreakers",
     "## Red Flags - Stop And Rework",
     "## Common Mistakes",
@@ -395,11 +395,11 @@ def check_bodies(text: str, path: Path, heading: str) -> dict[str, str]:
     }
 
 
-def require_gate_terms(gate_bodies: dict[str, str], gate_id: str, terms: list[str], path: Path) -> None:
-    body = gate_bodies.get(gate_id, "").lower()
+def require_check_terms(check_bodies: dict[str, str], check_id: str, terms: list[str], path: Path) -> None:
+    body = check_bodies.get(check_id, "").lower()
     missing = [term for term in terms if term not in body]
     if missing:
-        fail(f"{path} gate {gate_id!r} missing behavior terms: {', '.join(missing)}")
+        fail(f"{path} check {check_id!r} missing behavior terms: {', '.join(missing)}")
 
 
 def validate_phase_behavior(text: str, path: Path) -> None:
@@ -525,14 +525,14 @@ def validate_router_skill(text: str, path: Path) -> None:
     word_count = len(re.findall(r"\S+", text))
     if word_count > ROUTER_MAX_WORDS:
         fail(f"{path} is {word_count} words; compact router skills must stay under {ROUTER_MAX_WORDS}")
-    gate_ids = set(check_ids(text, path, "## Evidence Gates"))
-    missing = ROUTER_EVIDENCE_GATES - gate_ids
+    routing_check_ids = set(check_ids(text, path, "## Checks Before Moving On"))
+    missing = ROUTER_ROUTING_CHECKS - routing_check_ids
     if missing:
-        fail(f"{path} missing router evidence gates: {', '.join(sorted(missing))}")
-    gate_bodies = check_bodies(text, path, "## Evidence Gates")
-    require_gate_terms(gate_bodies, "capability_translation", ["tool", "translated", "not repeated"], path)
-    require_gate_terms(gate_bodies, "scope_check", ["out-of-scope", "without specialist names"], path)
-    require_gate_terms(gate_bodies, "ambiguity_check", ["ambiguous", "infer", "intake questions", "specialist names"], path)
+        fail(f"{path} missing router checks: {', '.join(sorted(missing))}")
+    routing_check_bodies = check_bodies(text, path, "## Checks Before Moving On")
+    require_check_terms(routing_check_bodies, "capability_translation", ["tool", "translated", "not repeated"], path)
+    require_check_terms(routing_check_bodies, "scope_check", ["out-of-scope", "without specialist names"], path)
+    require_check_terms(routing_check_bodies, "ambiguity_check", ["ambiguous", "infer", "intake questions", "specialist names"], path)
 
 
 def validate_router_boundary_split(router_text: str, matrix_text: str, router_path: Path, matrix_path: Path) -> None:

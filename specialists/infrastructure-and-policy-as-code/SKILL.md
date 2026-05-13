@@ -8,10 +8,10 @@ description: "Use when infrastructure needs declarative desired state, policy ch
 ## Iron Law
 
 ```
-NO INFRASTRUCTURE CHANGE WITHOUT TRACEABLE DESIRED STATE, POLICY CHECK, DRIFT PLAN, AND ROLLBACK STORY
+NO INFRASTRUCTURE CHANGE WITHOUT VERSIONED DESIRED STATE, POLICY CHECKS, DRIFT RESPONSE, AND RECOVERY PLAN
 ```
 
-If production infrastructure can change without traceable desired state and reconciliation, the platform is not controlled.
+If production infrastructure can change outside versioned desired state, policy checks, drift response, and a recovery plan, the platform is not controlled.
 
 ## Overview
 

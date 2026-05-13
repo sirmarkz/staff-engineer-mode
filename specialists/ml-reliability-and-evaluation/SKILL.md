@@ -8,10 +8,10 @@ description: "Use when ML model-serving changes or promotions need evals, data v
 ## Iron Law
 
 ```
-NO MODEL PROMOTION WITHOUT DATA VALIDATION, EVAL GATES, SERVING CHECKS, AND ROLLBACK
+NO MODEL PROMOTION WITHOUT DATA CHECKS, EVAL CHECKS, SERVING MONITORING, AND ROLLBACK
 ```
 
-Offline accuracy alone is not production readiness.
+Offline accuracy alone is not production readiness. Promote an identifiable artifact, watch serving behavior, check drift and training-serving skew, and keep rollback ready.
 
 ## Overview
 

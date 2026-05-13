@@ -11,7 +11,7 @@ description: "Use when runbooks, design docs, ADRs, or onboarding docs need owne
 NO CRITICAL ENGINEERING DOC WITHOUT AUDIENCE, SOURCE OF TRUTH, FRESHNESS RULE, AND CHANGE TRIGGER
 ```
 
-If a doc can mislead an operator, or stale documentation is a production risk.
+If a doc can mislead an operator or steer a change, it needs an audience, source of truth, freshness rule, and change trigger before it is usable.
 
 ## Overview
 

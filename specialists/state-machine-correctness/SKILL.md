@@ -8,10 +8,10 @@ description: "Use when state machines, protocols, or concurrency boundaries need
 ## Iron Law
 
 ```
-NO HIGH-STAKES STATE MACHINE WITHOUT EXPLICIT INVARIANTS AND COUNTEREXAMPLE-DRIVEN VALIDATION
+NO HIGH-STAKES STATE MACHINE WITHOUT MUST-NEVER RULES, MUST-EVENTUALLY RULES, AND COUNTEREXAMPLE CHECKS
 ```
 
-If you cannot state what must never happen, it cannot prove that the design avoids it.
+If you cannot state what must never happen and what must eventually happen, you cannot show that the design handles its critical states.
 
 ## Overview
 

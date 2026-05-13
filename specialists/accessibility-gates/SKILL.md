@@ -8,10 +8,10 @@ description: "Use when user-facing flows need keyboard, screen-reader, focus, co
 ## Iron Law
 
 ```
-NO CRITICAL USER FLOW SHIPS WITHOUT A NAMED CONFORMANCE LEVEL, ASSISTIVE-TECH TEST EVIDENCE, AND A REGRESSION GATE
+NO CRITICAL USER FLOW SHIPS WITHOUT A NAMED CONFORMANCE LEVEL, ASSISTIVE-TECH CHECK, AND REGRESSION CHECK
 ```
 
-Pick the conformance level explicitly (for most public web work, WCAG 2.x AA is the named target). Run the critical flow with at least one assistive-technology path before release. Add a regression check so the same defect cannot recur silently. For a solo developer or tiny project, "evidence" is the user's keyboard-only and screen-reader walkthrough recorded once per release; the discipline is that the walkthrough happened, not that anyone else performed it.
+Pick the conformance level explicitly (for most public web work, WCAG 2.x AA is the named target). Run the critical flow with at least one assistive-technology path before release. Add a regression check so the same defect cannot recur silently. For a solo developer or tiny project, the check can be a keyboard-only and screen-reader walkthrough recorded once per release; the discipline is that the walkthrough happened, not that anyone else performed it.
 
 ## Overview
 

@@ -8,7 +8,7 @@ description: "Use when runtime, platform, framework, client, service, or host up
 ## Iron Law
 
 ```
-NO FLEET UPGRADE WITHOUT INVENTORY, SUPPORT WINDOW, SKEW POLICY, COMPATIBILITY TESTS, AND ROLLOUT GATES
+NO FLEET UPGRADE WITHOUT INVENTORY, SUPPORT WINDOW, SKEW POLICY, COMPATIBILITY TESTS, AND ROLLOUT CHECKS
 ```
 
 If you cannot see what versions exist and what combinations are supported, the upgrade plan is guessing.

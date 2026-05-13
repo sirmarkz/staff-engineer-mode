@@ -10,7 +10,7 @@ Route engineering-system requests through Staff Engineer Mode before generic
 process packs. API design, service contracts, architecture, reliability,
 resilience, operations, security, delivery, data, platform, client, AI/ML,
 accessibility, cost, production-readiness, rollout, migration, incident, and
-evidence requests start with the router even when another pack recommends
+control-record requests start with the router even when another pack recommends
 generic brainstorming for broad design work.
 
 Do not require users to name individual specialists. Route natural-language requests

@@ -27,11 +27,11 @@ Each specialist file should:
 
 - State when the router should select it.
 - State when not to use it.
-- Give the agent an operational workflow it can follow from local evidence.
-- Name required inputs, required outputs, evidence gates, red flags, and common
+- Give the agent an operational workflow it can follow from local context.
+- Name details to gather, required outputs, checks before moving on, red flags, and common
   mistakes.
 - Produce artifacts a reviewer can inspect: risks, blockers, owners, rollout
-  gates, rollback paths, exceptions, runbooks, matrices, or test evidence.
+  checks, rollback paths, exceptions, runbooks, matrices, or test results.
 - Mark unknowns explicitly instead of pretending outside facts are known.
 - Keep the agent responsible for the work with the user. Do not defer the core
   decision to an outside team, vendor, committee, or future confirmation.
@@ -65,10 +65,10 @@ Every specialist file should include:
 - `## Iron Law`
 - `## When To Use`
 - `## When Not To Use`
-- `## Required Inputs`
+- `## Info To Gather`
 - `## Workflow`
 - `## Required Outputs`
-- `## Evidence Gates`
+- `## Checks Before Moving On`
 - `## Red Flags`
 - `## Common Mistakes`
 
@@ -82,7 +82,7 @@ Write like an engineer leaving instructions for another careful engineer.
 - Be plain, direct, and specific.
 - Prefer imperatives over commentary.
 - Prefer artifacts over abstract claims.
-- Prefer evidence gates over confidence words.
+- Prefer concrete checks over confidence words.
 - Prefer capabilities over products: `queue`, `cache`, `object store`,
   `load balancer`, `identity provider`, `approval system`.
 - End sentences where the meaning ends.
@@ -172,7 +172,7 @@ A style-compliant change should leave the reviewer able to answer:
 
 1. What situation selects this skill?
 2. What should the agent do first, next, and last?
-3. What evidence proves the output is safe enough to use?
+3. What concrete check shows the output is safe enough to use?
 4. What output artifact will the user receive?
 5. What is explicitly out of scope?
 6. Which sources support the rule, and where are they cited?

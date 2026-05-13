@@ -12,7 +12,7 @@ AI coding agents now write material amounts of production code. The bottleneck i
 
 ## How It Works
 
-Ask a normal engineering question. Hand the agent a task, design, diff, incident, rollout, or maintenance problem. The router reads the work, picks one specialist (occasionally one secondary), reads that specialist file, and returns concrete decisions, risks, gates, owners, evidence, and next steps. You never name a specialist.
+Ask a normal engineering question. Hand the agent a task, design, diff, incident, rollout, or maintenance problem. The router reads the work, picks one specialist (occasionally one secondary), reads that specialist file, and returns concrete decisions, risks, checks, owners, supporting details, and next steps. You never name a specialist.
 
 Supported tools should list only the native `staff-engineer-mode` router. Specialist files live under `specialists/` and load only after routing.
 
@@ -35,14 +35,6 @@ The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these
 /plugin install staff-engineer-mode@staff-engineer-mode
 ```
 
-### Cursor
-
-```text
-/add-plugin staff-engineer-mode
-```
-
-Or search `staff-engineer-mode` in the plugin marketplace.
-
 ### Codex
 
 Works with Codex CLI and Codex App. Tell Codex:
@@ -50,6 +42,14 @@ Works with Codex CLI and Codex App. Tell Codex:
 ```text
 Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/main/.codex/INSTALL.md
 ```
+
+### Cursor
+
+```text
+/add-plugin staff-engineer-mode
+```
+
+Or search `staff-engineer-mode` in the plugin marketplace.
 
 ### OpenCode
 
@@ -76,11 +76,11 @@ gemini extensions install https://github.com/sirmarkz/staff-engineer-mode
 
 Start a fresh session inside any open repo and ask one of:
 
-- "Before implementing partner webhooks, design the event contract, retry semantics, and compatibility gates."
+- "Before implementing partner webhooks, design the event contract, delivery retries, replay path, and dead-letter handling."
 - "During development of the checkout inventory call, decide timeout, retry, fallback, and duplicate-work safeguards."
 - "Review my last commit and tell me what you would catch in PR review."
 
-The agent should load the router, choose one specialist, and respond with concrete decisions, risks, gates, owners, and evidence — not vibes.
+The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps — not vibes.
 
 ## What's Inside
 
@@ -100,7 +100,7 @@ Examples by surface (the full catalog with prompts for every specialist file is 
 | Data and workflow systems | [`distributed-data-and-consistency`](specialists/distributed-data-and-consistency/SKILL.md), [`database-operations`](specialists/database-operations/SKILL.md), [`event-workflows`](specialists/event-workflows/SKILL.md), [`data-pipeline-reliability`](specialists/data-pipeline-reliability/SKILL.md), [`caching-and-derived-data`](specialists/caching-and-derived-data/SKILL.md) |
 | Platform and edge | [`infrastructure-and-policy-as-code`](specialists/infrastructure-and-policy-as-code/SKILL.md), [`internal-service-networking`](specialists/internal-service-networking/SKILL.md), [`edge-traffic-and-ddos-defense`](specialists/edge-traffic-and-ddos-defense/SKILL.md), [`cost-aware-reliability`](specialists/cost-aware-reliability/SKILL.md) |
 | Client, ML/AI, and experimentation | [`web-release-gates`](specialists/web-release-gates/SKILL.md), [`mobile-release-engineering`](specialists/mobile-release-engineering/SKILL.md), [`accessibility-gates`](specialists/accessibility-gates/SKILL.md), [`llm-application-security`](specialists/llm-application-security/SKILL.md), [`llm-evaluation`](specialists/llm-evaluation/SKILL.md), [`llm-serving-cost-and-latency`](specialists/llm-serving-cost-and-latency/SKILL.md), [`ml-reliability-and-evaluation`](specialists/ml-reliability-and-evaluation/SKILL.md), [`experimentation-and-metric-guardrails`](specialists/experimentation-and-metric-guardrails/SKILL.md) |
-| Engineering workflow, readiness, and evidence | [`agent-pr-review`](specialists/agent-pr-review/SKILL.md), [`ai-coding-governance`](specialists/ai-coding-governance/SKILL.md), [`documentation-lifecycle`](specialists/documentation-lifecycle/SKILL.md), [`engineering-control-evidence`](specialists/engineering-control-evidence/SKILL.md), [`production-readiness-review`](specialists/production-readiness-review/SKILL.md), [`incident-response-and-postmortems`](specialists/incident-response-and-postmortems/SKILL.md), [`oncall-health`](specialists/oncall-health/SKILL.md), [`platform-golden-paths`](specialists/platform-golden-paths/SKILL.md) |
+| Engineering workflow, readiness, and controls | [`agent-pr-review`](specialists/agent-pr-review/SKILL.md), [`ai-coding-governance`](specialists/ai-coding-governance/SKILL.md), [`documentation-lifecycle`](specialists/documentation-lifecycle/SKILL.md), [`engineering-control-evidence`](specialists/engineering-control-evidence/SKILL.md), [`production-readiness-review`](specialists/production-readiness-review/SKILL.md), [`incident-response-and-postmortems`](specialists/incident-response-and-postmortems/SKILL.md), [`oncall-health`](specialists/oncall-health/SKILL.md), [`platform-golden-paths`](specialists/platform-golden-paths/SKILL.md) |
 
 Every specialist file appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with four representative prompts. Or browse by SDLC phase in [OE-PHASE-MAP.md](OE-PHASE-MAP.md) — same routed files, grouped by Design & Build / Develop & Test / Deploy & Operate / Monitor & Respond / Improve.
 
@@ -116,7 +116,7 @@ See [MAINTAINERS.md](MAINTAINERS.md).
 
 ## Sources And Influences
 
-Practices in this pack are synthesized from public engineering writing at large operators (Google, Amazon, Meta, Microsoft, Apple, Netflix) and from standards work cited by their teams (NIST, CISA, OWASP, OpenSSF, IETF, W3C). Specific source IDs are in `skills/_shared/references/source-index.md`. This is an independent project; nothing here is endorsed by or affiliated with those organizations.
+This pack emphasizes the common overlap in public engineering practices from leading software engineering organizations. It synthesizes large-operator engineering writing (Google, Amazon, Meta, Microsoft, Apple, Netflix) and standards work cited by their teams (NIST, CISA, OWASP, OpenSSF, IETF, W3C). Specific source IDs are in `skills/_shared/references/source-index.md`. This is an independent project; nothing here is endorsed by or affiliated with those organizations.
 
 ## License
 

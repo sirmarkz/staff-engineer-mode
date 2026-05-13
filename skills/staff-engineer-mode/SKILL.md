@@ -15,7 +15,7 @@ Loading many plausible specialists is a routing failure.
 
 ## Precedence Over Generic Process Packs
 
-When the request touches an engineering surface -- architecture, reliability, resilience, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, production-readiness, rollout, migration, incident response, evidence, API design, service contracts, or design of any engineering system -- **Staff Engineer Mode runs first**.
+When the request touches an engineering surface -- architecture, reliability, resilience, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, production-readiness, rollout, migration, incident response, control records, API design, service contracts, or design of any engineering system -- **Staff Engineer Mode runs first**.
 
 Do not invoke `superpowers:brainstorming`, `superpowers:writing-plans`, or any other broad process / design skill as the first response to an engineering-system prompt. Route through Staff Engineer Mode and load the selected specialist via the Load Contract below. A process skill may be used only after the specialist is loaded, and only for sub-decisions inside that specialist's workflow.
 
@@ -63,8 +63,8 @@ Users are not expected to know specialist names. Classify by artifact, phase, su
 
 Infer these from the prompt, repo, files, branch context, and conversation. Do not ask the user to supply them as intake fields.
 
-- **Artifact:** decision, design, plan, gate, rollout, investigation, runbook, migration, eval, evidence pack, or diff review.
-- **Phase:** ideation, design, development, testing, before merge, release, migration, active incident, post-incident, regression, evidence, or maintenance.
+- **Artifact:** decision, design, plan, readiness check, rollout, investigation, runbook, migration, eval, control pack, or diff review.
+- **Phase:** ideation, design, development, testing, before merge, release, migration, active incident, post-incident, regression, readiness, or maintenance.
 - **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, AI, accessibility, cost, or operator load.
 - **Risk/scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-location.
 
@@ -96,15 +96,15 @@ web-release-gates
 ## Workflow
 
 1. Infer the requested artifact and phase from prompt, repo, files, branch context, and conversation before naming any skill.
-2. If the work is in ideation, design, development, testing, release, or maintenance and has an engineering surface, route by the decision or artifact the specialist should guide; concrete files, diffs, and repo artifacts improve evidence, and are required only for explicitly diff-specific review.
-3. Treat phase labels as signals, not hard gates; infer applicability from context, artifact, surface, risk, and the next decision.
+2. If the work is in ideation, design, development, testing, release, or maintenance and has an engineering surface, route by the decision or artifact the specialist should guide; concrete files, diffs, and repo artifacts improve the answer, and are required only for explicitly diff-specific review.
+3. Treat phase labels as signals, not hard requirements; infer applicability from context, artifact, surface, risk, and the next decision.
 4. Translate named tools into capabilities; routing outputs must use capability language, not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
 5. Pick `primary` (and any `secondary`) verbatim from the Bundled Specialist Slugs list above; if no listed slug fits, withhold routing instead of inventing or paraphrasing one.
 6. Choose the narrowest primary whose required outputs match the next artifact.
 7. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
 8. Load the chosen specialist per the Load Contract above before producing detailed guidance.
-9. If confidence is low, infer the safest narrow in-scope route from available evidence; withhold routing only when no engineering lifecycle/control frame is present.
-10. Keep single-surface evidence with the matching specialist; use control evidence only for cross-surface mappings, scorecards, exceptions, or evidence packs.
+9. If confidence is low, infer the safest narrow in-scope route from available context; withhold routing only when no engineering lifecycle/control frame is present.
+10. Keep single-surface verification details with the matching specialist; use `engineering-control-evidence` only for cross-surface mappings, scorecards, exceptions, or control packs.
 11. Reframe out-of-scope work as an engineering-control question only when that is plausible.
 
 ## Synthesized Default
@@ -113,7 +113,7 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 ## Exceptions
 
-- For explicit launch/readiness decisions or broad release evidence gates, use `production-readiness-review` as primary.
+- For explicit launch/readiness decisions or broad release readiness checks, use `production-readiness-review` as primary.
 - For active incidents, use `incident-response-and-postmortems` first even if root cause appears to belong elsewhere.
 - For vague prompts such as "make this better" or "troubleshoot a network issue", infer from repo and conversation context before withholding routing.
 - For out-of-scope business or ceremony prompts, do not select a skill unless context already supplies an engineering lifecycle/control framing.
@@ -125,9 +125,9 @@ Treat "review" as a verb until the artifact proves otherwise.
 - Concrete PR, branch, patch, last commit, or diff review before merge routes to `agent-pr-review`.
 - Changed files alone do not make a diff review; route static-analysis or maintenance backlog prioritization to `dependency-and-code-hygiene`.
 - Generic review-system design, reviewer routing, ownership, change size, review latency, or DORA workflow has no routed specialist unless a concrete engineering surface is present.
-- Launch readiness, go/no-go, tier upgrade, or broad release evidence routes to `production-readiness-review`.
+- Launch readiness, go/no-go, tier upgrade, or broad release readiness routes to `production-readiness-review`.
 - Design review, architecture review, security review, API review, data review, rollout review, or test review without a concrete diff routes by the engineering surface, not by the word "review".
-- A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, deprecation, migration, safety, rollout, security, accessibility, data, or test evidence rather than a general diff verdict.
+- A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, deprecation, migration, safety, rollout, security, accessibility, data, or test results rather than a general diff verdict.
 
 ## Required Outputs
 
@@ -137,7 +137,7 @@ Treat "review" as a verb until the artifact proves otherwise.
 - For low-confidence routing: infer a best-effort route when in scope; otherwise withhold routing without intake questions, candidate lists, confidence labels, routing drafts, or specialist names.
 - Out-of-scope reframe when applicable, without specialist names or candidate routes.
 
-## Evidence Gates
+## Checks Before Moving On
 
 - `single_primary`: output has exactly one primary specialist unless routing is withheld.
 - `secondary_cap`: output has no more than one secondary specialist.
@@ -151,15 +151,15 @@ Treat "review" as a verb until the artifact proves otherwise.
 Use this section for common routing precedence. Load `references/routing-matrix.md` for exact-slug guardrails, eval runs, exact-slug uncertainty, or adjacent surfaces.
 
 - Explicit launch, major traffic shift, tier upgrade, or readiness decision routes to `production-readiness-review`; active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
-- Prefer newer narrow routes over broad neighbors. Concrete PR, branch, patch, or diff review routes to `agent-pr-review` even when test evidence is mentioned; otherwise route the engineering decision to the narrow surface specialist.
+- Prefer newer narrow routes over broad neighbors. Concrete PR, branch, patch, or diff review routes to `agent-pr-review` even when test results are mentioned; otherwise route the engineering decision to the narrow surface specialist.
 - Reliability policy, telemetry construction, interrupt load, fault-domain topology/static failover capacity, restore capability, failure experiments, overload controls, and state invariants are separate surfaces.
 - API compatibility, data contracts, migrations, hygiene, fleet upgrades, event replay/DLQ, database backfills, cross-service database/storage correctness, cache freshness, and pipeline freshness stay distinct.
 - Build/release artifacts, production exposure, rollback plans, config or automation mutation, and feature-flag lifecycle are separate delivery artifacts.
 - Desired-state capture, drift detection, reconciliation, or emergency exception rules after manual infrastructure changes route to `infrastructure-and-policy-as-code`.
-- Deprecation PRs/no-new-usage gates stay with `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback stays with `ml-reliability-and-evaluation`.
+- Deprecation PRs/no-new-usage checks stay with `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback stays with `ml-reliability-and-evaluation`.
 - Security routes by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
 - Public edge defense, service identity/discovery/locality, dependency retry/timeout/circuit-breaker policy, backend capacity, browser field/lab release signals, accessibility, cost tradeoffs, LLM eval/serving/security, AI coding controls, and code readability stay separate.
-- Single-surface evidence stays with the matching specialist; cross-surface control mappings, scorecards, exception records, and evidence packs route to `engineering-control-evidence`.
+- Single-surface verification details stay with the matching specialist; cross-surface control mappings, scorecards, exception records, and control packs route to `engineering-control-evidence`.
 
 ## Red Flags - Stop And Rework
 

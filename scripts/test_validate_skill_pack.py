@@ -79,7 +79,7 @@ description: Use when example work needs decisions
 - The request asks for engineering design, review, delivery, operations, reliability, security, architecture, API, data, platform, or client guidance.
 - The user asks to guide ideation, design, development, testing, release, or maintenance decisions.
 - The user asks to plan implementation, guide development, de-risk an idea, or shape engineering decisions before code exists.
-- The router infers applicability from context, repo, files, branch context, conversation, artifact, surface, risk, and the next decision; phase labels are signals, not hard gates.
+- The router infers applicability from context, repo, files, branch context, conversation, artifact, surface, risk, and the next decision; phase labels are signals, not hard requirements.
 
 ## Workflow
 
