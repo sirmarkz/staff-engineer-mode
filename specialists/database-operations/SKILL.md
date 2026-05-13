@@ -52,13 +52,13 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 3. **Use expand/contract in named phases.** Run schema evolution as four sequential phases — Expand (add the new structure, old code ignores it), Migrate (backfill data into the new structure), Transition (new code reads/writes both), Contract (remove the old structure once nothing references it). Each phase except Contract is rollback-safe on its own: a failed Expand drops the new structure, a failed Migrate leaves the old structure authoritative with the new partially populated, a failed Transition reverts code while the old structure still serves; a failed Contract has already validated everything, so investigate before retrying rather than rolling back.
 4. **Throttle and checkpoint.** Run in small batches with pause/abort controls, progress tracking, idempotency, and load-sensitive throttles.
 5. **Validate data.** Use verification queries, invariant checks, counts, sampling, and reconciliation before declaring completion.
-6. **Delay destructive cleanup.** Keep rollback/forward-fix options until telemetry proves the new path is stable.
+6. **Delay destructive cleanup.** Keep rollback/forward-fix options until telemetry shows the new path is stable.
 7. **Monitor during rollout.** Watch user symptoms, query latency, error rate, locks, lag, saturation, and job health.
 8. **Document recovery.** State rollback, forward-fix, restore, and manual repair options before running.
 
 ## Synthesized Default
 
-Use compatible expand/contract migrations, throttled idempotent backfills, explicit abort criteria, delayed destructive cleanup, and verification queries. Treat database operations as release events with telemetry, user confirmation for risky steps, and rollback evidence; include partitioning and shard-map effects when data placement changes.
+Use compatible expand/contract migrations, throttled idempotent backfills, explicit abort criteria, delayed destructive cleanup, and verification queries. Treat database operations as release events with telemetry, user confirmation for risky steps, and rollback checks; include partitioning and shard-map effects when data placement changes.
 
 
 
@@ -77,7 +77,7 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 
 - Small low-risk changes may run directly if lock/lag behavior is understood and rollback is simple.
 - Destructive changes require backup/restore confidence and delayed cleanup unless data is provably disposable.
-- Query-plan regressions may require emergency mitigation before a full migration plan, but evidence and follow-up remain required.
+- Query-plan regressions may require emergency mitigation before a full migration plan, but details and follow-up remain required.
 - Engine-specific mechanisms can be used, but the skill should express the required capability, not prescribe a product.
 
 ## Response Quality Bar
@@ -85,14 +85,14 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 - Lead with the migration safety decision, blockers, or execution plan requested.
 - Cover locks, query plans, backfill throttling, replication lag, verification, and rollback before optional database topics.
 - Make recommendations actionable with checks, stop conditions, and rollback or pause criteria where relevant.
-- Name the details to inspect, such as table size, write rate, lock behavior, replica lag, batch metrics, and validation queries; do not claim details you have not seen.
+- Name the details to inspect, such as table size, write rate, lock behavior, replica lag, batch metrics, and validation queries; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside database change execution. Route broader distributed consistency only when semantic consistency is unresolved.
 - Be concise: avoid generic database background and prefer compact phased runbooks.
 
 ## Required Outputs
 
-- Database change plan with phases, confirmation points, and rollback evidence.
+- Database change plan with phases, confirmation points, and rollback checks.
 - Lock, lag, write-amplification, and query-plan risk assessment.
 - Backfill or maintenance runbook with throttle, pause, abort, and checkpointing.
 - Verification query/invariant plan.

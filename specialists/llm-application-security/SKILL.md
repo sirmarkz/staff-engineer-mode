@@ -65,7 +65,7 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 10. **Scope model chains.** When one model output feeds another model or agent, give each step separate permissions, retrieval boundary, audit trail, and injection eval.
 11. **Evaluate adversarially.** Test prompt injection, tool misuse, data leakage, refusal bypass, unsafe output, dependency substitution, recursive tool loops, retrieval amplification, and regression cases with a repeatable adversarial corpus.
 12. **Audit decisions.** Log prompts, retrieval identifiers, tool calls, user confirmations, denials, and outcomes with privacy-preserving redaction, retention, and replay-for-investigation rules.
-13. **Control supply chain.** Track prompts, tools, models, datasets, retrieval corpora, indexes, and deployment artifacts as versioned inputs with version, source, eval result, integrity evidence, rollback target, and retirement date. Treat executable or code-loading model artifacts as unsafe unless isolated, allowlisted, and justified.
+13. **Control supply chain.** Track prompts, tools, models, datasets, retrieval corpora, indexes, and deployment artifacts as versioned inputs with version, source, eval result, integrity checks, rollback target, and retirement date. Treat executable or code-loading model artifacts as unsafe unless isolated, allowlisted, and justified.
 
 ## Synthesized Default
 
@@ -98,7 +98,7 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 - For short design or pre-launch answers, include a compact release-check list: prompt-injection mitigation plus verification; tool inventory plus per-tool authorization; sink-specific output validation before execution, querying, rendering, messaging, or downstream prompting; sensitive-info controls plus monitoring; adversarial abuse cases with pass/fail criteria; and audit logs for model invocations, tool calls, denials, user confirmations, and retention.
 - Cover prompt/retrieval/tool/output boundaries, least privilege, tenant/data isolation, input and output validation, unsafe-action controls, sensitive-data handling, adversarial evals, logging, emergency rollback, and supply-chain records before optional AI-security breadth.
 - Make recommendations actionable with permission scopes, deterministic control points, eval cases, confirmation checks, stop criteria, and regression checks where relevant.
-- Name the details to inspect, such as retrieval IDs, tool scopes, action sinks, prompt versions, model versions, eval results, audit logs, and redaction rules; do not claim details you have not seen.
+- Name the details to inspect, such as retrieval IDs, tool scopes, action sinks, prompt versions, model versions, eval results, audit logs, and redaction rules; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside deployable LLM application controls. Route privacy lifecycle, tenant isolation, rollout sequencing, and generic supply-chain trust away unless prompt, retrieval, tool, or output boundaries are the dominant risk.
 - Be concise: avoid generic prompt-injection background and prefer compact boundary maps, permission matrices, and eval tables.
@@ -115,7 +115,7 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 - Prompt/response storage, access, retention, logging, and privacy requirements.
 - Emergency stop and rollback plan for prompt, model/config, retrieval corpus/index, tool permissions, and training or fine-tuning inputs.
 - Session isolation and cross-user leakage test plan.
-- Model/prompt/tool/data supply-chain record with artifact ID, version, source, integrity evidence, eval result, rollback target, and retire-by date.
+- Model/prompt/tool/data supply-chain record with artifact ID, version, source, integrity checks, eval result, rollback target, and retire-by date.
 
 ## Checks Before Moving On
 
@@ -146,7 +146,7 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 | --- | --- |
 | Trusting the model to follow policy | Enforce policy in deterministic application controls. |
 | Permission-checking after retrieval only | Check before retrieval and before action/use. |
-| Treating prompts as config only | Version prompts as behavior-changing artifacts with release evidence. |
+| Treating prompts as config only | Version prompts as behavior-changing artifacts with release checks. |
 | Treating guardrails as guarantees | Combine model-facing mitigations with deterministic application enforcement. |
 | Ignoring prompt storage | Prompts and responses need classification, retention, access, and audit controls. |
 | Evaluating model, not workflow | Test tool use, retrieval, output sinks, and confirmation paths. |

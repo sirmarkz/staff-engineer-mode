@@ -8,7 +8,7 @@ description: "Use when launch, migration, tier change, major traffic shift, or r
 ## Iron Law
 
 ```
-NO LAUNCH READINESS CLAIM WITHOUT CHECKED DETAILS OR A DATED EXCEPTION
+NO LAUNCH READINESS DECISION WITHOUT CHECKED DETAILS OR A DATED EXCEPTION
 ```
 
 Unknown is not green. Missing details are a blocker, a recorded follow-up with check path and due date, or explicit user risk acceptance.
@@ -56,7 +56,7 @@ Produces a tier-classified launch posture with an readiness matrix, a blocker li
 5. **Mark each domain.** Use Pass, Blocker, Exception, Follow-up, or Not Applicable. A gap is a Blocker when it can violate the tier's user, data, security, recovery, or rollback requirement before launch; it is a Follow-up only when launch risk remains bounded and the follow-up action, check path, and due date are explicit.
 6. **Check runtime readiness.** Require SLOs, journey health model, telemetry, alerts, runbooks, fallback path, diagnostics, and incident path for customer-impacting launches.
 7. **Check change readiness.** Require rollout, rollback, canary, compatibility, migration, and cleanup details.
-8. **Check resilience and recovery.** Require location or partition independence, static failover capacity, overload behavior, failover claims, recovery drills, and restore test results when relevant.
+8. **Check resilience and recovery.** Require location or partition independence, static failover capacity, overload behavior, failover targets, recovery drills, and restore test results when relevant.
 9. **Check security and integrity.** Require threat model, access controls, secret handling, build integrity, and unresolved vulnerability posture.
 10. **Check cross-pillar tradeoffs.** Identify reliability, security, cost, operational, and performance decisions that improve one quality while weakening another.
 11. **Summarize advisory posture.** Produce blockers, exceptions, and follow-up routes. The skill identifies objective blockers and readiness gaps; the user decides whether to proceed.
@@ -91,7 +91,7 @@ Use PRR as a cross-domain readiness decision for launches and major changes. It 
 - Cover architecture, responsibility, runtime readiness, safe change, recovery, security, and capacity details before optional PRR breadth.
 - Include an architecture row for customer-impacting launches: component diagram or textual map, dependencies, and fault-domain map.
 - Make recommendations actionable with missing details, checks, due dates, stop criteria, user risk acceptance, and exception expiry where relevant.
-- Name the details to inspect, such as dashboards, SLOs, rollout plans, runbooks, load tests, restore checks, threat models, and vulnerability status; do not claim details you have not seen.
+- Name the details to inspect, such as dashboards, SLOs, rollout plans, runbooks, load tests, restore checks, threat models, and vulnerability status; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside launch readiness. Route only the highest-risk specialist follow-ups and cap them at two unless the user asks for a full readiness pack.
 - Be concise: avoid generic checklist prose and prefer compact readiness matrices, blocker tables, and exception registers.

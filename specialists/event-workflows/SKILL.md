@@ -17,7 +17,7 @@ If consumers cannot safely see a message twice or late, the workflow is not prod
 
 Asynchronous systems trade call-time coupling for delivery, ordering, replay, and correction obligations.
 
-**Core principle:** assume duplicate, delayed, reordered, and replayed messages unless the design proves otherwise.
+**Core principle:** assume duplicate, delayed, reordered, and replayed messages unless the design handles those cases explicitly.
 
 ## When To Use
 
@@ -85,7 +85,7 @@ Use at-least-once delivery with idempotent consumers as the default mental model
 - Lead with the workflow state model, failure handling plan, or blockers.
 - Cover idempotency, ordering, retries, DLQ/poison handling, compensation, and reconciliation before optional event-system topics.
 - Make recommendations actionable with checks, stop conditions, and replay controls where relevant.
-- Name the details to inspect, such as event keys, retry counts, duplicate rates, DLQ age, consumer lag, and replay proof; do not claim details you have not seen.
+- Name the details to inspect, such as event keys, retry counts, duplicate rates, DLQ age, consumer lag, and replay checks; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the workflow and event contract. Route broad API or data consistency issues only when material.
 - Be concise: avoid generic event-driven background and prefer compact state/retry/DLQ tables.

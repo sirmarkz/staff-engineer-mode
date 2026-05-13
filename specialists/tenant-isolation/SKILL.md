@@ -87,7 +87,7 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 - Lead with the isolation model, cross-tenant risk, boundary-control plan, or test gap requested.
 - Cover tenant context propagation, data access boundaries, cache/event/job paths, quotas, privacy-safe telemetry, support access, and cross-tenant tests before optional tenancy breadth.
 - Make recommendations actionable with enforcement layers, query/key rules, quotas, tenant-scoped activity logs with retention, test cases, and stop criteria where relevant.
-- Name the details to inspect, such as request flows, schema keys, cache keys, job payloads, event envelopes, support-tool logs, quota metrics, audit retention settings, and cross-tenant test results; do not claim details you have not seen.
+- Name the details to inspect, such as request flows, schema keys, cache keys, job payloads, event envelopes, support-tool logs, quota metrics, audit retention settings, and cross-tenant test results; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside tenant isolation and data protection. Route general privacy or identity work only when it materially changes the isolation decision.
 - Be concise: avoid generic multi-tenancy background and prefer compact propagation maps and boundary-control tables.

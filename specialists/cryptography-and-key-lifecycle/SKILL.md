@@ -24,7 +24,7 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 - The user asks about certificate expiry, key rotation, cryptographic algorithm transition, trust-chain changes, renewal automation, or cryptographic agility.
 - A service depends on certificates, keys, signing, encryption, trust roots, or cryptographic policies that can expire or become deprecated.
 - Rotation, revocation, renewal, or algorithm migration could break clients, jobs, devices, or partner integrations.
-- You need evidence that cryptographic material is inventoried, expiring, monitored, and replaceable.
+- You need checks that cryptographic material is inventoried, expiring, monitored, and replaceable.
 
 ## When Not To Use
 
@@ -48,9 +48,9 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 1. **Inventory dependencies.** Find cryptographic material, algorithms, trust roots, consumers, and expiry or deprecation dates.
 2. **Classify use.** Separate authentication, confidentiality, integrity, signing, verification, and storage use cases.
 3. **Assess agility.** Determine whether each dependency can be renewed, rotated, revoked, or replaced without coordinated outage.
-4. **Prove compatibility.** Test old/new material and algorithm combinations with representative clients and workloads.
+4. **Check compatibility.** Test old/new material and algorithm combinations with representative clients and workloads.
 5. **Automate renewal carefully.** Use monitored renewal paths with alerting, audit, and failed-renewal response. Trigger renewal well before expiry — for example, at roughly two-thirds of the credential's lifetime — so that a single failed renewal cycle has time to be detected and retried before the credential expires.
-6. **Rotate without coordinated downtime.** Default to a dual-credential overlap sequence: issue the new credential, configure verifiers to accept both old and new, migrate producers and clients to the new credential, prove zero traffic uses the old, then revoke. The verify-zero-old-traffic check is what makes the rotation zero-downtime; rotations that skip it convert routine rotation into an outage.
+6. **Rotate without coordinated downtime.** Default to a dual-credential overlap sequence: issue the new credential, configure verifiers to accept both old and new, migrate producers and clients to the new credential, verify zero traffic uses the old, then revoke. The verify-zero-old-traffic check is what makes the rotation zero-downtime; rotations that skip it convert routine rotation into an outage.
 7. **Plan transitions.** Define overlap, dual support, rollout order, client migration, and retirement checks for deprecated algorithms or trust roots.
 8. **Prepare emergency response.** Document revocation, compromise response, rollback or roll-forward, and communication path.
 9. **Close exceptions.** Track unsupported material with expiry, risk, and compensating controls.
@@ -83,7 +83,7 @@ Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support 
 - Lead with the lifecycle risk, rotation plan, transition decision, or expiry blocker requested.
 - Cover inventory, responsibility, expiry, rotation, compatibility, monitoring, emergency revocation, transition windows, and exceptions before optional cryptographic detail.
 - Make recommendations actionable with dates, checks, alert thresholds, compatibility tests, and retirement criteria where relevant.
-- Name the details to inspect, such as inventory, expiry data, consumer list, rotation test output, renewal logs, alert rules, and exception records; do not claim details you have not seen.
+- Name the details to inspect, such as inventory, expiry data, consumer list, rotation test output, renewal logs, alert rules, and exception records; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside cryptographic lifecycle. Use identity, supply-chain, or secure-design skills only when those surfaces drive the main decision.
 - Be concise: prefer inventory and transition matrices over broad cryptography explanation.

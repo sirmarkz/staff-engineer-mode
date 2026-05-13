@@ -8,7 +8,7 @@ description: "Use when setting RTO/RPO, backup design, restore tests, or recover
 ## Iron Law
 
 ```
-NO RECOVERY CLAIM WITHOUT A TESTED RESTORE AND RTO/RPO EVIDENCE
+NO RECOVERY PLAN WITHOUT A TESTED RESTORE AND MEASURED RTO/RPO
 ```
 
 A successful backup job is not a restore test. Replication is not a backup. Multi-location serving does not show that data can be recovered.
@@ -83,7 +83,7 @@ Use recent restore tests tied to RTO/RPO as the default. Protect backups and enc
 - Lead with the restore readiness decision, DR strategy, RTO/RPO gap, or blocker list requested.
 - Cover backup coverage, retention, encryption/key recovery, isolation, restore runbooks, corruption/PITR/partial restore, validation, and remediation before optional DR breadth.
 - Make recommendations actionable with commands, prerequisites, checks, stop criteria, measured targets, and remediation deadlines where relevant.
-- Name the details to inspect, such as backup job metadata, restore logs, validation queries, key recovery checks, retention settings, immutable storage controls, and measured RTO/RPO; do not claim details you have not seen.
+- Name the details to inspect, such as backup job metadata, restore logs, validation queries, key recovery checks, retention settings, immutable storage controls, and measured RTO/RPO; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside backup, restore, and DR. Route HA serving design or incident repair only when those are the central unresolved risk.
 - Be concise: avoid generic DR taxonomy and prefer compact coverage matrices and restore result tables.

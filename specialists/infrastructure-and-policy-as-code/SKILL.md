@@ -55,7 +55,7 @@ Infrastructure is safer when desired state, policy checks, drift handling, and r
 8. **Plan rollback.** State when rollback is possible, when roll-forward is safer, and how state is protected.
 9. **Handle emergencies.** Permit manual break-glass only with separate emergency identity, traceability, maximum duration, automatic re-locking, reconciliation, and post-change check.
 10. **Protect the source of truth.** Treat desired-state repositories, state stores, lock stores, and reconcilers as production control-plane dependencies with access control, backup, and recovery plans.
-11. **Feed evidence.** Surface policy and drift evidence to scorecards and PRR where useful.
+11. **Feed records.** Surface policy and drift records to scorecards and PRR where useful.
 
 ## Synthesized Default
 
@@ -84,9 +84,9 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 ## Response Quality Bar
 
 - Lead with the infrastructure workflow, policy decision, drift finding, or emergency-change procedure requested.
-- Cover desired-state scope, traceability, plan/diff evidence, policy checks, enforcement mode, drift response, rollback or roll-forward, and emergency reconciliation before optional GitOps breadth.
+- Cover desired-state scope, traceability, plan/diff details, policy checks, enforcement mode, drift response, rollback or roll-forward, and emergency reconciliation before optional GitOps breadth.
 - Make recommendations actionable with source-of-truth paths, policy rules, exception workflow, detection cadence, reconciliation steps, and checks where relevant.
-- Name the details to inspect, such as repo paths, plans/diffs, user confirmations, policy outputs, drift reports, reconciliation logs, break-glass records, and deployment status; do not claim details you have not seen.
+- Name the details to inspect, such as repo paths, plans/diffs, user confirmations, policy outputs, drift reports, reconciliation logs, break-glass records, and deployment status; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside infrastructure workflow and policy-as-code. Route platform product work or supply-chain controls only when they are central to the decision.
 - Be concise: avoid generic GitOps background and prefer compact workflow and control matrices.
@@ -101,7 +101,7 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 - Rollback/roll-forward and emergency-change procedure.
 - Secret-reference and diff-redaction guardrails.
 - Desired-state and state-store protection plan.
-- Evidence links for change, policy, drift, and deployment.
+- Links for change, policy, drift, and deployment records.
 
 ## Checks Before Moving On
 

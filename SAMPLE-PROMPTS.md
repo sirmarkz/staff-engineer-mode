@@ -12,51 +12,51 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `api-design-and-compatibility`
 
 - "Inspect the API changes in this branch and tell me what could break existing clients."
-- "Inspect the endpoint code and API schema docs for this new pagination behavior before we merge."
+- "Design the new partner API before implementation: resource names, operation shapes, errors, idempotency, and future compatibility."
 - "The mobile SDK and a partner integration both read this response field; check whether changing it stays compatible and define the client rollout."
-- "Several SDKs and partner clients still read this response field; check compatibility and removal gates before changing it."
+- "Several SDKs and partner clients still read this response field; check compatibility and removal steps before changing it."
 
 ### `architecture-decisions`
 
 - "Read the current repo structure and design docs, then decide whether this new service boundary makes sense."
 - "Turn the decision in this PR into a short ADR with tradeoffs and revisit conditions."
-- "Compare these two implementation branches and tell me which design is easier to operate and change later."
+- "Compare these two proposed service-boundary designs and tell me which is easier to operate and change later."
 - "Map the current background jobs and request paths, then recommend whether the new worker boundary should own retries or leave them with callers."
 
 ### `data-contracts`
 
-- "Inspect this shared dataset change for producer and consumer compatibility before we merge."
-- "Inspect the schema and downstream usage, then define the contract and removal gates for this field."
-- "Find where teams depend on this data shape and build a migration plan that will not break consumers."
+- "Design the new shared customer dataset before launch: producer, planned consumers, field meanings, compatibility rules, and consumer checks."
+- "Define the producer and consumer contract for this shared schema field, including compatibility and deprecation rules."
+- "Inspect this existing shared data shape and define producer/consumer compatibility rules before changing it."
 - "A reporting table adds nullable columns and changes enum meanings; check producer and consumer expectations before publishing it."
 
 ## Reliability And Resilience
 
 ### `slo-and-error-budgets`
 
-- "Look at this service's routes, dashboards, and alerts, then propose user-centered SLIs and SLOs."
-- "Inspect the alert rules against this service's SLOs and separate paging alerts from ticket-only alerts."
-- "Use the service code and recent incidents to draft an error-budget policy for releases."
+- "Design SLIs and SLOs for the new checkout API before launch using its user journeys and expected traffic."
+- "Inspect this service's SLO burn-rate rules and separate urgent alerts from ticket-only budget responses."
+- "Use the service code and recent incidents to draft error-budget release rules."
 - "Checkout has fast failures and slow successes; decide which user outcome should burn budget and which alerts should stay tickets."
 
 ### `high-availability-design`
 
-- "Inspect this deployment config and fault-domain topology for what still fails if one hosting location goes down."
-- "Inspect the failover code path, static capacity, and runbook, then list the availability assumptions we still need to prove."
+- "Inspect this existing deployment config and fault-domain topology for what still fails if one hosting location goes down."
+- "Inspect the failover code path, static capacity, and runbook, then list the availability assumptions we still need to check."
 - "Trace the serving path and fault-domain map, then identify which shared dependency or control-plane loss could break high availability for the whole feature."
 - "During a zone evacuation, this feature still needs reads and writes; inspect which components share a failover dependency."
 
 ### `dependency-resilience`
 
-- "Inspect this PR's new downstream call for timeout, retry, duplicate-work, and overload risks."
-- "Trace this queue consumer and tell me how it behaves when the dependency gets slow."
+- "Before adding this new downstream call, define timeout, retry, duplicate-work, and overload behavior."
+- "Trace this existing queue consumer and tell me how it behaves when the dependency gets slow."
 - "Inspect this downstream payment dependency call and find where retries could double-charge or duplicate work."
 - "This new inventory call sits in checkout; decide timeout, retry, and fallback behavior when inventory stalls."
 
 ### `performance-and-capacity`
 
-- "Use the changed files and benchmark output to explain why the slowest requests got worse."
-- "Inspect this load-test script and tell me whether it proves enough headroom for the code path it exercises."
+- "Set capacity and load-test targets for a new checkout endpoint before traffic ramps."
+- "Inspect this load-test script and tell me whether it shows enough headroom for the code path it exercises."
 - "Trace the hot path for this endpoint and point out likely bottlenecks before traffic doubles."
 - "P99 doubled only for large tenants after the merge; use traces and profiles to find the saturation point."
 
@@ -64,8 +64,8 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 - "Inspect the backup jobs and restore scripts in this repo, then design an RTO/RPO restore test."
 - "Inspect this migration and tell me how we would recover from production data corruption or accidental deletion."
-- "Read the disaster-recovery runbook and backup files, then call out restore assumptions that are not proven."
-- "Before deleting old records, prove we can restore a tenant snapshot and reconcile writes made during recovery."
+- "Read the disaster-recovery runbook and backup files, then call out restore assumptions that still need a test."
+- "Before deleting old records, verify we can restore a tenant snapshot and reconcile writes made during recovery."
 
 ### `resilience-experiments`
 
@@ -76,8 +76,8 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `state-machine-correctness`
 
-- "Trace this state machine and write the invariants it must never break."
-- "Inspect this locking code and tests for races, impossible states, or missed concurrency edges."
+- "Design the new payout state machine before implementation: states, transitions, must-never rules, must-eventually rules, and retry cases."
+- "Inspect this existing locking code and tests for races, impossible states, or missed concurrency edges."
 - "Design property tests or simulations for this high-stakes money-moving state machine."
 - "The order can move from paid to canceled during retry races; enumerate invalid transitions and how to test them."
 
@@ -85,7 +85,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `testing-and-quality-gates`
 
-- "Inspect this PR and tell me which tests should block merge and which can run after merge."
+- "Design the test strategy for this payment workflow change: what blocks merge, what blocks release, and what can run later."
 - "Inspect the CI config and test layout, then find weak signals that could let a bad release through."
 - "Build a practical test plan for this feature using the code that changed in this branch."
 - "The feature touches auth, billing, and background jobs; decide the minimal blocking test set and what can run nightly."
@@ -93,20 +93,20 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `test-data-engineering`
 
 - "Inventory the fixtures this suite depends on and tell me which ones cannot be regenerated."
-- "Inspect this golden file and the production sample it came from, then prove the anonymization actually holds."
+- "Design fixture and golden-file rules for this new integration test suite before it starts using production samples."
 - "Find where production data shape has drifted from the data the tests run on and design a drift-detection check."
 - "These fixtures came from support exports; check whether they are still representative and safe to keep."
 
 ### `configuration-and-automation-safety`
 
-- "Inspect this production config change for validation, preview, blast radius, and rollback before it runs."
+- "Design validation, preview, blast-radius limits, and rollback rules for a new tenant-limit config setting before automation writes it."
 - "Inspect this automation script and tell me how it can safely mutate production state with an abort path."
-- "Find configuration drift and temporary overrides before the cleanup automation runs, then add owners, expiry, validation, and rollback."
+- "Find unsafe runtime config values and temporary overrides before the cleanup automation runs, then add owners, expiry, validation, and rollback."
 - "A script will rewrite tenant limits from a CSV; add preview, validation, per-tenant caps, and rollback."
 
 ### `release-build-reproducibility`
 
-- "Inspect the build scripts and release workflow to see whether we can rebuild last week's artifact."
+- "Cut this release candidate: choose the version, artifact identity, required checks, promotion path, and rollback target."
 - "Inspect the packaging config and design a build-once, promote-many release path."
 - "Find why this repo's builds are flaky or cache-sensitive and rank the fixes."
 - "Two CI runners produce different package hashes; trace the unpinned inputs before the release is promoted."
@@ -120,23 +120,23 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `progressive-delivery`
 
-- "Build a rollout and rollback plan for the config change in this PR."
-- "Inspect this feature-toggle implementation before rollout and tell me what canary checks, stop criteria, and rollback path are missing."
+- "Build a rollout and rollback plan for the new ranking path before production exposure."
+- "Inspect this staged rollout plan before exposure and tell me what canary checks, stop criteria, and rollback path are missing."
 - "Use the deploy workflow and metrics files to define when we should stop a small first rollout."
 - "Ramp the new ranking path by tenant cohort and define metrics that pause exposure before all users see it."
 
 ### `feature-flag-lifecycle`
 
-- "The rollout is done; now build me an inventory of every live flag with owner, expiry, and removal plan."
+- "Before adding a new feature flag, define owner, expiry, fallback behavior, and the removal plan."
 - "Find orphan flags whose feature shipped or whose owner left, and propose a safe removal sequence."
 - "Inspect this flag-debt scorecard and tell me which flags will become contradictory defaults if we leave them in."
 - "This flag now defaults on in every environment; find remaining off-path code and plan removal safely."
 
 ### `production-readiness-review`
 
-- "Build a production-readiness decision for the service in this repo before launch."
+- "Build a production-readiness decision for the new service in this repo before launch."
 - "Before this migration moves traffic tomorrow, inspect code, deploy config, dashboards, and runbooks for launch blockers."
-- "Inspect the code, deploy config, dashboards, and runbooks, then say what evidence is missing for launch."
+- "Inspect the code, deploy config, dashboards, and runbooks, then say what launch details are missing."
 - "Before the new importer becomes tier 1, collect blockers across code, deploy, telemetry, and support docs."
 
 ### `migration-and-deprecation`
@@ -149,20 +149,20 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `fleet-upgrades`
 
 - "Build an upgrade plan for this runtime across all services, including support windows and allowed version skew."
-- "Inspect this platform upgrade and identify mixed-version combinations we need to prove before rollout."
-- "Inspect the fleet inventory and find unsupported versions, owners, exceptions, and cleanup gates."
-- "Some services cannot move runtime versions until clients update; plan compatibility windows and exceptions."
+- "Inspect this platform upgrade and identify mixed-version combinations we need to test before rollout."
+- "Inspect the existing fleet inventory and find unsupported versions, owners, exceptions, and cleanup checks."
+- "During this runtime fleet upgrade, some services cannot move until clients update; plan version-skew windows and exceptions."
 
 ### `agent-pr-review`
 
-- "Review this PR before merge and tell me what a senior reviewer would catch: intent match, behavior evidence, missing edge cases."
+- "Review this PR before merge and tell me what a senior reviewer would catch: intent match, behavior verification, missing edge cases."
 - "Find risks in the diff I'm about to push — silent assumptions, hallucinated APIs, scope creep, deleted-but-used code."
 - "What did the agent (or I) miss in this branch that we'd be embarrassed to ship?"
-- "The diff passes tests but changed deletion behavior; review what evidence is missing before merge."
+- "The diff passes tests but changed deletion behavior; review what details are missing before merge."
 
 ### `code-readability-for-agents`
 
-- "Map this repo's module boundaries, names, and file sizes for whether an AI agent can find the canonical implementation in one tool call."
+- "Design module boundaries and names for a new payment workflow so an AI agent can find the canonical implementation in one tool call."
 - "Find names in this codebase that collide or mislead code search and propose renames that make the canonical version unambiguous."
 - "Inspect function and file sizes against a budget and tell me which files an agent will silently misread."
 - "There are three payment clients with similar names; find the canonical one and where an agent could choose wrong."
@@ -177,15 +177,15 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `dependency-and-code-hygiene`
 
 - "Find all uses of this deprecated dependency and plan a small-batch hygiene cleanup with lockfile and codemod safety checks."
-- "Inspect this dependency update and lockfile sweep for migration, hygiene, and rollback risks."
+- "Plan this dependency update and lockfile sweep for migration, hygiene, and rollback risks."
 - "Inspect the static-analysis backlog and changed files, then prioritize fixes that reduce real maintenance risk."
-- "The static analyzer warns on a deprecated helper across five packages; plan small hygiene cleanup batches with codemod safety checks and rollback evidence."
+- "Triage the static-analysis warning on a deprecated helper across five packages, then plan small hygiene cleanup batches with codemod safety checks."
 
 ## Operations And Observability
 
 ### `observability-and-alerting`
 
-- "Inspect this payment flow and propose the logs, metrics, traces, dashboards, alerts, and runbook updates it needs."
+- "Design logs, metrics, traces, dashboards, alerts, and runbook updates for a new payment flow before launch."
 - "Inspect the alert definitions in this repo and map each one to user-journey telemetry, dashboard context, and a runbook."
 - "Trace this request across services and tell me what correlation context is missing."
 - "Users report missing receipts but dashboards only show worker CPU; design signals that show where work disappears."
@@ -200,8 +200,8 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `oncall-health`
 
 - "Inspect the alert history and runbooks in this repo, then find the noisiest safe pages to remove."
-- "Inspect these weekly operations notes and identify toil that can be automated or eliminated."
-- "Inspect these on-call suppression rules and prove we are reducing page noise without hiding real user impact."
+- "Design on-call routing and runbook ownership for the new import job before it becomes production-supported."
+- "Inspect these on-call suppression rules and verify page-noise reduction is not hiding real user impact."
 - "The same job wakes primary every morning and gets manually retried; decide what to automate or downgrade."
 
 ## Security And Privacy
@@ -222,59 +222,59 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `cryptography-and-key-lifecycle`
 
-- "Inventory certificates, keys, trust roots, owners, expiry dates, and renewal paths for this service."
-- "Plan a certificate rotation that proves old and new trust paths work before the old certificate is removed."
-- "Inspect this cryptographic algorithm transition for compatibility, monitoring, exceptions, and retirement gates."
-- "The signing key has no owner and clients pin the old algorithm; plan compatibility and retirement gates."
+- "Inventory existing certificates, keys, trust roots, owners, expiry dates, and renewal paths for this service."
+- "Plan a certificate rotation that shows old and new trust paths work before the old certificate is removed."
+- "Inspect this cryptographic algorithm transition for compatibility, monitoring, exceptions, and retirement checks."
+- "The signing key has no owner and clients pin the old algorithm; plan compatibility and retirement checks."
 
 ### `software-supply-chain-security`
 
-- "Inspect this repo's source-to-deploy chain for places an untrusted artifact could slip in."
-- "Inspect the release scripts and show how artifact provenance, signing, and builder isolation prove where artifacts came from."
+- "Inspect the existing source-to-deploy chain for places an untrusted artifact could slip in."
+- "Inspect the release scripts and show how artifact provenance, signing, and builder isolation identify where artifacts came from."
 - "Find secret-scanning, dependency inventory, signing, provenance, or deployment-admission checks that should block release."
-- "A deploy can pull artifacts from a mutable bucket; prove source, builder, signature, and admission controls."
+- "A deploy can pull artifacts from a mutable bucket; verify source, builder, signature, and admission controls."
 
 ### `vulnerability-management`
 
-- "Triage the vulnerable dependencies in deployed artifacts and tell me what needs patching first by exploitability and exposure."
-- "Inspect this PR that delays a security patch and define the vulnerability exception evidence, owner, and expiry it needs."
+- "Before promoting this new image, triage its vulnerable packages by exploitability, exposure, patch path, and exception expiry."
+- "Inspect this PR that delays a security patch and define the vulnerability exception details, owner, and expiry it needs."
 - "Map the current advisories to deployed services and propose remediation deadlines based on exploitability and impact."
 - "An advisory affects a library used by two live services and one internal tool; set patch order and exception expiry."
 
 ### `tenant-isolation`
 
-- "Inspect this multi-tenant customer data model and find ways one tenant could see another tenant's data."
+- "Design tenant-isolation checks for a new support search feature that can query customer accounts."
 - "Inspect the multi-tenant quota code and tell me whether one large tenant can hurt everyone else."
-- "Use the access logs and tenant-context code path to prove whether this customer-impact incident stayed isolated to one tenant."
-- "Support search can query multiple accounts; prove tenant context cannot be dropped on fallback paths."
+- "Use the access logs and tenant-context code path to check whether support search stayed isolated to one tenant."
+- "Support search can query multiple accounts; verify tenant context cannot be dropped on fallback paths."
 
 ### `privacy-and-data-lifecycle`
 
-- "Inspect this feature's code for personal-data minimization, storage, deletion, export, and logging controls."
+- "Design the personal-data flow for this new feature: minimization, storage, deletion, export, and logging controls."
 - "Inspect the telemetry changes and remove personal data that is not needed for privacy-safe operations."
 - "Check the retention, erasure, and deletion-propagation jobs for this workflow and identify missing privacy controls."
 - "Debug logs include email and free-form notes; decide what to drop, hash, retain, and erase."
 
 ### `engineering-control-evidence`
 
-- "Turn the release checks in this repo into a cross-surface engineering evidence pack we can collect every release."
-- "Build an evidence pack from the tests, CI, dashboards, runbooks, and change records."
+- "Turn the release checks in this repo into a cross-surface engineering record pack we can collect every release."
+- "Build a control record pack from the tests, CI, dashboards, runbooks, and change records."
 - "Inspect these engineering exceptions and make sure each one has an owner, expiry, and compensating control."
-- "For the release evidence gate, map CI, approvals, runbooks, and dashboards into one evidence pack with exceptions."
+- "For the release record pack, map CI, approvals, runbooks, and dashboards into one control record set with exceptions."
 
 ### `llm-application-security`
 
-- "Inspect this LLM feature PR for prompt injection, unsafe tool access, and data leakage."
-- "Inspect the LLM retrieval code and prove users cannot access documents they should not see."
+- "Threat-model a new LLM assistant before launch for prompt injection, unsafe tool access, and data leakage."
+- "Inspect the LLM retrieval and tool boundary for prompt injection, unsafe document access, and data leakage."
 - "Inspect the model output handling path for prompt-injected links, unsafe tool arguments, and data leakage before this feature ships."
 - "The assistant can open retrieved docs and call tools; identify where a malicious document could steer actions."
 
 ### `ai-coding-governance`
 
 - "Inspect our repo instructions for AI coding agents and add rules for protected paths, tests, and data boundaries."
-- "Define repo-level evidence requirements for AI-generated PRs before a human should approve them."
-- "Define acceptance gates for agent-written code in this repo without replacing normal change responsibility."
-- "Agents can edit generated schemas and fixtures; write repo rules for protected paths, tests, and traceability evidence."
+- "Design repo-level verification requirements for AI-generated PRs before a human should approve them."
+- "Define acceptance checks for agent-written code in this repo without replacing normal change responsibility."
+- "Agents can edit generated schemas and fixtures; write repo rules for protected paths, tests, and traceability details."
 
 ### `llm-evaluation`
 
@@ -285,9 +285,9 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `llm-serving-cost-and-latency`
 
-- "Set token and p50/p95/p99 latency budgets for this LLM-backed route and tell me which calls already blow them."
+- "Set token and p50/p95/p99 latency budgets for a new LLM-backed route before launch."
 - "Design the prompt, embedding, and response cache strategy for this feature, and define when a cache miss has to fall back to a smaller model."
-- "Map per-call LLM spend to route, feature, and tenant, then draft a degradation path for the next provider outage."
+- "Map existing per-call LLM spend to route, feature, and tenant, then draft a degradation path for the next provider outage."
 - "The support route fans out to three model calls; set latency and token budgets plus what degrades first."
 
 ## Data, Platform, And Client Systems
@@ -301,14 +301,14 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `event-workflows`
 
-- "Inspect this event producer and consumer change for replay, failed messages, and duplicate events."
+- "Design a new refund event workflow with replay, failed-message handling, duplicate handling, ordering, and DLQ behavior."
 - "Inspect this event message change and find producer or consumer replay, ordering, idempotency, or DLQ behavior that might break."
-- "Trace this multi-step workflow and show how partial failure could lose work."
+- "Trace this event-driven workflow across producers, consumers, replay, and failed-message handling; show where partial failure could lose work."
 - "A refund saga sends email before payment settles; trace partial failures and replay behavior."
 
 ### `caching-and-derived-data`
 
-- "Inspect this cache invalidation code and tell me when users could see stale data."
+- "Design a new product-card cache with TTL, invalidation, miss-storm behavior, and stale-result handling."
 - "Inspect this hot cache key and design protection so too many callers do not hit the backend at once."
 - "Check the derived search-index refresh path and define stale-result freshness checks we can verify."
 - "Inventory updates arrive but the product card stays stale; map invalidation order and cold-cache behavior."
@@ -322,38 +322,38 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `data-pipeline-reliability`
 
-- "Inspect this pipeline code for missed runs, freshness gaps, and unsafe reprocessing."
-- "Inspect this stream change and design data-quality gates before downstream reports trust it."
+- "Design the new revenue pipeline before launch: freshness targets, validation checks, lineage, replay, and recovery."
+- "Inspect this stream change and design data-quality checks before downstream reports trust it."
 - "Use the failed warehouse load logs and jobs to build a recovery plan that avoids double-counting."
 - "Late-arriving events are replayed after dashboard cutoff; define freshness, validation, and no-double-count recovery."
 
 ### `ml-reliability-and-evaluation`
 
-- "Inspect this model-serving PR for eval coverage, rollback, and production risk."
+- "Define eval coverage, rollback, and production-risk checks for this model-serving change."
 - "Inspect the training and serving code for places the model can get stale or behave differently in production."
-- "The new model will replace the live fraud endpoint; define promotion evidence from evals, skew checks, drift monitors, rollback, tests, metrics, and deploy workflow."
-- "The fraud model retrains weekly but features changed yesterday; compare training and serving inputs plus rollback evidence."
+- "The new model will replace the live fraud endpoint; define promotion checks from evals, skew checks, drift monitors, rollback, tests, metrics, and deploy workflow."
+- "The fraud model retrains weekly but features changed yesterday; compare training and serving inputs plus rollback checks."
 
 ### `platform-golden-paths`
 
 - "Inspect this repo's service template and make it a safer golden path for new production services."
-- "Inspect the service catalog and scorecard files for what developers will actually use."
+- "Inspect the service catalog and template docs for friction teams hit when starting new services."
 - "Find where teams bypass the platform in this repo and identify friction we should remove."
 - "New services copy old templates then delete safety checks; update the template and scorecard to make the paved path easier."
 
 ### `infrastructure-and-policy-as-code`
 
-- "Inspect this infrastructure change for unsafe manual steps, missing policy checks, and rollback gaps."
-- "Inspect the environment promotion workflow and prove it matches what is declared in code."
+- "Inspect this declarative infrastructure change for unsafe manual steps, missing policy checks, drift response, and rollback gaps."
+- "Inspect the environment promotion workflow and check whether it matches what is declared in code."
 - "Design policy checks and exception records for these infrastructure files."
 - "A manual console change fixed staging; capture desired state, drift detection, and emergency exception rules."
 
 ### `internal-service-networking`
 
-- "An internal service cannot reach one of its dependencies; inspect the repo config and help narrow down the path."
+- "Design internal routing for a new checkout service, including discovery, identity, locality, and private dependency access."
 - "Inspect this internal traffic policy for service-to-service access that is too open."
 - "Inspect internal service-to-service routing config and keep this private dependency's traffic local when possible."
-- "Checkout sometimes exits the private network to reach payment; inspect discovery and locality rules."
+- "Refresh the internal networking runbook for checkout: discovery, locality, identity, and fallback when private routing fails."
 
 ### `edge-traffic-and-ddos-defense`
 
@@ -364,29 +364,29 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `cost-aware-reliability`
 
-- "Use the infra and service changes in this branch to find likely cost increases."
+- "Before adding a new replica set for failover, compare the reliability gain against ongoing platform cost."
 - "Inspect this capacity change and explain the reliability benefit versus the cost."
 - "Inspect tags, owners, and shared resources so teams can act on their platform costs."
 - "Replica count grew after an incident; decide what spend can be removed without losing failover headroom."
 
 ### `mobile-release-engineering`
 
-- "Inspect this mobile release branch and define when staged rollout should pause."
+- "Plan staged rollout, halt criteria, and forward-fix options for this new mobile release."
 - "Inspect startup, crash, hang, and offline telemetry before approving this app release."
 - "Use the release notes and changed files to choose rollback or forward-fix options for this app-store bug."
 - "Crash-free users dip only on older OS versions after staged rollout; decide pause, forward fix, or rollback."
 
 ### `web-release-gates`
 
-- "Inspect this UI PR for loading, responsiveness, layout stability, runtime errors, and payload growth."
+- "Plan browser release checks for a new checkout flow covering loading, responsiveness, layout stability, runtime errors, and payload growth."
 - "Inspect field and lab performance signals before rolling out this frontend change."
-- "For this browser client-side change, add release gates and telemetry for loading, interaction readiness, layout stability, runtime errors, and payload growth."
-- "The checkout bundle gained a heavy dependency; set gates for interaction readiness and runtime errors."
+- "For this browser client-side change, add release checks and telemetry for loading, interaction readiness, layout stability, runtime errors, and payload growth."
+- "The checkout bundle gained a heavy dependency; set checks for interaction readiness and runtime errors."
 
 ### `accessibility-gates`
 
 - "Inspect this checkout flow for keyboard completion, focus order, labels, contrast, and release blockers."
-- "Inspect this UI change and build the accessibility gate we need before launch."
+- "Design accessibility checks for a new checkout flow before launch."
 - "Turn these accessibility bugs into journey-based regression checks with owners and retest dates."
 - "A modal traps keyboard focus after payment failure; turn it into a release-blocking journey check."
 
@@ -394,5 +394,5 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 - "Inspect this experiment design for assignment, exposure logging, guardrail metrics, and readout rules."
 - "The A/B test result looks suspicious; inspect sample balance, missing telemetry, and metric definitions."
-- "Decide whether this ramp should continue using experiment validity checks and operational guardrails."
+- "Decide whether this experiment ramp should continue using assignment balance, exposure logging, metric validity checks, and guardrail metrics."
 - "The ramp looks positive but guardrail logging changed halfway through; decide whether the readout is trustworthy."

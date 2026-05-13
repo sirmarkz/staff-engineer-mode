@@ -1,6 +1,6 @@
 ---
 name: caching-and-derived-data
-description: "Use when caches, search indexes, derived values, or materialized views need TTL, invalidation, or refresh rules"
+description: "Use when designing or changing caches, search indexes, derived values, or materialized views needing freshness rules"
 ---
 
 # Caching And Derived Data
@@ -21,7 +21,7 @@ Caching is a correctness path disguised as a performance optimization.
 
 ## When To Use
 
-- The user asks about cache invalidation, TTLs, stale entries, materialized views, index refresh, cache stampedes, request coalescing, stale-while-revalidate, or derived-state operations.
+- The user is designing, building, changing, or operating a cache, search index, materialized view, or derived-state path and asks about invalidation, TTLs, stale entries, index refresh, cache stampedes, request coalescing, stale-while-revalidate, or derived-state operations.
 - A cache miss or cache failure can overload a backing dependency.
 - Derived data needs freshness or repair guarantees.
 - The user has already decided stale reads are acceptable and needs operational mechanics.
@@ -57,7 +57,7 @@ Caching is a correctness path disguised as a performance optimization.
 
 ## Synthesized Default
 
-Use explicit TTLs, version-aware invalidation, request coalescing, downstream protection, stale-read observability, and repair paths. Treat cache invalidation as part of the write path and derived-state maintenance as an operational responsibility; never let the cache become the only proof of correctness.
+Use explicit TTLs, version-aware invalidation, request coalescing, downstream protection, stale-read observability, and repair paths. Treat cache invalidation as part of the write path and derived-state maintenance as an operational responsibility; never let the cache become the only correctness check.
 
 
 
@@ -84,7 +84,7 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 - Lead with the cache correctness decision, mitigation plan, or production blockers.
 - Cover freshness, invalidation, stampede behavior, fallback, source-of-truth semantics, and observability before optional cache topics.
 - Make recommendations actionable with checks, stop conditions, and rollback or bypass actions where relevant.
-- Name the details to inspect, such as TTLs, hit/miss rates, source update events, stale-read bounds, and dependency saturation; do not claim details you have not seen.
+- Name the details to inspect, such as TTLs, hit/miss rates, source update events, stale-read bounds, and dependency saturation; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside cache and derived-data behavior. Route broader storage consistency or dependency overload only when materially unresolved.
 - Be concise: avoid generic caching background and prefer compact consistency and mitigation tables.

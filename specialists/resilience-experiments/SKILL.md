@@ -15,14 +15,14 @@ Breaking things without a learning objective is not engineering.
 
 ## Overview
 
-Resilience experiments test whether the system behaves the way the design claims it will behave.
+Resilience experiments test whether the system behaves the way the design says it should behave.
 
 **Core principle:** run controlled experiments with a hypothesis, bounded blast radius, observable steady state, abort criteria, and follow-up fixes.
 
 ## When To Use
 
 - The user asks for a chaos experiment, game day, failover drill, disaster role play, fault injection, or resilience test plan.
-- You want evidence that retry, failover, overload, backup, or dependency-failure behavior works.
+- You want test results that confirm retry, failover, overload, backup, or dependency-failure behavior works.
 - You need to exercise location, partition, deployment-unit, traffic-shift, startup, or recovery behavior before relying on it.
 - A launch readiness decision needs controlled failure validation.
 - Incident follow-up requires proving that a class of failure is now handled.
@@ -31,7 +31,7 @@ Resilience experiments test whether the system behaves the way the design claims
 
 - The main deliverable is fault-domain topology, static stability, or multi-location design; use `high-availability-design` instead.
 - The request is proving failover capacity, topology, or availability assumptions rather than designing the experiment itself; use `high-availability-design` instead.
-- The main deliverable is backup restore testing or RTO/RPO proof; use `backup-and-recovery` instead unless broader experiments are central.
+- The main deliverable is backup restore testing or RTO/RPO validation; use `backup-and-recovery` instead unless broader experiments are central.
 - The main deliverable is timeout, retry, queue, or overload policy; use `dependency-resilience` instead.
 - The work is only unit/integration testing without runtime failure injection.
 
@@ -54,13 +54,13 @@ Resilience experiments test whether the system behaves the way the design claims
 4. **Set abort criteria.** Decide in advance which SLO burn, error, latency, saturation, data, or operator signal stops the experiment.
 5. **Prepare responders.** Confirm on-call, runbooks, rollback, communication channel, and user decision point.
 6. **Inject one failure.** Change one variable at a time unless the explicit goal is compound-failure validation.
-7. **Observe and decide.** Compare actual behavior to hypothesis, abort on criteria, and record evidence while the system is still fresh.
+7. **Observe and decide.** Compare actual behavior to hypothesis, abort on criteria, and record results while the system is still fresh.
 8. **Set recurrence deliberately.** For tier-critical recovery mechanisms, define when to repeat the drill after topology, traffic, dependency, or runbook changes.
 9. **Close the loop.** File fixes, update runbooks, add regression checks, and rerun only after material changes.
 
 ## Synthesized Default
 
-Use hypothesis-driven experiments that begin small, verify user-visible steady state, and expand only after evidence supports the previous scope. Treat shift-left experiments, shift-right production drills, and game days as engineering validation, not ritual.
+Use hypothesis-driven experiments that begin small, verify user-visible steady state, and expand only after results support the previous scope. Treat shift-left experiments, shift-right production drills, and game days as engineering validation, not ritual.
 
 
 
@@ -84,10 +84,10 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 
 ## Response Quality Bar
 
-- Lead with the experiment hypothesis, blast-radius boundary, abort criteria, or evidence plan requested.
-- Cover steady state, fault method, scope, telemetry, participant/communication plan, rollback actions, evidence capture, and learning loop before optional chaos-program breadth.
-- Make recommendations actionable with exact fault injection, thresholds, stop trigger, rollback commands, evidence to capture, and rerun criteria where relevant.
-- Name the details to inspect, such as dashboards, SLO signals, deployment markers, runbooks, dependency health, experiment logs, findings, and fix paths; do not claim details you have not seen.
+- Lead with the experiment hypothesis, blast-radius boundary, abort criteria, or results plan requested.
+- Cover steady state, fault method, scope, telemetry, participant/communication plan, rollback actions, result capture, and learning loop before optional chaos-program breadth.
+- Make recommendations actionable with exact fault injection, thresholds, stop trigger, rollback commands, details to capture, and rerun criteria where relevant.
+- Name the details to inspect, such as dashboards, SLO signals, deployment markers, runbooks, dependency health, experiment logs, findings, and fix paths; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside resilience experiment design and execution. Route HA redesign or DR strategy only when the experiment exposes those as central gaps.
 - Be concise: avoid generic chaos-engineering background and prefer compact experiment plans and findings tables.
@@ -98,9 +98,9 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 - Steady-state signal list and dashboard links.
 - Fault injection method and blast-radius boundary.
 - Abort criteria and rollback/fallback actions.
-- Recurrence trigger, deadline, or cadence for critical recovery claims.
+- Recurrence trigger, deadline, or cadence for critical recovery behavior.
 - Participant, on-call, and communication plan.
-- Evidence capture checklist.
+- Result capture checklist.
 - Findings, fixes, and rerun condition.
 
 ## Checks Before Moving On
@@ -124,7 +124,7 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 
 | Mistake | Correction |
 | --- | --- |
-| Treating chaos as random failure | Inject a specific fault to test a specific claim. |
-| Starting too large | Prove behavior in the smallest useful blast radius first. |
+| Treating chaos as random failure | Inject a specific fault to test a specific expected behavior. |
+| Starting too large | Check behavior in the smallest useful blast radius first. |
 | Ignoring correctness | Include data correctness, freshness, and side effects, not just uptime. |
 | Ending at the debrief | Convert findings into fixes, tests, and runbook updates. |

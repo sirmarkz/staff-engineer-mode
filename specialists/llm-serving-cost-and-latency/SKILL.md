@@ -98,7 +98,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 - Lead with the per-route budget table, cache strategy, degradation policy, or attribution model requested.
 - Cover token budget, latency budget, model-tier choice, cache layers, retry and timeout bounds, degradation path, and attribution before optional model breadth.
 - Make recommendations actionable with per-route numbers, cache scopes and TTLs, fallback conditions, retry caps, and the alerts that catch regression.
-- Name the details to inspect, such as per-route token histograms, latency percentiles, cache hit rates, fallback rate, retry rate, and per-tag spend; do not claim a budget without the data behind it.
+- Name the details to inspect, such as per-route token histograms, latency percentiles, cache hit rates, fallback rate, retry rate, and per-tag spend; do not state a budget without the data behind it.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside model-serving cost and latency. Route prompt-injection and tool-access risk, eval checks, generic backend performance, and generic dollar-cost optimization to the responsible specialist.
 - Be concise: prefer compact route, cache, and fallback tables over generic LLM exposition.

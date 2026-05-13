@@ -8,7 +8,7 @@ description: "Use when tail latency, load tests, saturation, capacity, headroom,
 ## Iron Law
 
 ```
-NO CAPACITY OR PERFORMANCE CLAIM WITHOUT A TRAFFIC MODEL, TAIL METRIC, SATURATION SIGNAL, AND TEST EVIDENCE
+NO CAPACITY OR PERFORMANCE PLAN WITHOUT A TRAFFIC MODEL, TAIL METRIC, SATURATION SIGNAL, AND LOAD-TEST RESULTS
 ```
 
 If the answer only says "scale horizontally" or reports averages, it is not enough.
@@ -23,7 +23,7 @@ Users experience tail latency, not averages.
 
 - The user asks about p95, p99, p99.9, throughput, QPS, concurrency, queueing, saturation, hot paths, or scaling limits.
 - A release caused latency or throughput regression.
-- A launch, PRR, or migration needs capacity evidence.
+- A launch, PRR, or migration needs capacity test results.
 - The system needs load, stress, spike, soak, or failure-condition testing.
 - Cost is discussed as a capacity/headroom tradeoff rather than a billing support question.
 
@@ -44,11 +44,11 @@ Users experience tail latency, not averages.
 - Resource signals: CPU, memory, IO, network, lock contention, connection pools, thread pools, queue depth, queue age, and GC.
 - Load-balancing behavior, locality, shard keys, hot partitions, cache hit rate, and downstream quotas.
 - Existing load tests, production incidents, profiling/flame graphs, and regression data.
-- Headroom policy, autoscaling behavior, static failed-domain capacity, and unit-cost constraints.
+- Headroom rule, autoscaling behavior, static failed-domain capacity, and unit-cost constraints.
 
 ## Workflow
 
-1. **Frame the answer before inspection.** Start with a compact provisional evidence frame: target percentile and boundary; load-test method with scenarios and pass/stop criteria; headroom plus USE signal; overload mechanism and priority; queue-depth or in-flight work metric plus backpressure; hot-path/key hypothesis plus mitigation. Mark unknowns and refine them after investigation.
+1. **Frame the answer before inspection.** Start with a compact provisional check frame: target percentile and boundary; load-test method with scenarios and pass/stop criteria; headroom plus USE signal; overload mechanism and priority; queue-depth or in-flight work metric plus backpressure; hot-path/key hypothesis plus mitigation. Mark unknowns and refine them after investigation.
 2. **Define the user-visible target.** Choose p95/p99/p99.9 and throughput targets that map to SLOs or launch requirements.
 3. **Build the demand model.** Capture request rate, burstiness, concurrency, fanout, payload, tenant skew, and seasonal peaks.
 4. **Apply queueing sanity checks.** Use Little's Law to connect arrival rate, latency, and concurrency; identify queues that can hide saturation.
@@ -56,7 +56,7 @@ Users experience tail latency, not averages.
 6. **Test to the knee.** Run load/stress/spike/soak tests in production-like environments until latency or errors become nonlinear; stop before uncontrolled damage.
 7. **Protect the system.** Define admission control, load shedding, prioritization, and graceful degradation before saturation.
 8. **Investigate regressions scientifically.** Compare before/after profiles, deploy markers, dependency metrics, cache behavior, and resource saturation.
-9. **Model failed-domain headroom.** For HA claims, prove remaining domains have enough already-available capacity at peak; do not count emergency scaling as the primary recovery mechanism.
+9. **Model failed-domain headroom.** For HA requirements, show remaining domains have enough already-available capacity at peak; do not count emergency scaling as the primary recovery mechanism.
 10. **Tie capacity to cost when relevant.** Preserve required headroom and failover capacity; optimize unit economics only after risk is explicit.
 
 ## Synthesized Default
@@ -86,9 +86,9 @@ Optimize around tail percentiles, saturation, queue age, and headroom rather tha
 ## Response Quality Bar
 
 - Lead with the capacity model, tail-latency diagnosis, load-test plan, or headroom decision requested.
-- Cover traffic shape, fanout, tail budgets, saturation signals, load shedding, test evidence, failure-domain headroom, and cost tradeoffs when relevant before optional performance breadth.
+- Cover traffic shape, fanout, tail budgets, saturation signals, load shedding, test results, failure-domain headroom, and cost tradeoffs when relevant before optional performance breadth.
 - Make recommendations actionable with thresholds, test scenarios, stop criteria, scaling limits, rollback actions, and regression checks where relevant.
-- Name the details to inspect, such as p95/p99 metrics, peak/burst traffic, concurrency, queue age, resource saturation, downstream limits, load-test results, and unit cost; do not claim details you have not seen.
+- Name the details to inspect, such as p95/p99 metrics, peak/burst traffic, concurrency, queue age, resource saturation, downstream limits, load-test results, and unit cost; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside capacity, performance, and tail latency. Route data pipelines, dependency resilience, or FinOps only when they materially change the decision.
 - Be concise: avoid generic performance advice and prefer compact capacity models, latency budgets, and test matrices.

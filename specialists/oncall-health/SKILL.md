@@ -76,7 +76,7 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 
 ## Exceptions
 
-- Some pre-user-impact alerts may page if they are proven leading indicators with a safe, immediate mitigation.
+- Some pre-user-impact alerts may page if they are tested leading indicators with a safe, immediate mitigation.
 - Low-tier internal systems may route most operational signals to tickets if user impact is limited and the user accepts the response latency.
 - Temporary noisy alerts are allowed during a risky migration only with expiry, and cleanup task.
 - Staffing and compensation questions remain out of scope unless translated into technical page/toil reduction.
@@ -86,7 +86,7 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 - Lead with the page classification, toil inventory, alert-change decision, or automation backlog requested.
 - Cover urgency, actionability, user visibility, novelty, runbook quality, repeated manual work, responsibility, and measurement before optional on-call breadth.
 - Make recommendations actionable with page/ticket/remove decisions, runbook fixes, automation tasks, expiry dates, and measured reduction targets where relevant.
-- Name the details to inspect, such as alert history, pages per responder, after-hours volume, runbook links, toil hours, manual steps, suppression rules, and incident outcomes; do not claim details you have not seen.
+- Name the details to inspect, such as alert history, pages per responder, after-hours volume, runbook links, toil hours, manual steps, suppression rules, and incident outcomes; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside technical on-call health and toil. Mark staffing, compensation, and HR questions out of scope unless translated into engineering controls.
 - Be concise: avoid generic on-call advice and prefer compact page inventories and remediation backlogs.

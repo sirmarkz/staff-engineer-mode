@@ -1,6 +1,6 @@
 ---
 name: internal-service-networking
-description: "Use when internal service traffic needs discovery, routing, locality, identity, encrypted transport, or private access"
+description: "Use when designing internal service traffic needing discovery, routing, locality, identity, or private access"
 ---
 
 # Internal Networking And Service Mesh
@@ -23,7 +23,7 @@ Internal networking should solve concrete traffic, identity, policy, and observa
 
 ## When To Use
 
-- The user clearly describes internal service networking, service mesh, internal load balancing, service discovery, east-west traffic policy, authenticated service-to-service transport, locality-aware routing, or cross-location network cost.
+- The user is designing, changing, or troubleshooting internal service networking, service mesh, internal load balancing, service discovery, east-west traffic policy, authenticated service-to-service transport, locality-aware routing, or cross-location network cost.
 - Services need consistent traffic policy, identity, telemetry, routing, or authorization at the platform layer.
 - Internal routing or failover behavior affects reliability, latency, blast radius, or cost.
 - The user asks whether adopting a service mesh is justified.
@@ -88,7 +88,7 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 - For quick design or troubleshooting answers, still include one compact per-edge baseline: `<caller> -> <callee>` discovery/routing mechanism and stale/unavailable behavior; service-to-service authentication mechanism and scope, such as mutual-authentication transport workload identity, mesh identity, or a signed service token for that edge; per-request authorization decision criteria, such as caller identity plus method/resource/action; default-deny service policy with user-confirmed exception rule; RED metrics (request rate, error rate, latency) with dashboard and alert; and runnable debug command or procedure.
 - Cover concrete repeated needs, traffic map, routing/locality/failover, identity/encrypted transport/authorization, retry responsibility, telemetry, upgrades, rollback, and cost/latency tradeoffs before optional mesh breadth.
 - Make recommendations actionable with policy locations, rollout stages, config checks, failure tests, rollback steps, and operational runbooks where relevant.
-- Name the details to inspect, such as dependency maps, route config, retry/timeout settings, control-plane health, proxy versions, identity claims, latency/egress data, and incident history; do not claim details you have not seen.
+- Name the details to inspect, such as dependency maps, route config, retry/timeout settings, control-plane health, proxy versions, identity assertions, latency/egress data, and incident history; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside internal traffic and service mesh decisions. Route dependency resilience or zero-trust work only when it materially changes the mesh decision.
 - Be concise: avoid generic mesh advocacy and prefer compact decision records and routing matrices.
@@ -117,7 +117,7 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 - Proxy upgrades or data-plane incidents have no runnable diagnostic or rollback path.
 - Routing retries conflict with application retry budgets.
 - Cross-location routing hides latency and egress cost.
-- Identity is claimed but not tied to authorization or audit.
+- Identity is asserted but not tied to authorization or audit.
 
 ## Common Mistakes
 

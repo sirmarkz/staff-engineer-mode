@@ -1,6 +1,6 @@
 ---
 name: mobile-release-engineering
-description: "Use when mobile rollouts need staged release, crash-free checks, startup, hangs, offline behavior, or kill switches"
+description: "Use when planning mobile rollouts needing staged release, stability checks, offline behavior, or kill switches"
 ---
 
 # Mobile Release Engineering And Crash Budgets
@@ -21,7 +21,7 @@ Mobile releases are hard to roll back, so stability checks must be conservative 
 
 ## When To Use
 
-- The user asks about native mobile release trains, staged rollout, phased release, crash-free users/sessions, hang rates, startup, offline behavior, mobile telemetry, or app-store release risk.
+- The user is planning, changing, or reviewing a native mobile release train, staged rollout, phased release, crash-free users/sessions, hang rates, startup, offline behavior, mobile telemetry, or app-store release risk.
 - A mobile app release could affect stability across devices, OS versions, networks, or app versions.
 - A mobile rollout needs thresholds to continue, halt, or forward-fix.
 - Client upgrade lag or rollback limits change release strategy.
@@ -85,7 +85,7 @@ Use staged mobile rollout with crash-free, hang, startup, and critical-journey b
 - Cover crash-free, hangs, startup, critical journey, segmentation, and repair path before optional mobile release topics.
 - Include numeric stability thresholds and measurement windows when recommending rollout checks; clearly label provisional defaults if the user has not supplied project-specific budgets.
 - Make recommendations actionable with checks, stop conditions, and forward-fix or kill-switch actions where relevant.
-- Name the details to inspect, such as crash-free sessions/users, OS/device cohorts, sample sizes, app versions, and telemetry readiness; do not claim details you have not seen.
+- Name the details to inspect, such as crash-free sessions/users, OS/device cohorts, sample sizes, app versions, and telemetry readiness; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside mobile release risk. Mention backend/API/config compatibility only where it affects client rollout safety.
 - Be concise: avoid generic mobile-release background and prefer compact rollout tables.

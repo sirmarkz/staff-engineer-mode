@@ -50,7 +50,7 @@ Data architecture starts with semantics, not storage brands.
 3. **Choose consistency deliberately.** Use the weakest guarantee that preserves correctness and user expectation; document the tradeoff.
 4. **Avoid cross-service transactions.** Prefer local transactions plus outbox, sagas, reconciliation, or compensating actions over distributed two-phase commit.
 5. **Plan partitioning early.** Choose shard/tenant keys, hot-key mitigations, locality needs, shard-map responsibility, resharding path, and responsibility boundaries.
-6. **Treat locks and leaders as dangerous.** Use proven coordination primitives when necessary, and design work to be idempotent under duplicate execution.
+6. **Treat locks and leaders as dangerous.** Use well-tested coordination primitives when necessary, and design work to be idempotent under duplicate execution.
 7. **Define repair and verification.** Include reconciliation jobs, invariants, audit trails, and manual repair safety.
 8. **Route operational changes.** Schema/backfill execution goes to database operations; cache mechanics go to caching.
 
@@ -76,14 +76,14 @@ Default to the simplest storage and consistency model that satisfies operation s
 - Financial, authorization, inventory, and destructive operations may require strong consistency or formal modeling.
 - High-scale read paths may accept stale or derived reads when user impact and repair are explicit.
 - Multi-step workflows across independent mutation boundaries should use sagas or reconciliation rather than pretending one atomic transaction exists.
-- Distributed locks are acceptable only with a proven primitive, lease semantics, fencing or idempotency, and failure tests.
+- Distributed locks are acceptable only with a well-tested primitive, lease semantics, fencing or idempotency, and failure tests.
 
 ## Response Quality Bar
 
 - Lead with the consistency decision, tradeoff, or unresolved blocker.
 - Cover data semantics, stale-read impact, conflicts, failure behavior, and operational cost before optional distributed-systems breadth.
 - Make recommendations actionable with checks, stop conditions, and validation criteria where relevant.
-- Name the details to inspect, such as invariants, latency budgets, conflict rates, replication behavior, and failure assumptions; do not claim details you have not seen.
+- Name the details to inspect, such as invariants, latency budgets, conflict rates, replication behavior, and failure assumptions; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the data consistency decision. Mention caches, workflows, or schema execution only when they materially change semantics.
 - Be concise: avoid generic CAP/PACELC exposition and prefer decision matrices.

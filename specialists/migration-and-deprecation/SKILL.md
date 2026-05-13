@@ -17,7 +17,7 @@ Warnings without migration machinery are just noise.
 
 Removing or replacing a widely used system is a production change spread across many dependents.
 
-**Core principle:** discover real usage, provide a safe replacement, migrate incrementally, prevent new usage, and remove only after evidence shows dependents are gone.
+**Core principle:** discover real usage, provide a safe replacement, migrate incrementally, prevent new usage, and remove only after usage signals show dependents are gone.
 
 ## When To Use
 
@@ -52,7 +52,7 @@ Removing or replacing a widely used system is a production change spread across 
 5. **Provide paved migration.** Supply examples, compatibility shims, codemods, validation commands, and rollback/escape hatches.
 6. **Prevent backsliding.** Block or warn on new usage through change-time checks, build visibility, templates, docs, and policy checks.
 7. **Migrate incrementally.** Move dependents in batches small enough to understand, test, and roll back; track progress with objective metrics.
-8. **Disable before delete.** Stop or quarantine old runtime paths, watch for at least one representative business cycle, check dark traffic, jobs, support tools, and alerts, and keep an escape hatch until silence is proven.
+8. **Disable before delete.** Stop or quarantine old runtime paths, watch for at least one representative business cycle, check dark traffic, jobs, support tools, and alerts, and keep an escape hatch until the old path stays quiet.
 9. **Retire completely.** Remove runtime paths, data, config, credentials, dashboards, alerts, runbooks, docs, and cost artifacts after usage reaches the removal check; preserve required snapshots/exports with retention, and disposal date.
 
 ## Synthesized Default
@@ -83,8 +83,8 @@ Treat deprecation as an engineered migration, not an announcement. Use centraliz
 
 - Lead with the migration plan, deprecation decision, usage inventory, or retirement blocker requested.
 - Cover replacement readiness, usage measurement, dependent batching, no-new-usage controls, exception policy, disable-before-delete, and final cleanup before optional change-management breadth.
-- Make recommendations actionable with migration batches, validation checks, deadlines, stop criteria, escape hatches, and retirement evidence where relevant.
-- Name the details to inspect, such as static references, runtime telemetry, dependent replacement examples, block/warn controls, dark-traffic checks, and disposal records; do not claim details you have not seen.
+- Make recommendations actionable with migration batches, validation checks, deadlines, stop criteria, escape hatches, and retirement checks where relevant.
+- Name the details to inspect, such as static references, runtime telemetry, dependent replacement examples, block/warn controls, dark-traffic checks, and disposal records; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside engineered migration and deprecation. Route architecture redesign or vulnerability emergency handling only when those are the central unresolved risk.
 - Be concise: avoid generic program-management language and prefer compact inventories, migration batch tables, and retirement checklists.
@@ -92,12 +92,12 @@ Treat deprecation as an engineered migration, not an announcement. Use centraliz
 ## Required Outputs
 
 - Deprecation decision record with replacement, reason, and end state.
-- Usage inventory with static and runtime evidence.
+- Usage inventory with static and runtime checks.
 - Dependent classification and migration batches.
 - Migration guide, examples, validation, and escape hatch.
 - Backsliding prevention controls.
 - Enforcement, exception, and deadline policy.
-- Disable-before-delete plan with watch-window evidence and disposal handling.
+- Disable-before-delete plan with watch-window results and disposal handling.
 - Final retirement checklist.
 
 ## Checks Before Moving On

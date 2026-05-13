@@ -1,6 +1,6 @@
 ---
 name: accessibility-gates
-description: "Use when user-facing flows need keyboard, screen-reader, focus, contrast, or assistive-technology release checks"
+description: "Use when designing or releasing user-facing flows needing keyboard, screen-reader, focus, contrast, or assistive checks"
 ---
 
 # Accessibility Conformance Checks
@@ -17,11 +17,11 @@ Pick the conformance level explicitly (for most public web work, WCAG 2.x AA is 
 
 Accessibility is a release quality property, not a post-launch polish pass.
 
-**Core principle:** check critical user journeys on semantic structure, keyboard access, focus behavior, visual contrast, assistive-technology behavior, and regression evidence.
+**Core principle:** check critical user journeys on semantic structure, keyboard access, focus behavior, visual contrast, assistive-technology behavior, and regression checks.
 
 ## When To Use
 
-- The user asks about accessibility, conformance, assistive-technology support, keyboard navigation, focus order, contrast, labels, or release checks for user-facing flows.
+- The user is designing, building, changing, or releasing a user-facing flow that needs accessibility, conformance, assistive-technology support, keyboard navigation, focus order, contrast, labels, or release checks.
 - A UI change affects forms, navigation, dialogs, errors, media, dynamic updates, or critical journeys.
 - Automated checks and manual checks need to be combined into a release decision.
 - A regression blocks users from perceiving, operating, or understanding the interface.
@@ -49,13 +49,13 @@ Accessibility is a release quality property, not a post-launch polish pass.
 3. **Check semantics and names.** Ensure controls expose meaningful structure, labels, state, and relationships.
 4. **Verify operation.** Test keyboard-only and assistive-technology paths for completion, not just component snapshots.
 5. **Check perception.** Review contrast, text resizing, motion, timing, media alternatives, and status updates where relevant.
-6. **Combine evidence.** Use automated checks for broad regressions and manual checks for interaction quality.
+6. **Combine results.** Use automated checks for broad regressions and manual checks for interaction quality.
 7. **Check release.** Block critical journey failures; track lower-risk defects with severity, expiry, and retest date.
 8. **Prevent recurrence.** Add component tests, examples, lint rules, or review checks for repeated failure patterns.
 
 ## Synthesized Default
 
-Check critical journeys with a named conformance target, automated checks, manual assistive-technology scripts, keyboard completion tests, dated exceptions with repair criteria, and regression tests for known defects. Accessibility evidence should be part of launch readiness for user-facing changes.
+Check critical journeys with a named conformance target, automated checks, manual assistive-technology scripts, keyboard completion tests, dated exceptions with repair criteria, and regression tests for known defects. Accessibility checks should be part of launch readiness for user-facing changes.
 
 
 
@@ -83,8 +83,8 @@ Check critical journeys with a named conformance target, automated checks, manua
 - Name one concrete assistive-technology path for at least one critical journey, such as NVDA, VoiceOver, JAWS, TalkBack, Dragon, or switch control, with a pass/fail criterion for completing that journey.
 - Make recommendations actionable with severity, blocking status, retest steps, and release criteria where relevant.
 - For recurring defects or launch blockers, make the regression mechanism concrete: name the CI check, lint rule, component test, or recurring manual checklist; include the verification check, the test that would fail without the change, covered environment inventory such as local, CI, staging, or production-like, docs-as-code checklist location, and refresh cadence.
-- Name the details to inspect, such as journey list, automated results, manual scripts, screenshots or recordings, defect history, and exception records; do not claim details you have not seen.
-- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them, explicitly requested tool-specific guidance, or a named assistive technology is needed for test evidence.
+- Name the details to inspect, such as journey list, automated results, manual scripts, screenshots or recordings, defect history, and exception records; do not state details you have not seen.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them, explicitly requested tool-specific guidance, or a named assistive technology is needed for test results.
 - Stay inside accessibility engineering. Route performance, mobile rollout, or broad legal policy only when those are central.
 - Be concise: prefer journey-based check tables over broad accessibility lectures.
 
@@ -118,6 +118,6 @@ Check critical journeys with a named conformance target, automated checks, manua
 | Mistake | Correction |
 | --- | --- |
 | Component-only checks | Test complete user journeys. |
-| Automation as proof | Add manual interaction verification. |
+| Automation as the whole answer | Add manual interaction verification. |
 | Treating all defects alike | Block critical journey failures first. |
 | Exceptions without expiry | Require compensating path, and retest. |

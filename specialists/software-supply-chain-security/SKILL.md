@@ -8,30 +8,30 @@ description: "Use when source-to-deploy paths need protected source, isolated bu
 ## Iron Law
 
 ```
-NO PRODUCTION ARTIFACT WITHOUT SOURCE, BUILD, PROVENANCE, INTEGRITY, AND ADMISSION EVIDENCE
+NO PRODUCTION ARTIFACT WITHOUT SOURCE, BUILD, PROVENANCE, INTEGRITY, AND ADMISSION CHECKS
 ```
 
 If an artifact cannot be traced back to accepted source and a trusted build path, it should not be trusted for production.
 
 ## Overview
 
-Production should run artifacts whose source, build, dependencies, and confirmation path can be proven.
+Production should run artifacts whose source, build, dependencies, and confirmation path can be verified.
 
 **Core principle:** protect the source-to-deploy chain with traceable changes, isolated builds, provenance, artifact integrity, least-privilege automation, and deployment verification.
 
 ## When To Use
 
 - The user asks about build/deploy security, builder isolation, artifact signing, provenance, dependency inventories, deployment admission, secret scanning, or build/deploy integrity.
-- A production path lacks proof of what source and build produced an artifact.
+- A production path lacks a clear record of what source and build produced an artifact.
 - Automation credentials can modify source, build, registry, deployment, or infrastructure.
-- You need supply-chain controls or evidence for release integrity.
+- You need supply-chain controls or records for release integrity.
 
 ## When Not To Use
 
 - The work is routine package updates or dead-code cleanup; use `dependency-and-code-hygiene` instead.
 - The issue is a deployed vulnerability with patch SLA; use `vulnerability-management` instead.
 - The question is runtime authorization or service access; use `identity-and-secrets` instead.
-- The request is broad compliance program management; out of scope unless framed as engineering evidence.
+- The request is broad compliance program management; out of scope unless framed as engineering records.
 
 ## Info To Gather
 
@@ -50,8 +50,8 @@ Production should run artifacts whose source, build, dependencies, and confirmat
 3. **Harden builders.** Use isolated or ephemeral build environments for production artifacts; minimize mutable state and privileged credentials.
 4. **Record provenance.** Produce metadata linking artifact identity, source revision, accepted change, build steps, builder identity, dependency inputs, build time, and confirmation path. Tier-critical paths should make this metadata verifiable at deployment.
 5. **Protect artifacts.** Sign or otherwise verify integrity; store artifacts in controlled registries with retention and rollback.
-6. **Generate inventories.** Produce structured, machine-readable dependency inventories when they support vulnerability response, customer evidence, or release evidence workflows; name the consumer so the artifact is not ritual.
-7. **Decide reproducibility level.** State whether the path needs byte-identical, declared-nondeterminism, or content-equivalent rebuild evidence, and record any expected differences.
+6. **Generate inventories.** Produce structured, machine-readable dependency inventories when they support vulnerability response, customer requests, or release checks workflows; name the consumer so the artifact is not ritual.
+7. **Decide reproducibility level.** State whether the path needs byte-identical, declared-nondeterminism, or content-equivalent rebuild records, and record any expected differences.
 8. **Standardize secure pipelines.** Use reusable pipeline modules for production paths so scanning, integrity checks, dependency inventories, user confirmations, and secure compute are not optional per repository.
 9. **Control deployment.** Verify artifact integrity/provenance at admission and keep environment promotion traceable.
 10. **Constrain automation.** Use least-privilege, short-lived credentials and secret scanning across source/build paths.
@@ -78,8 +78,8 @@ Use accepted source, controlled production pipelines, isolated builds, provenanc
 
 - Low-risk prototypes may use lighter controls if isolated from production data and deployment.
 - Legacy build systems may need staged improvements; record missing provenance/signing as exceptions with expiry and compensating controls.
-- Dependency inventories are useful when consumed for vulnerability, customer, or release evidence workflows; do not generate unused artifacts as ritual.
-- Emergency patches can use expedited paths only with post-facto provenance and acceptance evidence.
+- Dependency inventories are useful when consumed for vulnerability, customer, or release checks workflows; do not generate unused artifacts as ritual.
+- Emergency patches can use expedited paths only with post-facto provenance and acceptance checks.
 - Release engineering covers reproducible build mechanics; this skill covers the trust boundary, provenance expectations, artifact integrity, and admission policy.
 
 ## Response Quality Bar
@@ -87,10 +87,10 @@ Use accepted source, controlled production pipelines, isolated builds, provenanc
 - Lead with the source-to-deploy risk, control gap, provenance plan, or exception register requested.
 - Cover source acceptance, builder trust, artifact integrity, provenance, dependency inventory, deployment admission, automation credentials, and secret scanning before optional supply-chain breadth.
 - Make recommendations actionable with control locations, validation commands, admission checks, exception expiry, and remediation steps where relevant.
-- Name the details to inspect, such as protected branch settings, build identity, isolation model, artifact metadata, signatures or digests, dependency-inventory consumers, deploy policy, and credential scopes; do not claim details you have not seen.
+- Name the details to inspect, such as protected branch settings, build identity, isolation model, artifact metadata, signatures or digests, dependency-inventory consumers, deploy policy, and credential scopes; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside supply-chain integrity. Route routine dependency hygiene or deployed vulnerability remediation only when those are the central unresolved risk.
-- Be concise: avoid generic framework background and prefer compact control matrices and evidence maps.
+- Be concise: avoid generic framework background and prefer compact control matrices and record maps.
 
 ## Required Outputs
 
@@ -115,7 +115,7 @@ Use accepted source, controlled production pipelines, isolated builds, provenanc
 - Anyone with build access can deploy unaccepted code.
 - Production artifacts are rebuilt differently per environment without traceability.
 - Long-lived automation tokens can modify source, artifacts, and deployment.
-- Dependency inventories are generated but never used for vulnerability response or evidence.
+- Dependency inventories are generated but never used for vulnerability response or release records.
 - Artifact signing exists but deployment never verifies it.
 
 ## Common Mistakes

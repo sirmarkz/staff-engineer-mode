@@ -8,14 +8,14 @@ description: "Use when making system design decisions, ADRs, service/module/work
 ## Iron Law
 
 ```
-NO ARCHITECTURE DECISION WITHOUT FORCES, ALTERNATIVES, AND A REVERSAL PLAN
+NO ARCHITECTURE DECISION WITHOUT FORCES, ALTERNATIVES, AND COST TO CHANGE COURSE
 ```
 
-If the design lacks goals, constraints, alternatives considered, and an honest read on how hard the decision would be to undo, do not treat it as decided. Naming the responsibility path matters too; for solo work it is the user and agent check path, not an org chart.
+If the design lacks goals, constraints, alternatives considered, and a clear read on what would make you change course later, do not treat it as decided. For solo work, responsibility can simply name who runs the local checks and keeps the decision current.
 
 ## Overview
 
-Architecture decision work turns "components and opinions" into explicit goals, tradeoffs, failure modes, and decisions future readers can understand. Works the same at any project size: the discipline is the forces-alternatives-reversal triple, not the org-chart artifact around it. Shape decisions by the forces they must satisfy: user outcomes, constraints, data, reliability, security, operability, evolvability, and cost.
+Architecture decision work turns "components and opinions" into explicit goals, tradeoffs, failure modes, and decisions future readers can understand. Works the same at any project size: the discipline is forces, alternatives, and cost to change course, not the formal process around it. Shape decisions by the forces they must satisfy: user outcomes, constraints, data, reliability, security, operability, evolvability, and cost.
 
 ## When To Use
 
@@ -56,20 +56,20 @@ inferred field as ASSUMED so the user can correct it.
 ## Workflow
 
 1. **Frame the decision.** Write the decision as one clear question and list goals, non-goals, and constraints before evaluating solutions.
-2. **Emit a compact ADR-shaped first answer.** Before asking for more artifacts, give the user a usable decision skeleton containing: decision question, context/forces with rationale, explicit decision status or decision, at least two rejected alternatives with reasons, positive and negative consequences, reversibility cost and reconsideration trigger, and responsibility path. Mark unknowns as `ASSUMED` or `NEEDS EVIDENCE` instead of omitting the section.
+2. **Emit a compact ADR-shaped first answer.** Before asking for more artifacts, give the user a usable decision skeleton containing: decision question, context/forces with rationale, explicit decision status or decision, at least two rejected alternatives with reasons, positive and negative consequences, reversibility cost and reconsideration trigger, and responsibility owner or check path. Mark unknowns as `ASSUMED` or `NEEDS CHECK` instead of omitting the section.
 3. **Map the system.** Identify data flow, control flow, dependency direction, trust boundaries, failure domains, and operational checkpoints.
-4. **Map bounded contexts.** Produce a bounded-context map naming each context, its responsibility path, the language/model it uses, and the relationship to every adjacent context (upstream/downstream, conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways). Note where a context translates a neighbor's model and where it conforms.
+4. **Map bounded contexts.** Produce a bounded-context map naming each context, its responsibility owner or check path, the language/model it uses, and the relationship to every adjacent context (upstream/downstream, conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways). Note where a context translates a neighbor's model and where it conforms.
 5. **Prefer simpler boundaries first.** Start with modular design and explicit contracts. Add distribution only for independent scaling, release cadence, responsibility, isolation, or blast-radius needs.
 6. **Compare alternatives.** Evaluate at least two real options plus the current state. Include consequences, rejected alternatives, and what would make the decision wrong later.
 7. **Specify fitness functions.** Write the architectural invariants the system must hold as testable checks. Each fitness function names: the property under test, the metric, the threshold or rule, the measurement source, the evaluation cadence, the failure response, and the local check path. Cover at minimum the dependency-direction rules, the public-contract compatibility rules, the latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant the design relies on.
-8. **Evaluate runtime dependency responsibility.** For any critical runtime dependency, state how the user or agent can debug it, patch or change it, work around issues, and exit or degrade if it fails. Keep this at design-time adoption criteria; timeout/retry policy goes to `dependency-resilience`, and launch evidence goes to `production-readiness-review`.
+8. **Evaluate runtime dependency responsibility.** For any critical runtime dependency, state how the user or agent can debug it, patch or change it, work around issues, and exit or degrade if it fails. Keep this at design-time adoption criteria; timeout/retry policy goes to `dependency-resilience`, and launch details go to `production-readiness-review`.
 9. **Evaluate cross-cutting risks.** Cover reliability, overload, data correctness, security, observability, deployment safety, recovery, cost, and maintainability.
-10. **Record the decision.** Create an ADR or design-decision summary with status, context (≥2 forces with rationale), decision, consequences (split positive and negative), reversibility (cost + reconsideration trigger), evidence, fitness-function references, and follow-up checks.
+10. **Record the decision.** Create an ADR or design-decision summary with status, context (>=2 forces with rationale), decision, consequences (split positive and negative), reversibility (cost + reconsideration trigger), supporting details, fitness-function references, and follow-up checks.
 11. **Use specialist checks internally.** Apply the SLO, HA, dependency resilience, secure design, rollout, or data consistency skill when the design exposes that surface.
 
 ## Synthesized Default
 
-Use a compact design decision plus ADR. Keep the system modular and technology-agnostic until the design proves it needs distribution. When distribution is justified, make responsibility, contracts, failure modes, observability, and deployability explicit before endorsing the split.
+Use a compact design decision plus ADR. Keep the system modular and technology-agnostic until the design shows it needs distribution. When distribution is justified, make responsibility, contracts, failure modes, observability, and deployability explicit before endorsing the split.
 
 
 
@@ -96,7 +96,7 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 - Lead with the architecture decision, decision status, or highest-severity blockers.
 - Cover goals, alternatives, responsibility, boundaries, data flow, and failure modes before optional architecture breadth.
 - Make recommendations actionable with checks, stop conditions, and follow-up decisions.
-- Name the details to inspect, such as SLOs, traffic, incidents, data contracts, threat boundaries, and migration proof; do not claim details you have not seen.
+- Name the details to inspect, such as SLOs, traffic, incidents, data contracts, threat boundaries, and migration checks; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the design or decision. Add at most two specialist follow-ups, only for material unresolved surfaces.
 - Be concise: prefer compact ADRs, decision tables, and risk registers over generic architecture theory.
@@ -105,12 +105,12 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 ## Required Outputs
 
 - Architecture decision summary with context, goals, non-goals, and constraints.
-- ADR with status, decision, alternatives, consequences, and a concrete responsibility value (user, agent check path, or supplied project role; if unknown, use `ASSUMED: <component> responsibility path` rather than a blank or `TBD`).
+- ADR with status, decision, alternatives, consequences, and a concrete responsibility value (user, local check path, or supplied project role; if unknown, use `ASSUMED: <component> responsibility` rather than a blank or `TBD`).
 - System map covering data flow, dependencies, trust boundaries, and responsibility.
 - Runtime dependency adoption criteria covering supportability, changeability, fallback, and exit/degradation path.
-- Bounded-context map listing each context with fields: name, responsibility path, model/language, upstream contexts, downstream contexts, relationship to each neighbor (conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways), and the translation surface where a neighbor's model is adapted.
+- Bounded-context map listing each context with fields: name, responsibility owner or check path, model/language, upstream contexts, downstream contexts, relationship to each neighbor (conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways), and the translation surface where a neighbor's model is adapted.
 - Fitness-function specification listing each architectural invariant with fields: property under test, metric, threshold or rule, measurement source, evaluation cadence, failure response, and local check path. Cover dependency-direction rules, public-contract compatibility, latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant.
-- Risk register with likelihood, impact, mitigation, and evidence.
+- Risk register with likelihood, impact, mitigation, and records.
 - Decision table showing default, alternatives rejected, and exception conditions.
 - Follow-up checks capped at two, each tied to a specific unresolved surface.
 
@@ -127,17 +127,17 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 
 ## Red Flags - Stop And Rework
 
-- Components are named without their contracts, data flows, or failure modes. (Solo work: the responsibility path is "user + local evidence"; the rule is no anonymous components, not formal headcount.)
+- Components are named without their contracts, data flows, or failure modes. (Solo work: the responsibility value can be "user + local checks"; the rule is no anonymous components, not formal headcount.)
 - A distributed design is chosen because it is fashionable, not because constraints require it.
 - Alternatives are missing or all alternatives are strawmen.
 - The design pushes complexity into operations without on-call responsibility or runbooks.
-- A critical runtime dependency is accepted even though the user or agent has no path to debug, change, replace, or degrade around it from local tools and evidence.
+- A critical runtime dependency is accepted even though the user or agent has no path to debug, change, replace, or degrade around it from local tools and records.
 - Security, observability, migration, and rollback are left as "implementation details" for a high-risk decision.
 
 ## Common Mistakes
 
 | Mistake | Correction |
 | --- | --- |
-| Treating diagrams as decisions | Record the decision, forces, consequences, and responsibility path. |
+| Treating diagrams as decisions | Record the decision, forces, consequences, and responsibility. |
 | Approving distribution too early | Prefer modular boundaries until scale, responsibility, release, or blast-radius needs justify it. |
 | Hiding rejected options | State what was rejected and why, so future readers do not repeat the debate. |

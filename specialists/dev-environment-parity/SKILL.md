@@ -86,7 +86,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 
 ## Exceptions
 
-- A research or exploration environment may diverge intentionally; results from it cannot be used as release evidence.
+- A research or exploration environment may diverge intentionally; results from it cannot be used as release checks.
 - A regulated workload may forbid production-realistic data in non-prod; the parity contract then privileges shape and schema over content, and the test data lives in a different fixture class.
 - Performance and load environments may run on smaller capacity by design; the parity contract specifies which signals are still meaningful at reduced scale.
 - A pre-production environment that exists only to exercise the rollout machinery may waive data and traffic parity, but must hold dependency, configuration, and policy parity.
@@ -98,7 +98,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 - When diagnosing a "passes here, fails there" failure, name the anti-pattern in plain language ("the local pass is a mocked happy-path result", "the fix is environment-only and does not count as shipped") AND name the enforcement that would have caught it (CI route-coverage check, readiness check, lint, readiness checklist). Do not let the structured matrix replace the verdict.
 - Cover dependencies, configuration, data shape, time and clock, network policy, and secret handling before optional environment breadth.
 - Make recommendations actionable with per-dimension parity status, drift budget, detection cadence, action trigger, and the environment change path.
-- Name the details to inspect, such as dependency-lock comparisons, configuration snapshots, schema versions, clock settings, network reachability checks, and the drift signals that fired or did not fire; do not claim parity without the comparison.
+- Name the details to inspect, such as dependency-lock comparisons, configuration snapshots, schema versions, clock settings, network reachability checks, and the drift signals that fired or did not fire; do not state parity without the comparison.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside running-environment parity. Route release-artifact reproducibility, infrastructure desired state, platform templates, single-environment configuration safety, secret lifecycle, internal mesh, and incident command to the responsible specialist.
 - Be concise: prefer compact parity matrices and budget tables over generic environment-management prose.
@@ -110,7 +110,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 - Drift budget per dimension with the size of acceptable divergence and the named action when exceeded.
 - Drift-detection plan listing the comparison method, cadence, source of truth, and change path per dimension.
 - Action-trigger table mapping each drift-budget breach to the action taken (block CI promotion, block deploy, repair environment contract, open follow-up).
-- Ephemeral and preview environment contract stating replicated and diverged dimensions and what a passing run in those environments proves.
+- Ephemeral and preview environment contract stating replicated and diverged dimensions and what a passing run in those environments means.
 - Third-party dependency stand-in policy per dependency with the parity properties of each choice.
 - Reproduction protocol for "works here, fails there" failures with the order of tiers to reproduce in and the dimension-isolation steps.
 - Follow-up routes to release reproducibility, infrastructure-as-code, platform paths, configuration safety, identity, internal networking, or incident response as needed.

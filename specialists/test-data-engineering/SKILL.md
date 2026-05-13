@@ -1,6 +1,6 @@
 ---
 name: test-data-engineering
-description: "Use when fixtures, golden files, or production snapshots need anonymization, scope, freshness, or drift checks"
+description: "Use when designing fixtures, golden files, or production snapshots needing anonymization, freshness, or drift checks"
 ---
 
 # Test Data Engineering
@@ -11,7 +11,7 @@ description: "Use when fixtures, golden files, or production snapshots need anon
 NO TEST RELIES ON DATA THE TEST CANNOT REPRODUCE OR RESTORE
 ```
 
-A green test backed by lost-provenance data is not evidence. The next refresh, the next anonymization sweep, or the next schema change will turn it red without any code change.
+A green test backed by lost-provenance data does not stand on its own. The next refresh, the next anonymization sweep, or the next schema change will turn it red without any code change.
 
 ## Overview
 
@@ -21,7 +21,7 @@ Produces a fixture inventory with scope and regeneration path per fixture, an an
 
 ## When To Use
 
-- The user asks how to manage fixtures, golden files, snapshots, captured production data, or synthetic test data.
+- The user is designing, changing, or maintaining fixtures, golden files, snapshots, captured production data, or synthetic test data.
 - A flaky or order-dependent test is suspected to depend on shared mutable fixture state.
 - A test relies on production-sourced data that may contain personal or sensitive information and the anonymization policy is unclear or absent.
 - A schema change in production broke a contract test, integration test, or migration that ran on stale fixtures.
@@ -96,7 +96,7 @@ Prefer synthetic, parameterized fixtures generated at test time. Use captured pr
 - Lead with the fixture inventory, anonymization rule, freshness/determinism decision, drift-detection plan, or golden-file rule requested.
 - Cover classification, scope, anonymization, restore procedure, drift detection, and golden regeneration before optional fixture-tooling breadth.
 - Make recommendations actionable with per-fixture path, classification, scope, refresh cadence, anonymization transform, restore procedure, and the local fix for each finding.
-- Name the details to inspect, such as the fixture inventory, capture timestamps, anonymization transforms, production-distribution measurements, and the regeneration procedure for each golden; do not claim restorability without the procedure.
+- Name the details to inspect, such as the fixture inventory, capture timestamps, anonymization transforms, production-distribution measurements, and the regeneration procedure for each golden; do not state restorability without the procedure.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the data layer of testing. Route check placement and flake policy, privacy program work, schema-contract evolution, pipeline freshness, migration safety, ML drift, and LLM eval datasets to the responsible specialist.
 - Be concise: prefer compact inventory and decision tables over generic fixture-management prose.

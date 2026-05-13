@@ -22,7 +22,7 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 ## When To Use
 
 - The user is deciding how a feature flag should be created, categorized, expired, cleaned up, inventoried, retired, or sunset.
-- The user asks to inventory existing flags, assess flag debt, or set removal evidence.
+- The user asks to inventory existing flags, assess flag debt, or set removal checks.
 - A rollout has completed and the flag that gated it is still live.
 - An incident exposed a flag whose intended behavior has no current fallback or removal rule.
 - You ask how to stop accumulating flag debt or how to set expiry policy per flag class.
@@ -61,7 +61,7 @@ Produces a flag inventory with category and expiry per flag, an orphan report fo
 5. **Check rollout completion.** For each release toggle, confirm the rollout finished, the chosen value is the production default everywhere, and no environment still pins the legacy value without a documented reason.
 6. **Detect orphans.** Flag the following as orphans: declared in code but absent from the registry; present in registry but unreferenced in code; expiry exceeded with no removal action; both branches identical or one branch unreachable; not evaluated in production within a defined freshness window where evaluation telemetry exists.
 7. **Map flag-driven branches.** For each retiring flag, list the call sites, the branch each value selects, the tests that exercise each branch, and any config rows or per-tenant overrides that depend on the flag name.
-8. **Plan removal.** For each flag scheduled for removal, define: target value (the branch that stays), the order of cleanup (default flip, override sweep, code removal, registry removal, config-row removal), the rollback path if removal regresses behavior, and the verification step that proves no caller still selects the removed branch.
+8. **Plan removal.** For each flag scheduled for removal, define: target value (the branch that stays), the order of cleanup (default flip, override sweep, code removal, registry removal, config-row removal), the rollback path if removal regresses behavior, and the verification step that shows no caller still selects the removed branch.
 9. **Stage the removal as a change.** Treat flag removal as a production change with separate blast radius and rollback. Use `progressive-delivery` as the internal lens when removal touches a tier-critical path.
 10. **Score the flag debt.** Produce a scorecard: total flags by category, percent past expiry, percent without orphan count, oldest live flag age, and removal velocity over the last review period.
 11. **Set the standing rule.** Establish per-category expiry defaults, a recurring renewal cadence, and the rule that adding a new flag requires declaring its category, expiry, and safe fallback value at creation time.
@@ -86,7 +86,7 @@ Treat flags as time-bounded. Release toggles expire when the rollout completes. 
 ## Exceptions
 
 - Long-lived operational kill switches may exceed standard expiry if the disabled path is rehearsed on a recorded cadence.
-- Permission or entitlement flags tied to billing, plan, or regulatory access may be effectively permanent; they are not orphans but still need renewal decisions, fallback behavior, and test evidence.
+- Permission or entitlement flags tied to billing, plan, or regulatory access may be effectively permanent; they are not orphans but still need renewal decisions, fallback behavior, and test results.
 - A flag protecting an in-progress migration may stay past its initial expiry with a renewed expiry date and completion condition.
 - Emergency kill switches added during an incident may bypass the create-time expiry rule but must be classified, dated, and assigned a safe fallback value within the postmortem follow-up.
 
@@ -95,7 +95,7 @@ Treat flags as time-bounded. Release toggles expire when the rollout completes. 
 - Lead with the flag inventory, orphan list, removal plan, or flag-debt scorecard requested.
 - Cover classification, responsibility, expiry, default-value safety, branch mapping, removal sequencing, and rollback before optional flag-system breadth.
 - Make recommendations actionable with per-flag expiry, target value, fallback/default value, outage behavior, removal step, rollback step, and verification results.
-- Name the details to inspect, such as code-search results, flag-registry export, environment overrides, evaluation telemetry where available, and incident history; do not claim flag state from prose alone.
+- Name the details to inspect, such as code-search results, flag-registry export, environment overrides, evaluation telemetry where available, and incident history; do not state flag state from prose alone.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside post-rollout flag lifecycle. Route in-flight rollout sequencing, generic dead-code cleanup, experiment analysis, and config-change safety to the responsible specialist.
 - Be concise: prefer compact inventory and removal tables over running narrative about flag philosophy.

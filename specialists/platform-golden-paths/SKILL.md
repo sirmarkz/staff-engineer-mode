@@ -24,7 +24,7 @@ A good platform makes the safe path the easy path.
 ## When To Use
 
 - The user asks about internal developer platforms, golden paths, paved roads, service catalogs, templates, scorecards, or standardized service creation.
-- Multiple projects need repeatable service setup, deployment, responsibility, telemetry, security, or compliance evidence.
+- Multiple projects need repeatable service setup, deployment, responsibility, telemetry, security, or compliance records.
 - The same operational or security gaps recur across services.
 - A platform should reduce toil or make standards easier to satisfy.
 
@@ -48,17 +48,17 @@ A good platform makes the safe path the easy path.
 
 1. **Start from repeated pain.** Choose platform capabilities that remove recurring setup, safety, security, or operations work.
 2. **Define the golden path.** Specify the service lifecycle from create, build, test, deploy, observe, operate, secure, recover, and retire.
-3. **Bake in defaults.** Include responsibility, SLO hooks, telemetry, safe deploys, secret handling, access boundaries, runbooks, and evidence.
+3. **Bake in defaults.** Include responsibility, SLO hooks, telemetry, safe deploys, secret handling, access boundaries, runbooks, and records.
 4. **Make start-right templates.** Bootstrap repositories, delivery, infrastructure, observability, security, and policy defaults together so projects do not assemble safety by hand.
 5. **Expose self-service with guardrails.** Make the path usable without bespoke platform intervention for normal cases while policy, security, cost, and operations controls stay automatic.
-6. **Design scorecards.** Measure capability maturity across investment, adoption, controls, provisioning and management, interfaces, and feedback; use evidence for meaningful capabilities, not vanity checkboxes.
+6. **Design scorecards.** Measure capability maturity across investment, adoption, controls, provisioning and management, interfaces, and feedback; use source records for meaningful capabilities, not vanity checkboxes.
 7. **Handle exceptions.** Require user-confirmed reason, expiry, compensating control, and migration plan.
 8. **Plan adoption.** Prioritize new services, high-risk services, and repeated incident classes; avoid big-bang migrations.
 9. **Close feedback loops.** Use incidents, developer friction, and scorecard gaps to improve the platform.
 
 ## Synthesized Default
 
-Build golden paths around capabilities rather than tools: service creation, build, test, release, telemetry, security, responsibility, recovery, controls, and evidence. Provide self-service with guardrails, start-right templates, and escape hatches, but make exceptions visible and temporary.
+Build golden paths around capabilities rather than tools: service creation, build, test, release, telemetry, security, responsibility, recovery, controls, and records. Provide self-service with guardrails, start-right templates, and escape hatches, but make exceptions visible and temporary.
 
 
 
@@ -75,7 +75,7 @@ Build golden paths around capabilities rather than tools: service creation, buil
 
 ## Exceptions
 
-- Specialized services can deviate when golden-path assumptions do not fit, but the exception must preserve equivalent evidence and operations standards.
+- Specialized services can deviate when golden-path assumptions do not fit, but the exception must preserve equivalent checks and operations standards.
 - Early platform phases may cover a narrow service type first; state non-goals clearly.
 - Strict scorecards should start advisory until platform capabilities make compliance achievable.
 - Existing services may need incremental migration instead of template replacement.
@@ -83,9 +83,9 @@ Build golden paths around capabilities rather than tools: service creation, buil
 ## Response Quality Bar
 
 - Lead with the platform capability map, golden-path design, scorecard, migration plan, or exception workflow requested.
-- Cover lifecycle defaults, service responsibility, build/test/release, telemetry, security, recovery, evidence hooks, self-service, exceptions, adoption, and feedback before optional platform breadth.
+- Cover lifecycle defaults, service responsibility, build/test/release, telemetry, security, recovery, record hooks, self-service, exceptions, adoption, and feedback before optional platform breadth.
 - Make recommendations actionable with templates, required defaults, scorecard checks, migration batches, operating model, and exception expiry where relevant.
-- Name the details to inspect, such as current service inventory, onboarding steps, platform friction, incident gaps, template outputs, scorecard results, adoption metrics, and user-visible failure records; do not claim details you have not seen.
+- Name the details to inspect, such as current service inventory, onboarding steps, platform friction, incident gaps, template outputs, scorecard results, adoption metrics, and user-visible failure records; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside platform engineering and golden paths. Route infrastructure policy, release engineering, or observability only when those specialist gaps block the platform decision.
 - Be concise: avoid generic platform-product language and prefer compact capability maps, lifecycle defaults, and adoption tables.
@@ -94,7 +94,7 @@ Build golden paths around capabilities rather than tools: service creation, buil
 
 - Platform capability map.
 - Golden-path lifecycle and template requirements.
-- Required service defaults and evidence hooks.
+- Required service defaults and records hooks.
 - Service catalog and responsibility model.
 - Capability scorecard with meaningful checks, adoption feedback, and exception workflow.
 - Migration/adoption plan.

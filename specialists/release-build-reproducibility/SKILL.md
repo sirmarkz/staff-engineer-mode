@@ -1,6 +1,6 @@
 ---
 name: release-build-reproducibility
-description: "Use when builds need pinned inputs, hermetic environments, immutable artifact identity, or traceable promotion"
+description: "Use when cutting releases, release trains, release candidates, builds, packaging, artifact identity, or promotion"
 ---
 
 # Release Engineering And Build Reproducibility
@@ -22,6 +22,7 @@ Release engineering turns source changes into trustworthy artifacts.
 ## When To Use
 
 - The user asks about build systems, release engineering, release trains, release branches, release candidates, packaging, versioning, or artifact promotion.
+- The user is making a release and needs release-cut steps, branch or candidate handling, versioning, packaging, artifact identity, or promotion checks.
 - Builds are slow, flaky, non-hermetic, non-reproducible, cache-sensitive, or dependent on local developer machines.
 - A release process needs build-once promotion, release cut criteria, release branch policy, or artifact identity.
 - You need to separate build, deploy, and release responsibilities.
@@ -52,7 +53,7 @@ Release engineering turns source changes into trustworthy artifacts.
 5. **Build once, promote many.** Create an immutable artifact once and move the same artifact through validation, staging, and production.
 6. **Define release lines.** Choose trunk release, release branch, train, or candidate flow based on support window and rollback needs.
 7. **Keep main recoverable.** Prefer short-lived topic branches, protected main, and release branches with explicit cherry-pick/backport policy so hotfixes do not disappear from the next release.
-8. **Check releases deliberately.** Keep checks fast and signal-rich; quarantine flaky checks, but do not let flakes silently weaken release evidence.
+8. **Check releases deliberately.** Keep checks fast and signal-rich; quarantine flaky checks, but do not let flakes silently weaken the release signal.
 9. **Record traceability.** Link artifact, source, build logs, checks, release decision, deployment, and rollback target.
 
 ## Synthesized Default
@@ -84,7 +85,7 @@ Use hermetic, reproducible, build-once promotion with pinned inputs, explicit ar
 - Lead with the release pipeline decision, reproducibility gap, flaky-build diagnosis, or release-cut plan requested.
 - Cover pinned inputs, hermeticity, artifact identity, cache safety, release checks, promotion, and rollback traceability before optional release topics.
 - Make recommendations actionable with build metadata, validation commands, checks, stop criteria, and rollback artifact references where relevant.
-- Name the details to inspect, such as source revision, lockfiles, toolchain versions, build images, cache keys, build logs, artifact metadata, and promotion records; do not claim details you have not seen.
+- Name the details to inspect, such as source revision, lockfiles, toolchain versions, build images, cache keys, build logs, artifact metadata, and promotion records; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside build and release engineering. Route rollout/canary behavior or supply-chain signing only when those are the central unresolved risk.
 - Be concise: avoid generic release-process background and prefer compact pipeline maps, hermeticity checklists, and traceability tables.
@@ -104,7 +105,7 @@ Use hermetic, reproducible, build-once promotion with pinned inputs, explicit ar
 - `input_pinning`: source, dependencies, toolchains, generated inputs, and build environment are pinned or explicitly exempted.
 - `hermeticity_check`: build does not depend on undeclared local files, ambient network, machine state, or unscoped credentials.
 - `artifact_identity`: artifact has immutable identifier, source revision, build metadata, and storage location.
-- `cache_safety`: cache keys and invalidation rules prove stale output cannot satisfy changed inputs.
+- `cache_safety`: cache keys and invalidation rules show stale output cannot satisfy changed inputs.
 - `release_record`: promotion and rollback path link artifact, checks, deployment, and verification results.
 
 ## Red Flags - Stop And Rework

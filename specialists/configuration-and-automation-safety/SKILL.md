@@ -85,7 +85,7 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 - Name the change class and confirmation path: low-risk changes need local validation results, standard production changes need explicit user confirmation plus preview output, and emergency changes need user confirmation plus post-change reconciliation.
 - Cover validation, preview, blast radius, execution controls, drift handling, and recovery before optional automation detail.
 - Make recommendations actionable with validation checks, stop criteria, batch size, linked change records, and cleanup where relevant.
-- Name the details to inspect, such as schema, preview output, user confirmation, execution logs, drift reports, and rollback checks; do not claim details you have not seen.
+- Name the details to inspect, such as schema, preview output, user confirmation, execution logs, drift reports, and rollback checks; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside config and automation safety. Use rollout, infrastructure policy, or dependency hygiene skills only when that surface is the immediate risk.
 - Be concise: prefer compact contract and check tables over generic automation advice.
@@ -128,4 +128,4 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 | Valid syntax as safety | Add semantic, dependency, and blast-radius checks. |
 | One giant automation run | Use batches, locks, stop criteria, and idempotency. |
 | Silent config drift | Detect, reconcile, or exception-check unmanaged changes. |
-| Rollback by memory | Record prior state and prove recovery. |
+| Rollback by memory | Record prior state and verify recovery. |

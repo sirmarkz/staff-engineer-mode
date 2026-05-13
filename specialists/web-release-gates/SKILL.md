@@ -1,6 +1,6 @@
 ---
 name: web-release-gates
-description: "Use when browser releases need loading, interaction, layout stability, runtime errors, telemetry, budgets, or checks"
+description: "Use when planning browser releases needing loading, interaction, layout, runtime-error, telemetry, or budget checks"
 ---
 
 # Frontend Performance Release Checks
@@ -8,7 +8,7 @@ description: "Use when browser releases need loading, interaction, layout stabil
 ## Iron Law
 
 ```
-NO CLIENT RELEASE GATE WITHOUT USER-CENTRIC METRICS, JOURNEY BUDGETS, FIELD/LAB SIGNALS, AND ROLLBACK CRITERIA
+NO CLIENT RELEASE CHECK WITHOUT USER-CENTRIC METRICS, JOURNEY BUDGETS, FIELD/LAB SIGNALS, AND ROLLBACK CRITERIA
 ```
 
 If a release can make the client experience worse without tripping a check, the check is incomplete.
@@ -21,7 +21,7 @@ Client-side quality is production reliability for the user's device and network.
 
 ## When To Use
 
-- A browser-delivered or client-rendered change can affect user-perceived loading, interaction readiness, visual stability, runtime errors, payload weight, or client-side release safety.
+- The user is planning, building, changing, or reviewing a browser-delivered or client-rendered release that can affect user-perceived loading, interaction readiness, visual stability, runtime errors, payload weight, or client-side release safety.
 - You need release thresholds for routes, screens, or user journeys.
 - Field-user telemetry, lab checks, deploy markers, feature flags, or automated accessibility smoke checks are needed to stop client regressions from shipping.
 
@@ -83,7 +83,7 @@ Use user-centric journey-level budgets, field monitoring, lab checks, runtime-er
 - Cover user-centric metrics, journey budgets, field/lab signals, runtime errors, and rollback criteria before optional client quality topics.
 - Make recommendations actionable with checks, stop conditions, and rollback or flag actions where relevant.
 - For ticketing or release-readiness prompts, separate feature implementation tickets from release-control tickets; if a critical journey already regressed, lead with the hold, flag, or rollback decision before the ticket list.
-- Name the details to inspect, such as field telemetry segments, lab checks, deploy markers, error rates, and payload/journey budgets; do not claim details you have not seen.
+- Name the details to inspect, such as field telemetry segments, lab checks, deploy markers, error rates, and payload/journey budgets; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside client release quality. Mention accessibility smoke checks only as release regression checks unless the prompt asks for broader accessibility work.
 - Be concise: avoid generic web-performance background and prefer compact check matrices.

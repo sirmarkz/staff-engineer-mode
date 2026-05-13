@@ -1,6 +1,6 @@
 ---
 name: data-pipeline-reliability
-description: "Use when batch or streaming pipelines need freshness SLIs, validation checks, lineage, or replay paths"
+description: "Use when designing or operating batch/streaming pipelines needing freshness SLIs, validation, lineage, or replay"
 ---
 
 # Data Pipeline Reliability
@@ -21,7 +21,7 @@ Critical data pipelines are production systems whose users notice stale, missing
 
 ## When To Use
 
-- The user asks about batch or streaming pipeline freshness, correctness, completeness, lineage, missed runs, backfills, data-quality checks, or warehouse/ETL SLAs.
+- The user is designing, building, changing, or operating a batch or streaming pipeline and asks about freshness, correctness, completeness, lineage, missed runs, backfills, data-quality checks, or warehouse/ETL SLAs.
 - Dashboards, reports, downstream services, or decisions depend on timely and correct data.
 - A pipeline needs replay, reprocessing, backfill, or recovery behavior.
 - The user asks how to alert on stalled or stale datasets.
@@ -83,7 +83,7 @@ Treat critical pipelines like services: SLI/SLO, validation checks, lineage, ide
 - Lead with the pipeline reliability target, blocker list, or replay plan requested.
 - Cover freshness, completeness, correctness, lineage, replay, and quality checks before optional data-platform breadth.
 - Make recommendations actionable with checks, stop conditions, and recovery actions where relevant.
-- Name the details to inspect, such as row counts, watermarks, late-event rates, reconciliation checks, and backfill proofs; do not claim details you have not seen.
+- Name the details to inspect, such as row counts, watermarks, late-event rates, reconciliation checks, and backfill proofs; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside pipeline reliability unless the prompt explicitly asks for warehouse architecture or ownership controls.
 - Be concise: avoid generic data-quality background and prefer compact SLI/check/replay tables.
@@ -96,7 +96,7 @@ Treat critical pipelines like services: SLI/SLO, validation checks, lineage, ide
 - Replay/backfill/reprocessing runbook.
 - Freshness, backlog, error, and quality alert policy.
 - Consumer impact and notification plan.
-- Recovery evidence or test plan.
+- Recovery test results or test plan.
 
 ## Checks Before Moving On
 

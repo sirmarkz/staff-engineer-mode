@@ -96,7 +96,7 @@ Optimize the repository for one-tool-call discovery. Keep modules narrow and pre
 - Lead with the legibility map, the one-tool-call failures, the renaming or splitting patches, or the agent-search heuristic requested.
 - Cover module-boundary findings, name collisions, file and function size against the budget, canonical-implementation duplications, and test/doc discoverability before optional refactor breadth.
 - Make recommendations actionable with file paths, exact rename targets, split boundaries, and the agent-search rule each patch protects.
-- Name the details to inspect, such as code-search hit counts, file/function size measurements, agent traces where available, and the representative behaviors used for the one-tool-call test; do not claim legibility without the test results.
+- Name the details to inspect, such as code-search hit counts, file/function size measurements, agent traces where available, and the representative behaviors used for the one-tool-call test; do not state legibility without the test results.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside repository legibility for AI comprehension. Route system architecture, dead-code cleanup, doc lifecycle, agent controls, and per-diff review to the responsible specialist.
 - Be concise: prefer compact finding tables and patch lists over generic clean-code prose.
@@ -132,7 +132,7 @@ Optimize the repository for one-tool-call discovery. Keep modules narrow and pre
 - A god file is "split" by moving code to a new file with the same responsibility, leaving two god files.
 - The agent-search heuristic is written but contradicts the actual file layout the patches produce.
 - Module docs are added that restate names rather than declaring responsibility, public surface, and invariants.
-- Performance or legacy exceptions are claimed without measurement, expiry, or a concrete cleanup patch.
+- Performance or legacy exceptions lack measurement, expiry, or a concrete cleanup patch.
 
 ## Common Mistakes
 

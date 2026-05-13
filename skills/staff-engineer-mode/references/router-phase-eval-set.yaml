@@ -59,9 +59,9 @@ cases:
     expected_phase: design
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Plan tests and merge gates for a payment workflow change before implementation starts."
+  - prompt: "Plan tests and merge checks for a payment workflow change before implementation starts."
     expected_primary: testing-and-quality-gates
-    expected_behavior: "route testing gate design before development starts to testing-and-quality-gates"
+    expected_behavior: "route testing check design before development starts to testing-and-quality-gates"
     expected_phase: testing
     category: direct
     expected_gates: [single_primary, intent_inference]
@@ -101,7 +101,7 @@ cases:
     expected_phase: ideation
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Inspect this concrete diff before merge for intent match, behavior evidence, edge cases, and deleted-but-still-used code."
+  - prompt: "Inspect this concrete diff before merge for intent match, behavior verification, edge cases, and deleted-but-still-used code."
     expected_primary: agent-pr-review
     expected_behavior: "route concrete pre-merge diff review to agent-pr-review"
     category: direct
@@ -111,7 +111,7 @@ cases:
     expected_behavior: "route active incident response to incident-response-and-postmortems"
     category: direct
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Before tomorrow's tier-1 launch, run readiness across code, deploy config, dashboards, runbooks, rollback, and support evidence."
+  - prompt: "Before tomorrow's tier-1 launch, run readiness across code, deploy config, dashboards, runbooks, rollback, and support details."
     expected_primary: production-readiness-review
     expected_behavior: "route launch go/no-go readiness to production-readiness-review"
     expected_phase: release
@@ -171,31 +171,31 @@ cases:
     expected_phase: design
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Build an engineering evidence mapping plan that connects CI, approvals, dashboards, runbooks, exceptions, and release records."
+  - prompt: "Build an engineering records mapping plan that connects CI, approvals, dashboards, runbooks, exceptions, and release records."
     expected_primary: engineering-control-evidence
-    expected_behavior: "route natural evidence-mapping wording to engineering-control-evidence"
+    expected_behavior: "route natural records-mapping wording to engineering-control-evidence"
     expected_phase: design
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Plan codebase maintenance for deprecated helpers across packages with small batches, lockfile checks, and rollback evidence."
+  - prompt: "Plan codebase maintenance for deprecated helpers across packages with small batches, lockfile checks, and rollback checks."
     expected_primary: dependency-and-code-hygiene
     expected_behavior: "route natural codebase-maintenance wording to dependency-and-code-hygiene"
     expected_phase: maintenance
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
-  - prompt: "Before promoting the fraud model, design model reliability checks for skew, drift, eval slices, rollback, and serving evidence."
+  - prompt: "Before promoting the fraud model, design model reliability checks for skew, drift, eval slices, rollback, and serving details."
     expected_primary: ml-reliability-and-evaluation
     expected_behavior: "route natural model-reliability wording to ml-reliability-and-evaluation"
     expected_phase: release
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
-  - prompt: "The checkout inventory call can duplicate work after a timeout; decide timeout budget, fallback behavior, idempotency, and proof points."
+  - prompt: "The checkout inventory call can duplicate work after a timeout; decide timeout budget, fallback behavior, idempotency, and verification points."
     expected_primary: dependency-resilience
     expected_behavior: "infer dependency-resilience from failure context without explicit phase wording"
     expected_phase: development
     category: paraphrase
     expected_gates: [single_primary, intent_inference]
-  - prompt: "A flag is on everywhere and old branches now confuse support; decide owner checks, expiry cleanup, and safe removal evidence."
+  - prompt: "A flag is on everywhere and old branches now confuse support; decide owner checks, expiry cleanup, and safe removal checks."
     expected_primary: feature-flag-lifecycle
     expected_behavior: "infer feature-flag lifecycle from old-branch context without explicit phase wording"
     expected_phase: maintenance

@@ -8,16 +8,16 @@ description: "Use when test strategy, merge/release checks, CI budgets, static a
 ## Iron Law
 
 ```
-EVERY TEST PROVES A NAMED RISK; EVERY BLOCKING GATE HAS A FAILURE RESPONSE
+EVERY TEST CHECKS A NAMED RISK; EVERY BLOCKING CHECK HAS A FAILURE RESPONSE
 ```
 
-Tests exist to exercise a specific risk; "we have tests" without naming the risk each test exercises is faith, not evidence. A blocking check without a written failure response teaches people to ignore it. For a solo developer the response can be a single sentence: what the agent should inspect, what command verifies the fix, and when to quarantine or downgrade the check.
+Tests exist to exercise a specific risk; "we have tests" without naming the risk each test exercises is weak signal. A blocking check without a written failure response teaches people to ignore it. For a solo developer the response can be a single sentence: what the agent should inspect, what command verifies the fix, and when to quarantine or downgrade the check.
 
 ## Overview
 
 Quality checks should catch real risk early without turning delivery into ritual.
 
-**Core principle:** place fast, deterministic, high-signal checks before merge; reserve slower or broader checks for the stage where they actually prove something.
+**Core principle:** place fast, deterministic, high-signal checks before merge; reserve slower or broader checks for the stage where they can show something useful.
 
 ## When To Use
 
@@ -45,14 +45,14 @@ Quality checks should catch real risk early without turning delivery into ritual
 ## Workflow
 
 1. **Classify risk.** Identify correctness, compatibility, security, reliability, performance, data, and accessibility risks introduced by the change.
-2. **Place tests low.** Prefer the cheapest deterministic check that proves the behavior; use broader tests only for cross-boundary confidence.
+2. **Place tests low.** Prefer the cheapest deterministic check that exercises the behavior; use broader tests only for cross-boundary confidence.
 3. **Define a test taxonomy.** Group checks by dependency and runtime cost so fast in-memory/component tests protect merge, deployment tests protect release, and production probes protect rollout.
 4. **State suite composition.** For CI reduction, flake cleanup, or suite redesign, include a compact current or target layer mix such as unit/component, contract/integration, and end-to-end counts or ratios, with one rationale tied to speed, determinism, and risk coverage.
 5. **Separate check types.** Pre-merge checks should be fast and high-signal; use a default budget such as p95 under 10 minutes for the full pre-merge lane and under 5 minutes for a fast path. Pre-release checks can be broader; production checks belong to rollout.
 6. **Make checks actionable.** Every blocking check needs failure instructions and a path to fix or quarantine.
 7. **Handle flakes ruthlessly.** A flaky blocker teaches people to ignore checks. Fix, quarantine, or downgrade with a dated expiry.
 8. **Use ratchets for legacy.** Prevent new critical findings and gradually reduce existing debt rather than requiring impossible cleanup.
-9. **Place high-assurance tests deliberately.** Bounded property tests on pure logic and ordinary fuzzing can live in this skill; concurrency/protocol invariants, model checking, deterministic simulation, and counterexample-driven proof route to formal validation.
+9. **Place high-assurance tests deliberately.** Bounded property tests on pure logic and ordinary fuzzing can live in this skill; concurrency/protocol invariants, model checking, deterministic simulation, and counterexample-driven validation route to formal validation.
 10. **Choose test data safely.** Use synthetic data for pre-merge by default, anonymized or captured production-like data in controlled release stages, and explicit privacy checks for sensitive fixtures.
 11. **Use mutation testing selectively.** Apply it to safety, security, financial, or dense branch logic where coverage percentage is misleading; do not make it a universal check.
 12. **Keep style mechanical.** Formatting and simple style should be automated, not debated manually.
@@ -60,7 +60,7 @@ Quality checks should catch real risk early without turning delivery into ritual
 
 ## Synthesized Default
 
-Use a risk-based test strategy with fast deterministic pre-merge checks, focused integration/contract checks for boundaries, static/security analysis in the developer path, and broader release checks only where they add confidence. Push tests left when they can run reliably before merge; push tests right only when production reality is the evidence needed. Block on high-signal checks; make low-signal checks advisory until they are trustworthy.
+Use a risk-based test strategy with fast deterministic pre-merge checks, focused integration/contract checks for boundaries, static/security analysis in the developer path, and broader release checks only where they add confidence. Push tests left when they can run reliably before merge; push tests right only when production reality is needed. Block on high-signal checks; make low-signal checks advisory until they are trustworthy.
 
 
 
@@ -88,7 +88,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - Cover risk mapping, check stage, failure response, flake policy, static/security checks, and legacy ratchets before optional testing breadth.
 - For slow-CI, bypassed-CI, flaky-suite, or suite-redesign prompts, always state the intended test-layer composition as counts or ratios and explain why that mix gives faster, more deterministic signal than the current shape.
 - Make recommendations actionable with blocking/advisory status, validation commands, quarantine rules, stop criteria, and rollout of new checks where relevant.
-- Name the details to inspect, such as defect history, critical journeys, CI runtime, flake rate, coverage gaps, static findings, and release failure data; do not claim details you have not seen.
+- Name the details to inspect, such as defect history, critical journeys, CI runtime, flake rate, coverage gaps, static findings, and release failure data; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside verification and quality checks. Route production rollout checks or chaos testing only when they are the central unresolved risk; generic review workflow has no routed specialist.
 - Be concise and prefer compact risk-to-check matrices, but always state: a flake-rate metric paired with a quarantine timer, a coverage metric+target paired with a meaningful-vs-vanity caveat, a CI runtime target paired with how it is measured, and per-layer test ratios with rationale when test composition is in scope.
@@ -111,7 +111,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - `risk_mapping`: every critical risk maps to a test, check artifact, or explicit exception.
 - `check_signal`: every blocking check has high signal, and failure response.
 - `flake_policy`: flaky checks have fix, quarantine, downgrade, or expiry decision.
-- `stage_fit`: each check runs at the earliest stage where it can prove the intended property.
+- `stage_fit`: each check runs at the earliest stage where it can check the intended property.
 - `suite_shape`: test-layer counts or ratios match the risk profile, with most pre-merge confidence coming from cheap deterministic checks and only bounded broad tests blocking.
 - `legacy_ratchet`: existing debt has a non-regression rule and reduction plan.
 

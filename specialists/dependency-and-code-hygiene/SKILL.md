@@ -50,7 +50,7 @@ Code health is maintained by routine, reversible, low-drama maintenance, not by 
 3. **Preserve reproducibility.** Update lockfiles or equivalent pinned inputs intentionally and inspect transitive changes.
 4. **Use risk-aware cadence.** Apply routine updates regularly; keep enough dependency inventory to identify affected deployed artifacts; treat active vulnerabilities as vulnerability-management work.
 5. **Ratchet legacy findings.** Prevent new high-severity findings while gradually reducing the baseline.
-6. **Prove dead code is dead.** Use references, telemetry, responsibility confirmation, and staged deletion where risk is real.
+6. **Confirm dead code is dead.** Use references, telemetry, responsibility confirmation, and staged deletion where risk is real.
 7. **Execute codemods safely.** Check the pattern, sample output, affected responsibility, and validation results before broad application.
 8. **Route trust controls.** If provenance, signing, or build trust becomes central, switch to supply-chain security.
 
@@ -81,9 +81,9 @@ Use continuous small-batch maintenance with pinned inputs, dependency inventory,
 ## Response Quality Bar
 
 - Lead with the maintenance plan, risk classification, or rollback-safe execution path requested.
-- Cover scope, reversibility, pinned inputs, ratchets, dead-code evidence, codemod validation, and scope boundaries before optional hygiene topics.
+- Cover scope, reversibility, pinned inputs, ratchets, dead-code signals, codemod validation, and scope boundaries before optional hygiene topics.
 - Make recommendations actionable with batches, validation commands, non-regression checks, stop criteria, and rollback or staged-disable steps where relevant.
-- Name the details to inspect, such as dependency inventory, lockfile diffs, transitive changes, static baselines, usage telemetry, and sample codemod output; do not claim details you have not seen.
+- Name the details to inspect, such as dependency inventory, lockfile diffs, transitive changes, static baselines, usage telemetry, and sample codemod output; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside dependency hygiene and code health. Route provenance/signing or actively exploited vulnerabilities only when they are the primary issue.
 - Be concise: avoid generic cleanup advice and prefer compact batch plans, ratchet tables, and validation checklists.
@@ -95,7 +95,7 @@ Use continuous small-batch maintenance with pinned inputs, dependency inventory,
 - Lockfile or pinned-input inspection rule.
 - Deprecated package and migration plan.
 - Static-analysis backlog ratchet and suppression rules.
-- Dead-code cleanup plan with evidence and rollback.
+- Dead-code cleanup plan with usage signals and rollback.
 - Codemod/refactor plan with scope, validation, and responsibility.
 - Selection rules to vulnerability management or supply-chain security.
 

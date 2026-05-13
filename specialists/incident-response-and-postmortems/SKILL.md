@@ -11,7 +11,7 @@ description: "Use when running active incidents, writing postmortems, or setting
 NO INCIDENT WITHOUT ROLES, IMPACT, AND STATUS CADENCE; NO POSTMORTEM WITHOUT TIMELINE, CONTRIBUTING FACTORS, AND VERIFIED ACTIONS
 ```
 
-The two halves are co-designed: live response is unsafe without named responders, declared impact, and a predictable next-update time; a postmortem that only names a root cause or a person has not explained the system. For a solo developer the responder roles collapse onto one person, but the role labels still have to be claimed explicitly so nothing falls between them.
+The two halves are co-designed: live response is unsafe without named responders, declared impact, and a predictable next-update time; a postmortem that only names a root cause or a person has not explained the system. For a solo developer the responder roles collapse onto one person, but the role labels still have to be explicit so nothing falls between them.
 
 ## Overview
 
@@ -45,7 +45,7 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 
 ## Workflow
 
-1. **During active impact, assign roles.** Use incident commander, operations lead, communications lead, and scribe when coordination requires them; for solo work, explicitly claim each role yourself.
+1. **During active impact, assign roles.** Use incident commander, operations lead, communications lead, and scribe when coordination requires them; for solo work, explicitly take each role yourself.
 2. **Classify ticket severity.** Use impact radius and urgency: highest severity for widespread critical user or data/security impact, high severity for major but bounded customer impact, medium severity for limited degradation or internal dependency risk, and low severity for a low-impact anomaly requiring follow-up.
 3. **Put live-site impact first.** Treat customer-visible availability, health, and security as the top priority until impact is controlled.
 4. **Mitigate before explaining.** Prefer actions that reduce user impact safely; postpone deep root-cause analysis until impact is controlled.
@@ -54,7 +54,7 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 7. **Change strategy when stuck.** Use the user, available documentation, dependency status, or a narrower diagnostic skill when impact persists, mitigation authority is unclear, or a latent risk is not getting traction. Do not wait for a vendor or outside group before taking the safest available mitigation.
 8. **Checkpoint explicitly.** At every incident-commander or shift change, record state, current hypothesis, customer impact, in-flight actions, user decision point, comms cadence, and next decision point.
 9. **Use the normal hotfix path where possible.** Reduce context switching by keeping artifact, branch, change, and rollout mechanics traceable even under urgency.
-10. **Run security incidents as a protected track.** When confidentiality, integrity, identity, abuse, or data exposure may be involved, preserve evidence, restrict sensitive details to need-to-know responders, and keep operational facts separate from legal conclusions.
+10. **Run security incidents as a protected track.** When confidentiality, integrity, identity, abuse, or data exposure may be involved, preserve logs and artifacts, restrict sensitive details to need-to-know responders, and keep operational facts separate from legal conclusions.
 11. **Stabilize and verify.** Confirm recovery with user-visible metrics, not only internal health.
 12. **Write a blameless postmortem.** Explain contributing factors across technical, operational, detection, change, and organizational layers.
 13. **Replace single-root-cause wording with layered factors.** If the user supplies "root cause: X", treat X as one technical trigger, then add control, detection, rollout, responsibility, or organizational defenses that allowed impact; mark inferred factors as candidates to verify.
@@ -63,7 +63,7 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 
 ## Synthesized Default
 
-Use role-based incident command during response and blameless, contributing-factor postmortems after recovery. Prefer mitigation and clear communication over premature diagnosis. Treat security incidents as evidence-sensitive operational events, keep engineering accountable for live-site outcomes, and treat action items as engineering commitments with verification, not aspirations.
+Use role-based incident command during response and blameless, contributing-factor postmortems after recovery. Prefer mitigation and clear communication over premature diagnosis. Treat security incidents as record-sensitive operational events, keep engineering accountable for live-site outcomes, and treat action items as engineering commitments with verification, not aspirations.
 
 
 
@@ -91,7 +91,7 @@ Use role-based incident command during response and blameless, contributing-fact
 - Cover impact, severity, roles, timeline, communications cadence, mitigation, contributing factors, missed defenses, and verified actions before optional incident mechanics.
 - For postmortems, include a **Contributing Factors** section with at least three factors across at least two layers such as technical trigger, detection gap, rollout/control gap, responsibility/runbook gap, or organizational tradeoff; avoid presenting one root cause as the whole explanation.
 - Make recommendations actionable with user decision point, timestamps, next-update times, verification conditions, due dates, and follow-up checks where relevant.
-- Name the details to inspect, such as alerts, dashboards, logs, deploy markers, chat timeline, customer-impact data, mitigation commands, and action verification; do not claim details you have not seen.
+- Name the details to inspect, such as alerts, dashboards, logs, deploy markers, chat timeline, customer-impact data, mitigation commands, and action verification; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside incident response and postmortems. Use security/privacy constraints or specialist reliability checks only when they are central to the next action.
 - Be concise: avoid generic blameless-postmortem theory and prefer compact timelines, status updates, and action tables.
@@ -120,7 +120,7 @@ Use role-based incident command during response and blameless, contributing-fact
 ## Red Flags - Stop And Rework
 
 - The postmortem concludes "human error" without explaining system conditions.
-- Timeline is reconstructed from memory with no timestamps or evidence.
+- Timeline is reconstructed from memory with no timestamps or source records.
 - Action items say "be more careful", "monitor better", or "improve tests" without verification.
 - Status updates have no next-update time.
 - Responders keep investigating without changing mitigation strategy when mitigation is stalled or authority is unclear.

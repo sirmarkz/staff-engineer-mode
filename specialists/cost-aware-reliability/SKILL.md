@@ -86,7 +86,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 - Lead with the unit-cost model, cost driver, reliability tradeoff, optimization plan, or anomaly diagnosis requested.
 - Cover allocation, unit metrics, driver separation, SLO/headroom preservation, failure-condition capacity, rollback, anomaly monitoring, and refresh cadence before optional FinOps breadth.
 - Make recommendations actionable with metrics, savings ranges, risk acceptance, stop criteria, rollback steps, and post-change checks where relevant.
-- Name the details to inspect, such as spend by usage units, traffic, capacity headroom, SLOs, peak/failure demand, deploy markers, anomaly timeline, and retry/abuse signals; do not claim details you have not seen.
+- Name the details to inspect, such as spend by usage units, traffic, capacity headroom, SLOs, peak/failure demand, deploy markers, anomaly timeline, and retry/abuse signals; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside cost-aware reliability. Route capacity, edge defense, platform, or data work only when those are the central unresolved risk.
 - Be concise: avoid generic cost advice and prefer compact unit-cost, driver, and tradeoff tables.

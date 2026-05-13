@@ -1,6 +1,6 @@
 ---
 name: slo-and-error-budgets
-description: "Use when user journeys need SLIs, SLOs, error budgets, burn-rate alerts, urgent/ticket policy, or budget rules"
+description: "Use when user journeys need SLIs, SLOs, error budgets, burn-rate alerts, urgent-vs-ticket alerts, or budget rules"
 ---
 
 # SLO Error Budget Engineering
@@ -8,14 +8,14 @@ description: "Use when user journeys need SLIs, SLOs, error budgets, burn-rate a
 ## Iron Law
 
 ```
-NO SLO WITHOUT A USER JOURNEY, ERROR-BUDGET MATH, AND POLICY CONSEQUENCE
+NO SLO WITHOUT A USER JOURNEY, ERROR-BUDGET MATH, AND BUDGET RESPONSE RULES
 ```
 
-If the journey, window, target, budget, and response policy are missing, do not call the SLO complete.
+If the journey, window, target, budget, and budget response are missing, do not call the SLO complete. The response says when to send an urgent alert, when to file a ticket, when to slow releases, who can override, and what reliability work comes next.
 
 ## Overview
 
-Produces an SLI/SLO table tied to named user journeys, an error-budget calculation, a multi-window burn-rate alert policy, and a budget-state release rule. Refuses 100-percent targets, host-health proxies, and urgent alerts that do not name a user.
+Produces an SLI/SLO table tied to named user journeys, an error-budget calculation, multi-window burn-rate alert rules, and budget-state release rules. Refuses 100-percent targets, host-health proxies, and urgent alerts that do not name a user.
 
 **Core principle:** define the experience users are promised, measure it with SLIs, set an SLO that leaves an explicit error budget, and let that budget govern alert urgency and release risk.
 
@@ -23,7 +23,7 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 
 - The user asks what reliability target, availability target, latency target, freshness target, correctness target, or durability target a service should meet.
 - The user asks which alerts need urgent response, how burn-rate alerts should work, or how to connect alerts to SLOs.
-- A launch, PRR, tier upgrade, or reliability decision needs SLI/SLO evidence.
+- A launch, PRR, tier upgrade, or reliability decision needs SLI/SLO details.
 - Existing alerts are noisy because they monitor causes instead of user-visible symptoms.
 
 ## When Not To Use
@@ -53,12 +53,12 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 6. **Calculate the budget.** Convert target and window into allowed bad events or bad minutes. Include low-traffic math so one event does not create nonsensical burn.
 7. **Design alerts from burn.** Trigger urgent alerts on fast and sustained budget burn. Ticket slow burns. As a starting point, interrupt only when short-window and longer-window burn both show urgent exhaustion risk, ticket when multi-hour or multi-day burn threatens the window, and recompute thresholds for low traffic.
 8. **Handle latency correctly.** State where latency is measured and how percentiles are aggregated. Do not average percentiles across services or windows; merge compatible distributions or measure at the user-journey boundary.
-9. **Attach policy.** State what happens when budget is healthy, threatened, exhausted, or repeatedly exhausted.
-10. **Route gaps.** Missing telemetry goes to observability; rollout policy goes to progressive delivery; launch aggregation goes to PRR.
+9. **Define budget responses.** State what happens when budget is healthy, threatened, exhausted, or repeatedly exhausted: urgent alert, ticket, slow release, override, or prioritize reliability work.
+10. **Route gaps.** Missing telemetry goes to observability; staged rollout rules go to progressive delivery; launch aggregation goes to PRR.
 
 ## Synthesized Default
 
-Use the standard SRE sequence as the default: user journey -> health model -> SLI -> SLO -> error budget -> multi-window burn-rate alert -> release and reliability policy. Treat reliability targets as design inputs and error budgets as a guardrail on change velocity rather than as a reason to stop delivery permanently.
+Use the standard SRE sequence as the default: user journey -> health model -> SLI -> SLO -> error budget -> multi-window burn-rate alert -> release and reliability rules. Treat reliability targets as design inputs and error budgets as a guardrail on change velocity rather than as a reason to stop delivery permanently.
 
 
 
@@ -83,10 +83,10 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 
 ## Response Quality Bar
 
-- Lead with the SLO table, alert policy, budget-state decision, or telemetry blocker requested.
-- Cover user journeys, SLIs, health states, target/window math, burn alerts, dashboards, release policy, and observability gaps before optional SRE breadth.
+- Lead with the SLO table, alert rules, budget-state decision, or telemetry blocker requested.
+- Cover user journeys, SLIs, health states, target/window math, burn alerts, dashboards, release rules, and observability gaps before optional SRE breadth.
 - Make recommendations actionable with metric definitions, thresholds, windows, alert routes, budget consequences, and follow-up checks where relevant.
-- Name the details to inspect, such as request/event sources, numerator/denominator definitions, traffic volume, deployment markers, current burn, urgent-alert history, and dashboard links; do not claim details you have not seen.
+- Name the details to inspect, such as request/event sources, numerator/denominator definitions, traffic volume, deployment markers, current burn, urgent-alert history, and dashboard links; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside SLO and error-budget engineering. Route rollout policy, observability instrumentation, or PRR only when they are the central unresolved risk.
 - Be concise: avoid generic SRE exposition and prefer compact SLI/SLO and burn-policy tables.
@@ -97,9 +97,9 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - SLI/SLO table with target, window, source metric, numerator, denominator, and exclusions.
 - Health-state definitions for healthy, degraded, unavailable, and recovering conditions where partial degradation matters.
 - Error-budget calculation in bad events or bad minutes.
-- Burn-rate alert policy with urgent-alert and ticket thresholds, including windows, budget-consumption rate, low-traffic handling, and diagnostic non-urgent rules.
+- Burn-rate alert rules with urgent-alert and ticket thresholds, including windows, budget-consumption rate, low-traffic handling, and diagnostic non-urgent rules.
 - Dashboard requirements that show SLO state, burn, traffic, fault-domain scope where relevant, and recent deployments.
-- Budget-state release policy and reliability-work triggers.
+- Budget-state release rules and reliability-work triggers.
 - Assumptions, proxy risks, blockers, and follow-up routes.
 
 ## Checks Before Moving On
@@ -109,7 +109,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - `math_check`: every SLO has a target, window, denominator, allowed bad events or minutes, and low-traffic handling.
 - `promise_margin`: internal alert or stop thresholds are stricter than external commitments where such commitments exist.
 - `alert_mapping`: every urgent alert maps to SLO burn or has a documented urgent/actionable exception.
-- `policy_check`: exhausted-budget behavior is stated, including who can allow releases and what work is prioritized.
+- `budget_response`: exhausted-budget behavior is stated, including who can allow releases and what work is prioritized.
 - `telemetry_check`: every SLI names its metric/log/event source or marks observability work as a blocker.
 
 ## Red Flags - Stop And Rework
@@ -118,7 +118,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - The SLO target is 100 percent because "this must never fail".
 - Burn-rate thresholds are copied from another service without traffic-window math.
 - The response recommends urgent interruption for every cause alert.
-- The policy says "improve reliability" without release, review, user-decision, or work-intake consequences.
+- The budget response says "improve reliability" without release, review, user-decision, or work-intake consequences.
 - Latency SLOs average percentile values instead of measuring the journey or merging compatible distributions.
 - Journey SLOs are synthesized from component SLOs without an explicit dependency model.
 

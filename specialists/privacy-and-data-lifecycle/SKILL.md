@@ -53,8 +53,8 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 4. **Constrain use.** Enforce purpose, consent, and access constraints in code, data jobs, schemas, policy, or workflow checks.
 5. **Control copies.** Apply privacy rules to logs, traces, metrics labels, crash reports, caches, search indexes, analytics, ML features, support tools, and third-party processors.
 6. **Engineer deletion and retention.** Define retention classes, delete propagation, deletion markers for asynchronous cleanup, derived-copy repair, backup expiry, audit trail, holds/exclusions, and failure handling.
-7. **Define the data-subject-rights workflow.** Specify how access, export, erasure, and portability requests are received, authenticated, scoped to stores and processors, completed within an SLA, verified for completeness, and closed with audit evidence.
-8. **Assess anonymization claims.** Do not call data anonymized unless reidentification risk has been assessed with an explicit method such as equivalence-class thresholds, diversity checks, noise-based aggregation, motivated-intruder assessment, or equivalent domain assessment; otherwise call it pseudonymized, aggregated, or tokenized.
+7. **Define the data-subject-rights workflow.** Specify how access, export, erasure, and portability requests are received, authenticated, scoped to stores and processors, completed within an SLA, verified for completeness, and closed with an audit record.
+8. **Assess anonymization labels.** Do not call data anonymized unless reidentification risk has been assessed with an explicit method such as equivalence-class thresholds, diversity checks, noise-based aggregation, motivated-intruder assessment, or equivalent domain assessment; otherwise call it pseudonymized, aggregated, or tokenized.
 9. **Verify export and erasure.** Test that subject, tenant, or account-scoped export/deletion finds expected copies, includes required third-party paths, uses a defined output format, and reports known exclusions.
 10. **Prevent regressions.** Add schema checks, telemetry redaction tests, data-lineage alerts, and release checks for new sensitive fields.
 
@@ -88,7 +88,7 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 - Cover inventory, classification, minimization, purpose/access enforcement, telemetry/support controls, retention/deletion propagation, and verification before optional privacy breadth.
 - For access, erasure, export, or portability requests, state the request workflow, responsible control points, SLA, store coverage, exception list, verification method, and closure notes event.
 - Make recommendations actionable with field-level decisions, control points, test checks, failure handling, and retention or exception expiry where relevant.
-- Name the details to inspect, such as field inventories, data stores, logs, caches, derived copies, consent/purpose rules, deletion traces, export tests, and backup behavior; do not claim details you have not seen.
+- Name the details to inspect, such as field inventories, data stores, logs, caches, derived copies, consent/purpose rules, deletion traces, export tests, and backup behavior; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside engineering controls for data lifecycle. Leave legal interpretation out unless the user supplies a requirement to implement.
 - Be concise: avoid generic privacy principles and prefer compact field inventories, flow maps, and verification plans.
@@ -101,8 +101,8 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 - Privacy-safe telemetry and support-tool controls.
 - Retention, deletion, backup, and derived-data propagation design.
 - Data-subject-rights workflow for access, erasure, export, and portability with intake, scope, SLA, verification, exclusions, and audit closure.
-- Anonymization or pseudonymization risk assessment when those claims are made.
-- Export/erasure verification plan with store coverage, third-party coverage, output format, exclusion list, and completeness evidence.
+- Anonymization or pseudonymization risk assessment when those labels are used.
+- Export/erasure verification plan with store coverage, third-party coverage, output format, exclusion list, and completeness checks.
 - Regression checks and activity logs.
 
 ## Checks Before Moving On
@@ -121,13 +121,13 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 - Retention is "forever" because no deletion trigger, expiry, or verification path exists.
 - Delete requests remove primary rows but leave caches, search indexes, analytics, or ML features.
 - Consent or purpose is documented but not enforced by the system.
-- Anonymization is claimed without reidentification risk review.
+- Data is labeled anonymized without reidentification risk review.
 
 ## Common Mistakes
 
 | Mistake | Correction |
 | --- | --- |
-| Treating privacy as legal text | Convert privacy decisions into code, config, checks, and evidence. |
+| Treating privacy as legal text | Convert privacy decisions into code, config, checks, and records. |
 | Mapping only primary storage | Include telemetry, derived data, backups, exports, and support tools. |
 | Redacting after collection | Minimize or tokenize before broad propagation. |
-| Trusting manual deletion | Automate propagation and verify with evidence. |
+| Trusting manual deletion | Automate propagation and verify with checks. |

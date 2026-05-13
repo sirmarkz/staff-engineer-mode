@@ -1,6 +1,6 @@
 ---
 name: experimentation-and-metric-guardrails
-description: "Use when A/B tests, holdouts, ramps, or experiment readouts need decision metrics and guardrails"
+description: "Use when designing A/B tests, holdouts, ramps, or readouts needing decision metrics and guardrails"
 ---
 
 # Experimentation And Metric Guardrails
@@ -11,7 +11,7 @@ description: "Use when A/B tests, holdouts, ramps, or experiment readouts need d
 NO EXPERIMENT CALL WITHOUT A HYPOTHESIS, A KNOWN EXPOSED POPULATION, GUARDRAIL METRICS, AND A PRE-COMMITTED READOUT RULE
 ```
 
-The experiment must say what it predicts, prove who actually saw the change (not just who was assigned), name the safety/quality metrics that can block a positive primary result, and commit to the decision rule before reading the result. For a small-project or hand-rolled experiment "known exposed population" can be as simple as "logged-in users on build SHA X after timestamp Y" — the invariant is that you can answer who was affected, not that you have an experimentation platform.
+The experiment must say what it predicts, record who actually saw the change (not just who was assigned), name the safety/quality metrics that can block a positive primary result, and commit to the decision rule before reading the result. For a small-project or hand-rolled experiment "known exposed population" can be as simple as "logged-in users on build SHA X after timestamp Y" - the invariant is that you can answer who was affected, not that you have an experimentation platform.
 
 ## Overview
 
@@ -21,8 +21,8 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 
 ## When To Use
 
-- The user asks about experiments, A/B tests, holdouts, ramp decisions, sample-ratio mismatch, exposure logging, guardrail metrics, or metric trust.
-- A product, ranking, pricing, UI, recommendation, or workflow change needs causal evidence rather than only rollout health.
+- The user is designing, changing, running, or reading out an experiment, A/B test, holdout, or ramp decision and asks about sample-ratio mismatch, exposure logging, guardrail metrics, or metric trust.
+- A product, ranking, pricing, UI, recommendation, or workflow change needs a causal readout rather than only rollout health.
 - Experiment results conflict, look too good, lack power, or may be invalid because of logging, assignment, contamination, or metric defects.
 - A ramp needs outcome guardrails beyond operational canary checks.
 
@@ -51,7 +51,7 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 5. **Check validity.** Test assignment balance, sample-ratio mismatch, missing telemetry, logging defects, and eligibility drift.
 6. **Plan interactions.** Identify overlapping experiments, long-lived holdouts, novelty effects, and downstream metric coupling.
 7. **Check ramps.** Combine experiment outcomes with operational guardrails; do not let positive primary metrics hide safety regressions.
-8. **Record decision evidence.** Capture result, caveats, decision, rollback trigger, and follow-up measurement.
+8. **Record the decision.** Capture result, caveats, decision, rollback trigger, and follow-up measurement.
 
 ## Synthesized Default
 
@@ -81,7 +81,7 @@ Use predeclared hypotheses, stable assignment, exposure-based analysis, primary 
 - Lead with the experiment design, validity finding, ramp decision, or metric guardrail requested.
 - Cover hypothesis, assignment, exposure, metrics, guardrails, validity checks, slices, interactions, and decision rule before optional statistics detail.
 - Make recommendations actionable with metric definitions, stop criteria, invalidation triggers, and readout dates where relevant.
-- Name the details to inspect, such as assignment logs, exposure events, metric definitions, balance checks, missingness, segment results, and prior experiment interactions; do not claim details you have not seen.
+- Name the details to inspect, such as assignment logs, exposure events, metric definitions, balance checks, missingness, segment results, and prior experiment interactions; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside experimentation and metric trust. Use rollout safety, service SLO, or AI eval skills only when those surfaces drive the decision.
 - Be concise: prefer experiment design and readout tables over generic testing background.
@@ -99,7 +99,7 @@ Use predeclared hypotheses, stable assignment, exposure-based analysis, primary 
 
 - `hypothesis_named`: experiment maps to a clear decision and expected effect.
 - `assignment_valid`: unit, eligibility, and balance checks are defined.
-- `exposure_logged`: exposure event proves who could be affected.
+- `exposure_logged`: exposure event records who could be affected.
 - `guardrails_set`: safety and quality metrics can block a positive primary result.
 - `validity_checked`: metric trust failures are checked before readout.
 
@@ -115,7 +115,7 @@ Use predeclared hypotheses, stable assignment, exposure-based analysis, primary 
 
 | Mistake | Correction |
 | --- | --- |
-| Rollout health as causal proof | Use assignment, exposure, and readout rules. |
+| Rollout health as causal answer | Use assignment, exposure, and readout rules. |
 | Result-first metrics | Predeclare metrics and guardrails. |
 | Ignoring invalidation | Treat balance and telemetry failures as blockers. |
 | Average-only readouts | Check important slices and long-term effects. |

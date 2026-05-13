@@ -1,6 +1,6 @@
 ---
 name: dependency-resilience
-description: "Use when remote calls or queues need timeouts, retries, idempotency, backpressure, overload, or duplicate controls"
+description: "Use when designing or changing remote calls or queues needing timeouts, retries, idempotency, or overload controls"
 ---
 
 # Dependency Resilience And Overload
@@ -21,7 +21,7 @@ Most cascading failures are dependency failures amplified by callers.
 
 ## When To Use
 
-- A change adds or modifies RPC, HTTP, database, cache, broker, stream, queue, webhook, or third-party calls.
+- The user is designing, building, adding, or modifying RPC, HTTP, database, cache, broker, stream, queue, webhook, or third-party calls.
 - The user asks about retries, timeouts, backoff, jitter, circuit breakers, bulkheads, idempotency, backpressure, health checks, or load shedding.
 - A service degrades when a dependency is slow, overloaded, unavailable, or returning errors.
 - Queue depth, age, retries, or fanout can amplify failures.
@@ -88,7 +88,7 @@ Use bounded timeouts/retries with jitter, idempotent APIs, adaptive retry budget
 - For short design answers, still include concrete values or placeholders for per-dependency timeout, retry count/backoff/idempotency, circuit-breaker open/half-open/recovery thresholds, and the degraded user behavior.
 - Cover deadlines, retry safety, idempotency, backpressure, load shedding, health checks, fallbacks, and failure tests before optional resilience breadth.
 - Make recommendations actionable with thresholds, budgets, queue limits, stop criteria, tests, and rollback or disablement steps where relevant.
-- Name the details to inspect, such as dependency p95/p99 latency, error classes, retry counts, queue age, saturation, health-check behavior, and failure-test results; do not claim details you have not seen.
+- Name the details to inspect, such as dependency p95/p99 latency, error classes, retry counts, queue age, saturation, health-check behavior, and failure-test results; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside dependency resilience and overload. Route API contract or capacity-model work only when it materially blocks the failure-mode decision.
 - Be concise: avoid generic retry guidance and prefer compact dependency matrices and budget tables.

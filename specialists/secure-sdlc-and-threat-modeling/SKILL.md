@@ -17,7 +17,7 @@ If threats do not map to controls and verification, the decision is not actionab
 
 Produces a trust-boundary and data-flow map, an abuse-case table, a control mapping with verification for each high-risk control, and a residual-risk register with explicit user acceptance and expiry. Refuses to accept controls that cannot be tested, gated, or observed.
 
-**Core principle:** model trust boundaries and abuse cases early, then turn threats into testable controls, explicit evidence, and user-accepted residual risk.
+**Core principle:** model trust boundaries and abuse cases early, then turn threats into testable controls, explicit checks, and user-accepted residual risk.
 
 ## When To Use
 
@@ -49,13 +49,13 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 3. **List abuse cases.** Write what an attacker or malicious/buggy client tries to accomplish, not only what component might fail.
 4. **Apply a threat frame.** Use spoofing, tampering, repudiation, disclosure, denial, privilege elevation, or equivalent categories to avoid blind spots.
 5. **Map controls.** Assign authentication, authorization, validation, output handling, rate limits, audit, secrets handling, encryption, and isolation controls.
-6. **Make controls testable.** Define unit/integration/security tests, self-checks, runtime monitors, or operational evidence for each high-risk control.
+6. **Make controls testable.** Define unit/integration/security tests, self-checks, runtime monitors, or operational checks for each high-risk control.
 7. **Record residual risk.** State compensating control, expiry, acceptance condition, and explicit user risk acceptance.
 8. **Route specialized surfaces.** Identity/secrets, supply chain, LLM, tenant isolation, and vulnerability remediation go to their specialist skills when central.
 
 ## Synthesized Default
 
-Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, abuse cases, control mapping, test plan, and residual-risk register. Prefer controls that are enforced in code, configuration, self-checks, runtime evidence, or deployment checks over prose-only rules.
+Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, abuse cases, control mapping, test plan, and residual-risk register. Prefer controls that are enforced in code, configuration, self-checks, runtime checks, or deployment checks over prose-only rules.
 
 
 
@@ -73,16 +73,16 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 ## Exceptions
 
 - Low-risk internal changes can use a small abuse-case checklist if no trust boundary, data sensitivity, or privileged operation changes.
-- High-risk financial, privacy, safety, or admin paths need deeper evidence and explicit user risk acceptance.
+- High-risk financial, privacy, safety, or admin paths need deeper checks and explicit user risk acceptance.
 - Emergency fixes may document the minimal threat decision first and complete residual-risk mapping immediately after mitigation.
-- Legal/compliance requirements can constrain controls, but this skill remains focused on engineering implementation and evidence.
+- Legal/compliance requirements can constrain controls, but this skill remains focused on engineering implementation and records.
 
 ## Response Quality Bar
 
 - Lead with the threat-model decision, abuse-case table, control gap, or residual-risk register requested.
 - Cover trust boundaries, actors, data flows, privileged paths, abuse cases, control mapping, verification, and residual responsibility before optional security breadth.
 - Make recommendations actionable with control points, tests or self-checks, stop criteria, compensating controls, and expiry where relevant.
-- Name the details to inspect, such as architecture/data-flow diagrams, auth paths, sensitive data stores, logs, deployment checks, security tests, and runtime checks; do not claim details you have not seen.
+- Name the details to inspect, such as architecture/data-flow diagrams, auth paths, sensitive data stores, logs, deployment checks, security tests, and runtime checks; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside secure design and threat modeling. Use identity, supply-chain, tenant, LLM, or vulnerability skills only when the prompt makes that specialist surface central.
 - Be concise: avoid generic vulnerability category lists and prefer system-specific abuse-case and control tables.
@@ -120,4 +120,4 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 | Starting from checklists | Start from trust boundaries and abuse cases. |
 | Treating security as a final checkpoint | Add controls to requirements, code, tests, release, and operations. |
 | Focusing only on external attackers | Include insider, compromised credential, confused deputy, and abusive tenant paths. |
-| Leaving controls as prose | Tie controls to tests, checks, or evidence. |
+| Leaving controls as prose | Tie controls to tests, checks, or source records. |

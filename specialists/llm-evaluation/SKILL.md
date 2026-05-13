@@ -1,6 +1,6 @@
 ---
 name: llm-evaluation
-description: "Use when model-backed changes need eval datasets, graders, thresholds, slices, regression history, or failure triage"
+description: "Use when designing or changing model-backed evals needing datasets, graders, thresholds, slices, or triage"
 ---
 
 # LLM Evaluation Harness Engineering
@@ -21,10 +21,10 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 
 ## When To Use
 
-- The user asks about LLM evals, prompt tests, agent evals, graders, regression sets, acceptance thresholds, or model-backed workflow quality checks.
-- A prompt, model, retrieval source, tool policy, or agent workflow changes and needs release evidence.
+- The user is designing, building, changing, or operating LLM evals, prompt tests, agent evals, graders, regression sets, acceptance thresholds, or model-backed workflow quality checks.
+- A prompt, model, retrieval source, tool policy, or agent workflow changes and needs release checks.
 - Existing evals are flaky, too small, too easy, judge-biased, or disconnected from production failures.
-- You need repeatable evidence for quality, safety, refusal, formatting, task completion, or user-impact slices.
+- You need repeatable checks for quality, safety, refusal, formatting, task completion, or user-impact slices.
 
 ## When Not To Use
 
@@ -82,7 +82,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 - Lead with the eval harness design, release check, failure triage, or threshold decision requested.
 - Cover decision, cases, slices, scoring, thresholds, versioning, regression history, and failure handling before optional model discussion.
 - Make recommendations actionable with dataset changes, grader rules, pass/fail criteria, and rerun policy where relevant.
-- Name the details to inspect, such as eval cases, baseline runs, grader rubric, flake rate, slice results, versioned inputs, and failure log; do not claim details you have not seen.
+- Name the details to inspect, such as eval cases, baseline runs, grader rubric, flake rate, slice results, versioned inputs, and failure log; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside model-backed evaluation checks. Route security, ML serving, or AI coding controls only when those risks dominate.
 - Be concise: prefer eval matrices and release checks over generic eval theory.

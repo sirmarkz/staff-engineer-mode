@@ -56,7 +56,7 @@ Engineering documentation is useful only when it is findable, maintained, curren
 
 ## Synthesized Default
 
-Use a lightweight documentation lifecycle: classify by user job, assign define source of truth, tie updates to system changes, add freshness signals, and archive stale material. Critical runbooks and launch docs should be checked as part of delivery, not after outages prove they were wrong.
+Use a lightweight documentation lifecycle: classify by user job, assign define source of truth, tie updates to system changes, add freshness signals, and archive stale material. Critical runbooks and launch docs should be checked as part of delivery, not after outages show they were wrong.
 
 
 
@@ -82,7 +82,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 - Lead with the doc lifecycle, inventory, rewrite plan, or freshness check requested.
 - Cover audience, source of truth, doc type, update trigger, discoverability, and archival rule before optional style advice.
 - Make recommendations actionable with verification cadence, stale-doc handling, and delivery checks where relevant.
-- Name the details to inspect, such as current docs, usage paths, responsibility paths, stale pages, runbook tests, and change triggers; do not claim details you have not seen.
+- Name the details to inspect, such as current docs, usage paths, responsibility paths, stale pages, runbook tests, and change triggers; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside engineering documentation. Route architecture decisions, incident writeups, or marketing copy only when they are central.
 - Be concise: prefer doc inventories and lifecycle rules over broad writing theory.

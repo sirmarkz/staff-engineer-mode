@@ -11,7 +11,7 @@ description: "Use when telemetry, dashboards, alert rules, or runbooks need desi
 TELEMETRY STARTS FROM USER SYMPTOMS; URGENT ALERTS NEED USER IMPACT, URGENCY, ACTIONABILITY, AND A RUNBOOK
 ```
 
-Telemetry that does not map to a user-visible symptom is decoration. An alert that lacks impact, urgency, actionability, or a runbook should not interrupt by default. The two halves are co-designed: signals exist so that someone can act on them, and urgent alerts fire only on signals that prove user-felt impact.
+Telemetry that does not map to a user-visible symptom is decoration. An alert that lacks impact, urgency, actionability, or a runbook should not interrupt by default. The two halves are co-designed: signals exist so that someone can act on them, and urgent alerts fire only on signals that show user-felt impact.
 
 ## Overview
 
@@ -79,14 +79,14 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 - Early-stage services may begin with a minimal symptom dashboard and expand after real failure modes are known.
 - Low-volume systems may need synthetic checks or heartbeat/freshness signals to detect user impact.
 - Security and privacy constraints may require redaction, hashing, sampling, or separate audit trails.
-- Some critical causal signals can trigger urgent alerts if they are proven leading indicators with a runbook.
+- Some critical causal signals can trigger urgent alerts if they are tested leading indicators with a runbook.
 
 ## Response Quality Bar
 
 - Lead with the dashboard spec, alert classification, telemetry gap, or runbook requirement requested.
 - Cover user journeys, health states, golden signals, dependency context, deployment markers, privacy-safe events, urgent-alert policy, and runbooks before optional observability breadth.
 - Make recommendations actionable with metric/log/trace names, thresholds, routes, runbook links, failure response, and rollout checks where relevant.
-- Name the details to inspect, such as SLOs, metric sources, log fields, trace context, alert history, runbook content, deploy markers, and sensitive-data handling; do not claim details you have not seen.
+- Name the details to inspect, such as SLOs, metric sources, log fields, trace context, alert history, runbook content, deploy markers, and sensitive-data handling; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside observability and alerting. Route SLO definition, on-call policy, or incident response only when those are the central unresolved risk.
 - Be concise: avoid generic telemetry lists and prefer compact journey-to-signal and alert-policy tables.

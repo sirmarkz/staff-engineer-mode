@@ -1,6 +1,6 @@
 ---
 name: ai-coding-governance
-description: "Use when setting repo rules for AI coding agents: allowed actions, protected paths, data boundaries, evidence"
+description: "Use when setting repo rules for AI coding agents: allowed actions, protected paths, data boundaries, verification"
 ---
 
 # AI-Assisted Coding Controls
@@ -8,16 +8,16 @@ description: "Use when setting repo rules for AI coding agents: allowed actions,
 ## Iron Law
 
 ```
-NO AI-ASSISTED CHANGE WITHOUT SCOPE, VERIFICATION EVIDENCE, DATA BOUNDARY, AND RESPONSIBLE ACCEPTANCE
+NO AI-ASSISTED CHANGE WITHOUT SCOPE, VERIFICATION DETAILS, DATA BOUNDARY, AND RESPONSIBLE ACCEPTANCE
 ```
 
 If a coding agent cannot explain what it changed, why, how it was verified, and what data it touched, the change is not acceptably traceable.
 
 ## Overview
 
-Produces a repo-local rule set for coding agents: allowed and forbidden actions, protected paths, sensitive-data and secret boundaries, required verification results, and traceability tied to the user and local evidence. Catches the moment when an agent rewrites twelve files at 11pm with no test run, no scope statement, and no accountability for the diff.
+Produces a repo-local rule set for coding agents: allowed and forbidden actions, protected paths, sensitive-data and secret boundaries, required verification results, and traceability tied to the user and local details. Catches the moment when an agent rewrites twelve files at 11pm with no test run, no scope statement, and no accountability for the diff.
 
-**Core principle:** give coding agents explicit repo rules, constrain sensitive data and actions, require user-visible evidence, and make generated changes meet the same bar as human changes.
+**Core principle:** give coding agents explicit repo rules, constrain sensitive data and actions, require user-visible verification, and make generated changes meet the same bar as human changes.
 
 ## When To Use
 
@@ -50,14 +50,14 @@ Produces a repo-local rule set for coding agents: allowed and forbidden actions,
 2. **Set repo instructions.** Encode coding style, testing, security, data handling, dependency, and release expectations in agent-readable guidance.
 3. **Protect data.** Prevent agents from exposing secrets, sensitive records, private logs, or unnecessary user data.
 4. **Require small explainable diffs.** Keep changes small, explain intent, preserve responsibility, and separate mechanical edits from behavior changes.
-5. **Demand evidence.** Require tests, validation output, static checks, or explicit limitations before accepting agent changes.
+5. **Demand records.** Require tests, validation output, static checks, or explicit limitations before accepting agent changes.
 6. **Handle dependencies carefully.** New dependencies need purpose, update path, license/security rationale where applicable, and removal plan if experimental.
 7. **Trace agent work.** Track prompts, tool actions, changed files, verification, and explicit user confirmation where production risk exists.
 8. **Tune the rules.** Convert repeated agent mistakes into clearer instructions, tests, or automated checks.
 
 ## Synthesized Default
 
-Use repo-local agent instructions, least-privilege tool access, protected-path rules, sensitive-data boundaries, small diffs, mandatory verification results, and human responsibility for production changes. Treat AI-generated code as untrusted until tests, checks, and source-specific evidence prove it fits the system.
+Use repo-local agent instructions, least-privilege tool access, protected-path rules, sensitive-data boundaries, small diffs, mandatory verification results, and human responsibility for production changes. Treat AI-generated code as untrusted until tests, checks, and source-specific details show it fits the system.
 
 
 
@@ -76,14 +76,14 @@ Use repo-local agent instructions, least-privilege tool access, protected-path r
 
 - Throwaway prototypes can use lighter checks only when isolated from production code, data, and release paths.
 - Mechanical edits may use sampled checks if deterministic and backed by non-regression checks.
-- Emergency agent-assisted fixes may proceed faster with explicit user confirmation and immediate post-fix evidence capture.
+- Emergency agent-assisted fixes may proceed faster with explicit user confirmation and immediate post-fix result capture.
 
 ## Response Quality Bar
 
 - Lead with the control rule, repo-instruction change, acceptance check, or risk finding requested.
-- Cover scope, responsibility, data boundaries, verification, tests, dependency rules, traceability evidence, and exceptions before optional operational detail.
-- Make recommendations actionable with protected paths, allowed actions, required evidence, user confirmations, and fallback rules where relevant.
-- Name the details to inspect, such as agent instructions, diffs, test output, sensitive-data boundary checks, dependency rationale, and confirmation records; do not claim details you have not seen.
+- Cover scope, responsibility, data boundaries, verification, tests, dependency rules, traceability details, and exceptions before optional operational detail.
+- Make recommendations actionable with protected paths, allowed actions, required verification, user confirmations, and fallback rules where relevant.
+- Name the details to inspect, such as agent instructions, diffs, test output, sensitive-data boundary checks, dependency rationale, and confirmation records; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside AI-assisted development controls. Use deployed LLM security or eval-harness skills only when that surface is the central risk.
 - Be concise: prefer enforceable repo rules and checks over broad AI statements.
@@ -95,7 +95,7 @@ Use repo-local agent instructions, least-privilege tool access, protected-path r
 - Sensitive-data and secret-handling boundaries.
 - Verification and acceptance checks for agent changes.
 - Dependency and generated-content acceptance rules.
-- Traceability evidence checklist.
+- Traceability checklist.
 - Exception rule with user confirmation and expiry.
 
 ## Checks Before Moving On
@@ -119,6 +119,6 @@ Use repo-local agent instructions, least-privilege tool access, protected-path r
 | Mistake | Correction |
 | --- | --- |
 | Rules as prose | Put rules where agents and acceptance checks will use them. |
-| Trusting generated code | Require tests, checks, and evidence. |
+| Trusting generated code | Require tests, checks, and records. |
 | Unlimited agent scope | Define protected paths and user-confirmation triggers. |
 | No learning loop | Convert repeated failures into rules or checks. |

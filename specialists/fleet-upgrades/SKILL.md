@@ -17,7 +17,7 @@ If you cannot see what versions exist and what combinations are supported, the u
 
 Fleet upgrades are compatibility projects spread across runtimes, control planes, clients, services, and operators.
 
-**Core principle:** inventory support windows, define allowed skew, prove mixed-version compatibility, stage rollout, and keep rollback or roll-forward paths ready.
+**Core principle:** inventory support windows, define allowed skew, test mixed-version compatibility, stage rollout, and keep rollback or roll-forward paths ready.
 
 ## When To Use
 
@@ -50,11 +50,11 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 2. **Define allowed skew.** State which old/new combinations are supported during rollout and for how long.
 3. **Communicate support deadlines.** Tell affected consumers when old versions leave support, what action they must take, and when reminders, follow-up, or enforcement start.
 4. **Find breaking changes.** Check behavior, config, interfaces, data formats, tooling, and operational assumptions.
-5. **Prove compatibility.** Test mixed-version paths, upgrade order, downgrade or roll-forward behavior, and representative workloads.
+5. **Check compatibility.** Test mixed-version paths, upgrade order, downgrade or roll-forward behavior, and representative workloads.
 6. **Batch rollout.** Move low-risk cohorts first, then critical paths with checks, user confirmation, and monitoring.
-7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local evidence needed to close them.
+7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local details needed to close them.
 8. **Update operations.** Refresh runbooks, alerts, dashboards, and local operating procedures for the new version.
-9. **Close old paths.** Remove compatibility shims, stale versions, and exceptions after adoption is proven.
+9. **Close old paths.** Remove compatibility shims, stale versions, and exceptions after adoption is verified.
 
 ## Synthesized Default
 
@@ -83,9 +83,9 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 
 - Lead with the upgrade plan, skew decision, support-window risk, or blocker list requested.
 - Cover inventory, support status, skew policy, compatibility tests, rollout batches, rollback or roll-forward, exceptions, consumer communication, and operations updates before optional detail.
-- Make recommendations actionable with dates, checks, batch order, test evidence, consumer action requirements, and exception expiry where relevant.
+- Make recommendations actionable with dates, checks, batch order, test results, consumer action requirements, and exception expiry where relevant.
 - For end-of-support or support-window risk, include a short consumer communication timeline: announcement, deadline, required action from affected components or consumers, reminder cadence, and user-confirmed follow-up date.
-- Name the details to inspect, such as version inventory, support deadlines, compatibility matrix, test output, rollout status, communication status, and runbook changes; do not claim details you have not seen.
+- Name the details to inspect, such as version inventory, support deadlines, compatibility matrix, test output, rollout status, communication status, and runbook changes; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside fleet upgrade and version-skew management. Route dependency hygiene, API compatibility, or deprecation work only when that surface dominates.
 - Be concise: prefer upgrade matrices and batch plans over broad migration prose.
@@ -98,7 +98,7 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 - Upgrade order as an explicit tier list (e.g., control plane → data plane / nodes → clients/operators), with one-line rationale per tier and the allowed skew range between tiers stated as a numeric window with breakage criteria.
 - End-of-support / support-window communication plan with announcement date, final support date, affected consumers, required consumer action, reminder cadence, and follow-up or enforcement path.
 - Rollout batches (waves) with progression criteria per wave.
-- Mixed-version test plan and evidence requirements.
+- Mixed-version test plan and records requirements.
 - Rollback or roll-forward plan stating both the procedure and the state-compatibility note (which prior state is restorable, which is not).
 - Exception register with expiry, compensating control, and closure note.
 - Operations update checklist.

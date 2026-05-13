@@ -1,6 +1,6 @@
 ---
 name: agent-pr-review
-description: "Use when a PR or diff needs senior pre-merge review of intent, behavior evidence, edge cases, or residual risk"
+description: "Use when a PR or diff needs senior pre-merge review of intent, behavior verification, edge cases, or residual risk"
 ---
 
 # Pre-Merge PR Review
@@ -8,16 +8,16 @@ description: "Use when a PR or diff needs senior pre-merge review of intent, beh
 ## Iron Law
 
 ```
-NO DIFF MERGES WITHOUT VERIFIED INTENT, BEHAVIOR EVIDENCE, ASSIGNED RISK, AND A FAILURE-MODE PASS
+NO DIFF MERGES WITHOUT VERIFIED INTENT, BEHAVIOR VERIFICATION, ASSIGNED RISK, AND A FAILURE-MODE PASS
 ```
 
 If the stated intent does not match the actual diff, or the diff cannot show that the changed behavior was exercised by a test that would fail without the change, the diff is not reviewable yet.
 
 ## Overview
 
-The default pre-merge review pass. Applies whether the diff was written by a human, by an AI coding agent, or by both. Modern diffs increasingly contain AI-assisted code that looks plausible, so every review treats the diff as untrusted until intent, behavior evidence, responsibility, and common failure modes (silent assumptions, plausible-but-wrong logic, hallucinated APIs, deleted-but-used code, scope creep, missing edge cases) have been checked against the actual change set.
+The default pre-merge review pass. Applies whether the diff was written by a human, by an AI coding agent, or by both. Modern diffs increasingly contain AI-assisted code that looks plausible, so every review treats the diff as untrusted until intent, behavior verification, responsibility, and common failure modes (silent assumptions, plausible-but-wrong logic, hallucinated APIs, deleted-but-used code, scope creep, missing edge cases) have been checked against the actual change set.
 
-**Core principle:** review the diff against its originating task, not against the author's self-summary. The summary is a hypothesis; the diff is the evidence.
+**Core principle:** review the diff against its originating task, not against the author's self-summary. The summary is a hypothesis; the diff is the source of truth.
 
 ## When To Use
 
@@ -41,7 +41,7 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 ## Info To Gather
 
 - **Diff scope:** files changed, lines added/removed, public-surface changes, generated-file changes, and deleted code.
-- **Authorship context:** human, AI agent, or mixed; which agent or contributor produced the diff; what prompt or task it was given; what the task summary claims it did.
+- **Authorship context:** human, AI agent, or mixed; which agent or contributor produced the diff; what prompt or task it was given; what the task summary says changed.
 - **Change type:** new feature, refactor, bug fix, dependency update, migration, generated code, or mixed.
 - **Environment context:** target repo's tier, exposed surfaces, user-stated scope, local responsibility metadata or recent commits when available, and whether the change touches production paths, data, or shared libraries.
 - **Test coverage state:** which tests exist for the touched paths, which were added, and which were modified or deleted.
@@ -60,13 +60,13 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 8. **Check responsibility and surface.** Confirm changed files fit the user's stated scope or local ownership info. Files touched outside the stated scope need an explicit reason or get flagged as out-of-scope.
 9. **Check public-surface and contract impact.** Identify breaking changes to APIs, schemas, configs, on-disk formats, events, or shared modules. Confirm consumer impact has been considered.
 10. **Check operational artifacts.** Identify missing rollback path, missing telemetry for new behavior, missing runbook update, missing migration safety, missing SLO/error-budget consideration, missing threat consideration for new trust-boundary changes, and missing docs.
-11. **Classify findings.** For each finding, record category, evidence (file:line or behavior), recommended next action, and risk level (blocker, must-fix-before-merge, follow-up, or accepted with rationale).
+11. **Classify findings.** For each finding, record category, support (file:line or behavior), recommended next action, and risk level (blocker, must-fix-before-merge, follow-up, or accepted with rationale).
 12. **Use specialist lenses when needed.** If security, database, rollout, observability, accessibility, or contract-evolution concerns dominate, apply that narrower skill rather than expanding this review.
 13. **Produce the structured artifact.** Output a single review with the categories below, not running prose. The user can use this and can act without re-reading the diff.
 
 ## Synthesized Default
 
-Use a structured pre-merge review pass: verify stated intent matches actual diff, check that changed behavior is exercised by a test that would fail without the change, scan for hallucinated APIs and deleted-but-used code, classify scope creep, and require evidence plus next action for every blocker. Treat any author or agent self-summary as a hypothesis, not a finding. Use narrower specialist skills only as internal lenses when their surface dominates.
+Use a structured pre-merge review pass: verify stated intent matches actual diff, check that changed behavior is exercised by a test that would fail without the change, scan for hallucinated APIs and deleted-but-used code, classify scope creep, and require file/line support plus next action for every blocker. Treat any author or agent self-summary as a hypothesis, not a finding. Use narrower specialist skills only as internal lenses when their surface dominates.
 
 
 
@@ -91,12 +91,12 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 ## Response Quality Bar
 
 - Lead with the structured review artifact, blocker list, or scope-creep finding requested.
-- Start the artifact with an `Review anchors` line containing at least two changed `file:line` citations when the diff has two or more changed lines; one anchor may support intent, but blocker and must-fix findings still need separate cited evidence.
-- Cover intent verification, failure-mode pass, behavior-exercise evidence, responsibility/scope evidence, public-surface impact, and missing operational artifacts before optional review breadth.
+- Start the artifact with an `Review anchors` line containing at least two changed `file:line` citations when the diff has two or more changed lines; one anchor may support intent, but blocker and must-fix findings still need separate cited support.
+- Cover intent verification, failure-mode pass, behavior verification, responsibility/scope details, public-surface impact, and missing operational artifacts before optional review breadth.
 - Include a compact code-quality dimensions pass that explicitly covers design, functionality, complexity, tests, naming, comments, and style with issue, OK, or not applicable status tied to the diff.
-- Make findings actionable with file/line evidence, recommended next action, and risk classification; do not produce vibes-only review.
-- Include at least two concrete diff anchors when the diff has enough changed lines: file:line citations, file:function references, or short quoted code excerpts. One anchor may support intent reconstruction; blocker and must-fix findings still need separate evidence.
-- Name the details to inspect, such as the diff itself, the originating task or prompt, the test results, and the author's stated summary; do not claim findings against unseen code.
+- Make findings actionable with file/line support, recommended next action, and risk classification; do not produce vibes-only review.
+- Include at least two concrete diff anchors when the diff has enough changed lines: file:line citations, file:function references, or short quoted code excerpts. One anchor may support intent reconstruction; blocker and must-fix findings still need separate support.
+- Name the details to inspect, such as the diff itself, the originating task or prompt, the test results, and the author's stated summary; do not state findings against unseen code.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside pre-merge review of a single diff. Route security depth, database migration depth, rollout safety, accessibility, and contract evolution to their responsible specialists rather than absorbing them here.
 - Be concise: prefer a single structured artifact with categorized findings over running narrative.
@@ -106,9 +106,9 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 - Review anchors: at least two changed `file:line` citations from the diff, unless the diff itself has fewer than two changed lines.
 - One-sentence reconstructed intent and one-sentence assessment of whether the diff matches it, anchored to at least one changed file, function, or line when available.
 - Explicit merge verdict: ready to merge, request changes, or block, with reasons tied to observed issues or their absence.
-- Code-quality dimensions summary covering design, functionality, complexity, tests, naming, comments, and style, each marked issue, OK, or not applicable with brief evidence or reason.
-- Categorized findings table with category, evidence (file/line or behavior), recommended next action, and risk level.
-- Blocker list: changes that must not merge as-is, each with evidence and next action.
+- Code-quality dimensions summary covering design, functionality, complexity, tests, naming, comments, and style, each marked issue, OK, or not applicable with brief support or reason.
+- Categorized findings table with category, support (file/line or behavior), recommended next action, and risk level.
+- Blocker list: changes that must not merge as-is, each with file/line support and next action.
 - Failure-mode findings covering silent assumptions, plausible-but-wrong logic, hallucinated APIs, deleted-but-used code, unmotivated edits, missing edge cases, and scope creep.
 - Missing-artifact list across rollback path, telemetry for new behavior, runbook updates, migration safety, threat consideration for new trust boundaries, and docs.
 - Behavior-exercise summary stating which changed behaviors have a failing-without-the-change test and which do not.
@@ -130,13 +130,13 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 ## Red Flags - Stop And Rework
 
 - The review trusts the author's self-summary instead of checking the diff.
-- Findings are stated as opinions without file/line or behavior evidence.
+- Findings are stated as opinions without file/line or behavior support.
 - New behavior is accepted because tests pass, without confirming any test would fail without the change.
 - Deletions are accepted without checking for remaining callers, imports, or references.
 - Out-of-scope file changes are merged because they "look harmless."
 - Hallucinated APIs, types, or imports are not checked even though the author (human or AI) could have invented them.
 - Specialist concerns (security, migration, rollout) are absorbed into this review instead of routed to the responsible specialist.
-- The review produces prose only, with no categorized findings, evidence, next actions, or risk levels.
+- The review produces prose only, with no categorized findings, support, next actions, or risk levels.
 - The final verdict is given with fewer than two changed `file:line` review anchors when the diff contains enough changed lines.
 
 ## Common Mistakes
@@ -151,5 +151,5 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 | Letting scope creep slide | Name out-of-scope edits and require justification or removal. |
 | Skipping code-quality dimensions | Compactly cover design, functionality, complexity, tests, naming, comments, and style as part of the review artifact. |
 | Doing the specialist's work here | Route security, migration, rollout, accessibility, and contract concerns to the responsible specialist. |
-| Producing vibes review | Output a structured artifact with categories, evidence, next actions, and risk levels. |
-| Giving a verdict before pinning evidence | Cite at least two changed `file:line` anchors first, then make the merge decision. |
+| Producing vibes review | Output a structured artifact with categories, support, next actions, and risk levels. |
+| Giving a verdict before pinning support | Cite at least two changed `file:line` anchors first, then make the merge decision. |
