@@ -30,8 +30,15 @@ The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these
 
 ### Claude Code
 
+Register the marketplace:
+
 ```text
 /plugin marketplace add sirmarkz/staff-engineer-mode
+```
+
+Install the plugin:
+
+```text
 /plugin install staff-engineer-mode@staff-engineer-mode
 ```
 
@@ -61,8 +68,15 @@ Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/st
 
 ### GitHub Copilot CLI
 
+Register the marketplace:
+
 ```bash
 copilot plugin marketplace add sirmarkz/staff-engineer-mode
+```
+
+Install the plugin:
+
+```bash
 copilot plugin install staff-engineer-mode@staff-engineer-mode
 ```
 

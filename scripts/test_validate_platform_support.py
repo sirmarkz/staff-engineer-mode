@@ -57,6 +57,9 @@ class PlatformDocsValidationTests(unittest.TestCase):
                     "",
                     "```text",
                     "/plugin marketplace add sirmarkz/staff-engineer-mode",
+                    "```",
+                    "",
+                    "```text",
                     "/plugin install staff-engineer-mode@staff-engineer-mode",
                     "```",
                     "",
@@ -85,6 +88,32 @@ class PlatformDocsValidationTests(unittest.TestCase):
         with contextlib.redirect_stderr(io.StringIO()):
             with self.assertRaises(SystemExit):
                 self.validator.validate_docs()
+
+    def test_plugin_install_paths_accept_https_urls(self) -> None:
+        self.write(
+            ".claude-plugin/marketplace.json",
+            '{"plugins":[{"source":{"source":"url","url":"https://github.com/sirmarkz/staff-engineer-mode.git"}}]}',
+        )
+        self.write(
+            ".opencode/INSTALL.md",
+            '"plugin": ["staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git"]',
+        )
+        self.write(
+            "README.md",
+            "/plugin marketplace add sirmarkz/staff-engineer-mode\n",
+        )
+
+        self.validator.validate_https_plugin_install_paths()
+
+    def test_plugin_install_paths_reject_ssh_urls(self) -> None:
+        self.write(
+            ".cursor-plugin/INSTALL.md",
+            "git clone git@github.com:sirmarkz/staff-engineer-mode.git\n",
+        )
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_https_plugin_install_paths()
 
 
 if __name__ == "__main__":

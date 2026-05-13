@@ -1,5 +1,16 @@
 # Staff Engineer Mode Release Notes
 
+## 1.4.1 - 2026-05-13
+
+Claude marketplace install fix.
+
+- Changes the Claude marketplace plugin source to a pinned HTTPS git URL so a
+  clean machine can install without pre-seeding GitHub SSH host keys.
+- Splits two-step README install flows into separate copyable command blocks
+  for Claude Code and GitHub Copilot CLI.
+- Adds repo guidance and validation coverage to keep shipped plugin install
+  paths on HTTPS git URLs instead of SSH-style GitHub paths.
+
 ## 1.4.0 - 2026-05-13
 
 Specialist language simplification release.

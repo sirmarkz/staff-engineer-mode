@@ -65,6 +65,28 @@ def assert_path_exists(owner: Path, relative: str) -> None:
         fail(f"{owner.relative_to(ROOT)} references missing path {relative}")
 
 
+def validate_https_plugin_install_paths() -> None:
+    paths = [
+        ".claude-plugin/marketplace.json",
+        ".claude-plugin/plugin.json",
+        ".codex-plugin/plugin.json",
+        ".codex/INSTALL.md",
+        ".cursor-plugin/INSTALL.md",
+        ".cursor-plugin/plugin.json",
+        ".opencode/INSTALL.md",
+        "README.md",
+        "gemini-extension.json",
+        "package.json",
+    ]
+    for relative in paths:
+        path = ROOT / relative
+        if not path.exists():
+            continue
+        text = path.read_text()
+        if re.search(r"\b(?:git@github\.com[:/]|ssh://)", text):
+            fail(f"{relative} must not use SSH git install paths")
+
+
 def validate_codex() -> None:
     path = ROOT / ".codex-plugin" / "plugin.json"
     value = require_name_version(path)
@@ -120,9 +142,9 @@ def validate_claude() -> None:
         fail(".claude-plugin/marketplace.json plugin entry name must be staff-engineer-mode")
     source = entry.get("source")
     if not isinstance(source, dict):
-        fail(".claude-plugin/marketplace.json plugin entry source must pin GitHub metadata")
-    if source.get("source") != "github" or source.get("repo") != "sirmarkz/staff-engineer-mode":
-        fail(".claude-plugin/marketplace.json plugin entry source must use sirmarkz/staff-engineer-mode")
+        fail(".claude-plugin/marketplace.json plugin entry source must pin git metadata")
+    if source.get("source") != "url" or source.get("url") != "https://github.com/sirmarkz/staff-engineer-mode.git":
+        fail(".claude-plugin/marketplace.json plugin entry source must use the HTTPS git URL")
     expected_ref = f"v{package_version()}"
     if source.get("ref") != expected_ref:
         fail(f".claude-plugin/marketplace.json plugin entry source must pin ref {expected_ref}")
@@ -286,6 +308,10 @@ def validate_docs() -> None:
         fail("README.md must use the Claude GitHub owner/repo marketplace add command")
     if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode" in readme:
         fail("README.md must not use the legacy HTTPS Claude marketplace add command")
+    if "```text\n/plugin marketplace add sirmarkz/staff-engineer-mode\n/plugin install staff-engineer-mode@staff-engineer-mode\n```" in readme:
+        fail("README.md must show Claude install commands in separate copyable blocks")
+    if "```bash\ncopilot plugin marketplace add sirmarkz/staff-engineer-mode\ncopilot plugin install staff-engineer-mode@staff-engineer-mode\n```" in readme:
+        fail("README.md must show GitHub Copilot CLI install commands in separate copyable blocks")
     codex_install = (ROOT / ".codex" / "INSTALL.md").read_text()
     if "~/.agents/skills/staff-engineer-mode" not in codex_install:
         fail(".codex/INSTALL.md must use the native ~/.agents/skills/staff-engineer-mode install path")
@@ -296,6 +322,7 @@ def validate_docs() -> None:
 
 
 def main() -> int:
+    validate_https_plugin_install_paths()
     validate_codex()
     validate_claude()
     validate_cursor()

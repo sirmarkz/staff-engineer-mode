@@ -116,6 +116,10 @@ maintaining complex software systems.
 - Versioned metadata may stay at the pre-release placeholder before public
   release. When the user asks to release, use `scripts/bump-version.sh --check`,
   `scripts/bump-version.sh --audit`, then `scripts/bump-version.sh <new-version>`.
+- Plugin manifests and install docs must use HTTPS git URLs for plugin source
+  and install paths. Do not publish SSH `git@github.com` or `ssh://` install
+  paths, and do not use Claude marketplace `source: github` shorthand for this
+  plugin's install source when an HTTPS git URL can be pinned instead.
 - Only when the user directly asks to make a release, update
   `RELEASE-NOTES.md` with a concise summary of the user-facing delta since the
   last release. Do not list every commit.
