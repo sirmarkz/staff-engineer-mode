@@ -48,7 +48,36 @@ class PlatformDocsValidationTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
 
-    def test_readme_accepts_claude_github_shorthand_marketplace_add(self) -> None:
+    def test_readme_accepts_https_git_marketplace_add(self) -> None:
+        self.write(
+            "README.md",
+            "\n".join(
+                [
+                    "# Staff Engineer Mode",
+                    "",
+                    "```text",
+                    "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git",
+                    "```",
+                    "",
+                    "```text",
+                    "/plugin install staff-engineer-mode@staff-engineer-mode",
+                    "```",
+                    "",
+                    "```bash",
+                    "copilot plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git",
+                    "```",
+                    "",
+                    "```bash",
+                    "copilot plugin install staff-engineer-mode@staff-engineer-mode",
+                    "```",
+                    "",
+                ]
+            ),
+        )
+
+        self.validator.validate_docs()
+
+    def test_readme_rejects_claude_github_shorthand_marketplace_add(self) -> None:
         self.write(
             "README.md",
             "\n".join(
@@ -59,17 +88,15 @@ class PlatformDocsValidationTests(unittest.TestCase):
                     "/plugin marketplace add sirmarkz/staff-engineer-mode",
                     "```",
                     "",
-                    "```text",
-                    "/plugin install staff-engineer-mode@staff-engineer-mode",
-                    "```",
-                    "",
                 ]
             ),
         )
 
-        self.validator.validate_docs()
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_docs()
 
-    def test_readme_rejects_legacy_https_marketplace_add(self) -> None:
+    def test_readme_rejects_https_marketplace_add_without_git_suffix(self) -> None:
         self.write(
             "README.md",
             "\n".join(
@@ -100,7 +127,7 @@ class PlatformDocsValidationTests(unittest.TestCase):
         )
         self.write(
             "README.md",
-            "/plugin marketplace add sirmarkz/staff-engineer-mode\n",
+            "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git\n",
         )
 
         self.validator.validate_https_plugin_install_paths()

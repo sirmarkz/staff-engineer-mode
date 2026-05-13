@@ -304,13 +304,19 @@ def validate_docs() -> None:
     readme = (ROOT / "README.md").read_text()
     if "staff-engineer-mode" not in readme:
         fail("README.md must document the router entrypoint")
-    if "/plugin marketplace add sirmarkz/staff-engineer-mode" not in readme:
-        fail("README.md must use the Claude GitHub owner/repo marketplace add command")
-    if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode" in readme:
-        fail("README.md must not use the legacy HTTPS Claude marketplace add command")
-    if "```text\n/plugin marketplace add sirmarkz/staff-engineer-mode\n/plugin install staff-engineer-mode@staff-engineer-mode\n```" in readme:
+    if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git" not in readme:
+        fail("README.md must use the Claude HTTPS git URL marketplace add command")
+    if "/plugin marketplace add sirmarkz/staff-engineer-mode" in readme:
+        fail("README.md must not use the Claude GitHub owner/repo marketplace add command")
+    if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode\n" in readme:
+        fail("README.md Claude HTTPS marketplace add command must include the .git suffix")
+    if "copilot plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git" not in readme:
+        fail("README.md must use the GitHub Copilot CLI HTTPS git URL marketplace add command")
+    if "copilot plugin marketplace add sirmarkz/staff-engineer-mode" in readme:
+        fail("README.md must not use the GitHub Copilot CLI owner/repo marketplace add command")
+    if "```text\n/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git\n/plugin install staff-engineer-mode@staff-engineer-mode\n```" in readme:
         fail("README.md must show Claude install commands in separate copyable blocks")
-    if "```bash\ncopilot plugin marketplace add sirmarkz/staff-engineer-mode\ncopilot plugin install staff-engineer-mode@staff-engineer-mode\n```" in readme:
+    if "```bash\ncopilot plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git\ncopilot plugin install staff-engineer-mode@staff-engineer-mode\n```" in readme:
         fail("README.md must show GitHub Copilot CLI install commands in separate copyable blocks")
     codex_install = (ROOT / ".codex" / "INSTALL.md").read_text()
     if "~/.agents/skills/staff-engineer-mode" not in codex_install:

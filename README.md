@@ -33,7 +33,7 @@ The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these
 Register the marketplace:
 
 ```text
-/plugin marketplace add sirmarkz/staff-engineer-mode
+/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 ```
 
 Install the plugin:
@@ -71,7 +71,7 @@ Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/st
 Register the marketplace:
 
 ```bash
-copilot plugin marketplace add sirmarkz/staff-engineer-mode
+copilot plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 ```
 
 Install the plugin:

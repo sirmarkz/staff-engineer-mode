@@ -1,5 +1,18 @@
 # Staff Engineer Mode Release Notes
 
+## 1.4.2 - 2026-05-13
+
+Clean-machine Claude install fix.
+
+- Changes Claude Code and GitHub Copilot CLI marketplace add examples to use
+  the full HTTPS git URL with a `.git` suffix, avoiding the owner/repo
+  shorthand path that can make Claude try SSH first on fresh machines.
+- Keeps the Claude marketplace plugin source pinned to the HTTPS git URL and
+  adds validation so future README examples do not drift back to owner/repo
+  shorthand.
+- Clarifies repo agent instructions so plugin source, marketplace add, and
+  install paths all stay on HTTPS git URLs.
+
 ## 1.4.1 - 2026-05-13
 
 Claude marketplace install fix.
