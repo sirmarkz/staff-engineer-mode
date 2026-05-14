@@ -20,6 +20,30 @@ The router refuses to load every plausible specialist. One primary specialist at
 
 See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for prompts across every specialist.
 
+## What It Looks Like
+
+These are real Claude Code captures from public codebases. The prompt is plain
+developer wording; Staff Engineer Mode routes to one specialist, loads that
+specialist file, and returns a structured engineering answer.
+
+### Production Readiness Before Launch
+
+<img src="assets/staff-engineer-mode-production-readiness-review.png" alt="Claude Code capture showing a production readiness review for a media processing queue split" width="100%">
+
+<details>
+<summary>API compatibility review</summary>
+
+<img src="assets/staff-engineer-mode-api-design-and-compatibility.png" alt="Claude Code capture showing an API compatibility review for an account API response change" width="100%">
+
+</details>
+
+<details>
+<summary>Performance and capacity review</summary>
+
+<img src="assets/staff-engineer-mode-performance-and-capacity.png" alt="Claude Code capture showing a performance and capacity review for an account lookup endpoint" width="100%">
+
+</details>
+
 ## Compared To Alternatives
 
 > *agency-agents adds roles. Superpowers adds methodology. Staff Engineer Mode adds lifecycle engineering judgment.*
