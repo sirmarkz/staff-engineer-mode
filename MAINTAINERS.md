@@ -1,16 +1,15 @@
 # Maintainers
 
-> This file makes the project attributable. Required for credibility.
-
 Staff Engineer Mode is maintained by named humans. Senior engineers do not adopt unattributed tools at the same rate as named-author tools — and a pack whose job is to gate AI-generated code should not itself be anonymous.
+
+Maintainers are listed by public handle.
+Background notes are short context for users deciding whether to adopt the pack.
 
 ## Active Maintainers
 
-### sirmarkz
+### sirmarkz [Decade as a senior technical leader at Amazon and AWS.]
 
 - **GitHub:** [@sirmarkz](https://github.com/sirmarkz)
-
-Decade as a senior technical leader at Amazon and AWS.
 
 ---
 

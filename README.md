@@ -181,9 +181,9 @@ Every specialist file appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with fou
 
 ## Compared To Alternatives
 
-> *agency-agents adds roles. Superpowers adds methodology. Staff Engineer Mode adds lifecycle engineering judgment.*
-
-The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these replace each other. Compose freely.
+Staff Engineer Mode can be used alongside workflow skills like Superpowers.
+Workflow skills shape how the agent plans and executes; Staff Engineer Mode
+shapes the engineering checks and decisions it applies to the work.
 
 ## Contributing
 

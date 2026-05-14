@@ -44,7 +44,6 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SCOPE: tuple[str, ...] = (
     "README.md",
     "MAINTAINERS.md",
-    "COMPARISON.md",
     "STYLE.md",
     "CONTRIBUTING.md",
     "skills/staff-engineer-mode/SKILL.md",
