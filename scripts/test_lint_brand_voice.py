@@ -195,7 +195,7 @@ class HedgingTests(_TmpRepoMixin, unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# BV004 — vendor names in specialist SKILL.md prose
+# BV004 — vendor names in specialist prose
 # ---------------------------------------------------------------------------
 
 
@@ -213,21 +213,21 @@ class VendorNameInSpecialistTests(_TmpRepoMixin, unittest.TestCase):
 
     def test_kubernetes_in_specialist_body_is_flagged(self) -> None:
         self.write(
-            "specialists/example-skill/SKILL.md",
+            "specialists/example-skill.md",
             self._skill("## When To Use\n\nWhen using Kubernetes for orchestration.\n"),
         )
-        rules = self.rules(self.lint("specialists/example-skill/SKILL.md"))
+        rules = self.rules(self.lint("specialists/example-skill.md"))
         self.assertIn("BV004/vendor-in-specialist", rules)
 
     def test_capability_language_is_allowed(self) -> None:
         self.write(
-            "specialists/example-skill/SKILL.md",
+            "specialists/example-skill.md",
             self._skill(
                 "## When To Use\n\n"
                 "When the orchestrator needs a rolling-update strategy.\n"
             ),
         )
-        rules = self.rules(self.lint("specialists/example-skill/SKILL.md"))
+        rules = self.rules(self.lint("specialists/example-skill.md"))
         self.assertNotIn("BV004/vendor-in-specialist", rules)
 
     def test_vendor_inside_fenced_code_block_is_allowed(self) -> None:
@@ -235,8 +235,8 @@ class VendorNameInSpecialistTests(_TmpRepoMixin, unittest.TestCase):
             "## When To Use\n\nA capability description.\n\n"
             "```yaml\nkind: Deployment\n# Kubernetes manifest example\n```\n"
         )
-        self.write("specialists/example-skill/SKILL.md", self._skill(body))
-        rules = self.rules(self.lint("specialists/example-skill/SKILL.md"))
+        self.write("specialists/example-skill.md", self._skill(body))
+        rules = self.rules(self.lint("specialists/example-skill.md"))
         self.assertNotIn("BV004/vendor-in-specialist", rules)
 
     def test_router_skill_skips_specialist_only_rules(self) -> None:
@@ -257,7 +257,7 @@ class VendorNameInSpecialistTests(_TmpRepoMixin, unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
-# BV005 — every specialist SKILL.md must include ## Iron Law
+# BV005 — every specialist file must include ## Iron Law
 # ---------------------------------------------------------------------------
 
 
@@ -270,8 +270,8 @@ class IronLawTests(_TmpRepoMixin, unittest.TestCase):
             "---\n\n"
             "# Missing Law\n\n## When To Use\n\nA body.\n"
         )
-        self.write("specialists/missing-law/SKILL.md", body)
-        rules = self.rules(self.lint("specialists/missing-law/SKILL.md"))
+        self.write("specialists/missing-law.md", body)
+        rules = self.rules(self.lint("specialists/missing-law.md"))
         self.assertIn("BV005/missing-iron-law", rules)
 
     def test_specialist_with_iron_law_is_clean(self) -> None:
@@ -283,8 +283,8 @@ class IronLawTests(_TmpRepoMixin, unittest.TestCase):
             "# Has Law\n\n## Iron Law\n\nALWAYS DO THE THING.\n\n"
             "## When To Use\n\nBody.\n"
         )
-        self.write("specialists/has-law/SKILL.md", body)
-        rules = self.rules(self.lint("specialists/has-law/SKILL.md"))
+        self.write("specialists/has-law.md", body)
+        rules = self.rules(self.lint("specialists/has-law.md"))
         self.assertNotIn("BV005/missing-iron-law", rules)
 
 
@@ -430,7 +430,7 @@ class HelperTests(unittest.TestCase):
         self.assertEqual(offset, 1)
 
     def test_is_specialist_skill(self) -> None:
-        self.assertTrue(lint.is_specialist_skill(Path("specialists/foo/SKILL.md")))
+        self.assertTrue(lint.is_specialist_skill(Path("specialists/foo.md")))
         self.assertFalse(lint.is_specialist_skill(Path("skills/_shared/SKILL.md")))
         self.assertFalse(
             lint.is_specialist_skill(Path("skills/staff-engineer-mode/SKILL.md"))

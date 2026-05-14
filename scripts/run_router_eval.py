@@ -57,7 +57,7 @@ def inline_list(value: str) -> list[str]:
 
 
 def parse_value(key: str, value: str) -> str | list[str]:
-    if key in {"expected_gates", "forbidden_in_response"}:
+    if key in {"expected_checks", "forbidden_in_response"}:
         return inline_list(value)
     return scalar(value)
 
@@ -84,7 +84,7 @@ def parse_cases(text: str) -> list[dict[str, Any]]:
 
 
 def specialist_names() -> list[str]:
-    return sorted(path.parent.name for path in SPECIALISTS.glob("*/SKILL.md"))
+    return sorted(path.stem for path in SPECIALISTS.glob("*.md"))
 
 
 def case_id(index: int, case: dict[str, Any]) -> str:
@@ -130,9 +130,9 @@ def score_case(case: dict[str, Any], response: str, names: list[str], index: int
     failures: list[str] = []
     expected_primary = str(case["expected_primary"])
     category = str(case["category"])
-    gates = case.get("expected_gates", [])
-    if not isinstance(gates, list):
-        gates = []
+    checks = case.get("expected_checks", [])
+    if not isinstance(checks, list):
+        checks = []
 
     try:
         block = parse_routing_block(response)
@@ -163,43 +163,43 @@ def score_case(case: dict[str, Any], response: str, names: list[str], index: int
         if confidence not in {"high", "medium"}:
             failures.append(f"confidence must be high or medium, got {confidence!r}")
 
-    if "single_primary" in gates and block is not None:
+    if "single_primary" in checks and block is not None:
         primary = block.get("primary")
         if not isinstance(primary, str) or not primary:
-            failures.append("single_primary gate failed: primary must be one skill name")
+            failures.append("single_primary check failed: primary must be one skill name")
         elif "," in primary or " " in primary:
-            failures.append("single_primary gate failed: primary contains multiple values")
+            failures.append("single_primary check failed: primary contains multiple values")
 
-    if "secondary_cap" in gates and block is not None:
+    if "secondary_cap" in checks and block is not None:
         secondary = block.get("secondary")
         expected_secondary = case.get("expected_secondary")
         if isinstance(secondary, list):
-            failures.append("secondary_cap gate failed: secondary must not be a list")
+            failures.append("secondary_cap check failed: secondary must not be a list")
         elif expected_secondary and secondary != expected_secondary:
             failures.append(f"secondary mismatch: expected {expected_secondary}, got {secondary}")
         elif not expected_secondary and secondary not in (None, ""):
             failures.append(f"unexpected secondary: {secondary}")
 
-    if "intent_inference" in gates and block is not None:
+    if "intent_inference" in checks and block is not None:
         for field in ["artifact", "surface", "phase", "rationale"]:
             if not isinstance(block.get(field), str) or not block.get(field):
-                failures.append(f"intent_inference gate failed: missing {field}")
+                failures.append(f"intent_inference check failed: missing {field}")
 
-    if "capability_translation" in gates and block is not None:
+    if "capability_translation" in checks and block is not None:
         prompt_lower = str(case["prompt"]).lower()
         routed_text = text_fields(block).lower()
         for term in TOOL_BAIT_TERMS:
             if term in prompt_lower and term in routed_text:
-                failures.append(f"capability_translation gate failed: repeated tool term {term!r}")
+                failures.append(f"capability_translation check failed: repeated tool term {term!r}")
 
-    if "ambiguity_check" in gates:
+    if "ambiguity_check" in checks:
         if block is not None:
-            failures.append("ambiguity_check gate failed: emitted routing block")
+            failures.append("ambiguity_check check failed: emitted routing block")
 
-    if "scope_check" in gates and expected_primary == "none" and block is not None:
-        failures.append("scope_check gate failed: routed out-of-scope prompt")
+    if "scope_check" in checks and expected_primary == "none" and block is not None:
+        failures.append("scope_check check failed: routed out-of-scope prompt")
 
-    if "no_skill_invoke" in gates:
+    if "no_skill_invoke" in checks:
         skill_pattern = re.compile(
             r"""\bSkill\s*[\(\s:'"]+(?:staff-engineer-mode:)?["']?([a-z0-9-]+)""",
             re.IGNORECASE,
@@ -208,21 +208,23 @@ def score_case(case: dict[str, Any], response: str, names: list[str], index: int
             candidate = match.group(1)
             if candidate in names:
                 failures.append(
-                    f"no_skill_invoke gate failed: response invokes Skill tool on specialist {candidate!r}"
+                    f"no_skill_invoke check failed: response invokes Skill tool on specialist {candidate!r}"
                 )
                 break
 
-    if "read_load" in gates and expected_primary not in LOW_CONFIDENCE_PRIMARIES and expected_primary != "none":
+    if "read_load" in checks and expected_primary not in LOW_CONFIDENCE_PRIMARIES and expected_primary != "none":
         body_without_routing = ROUTING_BLOCK_RE.sub("", response).strip()
         if len(body_without_routing) >= 200:
             read_pattern = re.compile(
-                rf"\bRead\b[^\n]*?{re.escape(expected_primary)}/SKILL\.md",
+                rf"\bRead\b[^\n]*?"
+                rf"(?:SPECIALIST_ROOT[^\n]*?{re.escape(expected_primary)}\.md|"
+                rf"[/\\]specialists[/\\]{re.escape(expected_primary)}\.md)",
                 re.IGNORECASE,
             )
             if not read_pattern.search(response):
                 failures.append(
-                    f"read_load gate failed: substantive answer without Read of "
-                    f"specialists/{expected_primary}/SKILL.md"
+                    f"read_load check failed: substantive answer without Read of "
+                    f"specialists/{expected_primary}.md"
                 )
 
     return CaseResult(

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Brand-voice linter for Staff Engineer Mode.
 
-Scans Markdown surfaces (README, top-level docs, and specialist SKILL.md files)
+Scans Markdown surfaces (README, top-level docs, and specialist files)
 for brand-voice violations described in the brand guardian style guide.
 
 Findings are printed in a machine-parseable format::
@@ -35,19 +35,24 @@ from typing import Iterable, Sequence
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from staff_engineer_mode_contract import BRAND_LINTER_SPECIALIST_VENDOR_NAMES
 
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 
-# Default scope: top-level user-facing docs plus router and specialist SKILL.md files.
+# Default scope: top-level user-facing docs plus router and specialist files.
 DEFAULT_SCOPE: tuple[str, ...] = (
     "README.md",
     "MAINTAINERS.md",
     "STYLE.md",
     "CONTRIBUTING.md",
     "skills/staff-engineer-mode/SKILL.md",
-    "specialists/**/SKILL.md",
+    "specialists/*.md",
 )
 
 # FAANG and major cloud vendors whose appearance in titles or first content
@@ -83,7 +88,7 @@ MARKETING_ADJECTIVES: tuple[str, ...] = (
 )
 
 # Vague hedging in declarative claims.  Forbidden in headings and one-line
-# descriptions only.  The body of a SKILL.md is allowed to use them.
+# descriptions only.  The body of a specialist file is allowed to use them.
 HEDGING_PHRASES: tuple[str, ...] = (
     "helps you",
     "can help",
@@ -115,41 +120,6 @@ FIRST_PERSON_PLURAL: tuple[str, ...] = (
 COUNT_CLAIM_PATTERN = re.compile(
     r"\b(\d{2,4})\s+(specialists?|skills?)\b",
     re.IGNORECASE,
-)
-
-# Vendor / framework / product names that should not appear in technology-
-# agnostic SKILL.md bodies.  Sourced from the existing
-# scripts/validate_skill_pack.py PROHIBITED_BODY_TERMS list — kept in sync
-# manually because validate_skill_pack already enforces this aggressively.
-# We intentionally use a narrower subset here so the brand linter does not
-# duplicate that script's behavior; it focuses on names most likely to appear
-# in user-facing prose.
-SPECIALIST_VENDOR_NAMES: tuple[str, ...] = (
-    "AWS",
-    "Azure",
-    "GCP",
-    "Google Cloud",
-    "Kubernetes",
-    "Terraform",
-    "Docker",
-    "Datadog",
-    "Splunk",
-    "PagerDuty",
-    "PostgreSQL",
-    "MySQL",
-    "MongoDB",
-    "Kafka",
-    "Redis",
-    "Snowflake",
-    "BigQuery",
-    "DynamoDB",
-    "Prometheus",
-    "Grafana",
-    "GitHub",
-    "GitLab",
-    "Jenkins",
-    "React",
-    "Django",
 )
 
 HEADING_LINE_RE = re.compile(r"^\s{0,3}(#{1,6})\s+(.*?)\s*$")
@@ -398,7 +368,7 @@ def check_specialist_vendor_names(
     offset: int,
     fence_mask: list[bool],
 ) -> list[Finding]:
-    """BV004: specialist SKILL.md must not name vendors/frameworks in prose.
+    """BV004: specialist file must not name vendors/frameworks in prose.
 
     This is a brand-aligned subset of the technology-agnostic rule already
     enforced by ``validate_skill_pack.py``.  We restrict the check to body
@@ -410,7 +380,7 @@ def check_specialist_vendor_names(
     for index, raw in enumerate(content_lines):
         if fence_mask[index]:
             continue
-        for term in SPECIALIST_VENDOR_NAMES:
+        for term in BRAND_LINTER_SPECIALIST_VENDOR_NAMES:
             for match in whole_word_finditer(term, raw):
                 findings.append(
                     Finding(
@@ -421,7 +391,7 @@ def check_specialist_vendor_names(
                         rule="BV004/vendor-in-specialist",
                         message=(
                             f"vendor or framework name '{term}' in technology-"
-                            "agnostic SKILL.md prose; describe the capability instead"
+                            "agnostic specialist prose; describe the capability instead"
                         ),
                     )
                 )
@@ -433,7 +403,7 @@ def check_iron_law_present(
     full_text: str,
     offset_unused: int,
 ) -> list[Finding]:
-    """BV005: every specialist SKILL.md must contain an ``## Iron Law`` section."""
+    """BV005: every specialist file must contain an ``## Iron Law`` section."""
     if re.search(r"^\s{0,3}##\s+Iron Law\s*$", full_text, re.MULTILINE):
         return []
     return [
@@ -444,7 +414,7 @@ def check_iron_law_present(
             severity="ERROR",
             rule="BV005/missing-iron-law",
             message=(
-                "specialist SKILL.md is missing the '## Iron Law' section; "
+                "specialist file is missing the '## Iron Law' section; "
                 "every specialist must declare its central rule"
             ),
         )
@@ -613,7 +583,7 @@ def lint_file(path: Path) -> list[Finding]:
         )
     )
 
-    # Hard rules (specialist SKILL.md only)
+    # Hard rules (specialist files only)
     if is_specialist_skill(path):
         findings.extend(
             check_specialist_vendor_names(path, content_lines, offset, fence_mask)
@@ -635,18 +605,16 @@ def lint_file(path: Path) -> list[Finding]:
 
 
 def is_specialist_skill(path: Path) -> bool:
-    """A specialist SKILL.md lives under ``specialists/<name>/SKILL.md``."""
-    if path.name != "SKILL.md":
+    """A specialist file lives under ``specialists/<name>.md``."""
+    if path.suffix != ".md":
         return False
     parts = path.parts
     if "specialists" not in parts:
         return False
     specialists_index = parts.index("specialists")
-    try:
-        specialist_name = parts[specialists_index + 1]
-    except IndexError:
+    if specialists_index != len(parts) - 2:
         return False
-    return bool(specialist_name)
+    return bool(path.stem)
 
 
 # ---------------------------------------------------------------------------
@@ -695,7 +663,7 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
         metavar="GLOB",
         help=(
             "Glob pattern relative to the repo root.  May be passed multiple "
-            "times.  Defaults to README.md, top-level docs, the router, and specialists/**/SKILL.md."
+            "times.  Defaults to README.md, top-level docs, the router, and specialists/*.md."
         ),
     )
     parser.add_argument(

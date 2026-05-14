@@ -18,7 +18,7 @@ maintaining complex software systems.
 | Path | Contains |
 | --- | --- |
 | `skills/staff-engineer-mode/SKILL.md` | The only native skill entrypoint exposed to plugin discovery. |
-| `specialists/<specialist-name>/SKILL.md` | Routed specialist reference files loaded only after the router selects one. |
+| `specialists/<specialist-name>.md` | Routed specialist reference files loaded only after the router selects one. |
 | `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
 | `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
@@ -27,15 +27,15 @@ maintaining complex software systems.
 ## Skill Rules
 
 - Keep each specialist file narrow enough that the router can select it with low noise.
-- `SKILL.md` files under `skills/staff-engineer-mode/` and `specialists/` must not exceed 300 lines.
+- The router `SKILL.md` and specialist markdown files must not exceed 300 lines.
 - Specialist files must be self-sufficient for solo developers. The agent must produce
-  complete guidance from local evidence and work directly with the user.
-  Confirmation means explicit user confirmation or recorded evidence, not an
-  outside gate or waiting point. Adjacent-skill routing is internal skill
+  complete guidance from local facts and work directly with the user.
+  Confirmation means explicit user confirmation or local facts from the work,
+  not an outside approval step or waiting point. Adjacent-skill routing is internal skill
   selection, not a delegation of responsibility away from the agent and user.
-- When a SKILL.md file needs facts about a vendor, upstream project, legal constraint, or
+- When a router or specialist file needs facts about a vendor, upstream project, legal constraint, or
   outside dependency, proceed from user-provided requirements and locally
-  available evidence, marking unknowns explicitly. Do not make the skill depend
+  available details, marking unknowns explicitly. Do not make the skill depend
   on contacting or waiting for that third party.
 - Skill descriptions must be trigger-focused and start with `Use when` unless a
   specialized router format justifies otherwise.
@@ -47,17 +47,17 @@ maintaining complex software systems.
   and theme guidance, reconcile the tradeoffs, and write unambiguous operational
   instructions a future agent can follow without guessing.
 - Keep only the router in the native `skills/` discovery namespace. Specialist
-  guidance lives under `specialists/<specialist-name>/SKILL.md` and is loaded by
+  guidance lives under `specialists/<specialist-name>.md` and is loaded by
   router instruction, not by plugin registry auto-discovery. Preserve thematic
   grouping through names, router language, and shared references rather than
   nested directories.
 - Keep specialist files technology-agnostic unless the file is explicitly for a
   technology-bound surface such as frontend, mobile, ML, or LLM applications.
-  Write guidance in terms of capabilities, contracts, failure modes, evidence,
+  Write guidance in terms of capabilities, contracts, failure modes, checks,
   and artifacts. Do not prescribe a cloud provider, orchestration platform,
   database, framework, vendor product, or tool as the default.
-- Individual specialist files should state when not to use them, required inputs, workflow,
-  synthesized defaults, exceptions, required outputs, evidence gates, red flags,
+- Individual specialist files should state when not to use them, info to gather, workflow,
+  synthesized defaults, exceptions, required outputs, checks before moving on, red flags,
   and common mistakes.
 - Normalize competing large-scale engineering practices into one blended default
   unless the context clearly requires a named exception.
@@ -67,7 +67,7 @@ maintaining complex software systems.
   DevOps, operations, reliability, security, stability, architecture, or
   maintainability work.
 - Keep compliance, legal, procurement, staffing, compensation, product strategy,
-  and broad governance out of scope unless framed as engineering evidence or
+  and broad governance out of scope unless framed as engineering checks or
   controls for system delivery and operations.
 
 ## Documentation

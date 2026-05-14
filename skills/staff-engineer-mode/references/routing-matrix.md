@@ -10,7 +10,7 @@
 
 ## Exact Slug Guardrails
 
-Return the canonical `specialists/<slug>/SKILL.md` slug, not a semantic alias.
+Return the canonical `specialists/<slug>.md` slug, not a semantic alias.
 
 - Fault-domain topology, static failover capacity, location-loss survivability, and availability assumptions are `high-availability-design`; chaos tests, game days, failover drills, and fault injection are `resilience-experiments`.
 - New API surfaces, operation/resource shape, generated-client ergonomics, existing-client callers, backwards compatibility, and safe deprecation of an exposed API response field are `api-design-and-compatibility`, not broad migration.

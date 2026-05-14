@@ -207,7 +207,7 @@ Stay narrow.
 
 ## Load Contract
 
-Use the Read tool. Do not use the Skill tool. Complete the Read before producing engineering guidance for routed work. A confidently-routed answer without a matching Read in the same turn is a failure. SPECIALIST_ROOT=, Codex:, Gemini: ../../specialists/foo/SKILL.md
+Use the Read tool. Do not use the Skill tool. Complete the Read before producing engineering guidance for routed work. A confidently-routed answer without a matching Read in the same turn is a failure. SPECIALIST_ROOT=, Codex:, Gemini: ../../specialists/foo.md
 
 ## Overview
 

@@ -33,7 +33,7 @@ Use OpenCode's native `skill` tool:
 
 ```text
 use skill tool to list skills
-use skill tool to load staff-engineer-mode/staff-engineer-mode
+use skill tool to load staff-engineer-mode
 ```
 
 Normal use should not require the user to name a specialist; the router

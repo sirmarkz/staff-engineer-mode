@@ -5,7 +5,7 @@ this repository.
 
 This is the human-facing companion to [AGENTS.md](AGENTS.md). `AGENTS.md`
 tells coding agents how to work in the repo. This file tells people what good
-`SKILL.md` content looks like before they open a PR.
+skill content looks like before they open a PR.
 
 ## What This Repo Publishes
 
@@ -42,7 +42,7 @@ useful specialist file yet.
 ## Skill Authoring Rules
 
 - Keep each specialist file narrow enough that the router can select it with low noise.
-- Keep `skills/staff-engineer-mode/SKILL.md` and `specialists/<specialist-name>/SKILL.md` under 300 lines.
+- Keep `skills/staff-engineer-mode/SKILL.md` and `specialists/<specialist-name>.md` under 300 lines.
 - Use `skills/` only for the native router entrypoint; routed specialist files live under `specialists/`.
 - Frontmatter descriptions start with `Use when` and describe the trigger, not
   the feature.
@@ -81,7 +81,7 @@ Write like an engineer leaving instructions for another careful engineer.
 
 - Be plain, direct, and specific.
 - Prefer imperatives over commentary.
-- Prefer artifacts over abstract claims.
+- Prefer artifacts over abstract statements.
 - Prefer concrete checks over confidence words.
 - Prefer capabilities over products: `queue`, `cache`, `object store`,
   `load balancer`, `identity provider`, `approval system`.
@@ -126,7 +126,7 @@ the skill prevents.
 
 Good Iron Laws are short, testable, and operational:
 
-- `NO LAUNCH READINESS CLAIM WITHOUT EVIDENCE OR A DATED EXCEPTION`
+- `NO LAUNCH READINESS CALL WITHOUT CURRENT CHECK RESULTS OR A DATED EXCEPTION`
 - `NO STATE MACHINE REVIEW WITHOUT EXPLICIT INVARIANTS`
 - `NO SECRET ROTATION WITHOUT OVERLAP, VERIFICATION, AND ROLLBACK`
 

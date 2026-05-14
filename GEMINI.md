@@ -15,13 +15,13 @@ reliability guidance.
 Do not require the user to name an individual specialist. The router must infer
 intent from the request and choose the smallest useful specialist file set.
 After routing, read only the selected specialist reference file from
-`specialists/<specialist-name>/SKILL.md`.
+`specialists/<specialist-name>.md`.
 
 ## Specialist Loading
 
 Specialists are reference files, not registered skills. To load a specialist:
 
-- **Read** `specialists/<slug>/SKILL.md` relative to this `GEMINI.md` file.
+- **Read** `specialists/<slug>.md` relative to this `GEMINI.md` file.
 - Never call a Skill tool on a specialist slug. Specialists are not registered as skills on Gemini.
 - Complete the Read before producing engineering guidance for routed work. A confidently-routed answer without a matching Read in the same turn is a routing failure.
 

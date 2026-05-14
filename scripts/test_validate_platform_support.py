@@ -37,7 +37,7 @@ class PlatformDocsValidationTests(unittest.TestCase):
                 [
                     "~/.agents/skills/staff-engineer-mode",
                     "ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode",
-                    "specialists/<slug>/SKILL.md",
+                    "specialists/<slug>.md",
                     "",
                 ]
             ),

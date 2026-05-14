@@ -12,9 +12,9 @@ ROUTER_EVAL_FILES = [
 ]
 REQUIRED_KEYS = {"prompt", "expected_primary", "expected_behavior", "category"}
 REQUIRED_CATEGORIES = {"direct", "paraphrase", "mixed_intent", "out_of_scope"}
-REQUIRED_GATE_KEY = "expected_gates"
+REQUIRED_CHECK_KEY = "expected_checks"
 FORBIDDEN_KEY = "forbidden_in_response"
-ALLOWED_GATES = {
+ALLOWED_CHECKS = {
     "single_primary",
     "secondary_cap",
     "capability_translation",
@@ -76,7 +76,7 @@ def inline_list(value: str) -> list[str]:
 
 
 def parse_value(key: str, value: str) -> str | list[str]:
-    if key in {REQUIRED_GATE_KEY, FORBIDDEN_KEY}:
+    if key in {REQUIRED_CHECK_KEY, FORBIDDEN_KEY}:
         return inline_list(value)
     return scalar(value)
 
@@ -104,7 +104,7 @@ def parse_cases(text: str) -> list[dict[str, Any]]:
 
 def skill_names() -> set[str]:
     specialists_dir = ROOT / "specialists"
-    return {"staff-engineer-mode"} | {path.parent.name for path in specialists_dir.glob("*/SKILL.md")}
+    return {"staff-engineer-mode"} | {path.stem for path in specialists_dir.glob("*.md")}
 
 
 def validate_common_cases(cases: list[dict[str, Any]], path: Path) -> tuple[set[str], set[str], int]:
@@ -130,23 +130,23 @@ def validate_common_cases(cases: list[dict[str, Any]], path: Path) -> tuple[set[
             fail(
                 f"{path} no-route case {index} must withhold routing without naming specialists"
             )
-        gates = case.get(REQUIRED_GATE_KEY)
-        if not isinstance(gates, list) or not gates:
-            fail(f"{path} case {index} must include non-empty {REQUIRED_GATE_KEY}")
-        unknown_gates = set(gates) - ALLOWED_GATES
-        if unknown_gates:
-            fail(f"{path} case {index} has unknown expected gates: {sorted(unknown_gates)}")
+        checks = case.get(REQUIRED_CHECK_KEY)
+        if not isinstance(checks, list) or not checks:
+            fail(f"{path} case {index} must include non-empty {REQUIRED_CHECK_KEY}")
+        unknown_checks = set(checks) - ALLOWED_CHECKS
+        if unknown_checks:
+            fail(f"{path} case {index} has unknown expected checks: {sorted(unknown_checks)}")
         if case["expected_primary"] not in {"staff-engineer-mode", "none"}:
-            for gate in ["single_primary", "intent_inference"]:
-                if gate not in gates:
-                    fail(f"{path} case {index} must include expected gate {gate}")
-        if "expected_secondary" in case and "secondary_cap" not in gates:
+            for check in ["single_primary", "intent_inference"]:
+                if check not in checks:
+                    fail(f"{path} case {index} must include expected check {check}")
+        if "expected_secondary" in case and "secondary_cap" not in checks:
             fail(f"{path} case {index} with expected_secondary must include secondary_cap")
         if "expected_secondary" in case:
             secondary_cases += 1
-        if case["expected_primary"] == "staff-engineer-mode" and "ambiguity_check" not in gates:
+        if case["expected_primary"] == "staff-engineer-mode" and "ambiguity_check" not in checks:
             fail(f"{path} ambiguous case {index} must include ambiguity_check")
-        if case["expected_primary"] == "none" and "scope_check" not in gates:
+        if case["expected_primary"] == "none" and "scope_check" not in checks:
             fail(f"{path} out-of-scope case {index} must include scope_check")
         if case["category"] in {"ambiguous", "out_of_scope"}:
             forbidden = case.get(FORBIDDEN_KEY)

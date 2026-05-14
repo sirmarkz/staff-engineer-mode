@@ -49,7 +49,7 @@ Reload the workspace.
 In Cursor Agent chat:
 
 ```text
-Design the production readiness gates for this service.
+Design the production readiness checks for this service.
 ```
 
 The router should select the smallest useful specialist set instead of

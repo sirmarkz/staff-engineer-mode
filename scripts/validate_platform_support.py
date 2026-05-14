@@ -7,7 +7,14 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from staff_engineer_mode_contract import MANIFEST_DESCRIPTION_FIELDS
+
 NAME = "staff-engineer-mode"
+BOOTSTRAP_TEMPLATE_RELATIVE = Path("skills/staff-engineer-mode/references/bootstrap-context.md")
 
 
 def package_version() -> str:
@@ -41,10 +48,47 @@ def read_json(path: Path) -> dict:
     return value
 
 
+def bootstrap_template_text() -> str:
+    path = ROOT / BOOTSTRAP_TEMPLATE_RELATIVE
+    if not path.exists():
+        fail(f"missing {BOOTSTRAP_TEMPLATE_RELATIVE}")
+    return path.read_text()
+
+
 def require(value: dict, key: str, path: Path) -> object:
     if key not in value or value[key] in ("", None, []):
         fail(f"{path.relative_to(ROOT)} missing required field {key}")
     return value[key]
+
+
+def value_at_path(value: dict, dotted: str) -> object:
+    current: object = value
+    for part in dotted.split("."):
+        if isinstance(current, list):
+            try:
+                index = int(part)
+            except ValueError:
+                fail(f"cannot index list with {part!r} in description contract")
+            try:
+                current = current[index]
+            except IndexError:
+                fail(f"description contract path {dotted!r} references missing list item")
+            continue
+        if not isinstance(current, dict) or part not in current:
+            fail(f"description contract path {dotted!r} references missing field")
+        current = current[part]
+    return current
+
+
+def validate_manifest_descriptions() -> None:
+    cache: dict[Path, dict] = {}
+    for key, expected in MANIFEST_DESCRIPTION_FIELDS.items():
+        relative, field_path = key.split(":", 1)
+        path = ROOT / relative
+        value = cache.setdefault(path, read_json(path))
+        actual = value_at_path(value, field_path)
+        if actual != expected:
+            fail(f"{relative} {field_path} must match the canonical description copy")
 
 
 def require_name_version(path: Path) -> dict:
@@ -128,7 +172,7 @@ def validate_claude() -> None:
         fail("CLAUDE.md must name the flat router entrypoint")
     if "Keep guidance technology-agnostic by default" not in claude_text:
         fail("CLAUDE.md must require technology-agnostic guidance by default")
-    if "specialists/<specialist-name>/SKILL.md" not in claude_text:
+    if "specialists/<specialist-name>.md" not in claude_text:
         fail("CLAUDE.md must document routed specialist reference files")
     marketplace = ROOT / ".claude-plugin" / "marketplace.json"
     value = read_json(marketplace)
@@ -183,7 +227,7 @@ def validate_gemini() -> None:
         fail("GEMINI.md must not reference the old nested router path")
     if "Keep guidance technology-agnostic by default" not in text:
         fail("GEMINI.md must require technology-agnostic guidance by default")
-    if "specialists/<specialist-name>/SKILL.md" not in text:
+    if "specialists/<specialist-name>.md" not in text:
         fail("GEMINI.md must document routed specialist reference files")
 
 
@@ -197,13 +241,14 @@ def validate_opencode() -> None:
     if not plugin_path.exists():
         fail("missing OpenCode plugin file")
     text = plugin_path.read_text()
+    bootstrap_text = bootstrap_template_text()
     if "skillsDir" not in text or "config.skills.paths" not in text:
         fail("OpenCode plugin must register skillsDir in config.skills.paths")
-    if "specialistsDir" not in text or "<slug>/SKILL.md" not in text:
+    if "specialistsDir" not in text or "<slug>.md" not in (text + bootstrap_text):
         fail("OpenCode plugin must route to hidden specialist reference files")
     if "experimental.chat.messages.transform" not in text or "staff-engineer-mode" not in text:
         fail("OpenCode plugin must inject the router bootstrap")
-    if "Keep guidance technology-agnostic by default" not in text:
+    if "Keep guidance technology-agnostic by default" not in bootstrap_text:
         fail("OpenCode plugin must require technology-agnostic guidance by default")
     if not (ROOT / ".opencode" / "INSTALL.md").exists():
         fail("missing .opencode/INSTALL.md")
@@ -219,6 +264,7 @@ def validate_hooks() -> None:
         if not (ROOT / relative).exists():
             fail(f"missing {relative}")
     session_start = (ROOT / "hooks" / "session-start").read_text()
+    bootstrap_text = bootstrap_template_text()
     for term in [
         "CURSOR_PLUGIN_ROOT",
         "CLAUDE_PLUGIN_ROOT",
@@ -228,11 +274,16 @@ def validate_hooks() -> None:
         "staff-engineer-mode",
         "skills/staff-engineer-mode/SKILL.md",
         "specialists",
-        "<slug>/SKILL.md",
-        "Keep guidance technology-agnostic by default",
     ]:
         if term not in session_start:
             fail(f"hooks/session-start missing {term}")
+    for term in [
+        "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
+        "Read ${SPECIALIST_ROOT}/<slug>.md",
+        "Keep guidance technology-agnostic by default",
+    ]:
+        if term not in bootstrap_text:
+            fail(f"bootstrap-context.md missing {term}")
 
 
 def validate_version_metadata() -> None:
@@ -323,12 +374,13 @@ def validate_docs() -> None:
         fail(".codex/INSTALL.md must use the native ~/.agents/skills/staff-engineer-mode install path")
     if 'ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode' not in codex_install:
         fail(".codex/INSTALL.md must symlink the Staff Engineer Mode skill tree for Codex")
-    if "specialists/<slug>/SKILL.md" not in codex_install:
+    if "specialists/<slug>.md" not in codex_install:
         fail(".codex/INSTALL.md must document routed specialist files")
 
 
 def main() -> int:
     validate_https_plugin_install_paths()
+    validate_manifest_descriptions()
     validate_codex()
     validate_claude()
     validate_cursor()

@@ -1,4 +1,4 @@
-# Accessibility Release Gate
+# Accessibility Release Check
 
 ## Target
 

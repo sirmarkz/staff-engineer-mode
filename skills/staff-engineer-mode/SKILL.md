@@ -23,7 +23,7 @@ Phrasings such as "build X", "design X", "make X reliable", "add HA to X", "plan
 
 ## Load Contract
 
-To load a specialist, **Read** the file at `<specialist-root>/<slug>/SKILL.md`. Resolve `<specialist-root>` in this order:
+To load a specialist, **Read** the file at `<specialist-root>/<slug>.md`. Resolve `<specialist-root>` in this order:
 
 1. If a `SPECIALIST_ROOT=` line is present in this session's additional context (Claude Code, Cursor, OpenCode), use that absolute path.
 2. Otherwise use the platform default:

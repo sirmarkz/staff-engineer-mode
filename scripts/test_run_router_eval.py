@@ -41,7 +41,7 @@ class RouterEvalHarnessTests(unittest.TestCase):
             "expected_primary": "observability-and-alerting",
             "expected_behavior": "route to observability",
             "category": "paraphrase",
-            "expected_gates": ["single_primary", "intent_inference"],
+            "expected_checks": ["single_primary", "intent_inference"],
         }
         response = """```routing
 {"primary":"observability-and-alerting","secondary":null,"confidence":"medium","artifact":"investigation plan","surface":"observability","phase":"active incident","rationale":"The user needs telemetry to locate failures."}
@@ -58,7 +58,7 @@ class RouterEvalHarnessTests(unittest.TestCase):
             "expected_primary": "none",
             "expected_behavior": "decline without naming specialists",
             "category": "out_of_scope",
-            "expected_gates": ["scope_check"],
+            "expected_checks": ["scope_check"],
             "forbidden_in_response": ["all_specialist_names"],
         }
 
@@ -78,7 +78,7 @@ class RouterEvalHarnessTests(unittest.TestCase):
             "expected_primary": "dependency-resilience",
             "expected_behavior": "translate tool name into dependency controls",
             "category": "paraphrase",
-            "expected_gates": ["single_primary", "capability_translation", "intent_inference"],
+            "expected_checks": ["single_primary", "capability_translation", "intent_inference"],
         }
         response = """```routing
 {"primary":"dependency-resilience","secondary":null,"confidence":"high","artifact":"Istio retry policy","surface":"dependency resilience","phase":"design","rationale":"Istio retry settings are the requested control."}
@@ -87,17 +87,17 @@ class RouterEvalHarnessTests(unittest.TestCase):
         result = runner.score_case(case, response, ["dependency-resilience"])
 
         self.assertFalse(result.passed)
-        self.assertIn("capability_translation gate failed: repeated tool term 'istio'", result.failures)
+        self.assertIn("capability_translation check failed: repeated tool term 'istio'", result.failures)
 
 
-    def test_no_skill_invoke_gate_fails_on_specialist_skill_call(self) -> None:
+    def test_no_skill_invoke_check_fails_on_specialist_skill_call(self) -> None:
         runner = load_runner()
         case = {
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
             "category": "sample_prompt",
-            "expected_gates": ["single_primary", "intent_inference", "no_skill_invoke"],
+            "expected_checks": ["single_primary", "intent_inference", "no_skill_invoke"],
         }
         response = """```routing
 {"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability plan."}
@@ -112,14 +112,14 @@ Skill(staff-engineer-mode:high-availability-design)
             f"expected no_skill_invoke failure, got {result.failures}",
         )
 
-    def test_no_skill_invoke_gate_catches_quoted_skill_call(self) -> None:
+    def test_no_skill_invoke_check_catches_quoted_skill_call(self) -> None:
         runner = load_runner()
         case = {
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
             "category": "sample_prompt",
-            "expected_gates": ["single_primary", "intent_inference", "no_skill_invoke"],
+            "expected_checks": ["single_primary", "intent_inference", "no_skill_invoke"],
         }
         for invocation in (
             'Skill("staff-engineer-mode:high-availability-design")',
@@ -144,32 +144,32 @@ Skill(staff-engineer-mode:high-availability-design)
                 f"expected no_skill_invoke failure for {invocation!r}, got {result.failures}",
             )
 
-    def test_no_skill_invoke_gate_passes_without_skill_call(self) -> None:
+    def test_no_skill_invoke_check_passes_without_skill_call(self) -> None:
         runner = load_runner()
         case = {
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
             "category": "sample_prompt",
-            "expected_gates": ["single_primary", "intent_inference", "no_skill_invoke"],
+            "expected_checks": ["single_primary", "intent_inference", "no_skill_invoke"],
         }
         response = """```routing
 {"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability plan."}
 ```
 
-Read(/abs/path/specialists/high-availability-design/SKILL.md)
+Read(/abs/path/specialists/high-availability-design.md)
 """
         result = runner.score_case(case, response, ["high-availability-design"])
         self.assertTrue(result.passed, result.failures)
 
-    def test_read_load_gate_fails_on_substantive_answer_without_read(self) -> None:
+    def test_read_load_check_fails_on_substantive_answer_without_read(self) -> None:
         runner = load_runner()
         case = {
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
             "category": "sample_prompt",
-            "expected_gates": ["single_primary", "intent_inference", "read_load"],
+            "expected_checks": ["single_primary", "intent_inference", "read_load"],
         }
         body = (
             "Here is the high-availability design. "
@@ -188,14 +188,14 @@ Read(/abs/path/specialists/high-availability-design/SKILL.md)
             f"expected read_load failure, got {result.failures}",
         )
 
-    def test_read_load_gate_passes_with_matching_read(self) -> None:
+    def test_read_load_check_passes_with_matching_read(self) -> None:
         runner = load_runner()
         case = {
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
             "category": "sample_prompt",
-            "expected_gates": ["single_primary", "intent_inference", "read_load"],
+            "expected_checks": ["single_primary", "intent_inference", "read_load"],
         }
         body = (
             "Here is the high-availability design. "
@@ -205,20 +205,49 @@ Read(/abs/path/specialists/high-availability-design/SKILL.md)
             "```routing\n"
             '{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability."}\n'
             "```\n\n"
-            "Read(/abs/path/specialists/high-availability-design/SKILL.md)\n\n"
+            "Read(/abs/path/specialists/high-availability-design.md)\n\n"
             + body
         )
         result = runner.score_case(case, response, ["high-availability-design"])
         self.assertTrue(result.passed, result.failures)
 
-    def test_read_load_gate_passes_when_body_below_threshold(self) -> None:
+    def test_read_load_check_rejects_non_specialist_markdown_read(self) -> None:
         runner = load_runner()
         case = {
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
             "category": "sample_prompt",
-            "expected_gates": ["single_primary", "intent_inference", "read_load"],
+            "expected_checks": ["single_primary", "intent_inference", "read_load"],
+        }
+        body = (
+            "Here is the high-availability design. "
+            + "Use multiple fault domains and partition state with replicas across zones, sized for static capacity. " * 2
+        )
+        response = (
+            "```routing\n"
+            '{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability."}\n'
+            "```\n\n"
+            "Read(/abs/path/docs/high-availability-design.md)\n\n"
+            + body
+        )
+
+        result = runner.score_case(case, response, ["high-availability-design"])
+
+        self.assertFalse(result.passed)
+        self.assertTrue(
+            any("read_load" in f for f in result.failures),
+            f"expected read_load failure, got {result.failures}",
+        )
+
+    def test_read_load_check_passes_when_body_below_threshold(self) -> None:
+        runner = load_runner()
+        case = {
+            "prompt": "Design a highly available checkout service.",
+            "expected_primary": "high-availability-design",
+            "expected_behavior": "route to HA",
+            "category": "sample_prompt",
+            "expected_checks": ["single_primary", "intent_inference", "read_load"],
         }
         response = (
             "```routing\n"

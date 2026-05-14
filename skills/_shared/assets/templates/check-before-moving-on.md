@@ -1,6 +1,6 @@
-# Evidence Gate
+# Check Before Moving On
 
-## Gate
+## Check
 
 ## Check Command Or Condition
 

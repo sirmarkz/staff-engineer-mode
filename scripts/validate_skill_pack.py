@@ -6,6 +6,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from staff_engineer_mode_contract import PROHIBITED_SPECIALIST_BODY_TERMS
+
 SKILLS = ROOT / "skills"
 SPECIALISTS = ROOT / "specialists"
 README = ROOT / "README.md"
@@ -188,6 +194,8 @@ ROUTER_LOAD_CONTRACT_PLATFORM_TERMS = [
 
 ROUTER_LOAD_CONTRACT_BANNED_SUBSTRINGS = [
     "../../specialists/",
+    "<slug>/SKILL.md",
+    "specialists/<specialist-name>/SKILL.md",
 ]
 
 AUDIT_ONLY_ANTI_PATTERNS = [
@@ -225,116 +233,6 @@ ROUTER_OPERATIONAL_SECTIONS = [
     "## Common Mistakes",
 ]
 
-PROHIBITED_BODY_TERMS = [
-    "Amazon",
-    "AWS",
-    "Azure",
-    "Auth0",
-    "GCP",
-    "Google",
-    "Datadog",
-    "New Relic",
-    "Splunk",
-    "Sentry",
-    "PagerDuty",
-    "Opsgenie",
-    "Kubernetes",
-    "K8s",
-    "EKS",
-    "GKE",
-    "AKS",
-    "ECS",
-    "Fargate",
-    "Terraform",
-    "Argo",
-    "Argo CD",
-    "OPA",
-    "Rego",
-    "Istio",
-    "Envoy",
-    "Linkerd",
-    "Consul",
-    "PostgreSQL",
-    "Postgres",
-    "MySQL",
-    "Redis",
-    "Memcached",
-    "Kafka",
-    "Pulsar",
-    "RabbitMQ",
-    "Cassandra",
-    "MongoDB",
-    "Spark",
-    "Flink",
-    "Snowflake",
-    "BigQuery",
-    "DynamoDB",
-    "Spanner",
-    "RDS",
-    "Aurora",
-    "Elasticsearch",
-    "OpenSearch",
-    "S3",
-    "Lambda",
-    "CloudFront",
-    "Cloudflare",
-    "Fastly",
-    "CDN",
-    "WAF",
-    "React",
-    "Vue",
-    "Angular",
-    "Next.js",
-    "Tailwind",
-    "Express.js",
-    "Django",
-    "FastAPI",
-    "Vercel",
-    "Netlify",
-    "Node",
-    "npm",
-    "iOS",
-    "Android",
-    "Swift",
-    "Kotlin",
-    "Docker",
-    "OpenTelemetry",
-    "Prometheus",
-    "Grafana",
-    "Vault",
-    "Okta",
-    "Jira",
-    "GitHub",
-    "GitLab",
-    "Jenkins",
-    "CircleCI",
-    "Buildkite",
-    "Bazel",
-    "Helm",
-    "GraphQL",
-    "gRPC",
-    "REST",
-    "OWASP",
-    "OAuth",
-    "OIDC",
-    "JWT",
-    "mTLS",
-    "SLSA",
-    "SBOM",
-    "SBOMs",
-    "Sigstore",
-    "Cosign",
-    "in-toto",
-    "RAG",
-    "CVE",
-    "CVSS",
-    "EPSS",
-    "KEV",
-    "SOC 2",
-    "PCI",
-]
-
-
 def fail(message: str) -> None:
     print(f"validation failed: {message}", file=sys.stderr)
     raise SystemExit(1)
@@ -362,7 +260,7 @@ def parse_frontmatter(text: str, path: Path) -> dict[str, str]:
 
 def validate_technology_agnostic_body(text: str, path: Path) -> None:
     for line_number, line in enumerate(text.splitlines(), 1):
-        for term in PROHIBITED_BODY_TERMS:
+        for term in PROHIBITED_SPECIALIST_BODY_TERMS:
             if re.search(rf"(?<![A-Za-z0-9]){re.escape(term)}(?![A-Za-z0-9])", line):
                 fail(f"{path} hardcodes technology term {term!r} at line {line_number}")
 
@@ -469,7 +367,7 @@ def validate_router_eval_scope(text: str, path: Path) -> None:
 
 
 def validate_decision_guide_framing(text: str, path: Path) -> None:
-    slug = path.parent.name
+    slug = skill_name_for_path(path)
     if slug in AUDIT_ONLY_EXCEPTIONS:
         return
     sections = [
@@ -489,13 +387,13 @@ def validate_decision_guide_framing(text: str, path: Path) -> None:
 
 
 def validate_specialist_skill(text: str, path: Path) -> None:
-    slug = path.parent.name
+    slug = skill_name_for_path(path)
     description = parse_frontmatter(text, path)["description"].lower()
     if slug not in PROCESS_PAGE_ALLOWED_SPECIALISTS:
         match = PROCESS_PAGE_RE.search(text)
         if match:
             line = text[: match.start()].count("\n") + 1
-            fail(f"{path} uses process-style page/paging language outside workflow/readiness/evidence specialists at line {line}")
+            fail(f"{path} uses process-style page/paging language outside workflow, readiness, or control specialists at line {line}")
     if slug not in SPECIALIST_DESCRIPTION_REVIEW_EXCEPTIONS:
         for term in ["review", "audit"]:
             if term in description:
@@ -503,8 +401,8 @@ def validate_specialist_skill(text: str, path: Path) -> None:
     validate_operational_sections(text, path, SPECIALIST_OPERATIONAL_SECTIONS)
     validate_phase_behavior(text, path)
     validate_decision_guide_framing(text, path)
-    gates = check_ids(text, path, "## Checks Before Moving On")
-    if len(gates) < 3:
+    checks = check_ids(text, path, "## Checks Before Moving On")
+    if len(checks) < 3:
         fail(f"{path} needs at least three checks under ## Checks Before Moving On")
 
 
@@ -584,19 +482,19 @@ def validate_skill(path: Path) -> None:
     text = path.read_text()
     line_count = len(text.splitlines())
     if line_count > MAX_SKILL_LINES:
-        fail(f"{path} is {line_count} lines; SKILL.md files must stay at or below {MAX_SKILL_LINES}")
+        fail(f"{path} is {line_count} lines; skill files must stay at or below {MAX_SKILL_LINES}")
     if not text.endswith("\n"):
         fail(f"{path} must end with a newline")
     frontmatter_delimiters = sum(1 for line in text.splitlines() if line == "---")
     if frontmatter_delimiters != 2:
         fail(f"{path} must contain exactly one YAML frontmatter block")
     frontmatter = parse_frontmatter(text, path)
-    expected_name = path.parent.name
+    expected_name = skill_name_for_path(path)
     name = frontmatter.get("name")
     description = frontmatter.get("description", "")
 
     if name != expected_name:
-        fail(f"{path} frontmatter name {name!r} does not match directory {expected_name!r}")
+        fail(f"{path} frontmatter name {name!r} does not match file name {expected_name!r}")
     if not description:
         fail(f"{path} missing description")
     if not description.startswith("Use when"):
@@ -617,7 +515,7 @@ def validate_skill(path: Path) -> None:
 
 def validate_codex_namespaced_length(skill_files: list[Path]) -> None:
     for path in skill_files:
-        name = path.parent.name
+        name = skill_name_for_path(path)
         namespaced = f"{CODEX_NAMESPACED_PREFIX}{name}"
         if len(namespaced) > CODEX_MAX_SKILL_NAME_LENGTH:
             fail(
@@ -641,6 +539,12 @@ def validate_unique_skill_metadata(skill_files: list[Path]) -> None:
         seen_descriptions[description] = path
 
 
+def skill_name_for_path(path: Path) -> str:
+    if path.parent == SPECIALISTS and path.suffix == ".md":
+        return path.stem
+    return path.parent.name
+
+
 def validate_skill_contract() -> None:
     if not SKILL_CONTRACT.exists():
         fail("shared skill contract is missing")
@@ -651,7 +555,9 @@ def validate_sample_prompts(skill_files: list[Path]) -> None:
         fail("SAMPLE-PROMPTS.md is missing")
 
     specialist_names = {
-        path.parent.name for path in skill_files if path.parent.name != "staff-engineer-mode"
+        skill_name_for_path(path)
+        for path in skill_files
+        if skill_name_for_path(path) != "staff-engineer-mode"
     }
     text = SAMPLE_PROMPTS.read_text()
     sections: dict[str, int] = {}
@@ -708,7 +614,7 @@ def main() -> int:
         unexpected = [str(path.relative_to(ROOT)) for path in native_skill_files if path != router_file]
         fail(f"only the router may live under skills/; found {', '.join(unexpected)}")
 
-    specialist_files = sorted(SPECIALISTS.glob("*/SKILL.md"))
+    specialist_files = sorted(SPECIALISTS.glob("*.md"))
     if not specialist_files:
         fail("no routed specialists found under specialists/")
 
@@ -719,8 +625,8 @@ def main() -> int:
     validate_skill(router_file)
     for path in specialist_files:
         relative = path.relative_to(SPECIALISTS)
-        if len(relative.parts) != 2:
-            fail(f"{path} must live at specialists/<specialist-name>/SKILL.md")
+        if len(relative.parts) != 1 or path.suffix != ".md":
+            fail(f"{path} must live at specialists/<specialist-name>.md")
         validate_skill(path)
 
     router_eval = SKILLS / "staff-engineer-mode" / "references" / "router-eval-set.yaml"
