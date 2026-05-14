@@ -26,9 +26,12 @@ These are real Claude Code captures from public codebases. The prompt is plain
 developer wording; Staff Engineer Mode routes to one specialist, loads that
 specialist file, and returns a structured engineering answer.
 
-### Production Readiness Before Launch
+<details>
+<summary>Production readiness before launch</summary>
 
 <img src="assets/staff-engineer-mode-production-readiness-review.png" alt="Claude Code capture showing a production readiness review for a media processing queue split" width="100%">
+
+</details>
 
 <details>
 <summary>API compatibility review</summary>
