@@ -119,8 +119,6 @@ Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/st
 /add-plugin staff-engineer-mode
 ```
 
-Or search `staff-engineer-mode` in the plugin marketplace.
-
 ### OpenCode
 
 Works with OpenCode. Tell OpenCode:
