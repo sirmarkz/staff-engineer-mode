@@ -27,23 +27,9 @@ developer wording; Staff Engineer Mode routes to one specialist, loads that
 specialist file, and returns a structured engineering answer.
 
 <details>
-<summary>Production readiness before launch</summary>
-
-<img src="assets/staff-engineer-mode-production-readiness-review.png" alt="Claude Code capture showing a production readiness review for a media processing queue split" width="100%">
-
-</details>
-
-<details>
 <summary>API compatibility review</summary>
 
 <img src="assets/staff-engineer-mode-api-design-and-compatibility.png" alt="Claude Code capture showing an API compatibility review for an account API response change" width="100%">
-
-</details>
-
-<details>
-<summary>High availability design</summary>
-
-<img src="assets/staff-engineer-mode-high-availability-design.png" alt="Claude Code capture showing a high availability design review for a multi-region control plane" width="100%">
 
 </details>
 
@@ -55,9 +41,9 @@ specialist file, and returns a structured engineering answer.
 </details>
 
 <details>
-<summary>Observability and alerting review</summary>
+<summary>Code readability for agents review</summary>
 
-<img src="assets/staff-engineer-mode-observability-and-alerting.png" alt="Claude Code capture showing an observability and alerting review for API server request errors and latency" width="100%">
+<img src="assets/staff-engineer-mode-code-readability-for-agents.png" alt="Claude Code capture showing a code readability for agents review for repo areas an AI coding agent may misunderstand" width="100%">
 
 </details>
 
@@ -76,9 +62,30 @@ specialist file, and returns a structured engineering answer.
 </details>
 
 <details>
+<summary>High availability design</summary>
+
+<img src="assets/staff-engineer-mode-high-availability-design.png" alt="Claude Code capture showing a high availability design review for a multi-region control plane" width="100%">
+
+</details>
+
+<details>
+<summary>Observability and alerting review</summary>
+
+<img src="assets/staff-engineer-mode-observability-and-alerting.png" alt="Claude Code capture showing an observability and alerting review for API server request errors and latency" width="100%">
+
+</details>
+
+<details>
 <summary>Performance and capacity review</summary>
 
 <img src="assets/staff-engineer-mode-performance-and-capacity.png" alt="Claude Code capture showing a performance and capacity review for an account lookup endpoint" width="100%">
+
+</details>
+
+<details>
+<summary>Production readiness before launch</summary>
+
+<img src="assets/staff-engineer-mode-production-readiness-review.png" alt="Claude Code capture showing a production readiness review for a media processing queue split" width="100%">
 
 </details>
 
