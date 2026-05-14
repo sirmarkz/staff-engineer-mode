@@ -48,6 +48,34 @@ specialist file, and returns a structured engineering answer.
 </details>
 
 <details>
+<summary>Backup and recovery review</summary>
+
+<img src="assets/staff-engineer-mode-backup-and-recovery.png" alt="Claude Code capture showing a backup and recovery review for a database restore plan" width="100%">
+
+</details>
+
+<details>
+<summary>Observability and alerting review</summary>
+
+<img src="assets/staff-engineer-mode-observability-and-alerting.png" alt="Claude Code capture showing an observability and alerting review for API server request errors and latency" width="100%">
+
+</details>
+
+<details>
+<summary>Dependency and code hygiene plan</summary>
+
+<img src="assets/staff-engineer-mode-dependency-and-code-hygiene.png" alt="Claude Code capture showing a dependency and code hygiene plan for stale dependencies and dead helper code" width="100%">
+
+</details>
+
+<details>
+<summary>Dependency resilience review</summary>
+
+<img src="assets/staff-engineer-mode-dependency-resilience.png" alt="Claude Code capture showing a dependency resilience review for remote media fetch timeouts, retries, and fallback behavior" width="100%">
+
+</details>
+
+<details>
 <summary>Performance and capacity review</summary>
 
 <img src="assets/staff-engineer-mode-performance-and-capacity.png" alt="Claude Code capture showing a performance and capacity review for an account lookup endpoint" width="100%">
