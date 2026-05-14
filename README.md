@@ -123,10 +123,10 @@ Or search `staff-engineer-mode` in the plugin marketplace.
 
 ### OpenCode
 
-Tell OpenCode:
+Works with OpenCode. Tell OpenCode:
 
 ```text
-Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/refs/heads/main/.opencode/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/main/.opencode/INSTALL.md
 ```
 
 ### GitHub Copilot CLI
