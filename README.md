@@ -47,12 +47,6 @@ specialist file, and returns a structured engineering answer.
 
 </details>
 
-## Compared To Alternatives
-
-> *agency-agents adds roles. Superpowers adds methodology. Staff Engineer Mode adds lifecycle engineering judgment.*
-
-The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these replace each other. Compose freely.
-
 ## Installation
 
 ### Claude Code
@@ -143,7 +137,13 @@ Examples by surface (the full catalog with prompts for every specialist file is 
 | Client, ML/AI, and experimentation | [`web-release-gates`](specialists/web-release-gates/SKILL.md), [`mobile-release-engineering`](specialists/mobile-release-engineering/SKILL.md), [`accessibility-gates`](specialists/accessibility-gates/SKILL.md), [`llm-application-security`](specialists/llm-application-security/SKILL.md), [`llm-evaluation`](specialists/llm-evaluation/SKILL.md), [`llm-serving-cost-and-latency`](specialists/llm-serving-cost-and-latency/SKILL.md), [`ml-reliability-and-evaluation`](specialists/ml-reliability-and-evaluation/SKILL.md), [`experimentation-and-metric-guardrails`](specialists/experimentation-and-metric-guardrails/SKILL.md) |
 | Engineering workflow, readiness, and controls | [`agent-pr-review`](specialists/agent-pr-review/SKILL.md), [`ai-coding-governance`](specialists/ai-coding-governance/SKILL.md), [`documentation-lifecycle`](specialists/documentation-lifecycle/SKILL.md), [`engineering-control-evidence`](specialists/engineering-control-evidence/SKILL.md), [`production-readiness-review`](specialists/production-readiness-review/SKILL.md), [`incident-response-and-postmortems`](specialists/incident-response-and-postmortems/SKILL.md), [`oncall-health`](specialists/oncall-health/SKILL.md), [`platform-golden-paths`](specialists/platform-golden-paths/SKILL.md) |
 
-Every specialist file appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with four representative prompts. Or browse by SDLC phase in [OE-PHASE-MAP.md](OE-PHASE-MAP.md) — same routed files, grouped by Design & Build / Develop & Test / Deploy & Operate / Monitor & Respond / Improve.
+Every specialist file appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with four representative prompts.
+
+## Compared To Alternatives
+
+> *agency-agents adds roles. Superpowers adds methodology. Staff Engineer Mode adds lifecycle engineering judgment.*
+
+The full positioning grid lives in [COMPARISON.md](COMPARISON.md). None of these replace each other. Compose freely.
 
 ## Contributing
 
