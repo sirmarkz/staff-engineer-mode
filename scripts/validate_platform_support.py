@@ -298,7 +298,7 @@ def validate_ci_workflow() -> None:
 
 
 def validate_docs() -> None:
-    for relative in ["README.md", "NOTICE.md", ".codex/INSTALL.md"]:
+    for relative in ["README.md", "LICENSE", ".codex/INSTALL.md"]:
         if not (ROOT / relative).exists():
             fail(f"missing {relative}")
     readme = (ROOT / "README.md").read_text()

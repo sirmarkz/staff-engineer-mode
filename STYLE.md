@@ -157,7 +157,7 @@ Run the relevant checks before asking for review.
 - Run `python3 scripts/validate_source_quality.py` after source-index or
   citation changes.
 - Run `python3 scripts/validate_platform_support.py` after plugin manifest,
-  install, README, NOTICE, or cross-tool packaging changes.
+  install, README, LICENSE, or cross-tool packaging changes.
 - Run `python3 scripts/lint_brand_voice.py` after public prose changes.
 
 The voice linter enforces the hard subset of these rules: prestige vendor and

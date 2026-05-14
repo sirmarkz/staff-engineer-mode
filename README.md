@@ -201,11 +201,7 @@ This pack focuses on the intersection of the strongest publicly documented engin
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
-
-## Notice
-
-Independent. Cites primary sources. Vendor-neutral by default.
+MIT — see [LICENSE](LICENSE). The project notice is included there.
 
 ---
 

@@ -30,7 +30,7 @@ class PlatformDocsValidationTests(unittest.TestCase):
         self.root = Path(self._tmp.name)
         self.validator = load_validator()
         self.validator.ROOT = self.root
-        self.write("NOTICE.md", "Independent project.\n")
+        self.write("LICENSE", "MIT License\n\nProject Notice\n")
         self.write(
             ".codex/INSTALL.md",
             "\n".join(

@@ -93,7 +93,7 @@ maintaining complex software systems.
 - Run `python3 scripts/validate_source_quality.py` before committing source-index
   or citation changes.
 - Run `python3 scripts/validate_platform_support.py` before committing plugin
-  manifest, install, README, NOTICE, or cross-tool packaging changes.
+  manifest, install, README, LICENSE, or cross-tool packaging changes.
 - Router fixtures live with the router skill and should include direct,
   paraphrased, ambiguous, mixed-intent, and out-of-scope prompts.
 
