@@ -41,6 +41,13 @@ specialist file, and returns a structured engineering answer.
 </details>
 
 <details>
+<summary>High availability design</summary>
+
+<img src="assets/staff-engineer-mode-high-availability-design.png" alt="Claude Code capture showing a high availability design review for a multi-region control plane" width="100%">
+
+</details>
+
+<details>
 <summary>Performance and capacity review</summary>
 
 <img src="assets/staff-engineer-mode-performance-and-capacity.png" alt="Claude Code capture showing a performance and capacity review for an account lookup endpoint" width="100%">
