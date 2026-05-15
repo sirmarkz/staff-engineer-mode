@@ -1,5 +1,19 @@
 # Staff Engineer Mode Release Notes
 
+## 1.5.0 - 2026-05-15
+
+Flattened specialist file release.
+
+- Moves routed specialists from nested `specialists/<slug>/SKILL.md` paths to
+  flat `specialists/<slug>.md` files, keeping only the router in native skill
+  discovery.
+- Updates Claude Code, Cursor, OpenCode, Codex, GitHub Copilot CLI, and Gemini
+  packaging/docs so routed work loads the selected flat specialist file.
+- Adds shared bootstrap and manifest contract checks so install surfaces,
+  descriptions, and routing load paths stay aligned across supported tools.
+- Refreshes routing eval terminology and reusable templates with plainer
+  everyday developer language.
+
 ## 1.4.2 - 2026-05-13
 
 Clean-machine Claude install fix.
