@@ -38,6 +38,7 @@ An API is a long-lived contract with current or future clients, retries, partial
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Planned or existing consumers, client release cadence, compatibility expectations, and deprecation tolerance.
+- For new APIs, intended consumer classes and discovery path; for existing APIs, known consumers and impact signals.
 - Operations/resources, generated-client method shape, request and response fields, event shapes, status/error semantics, defaults, and side effects.
 - Authentication, authorization, rate limits, quotas, tenant context, activity-log needs, and abuse cases.
 - Retry behavior, idempotency needs, duplicate suppression, and replay windows.
@@ -55,7 +56,7 @@ An API is a long-lived contract with current or future clients, retries, partial
 7. **Handle collections deliberately.** Prefer stable cursor-style pagination for mutable collections; define ordering, filtering, empty results, cursor-token expiration, and list item summaries that avoid needless follow-up calls.
 8. **Bound filters and payloads.** Keep filters explicit, bounded, commutative, and limited to fields the caller may see; define unknown, malformed, duplicate, and over-limit behavior. Publish maxima for variable inputs, payloads, and inner lists at launch.
 9. **Shape batch operations intentionally.** Use batch APIs only for repeated same-action work. Shape each item like the singular operation, include per-item correlation, separate successes from errors, define partial-success behavior, and reject whole invalid batches before attempting items.
-10. **Plan evolution.** For new APIs, define how the contract can add fields, operations, enum values, limits, and versions later. For existing APIs, use telemetry to identify clients, publish deprecation windows, support overlap, and define removal checks.
+10. **Plan evolution.** For new APIs, define how the contract can add fields, operations, enum values, limits, and versions later, plus how intended consumers will discover and adopt it. For existing APIs, use telemetry to identify clients, publish deprecation windows, support overlap, and define removal checks.
 11. **Check security and abuse.** Include authorization, rate limits, tenant isolation, audit events, and input validation as part of the contract.
 
 ## Synthesized Default
@@ -98,6 +99,7 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 ## Required Outputs
 
 - API contract decision with planned or existing consumers, compatibility class, and risks.
+- Consumer discovery or impact plan: intended consumer classes for new APIs, known-consumer signals for existing APIs.
 - Operation/resource naming decision and generated-client ergonomics notes.
 - Compatibility and evolution matrix for each new or changed operation, field, default, enum, event, error, and status behavior.
 - Versioning and deprecation plan with launch evolution rules, telemetry where available, and removal checks.
@@ -114,6 +116,7 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 - `error_model`: errors define machine code, human detail, retryability, correlation, and safe disclosure.
 - `collection_contract`: lists and filters define pagination, ordering, empty results, field visibility, bounds, token stability, and expiration.
 - `batch_semantics`: batch APIs define item limits, item correlation, partial success, per-item errors, and whole-request rejection rules.
+- `consumer_discovery`: new APIs define intended consumer classes and discovery path; existing APIs identify known consumers or the telemetry gap.
 - `evolution_plan`: new APIs have rules for future compatible additions, and deprecation or breaking changes have client usage telemetry and removal criteria.
 - `abuse_boundary`: authz, rate limits, tenant context, activity logging, and validation are addressed where relevant.
 

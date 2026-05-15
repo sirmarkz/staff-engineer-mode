@@ -45,13 +45,14 @@ Produces a tier-classified launch posture with an readiness matrix, a blocker li
 - Security posture: threat model, data classification, access controls, secrets, supply-chain controls, and vulnerability status.
 - Capacity, load-test results, overload behavior, failover target, and dependency quotas.
 - Backup/restore, DR results, data migration validation, and destructive-change safeguards.
+- Freshness of readiness details: last checked dashboards, alerts, runbooks, rollout checks, recovery checks, load tests, and open drift since the last readiness decision.
 - Open risks, exceptions, compensating controls, expiry dates, and follow-up actions.
 
 ## Workflow
 
 1. **Classify launch tier and scope.** State what is launching, who is affected, and which standard applies.
 2. **Apply the default tier rubric.** Tier 1 means externally committed, customer-critical, sensitive-data, stateful, or safety-critical impact; Tier 2 means user-visible degradation with bounded blast radius; Tier 3 means internal or shared-service impact; Tier 4 means isolated prototype or experiment.
-3. **Collect artifacts.** Gather readiness details from specialist domains instead of rewriting all domain work inside PRR.
+3. **Collect artifacts.** Gather readiness details from specialist domains instead of rewriting all domain work inside PRR; mark stale details and drift since the last relevant readiness decision.
 4. **Check architecture shape.** Identify the component diagram or textual map, production dependencies, and fault-domain map for the launch path; if these are missing for a customer-impacting launch, mark the architecture gap explicitly.
 5. **Mark each domain.** Use Pass, Blocker, Exception, Follow-up, or Not Applicable. A gap is a Blocker when it can violate the tier's user, data, security, recovery, or rollback requirement before launch; it is a Follow-up only when launch risk remains bounded and the follow-up action, check path, and due date are explicit.
 6. **Check runtime readiness.** Require SLOs, journey health model, telemetry, alerts, runbooks, fallback path, diagnostics, and incident path for customer-impacting launches.
@@ -99,6 +100,7 @@ Use PRR as a cross-domain readiness decision for launches and major changes. It 
 ## Required Outputs
 
 - PRR readiness matrix by domain and status.
+- Freshness and drift notes for readiness details that can go stale, such as dashboards, runbooks, rollout checks, recovery checks, and load tests.
 - Architecture entry with component diagram or textual map, production dependencies, and fault-domain map.
 - Availability row covering fault-domain independence, static capacity under loss, recovery mechanism, and drill results.
 - Launch blocker list with required details, file/path or artifact reference, and due date.
@@ -114,6 +116,7 @@ Use PRR as a cross-domain readiness decision for launches and major changes. It 
 - `operability_check`: every production component has fallback path, diagnostics, tier, and user decision point.
 - `runtime_check`: customer-impacting paths have SLOs, health states, telemetry, alerts, runbooks, and incident path.
 - `change_check`: rollout, rollback, canary metrics, compatibility, and cleanup are documented.
+- `freshness_check`: readiness details that can drift have a last-checked signal, current source, or explicit follow-up.
 - `availability_check`: customer-impacting systems have location/partition independence, static failed-domain capacity, recovery path, and validation results or an explicit exception.
 - `recovery_check`: stateful or tier-critical systems have restore/DR results or an explicit exception.
 - `exception_check`: every accepted risk has explicit user acceptance, expiry, compensating control, and refresh trigger.

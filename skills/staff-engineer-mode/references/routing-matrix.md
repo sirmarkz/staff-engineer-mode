@@ -32,6 +32,7 @@ Return the canonical `specialists/<slug>.md` slug, not a semantic alias.
 - Event message producer/consumer replay, ordering, idempotency, and DLQ behavior are `event-workflows`; shared schema compatibility alone is `data-contracts`.
 - Derived search indexes, materialized views, cache invalidation, and stale-result freshness are `caching-and-derived-data`; batch or streaming pipeline freshness is `data-pipeline-reliability`.
 - Query plans, schema migrations, indexes, backfills, locks, and database-caused endpoint regressions are `database-operations`; general hot-path or capacity regressions are `performance-and-capacity`.
+- Database migration execution is `database-operations`; if the same prompt separately asks for future blocking checks against incompatible schema changes, add `testing-and-quality-gates` as the secondary.
 - Threat models, trust boundaries, data flows, abuse cases, and residual-risk registers are `secure-sdlc-and-threat-modeling`, not threat-modeling aliases.
 - Source-to-deploy trust, isolated builders, provenance, signing, deployment admission, or untrusted artifact risk are `software-supply-chain-security`.
 - Deployed vulnerabilities, exploitability, exposure, patch SLAs, remediation rollout, and expiring exceptions are `vulnerability-management`.

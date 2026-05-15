@@ -41,6 +41,7 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 - Available docs, dependency status, and user-provided contacts that can inform mitigation without blocking on an outside party.
 - Timeline events: detection, triage, mitigation, customer communication, resolution, and recurrence.
 - Mitigations attempted, signals observed, dashboards/logs/traces used, and changes during the window.
+- Impact scoping by affected users or tenants, fault domain, dependency, and recent change markers.
 - Contributing factors, missed signals, runbook gaps, responsibility gaps, and action-item candidates.
 
 ## Workflow
@@ -48,18 +49,19 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 1. **During active impact, assign roles.** Use incident commander, operations lead, communications lead, and scribe when coordination requires them; for solo work, explicitly take each role yourself.
 2. **Classify ticket severity.** Use impact radius and urgency: highest severity for widespread critical user or data/security impact, high severity for major but bounded customer impact, medium severity for limited degradation or internal dependency risk, and low severity for a low-impact anomaly requiring follow-up.
 3. **Put live-site impact first.** Treat customer-visible availability, health, and security as the top priority until impact is controlled.
-4. **Mitigate before explaining.** Prefer actions that reduce user impact safely; postpone deep root-cause analysis until impact is controlled.
-5. **Keep a live timeline.** Record timestamped facts, hypotheses, decisions, commands/actions, status updates, and responsibility changes.
-6. **Communicate predictably.** Set status cadence by ticket severity; highest-severity incidents should update within 30 minutes or less, high-severity incidents within an hour, and lower severities by the user-confirmed cadence. Say what is known, unknown, impact, mitigation, and next update time.
-7. **Change strategy when stuck.** Use the user, available documentation, dependency status, or a narrower diagnostic skill when impact persists, mitigation authority is unclear, or a latent risk is not getting traction. Do not wait for a vendor or outside group before taking the safest available mitigation.
-8. **Checkpoint explicitly.** At every incident-commander or shift change, record state, current hypothesis, customer impact, in-flight actions, user decision point, comms cadence, and next decision point.
-9. **Use the normal hotfix path where possible.** Reduce context switching by keeping artifact, branch, change, and rollout mechanics traceable even under urgency.
-10. **Run security incidents as a protected track.** When confidentiality, integrity, identity, abuse, or data exposure may be involved, preserve logs and artifacts, restrict sensitive details to need-to-know responders, and keep operational facts separate from legal conclusions.
-11. **Stabilize and verify.** Confirm recovery with user-visible metrics, not only internal health.
-12. **Write a blameless postmortem.** Explain contributing factors across technical, operational, detection, change, and organizational layers.
-13. **Replace single-root-cause wording with layered factors.** If the user supplies "root cause: X", treat X as one technical trigger, then add control, detection, rollout, responsibility, or organizational defenses that allowed impact; mark inferred factors as candidates to verify.
-14. **Create verified actions.** Every action needs due date, observable completion signal, and classification: prevent, detect, mitigate, or learn.
-15. **Feed standards.** Turn recurring classes into SLO, observability, safe-change, HA, dependency-resilience, or platform-improvement work.
+4. **Bound impact scope early.** Use user, tenant, fault-domain, dependency, and recent-change signals to bound impact safely.
+5. **Mitigate before explaining.** Prefer actions that reduce user impact safely; postpone deep root-cause analysis until impact is controlled.
+6. **Keep a live timeline.** Record timestamped facts, hypotheses, decisions, commands/actions, status updates, and responsibility changes.
+7. **Communicate predictably.** Set status cadence by ticket severity; highest-severity incidents should update within 30 minutes or less, high-severity incidents within an hour, and lower severities by the user-confirmed cadence. Say what is known, unknown, impact, mitigation, and next update time.
+8. **Change strategy when stuck.** Use the user, available documentation, dependency status, or a narrower diagnostic skill when impact persists, mitigation authority is unclear, or a latent risk is not getting traction. Do not wait for a vendor or outside group before taking the safest available mitigation.
+9. **Checkpoint explicitly.** At every incident-commander or shift change, record state, current hypothesis, customer impact, in-flight actions, user decision point, comms cadence, and next decision point.
+10. **Use the normal hotfix path where possible.** Reduce context switching by keeping artifact, branch, change, and rollout mechanics traceable even under urgency.
+11. **Run security incidents as a protected track.** When confidentiality, integrity, identity, abuse, or data exposure may be involved, preserve logs and artifacts, restrict sensitive details to need-to-know responders, and keep operational facts separate from legal conclusions.
+12. **Stabilize and verify.** Confirm recovery with user-visible metrics, not only internal health.
+13. **Write a blameless postmortem.** Explain contributing factors across technical, operational, detection, change, and organizational layers.
+14. **Replace single-root-cause wording with layered factors.** If the user supplies "root cause: X", treat X as one technical trigger, then add control, detection, rollout, responsibility, or organizational defenses that allowed impact; mark inferred factors as candidates to verify.
+15. **Create verified actions.** Every action needs due date, observable completion signal, and classification: prevent, detect, mitigate, or learn.
+16. **Feed standards.** Turn recurring classes into SLO, observability, safe-change, HA, dependency-resilience, or platform-improvement work.
 
 ## Synthesized Default
 
@@ -101,6 +103,7 @@ Use role-based incident command during response and blameless, contributing-fact
 - Incident role assignment and severity classification.
 - Live or reconstructed timeline.
 - Impact summary with detection, mitigation, and resolution times.
+- Impact-scope table by user group or tenant, fault domain, dependency, and recent change marker where available.
 - Communications cadence and status-update skeleton.
 - User-confirmed strategy-change trigger when mitigation stalls.
 - Checkpoint packet for long incidents or responder changes.
@@ -111,6 +114,7 @@ Use role-based incident command during response and blameless, contributing-fact
 ## Checks Before Moving On
 
 - `impact_check`: user impact, severity, start/end or current state, and affected journeys are stated.
+- `impact_scoping`: affected users or tenants, fault domains, dependencies, and recent changes are scoped or marked unknown.
 - `role_check`: response roles and user decision point are assigned or explicitly not needed.
 - `timeline_check`: detection, triage, mitigation, communication, resolution, and key decisions are captured.
 - `checkpoint_check`: long incidents or role changes include state, in-flight actions, comms cadence, and next decision point.

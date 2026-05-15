@@ -43,6 +43,7 @@ Internal networking should solve concrete traffic, identity, policy, and observa
 - Service topology, traffic flows, protocols, locations, fault domains, partitions, dependencies, and responsibility.
 - Concrete problem: service identity, encrypted transport, authorization, traffic splitting, locality, failover, observability, policy, or debugging.
 - Current service discovery, load balancing, DNS/routing, ingress/egress, and network boundaries.
+- Traffic entry points, routing or load-balancing limits, connection/concurrency limits, queue limits, overflow behavior, and emergency adjustment path.
 - Latency, cross-location egress, failure domains, retry behavior, and dependency resilience policies.
 - Platform maturity: upgrade process, sidecar/proxy/data-plane operations, incident history, and local diagnostic path.
 - Telemetry needs: route, upstream/downstream identity, locality, retries, connection errors, and request context.
@@ -50,12 +51,12 @@ Internal networking should solve concrete traffic, identity, policy, and observa
 ## Workflow
 
 1. **Name the problem.** Do not propose mesh until the repeated capability gap is explicit.
-2. **Map traffic.** Identify internal routes, dependencies, locations, failover paths, identity boundaries, and policy points.
+2. **Map traffic.** Identify internal routes, traffic entry points, dependencies, locations, failover paths, identity boundaries, policy points, and overflow behavior.
 3. **Compare no-mesh alternatives.** Consider library, gateway, platform, or simple load-balancer capabilities before adding a mesh-wide data plane.
 4. **Define routing policy.** Include locality, failover, traffic splitting, retries, timeouts, and circuit behavior responsibility.
 5. **Define identity and policy.** State how workload identity, authenticated encrypted transport, authorization, and audit work.
 6. **Model failure and upgrades.** Include proxy/control-plane failure, config error, upgrade rollout, and debug burden.
-7. **Instrument paths.** Capture request IDs, route metadata, identity, upstream locality, retries, errors, and latency.
+7. **Instrument paths.** Capture request IDs, route metadata, identity, upstream locality, retries, errors, latency, connection saturation, queue pressure, and overflow decisions.
 8. **Plan adoption.** Roll out by service, partition, or environment; keep rollback and exception path.
 
 ## Synthesized Default
@@ -98,6 +99,7 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 - Internal traffic and dependency map.
 - Mesh/no-mesh decision record with alternatives.
 - Routing, locality, failover, and traffic-splitting policy.
+- Traffic-path capacity table with entry point, routing limit, connection/concurrency limit, overflow behavior, and emergency adjustment path.
 - Workload identity, encrypted transport, and authorization model.
 - Operations, upgrade, diagnostics, and rollback plan.
 - Network telemetry and debugging requirements.
@@ -109,6 +111,8 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 - `failure_model`: data-plane, control-plane, config, and upgrade failure modes are addressed.
 - `diagnostic_check`: debugging, upgrade, and incident-response paths are explicit and runnable or marked unknown.
 - `routing_policy`: locality, failover, traffic split, and retry/timeout responsibility are defined.
+- `traffic_entry_capacity`: traffic entry points have capacity, connection/concurrency, and routing limits stated.
+- `overflow_behavior`: overload, spillover, or reject behavior is defined and observable.
 - `telemetry_check`: route, identity, locality, retry, latency, and error metadata are observable.
 
 ## Red Flags - Stop And Rework

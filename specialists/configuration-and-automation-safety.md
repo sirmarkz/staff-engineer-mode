@@ -41,6 +41,7 @@ Configuration and automation can change production faster than ordinary code pat
 - Schema, allowed values, defaults, invariants, dependency ordering, and unsafe combinations.
 - Change path, approval path, user confirmation, preview or dry-run output, execution identity, and change record.
 - Blast radius, rollback or disable path, rate limit, lock, retry, and idempotency behavior.
+- Operational levers: name, expected effect, activation time, prerequisites, last test, and disable or revert path.
 - Change class and confirmation path: low-risk, standard production, or emergency; checks to make before the user proceeds.
 - Prior incidents, drift reports, manual overrides, and exception rules.
 
@@ -53,8 +54,9 @@ Configuration and automation can change production faster than ordinary code pat
 5. **Preview the effect.** Show intended creates, updates, deletes, traffic impact, permission changes, and affected systems before apply.
 6. **Bound execution.** Use batches, locks, rate limits, stop criteria, and idempotency for automation that touches shared state.
 7. **Make recovery concrete.** Define rollback, disable, restore, or roll-forward behavior for config, generated changes, and automation side effects.
-8. **Control drift.** Detect unmanaged overrides and stale settings; decide reconcile, exception, or removal.
-9. **Close the loop.** Record user confirmation, validation output, preview, execution result, and cleanup for temporary settings.
+8. **Prepare operational levers.** For emergency adjustment or recovery levers, state the effect, prerequisites, activation time, last test, and disable or revert path before relying on them.
+9. **Control drift.** Detect unmanaged overrides and stale settings; decide reconcile, exception, or removal.
+10. **Close the loop.** Record user confirmation, validation output, preview, execution result, and cleanup for temporary settings.
 
 ## Synthesized Default
 
@@ -99,6 +101,7 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 - Validation and preview check list.
 - Blast-radius and execution-control plan.
 - Recovery plan for rollback, disable, restore, or roll-forward.
+- Operational lever inventory with expected effect, activation time, prerequisites, last test, and disable or revert path.
 - Drift detection and exception rules.
 - Approval, execution, and cleanup checklist.
 
@@ -110,6 +113,8 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 - `preview_checked`: intended production effect is visible before execution.
 - `blast_radius`: affected users, systems, and data are bounded.
 - `recovery_path`: rollback, disable, restore, or roll-forward path is defined.
+- `lever_ready`: emergency adjustment or recovery levers have named effect, prerequisites, activation path, and disable or revert path.
+- `lever_tested`: operational levers have a recent test result or an explicit unknown.
 - `change_log`: approval, validation, execution result, and exception state are linked.
 
 ## Red Flags - Stop And Rework

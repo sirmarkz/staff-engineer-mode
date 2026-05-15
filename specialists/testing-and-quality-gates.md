@@ -38,6 +38,7 @@ Quality checks should catch real risk early without turning delivery into ritual
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Supported behaviors, critical journeys, system tier, risk areas, and recent defect history.
 - Existing test inventory: unit/component/contract/integration/end-to-end/performance/security/accessibility/static checks.
+- Pre-traffic health checks, critical-path sanity checks, production-like integration checks, synthetic or canary checks, and performance bottleneck tests.
 - CI structure, runtime, flake rate, failure responsibility, and required versus advisory checks.
 - Coverage signal, mutation or fault-injection needs, legacy findings, and known blind spots.
 - Release process and where checks can run without excessive feedback delay.
@@ -49,14 +50,15 @@ Quality checks should catch real risk early without turning delivery into ritual
 3. **Define a test taxonomy.** Group checks by dependency and runtime cost so fast in-memory/component tests protect merge, deployment tests protect release, and production probes protect rollout.
 4. **State suite composition.** For CI reduction, flake cleanup, or suite redesign, include a compact current or target layer mix such as unit/component, contract/integration, and end-to-end counts or ratios, with one rationale tied to speed, determinism, and risk coverage.
 5. **Separate check types.** Pre-merge checks should be fast and high-signal; use a default budget such as p95 under 10 minutes for the full pre-merge lane and under 5 minutes for a fast path. Pre-release checks can be broader; production checks belong to rollout.
-6. **Make checks actionable.** Every blocking check needs failure instructions and a path to fix or quarantine.
-7. **Handle flakes ruthlessly.** A flaky blocker teaches people to ignore checks. Fix, quarantine, or downgrade with a dated expiry.
-8. **Use ratchets for legacy.** Prevent new critical findings and gradually reduce existing debt rather than requiring impossible cleanup.
-9. **Place high-assurance tests deliberately.** Bounded property tests on pure logic and ordinary fuzzing can live in this skill; concurrency/protocol invariants, model checking, deterministic simulation, and counterexample-driven validation route to formal validation.
-10. **Choose test data safely.** Use synthetic data for pre-merge by default, anonymized or captured production-like data in controlled release stages, and explicit privacy checks for sensitive fixtures.
-11. **Use mutation testing selectively.** Apply it to safety, security, financial, or dense branch logic where coverage percentage is misleading; do not make it a universal check.
-12. **Keep style mechanical.** Formatting and simple style should be automated, not debated manually.
-13. **Verify the strategy.** Confirm each critical risk has a check, test, check artifact, or explicit exception.
+6. **Check before traffic.** For serving systems, startup/readiness checks and critical-path sanity checks should pass before new capacity accepts real traffic.
+7. **Make checks actionable.** Every blocking check needs failure instructions and a path to fix or quarantine.
+8. **Handle flakes ruthlessly.** A flaky blocker teaches people to ignore checks. Fix, quarantine, or downgrade with a dated expiry.
+9. **Use ratchets for legacy.** Prevent new critical findings and gradually reduce existing debt rather than requiring impossible cleanup.
+10. **Place high-assurance tests deliberately.** Bounded property tests on pure logic and ordinary fuzzing can live in this skill; concurrency/protocol invariants, model checking, deterministic simulation, and counterexample-driven validation route to formal validation.
+11. **Choose test data safely.** Use synthetic data for pre-merge by default, anonymized or captured production-like data in controlled release stages, and explicit privacy checks for sensitive fixtures.
+12. **Use mutation testing selectively.** Apply it to safety, security, financial, or dense branch logic where coverage percentage is misleading; do not make it a universal check.
+13. **Keep style mechanical.** Formatting and simple style should be automated, not debated manually.
+14. **Verify the strategy.** Confirm each critical risk has a check, test, check artifact, or explicit exception.
 
 ## Synthesized Default
 
@@ -97,6 +99,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 
 - Test strategy by risk area and lifecycle stage.
 - Check matrix: pre-merge, pre-release, launch, and advisory checks.
+- Critical-path sanity and pre-traffic health checks with expected behavior and stop condition.
 - Runtime budget for blocking lanes with a measurement source (p95 from CI history, not aspirational), and the action when the budget is exceeded.
 - Test composition by layer (unit/component, contract/integration, end-to-end, and specialized checks) with counts or ratios and rationale whenever cutting CI time, handling flakes, or redesigning a suite.
 - Failure response for each blocking check.
@@ -112,6 +115,9 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - `check_signal`: every blocking check has high signal, and failure response.
 - `flake_policy`: flaky checks have fix, quarantine, downgrade, or expiry decision.
 - `stage_fit`: each check runs at the earliest stage where it can check the intended property.
+- `critical_path_sanity`: critical user paths have sanity checks that validate behavior, not only process health.
+- `pre_traffic_health`: new capacity passes startup/readiness checks before accepting real traffic.
+- `promotion_checks`: production-like integration, synthetic, canary, or performance checks stop promotion when critical behavior fails.
 - `suite_shape`: test-layer counts or ratios match the risk profile, with most pre-merge confidence coming from cheap deterministic checks and only bounded broad tests blocking.
 - `legacy_ratchet`: existing debt has a non-regression rule and reduction plan.
 

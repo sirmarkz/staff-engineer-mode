@@ -42,6 +42,7 @@ Asynchronous systems trade call-time coupling for delivery, ordering, replay, an
 - Schema, compatibility rules, required fields, versioning, and responsibility.
 - Delivery semantics, ordering needs, partition key, idempotency key, and dedupe window.
 - Retry policy, backoff, max attempts, DLQ handling, poison message behavior, and manual repair.
+- Queue bounds, age, depth, drain rate, consumer concurrency, and batched-message per-item status.
 - Replay needs, retention, correction process, and consumer side effects.
 - Backlog metrics, processing latency, freshness, consumer lag, and alert thresholds.
 
@@ -51,10 +52,10 @@ Asynchronous systems trade call-time coupling for delivery, ordering, replay, an
 2. **Define the contract.** Write schema, meaning, responsibility, compatibility, and versioning rules before implementation.
 3. **Publish atomically.** Use a durable local transaction plus outbox or equivalent when state change and message publication must agree.
 4. **Make consumers idempotent.** Design dedupe, commutative updates, durable processing markers, or safe side effects.
-5. **Control retries.** Bound attempts, add backoff/jitter, isolate poison messages, and define DLQ responsibility.
+5. **Control retries.** Bound attempts, add backoff/jitter, isolate poison messages, define DLQ responsibility, and retry only failed or unknown items in batched work when item status is available.
 6. **Plan ordering and partitioning.** Order only where necessary; choose partition keys that avoid hot partitions and preserve required entity order.
 7. **Design replay and correction.** Ensure reprocessing is safe, observable, and can repair bad events or bad consumers.
-8. **Instrument the flow.** Track enqueue time, age, depth, lag, drain rate, processing errors, DLQ volume, and replay progress.
+8. **Instrument the flow.** Track enqueue time, age, depth, lag, drain rate, processing errors, consumer concurrency, DLQ volume, batched-item status, and replay progress.
 
 ## Synthesized Default
 
@@ -96,6 +97,7 @@ Use at-least-once delivery with idempotent consumers as the default mental model
 - Producer/consumer responsibility matrix.
 - Idempotency and duplicate-handling plan.
 - Retry, backoff, DLQ, and poison-message policy.
+- Queue/workflow overload table covering depth, age, drain rate, consumer concurrency, poison path, and batched-item status.
 - Ordering, partitioning, and hot-key plan.
 - Replay, correction, and manual repair plan.
 - Observability requirements for age, lag, depth, errors, and replay.
@@ -105,6 +107,9 @@ Use at-least-once delivery with idempotent consumers as the default mental model
 - `contract_check`: event meaning, schema, and compatibility rules are documented.
 - `idempotency_check`: every consumer side effect is duplicate-safe or explicitly non-retryable.
 - `retry_dlq_check`: retry attempts, backoff, DLQ responsibility, and poison handling are defined.
+- `queue_bound`: queue depth, age, drain rate, and consumer concurrency have bounds or explicit unknowns.
+- `poison_path`: poison item handling, DLQ responsibility, and manual repair path are defined.
+- `batch_item_status`: batched work records per-item success, failure, or unknown status before retry.
 - `ordering_check`: ordering and partition key choices match the entity semantics.
 - `replay_check`: replay/correction path is safe and observable.
 

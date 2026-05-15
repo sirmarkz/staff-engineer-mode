@@ -40,6 +40,7 @@ Caching is a correctness path disguised as a performance optimization.
 - Freshness requirement, TTL, negative caching, versioning, and stale-read tolerance.
 - Backing dependency capacity, miss amplification, hot keys, and cache population path.
 - Failure behavior: cache unavailable, cache cold, invalidation delayed, stale write, partial rebuild.
+- Normal hit-rate range, entry size bound, flush or eviction impact, and backing-load increase under cold-cache behavior.
 - Stampede controls: request coalescing, leases, single-flight, prewarming, and rate limits.
 - Repair path: reindex, rebuild, invalidate all, partial repair, and correctness checks.
 - Metrics: hit/miss, stale reads, evictions, rebuild lag, invalidation lag, downstream load, and tail latency.
@@ -52,7 +53,7 @@ Caching is a correctness path disguised as a performance optimization.
 4. **Protect downstreams.** Model miss amplification and add coalescing, leases, prewarming, or load shedding.
 5. **Handle invalidation as correctness.** Use explicit invalidation, versioned values, or repair scans when stale writes can occur. For cache-aside writes, define the source-of-truth update and invalidation order.
 6. **Define degradation.** State behavior when cache is cold, unavailable, partitioned, or stale.
-7. **Instrument correctness and load.** Track stale-read rate, invalidation lag, rebuild lag, hit/miss, and downstream saturation. Set hit-rate alerts tight against the normal operating point — at high hit rates, a small absolute drop translates to a multiplicative increase in backing load (a hit rate falling from 95% to 85% triples the miss rate, not doubles it), so alarming on a fixed absolute floor misses the operating-point sensitivity.
+7. **Instrument correctness and load.** Track stale-read rate, invalidation lag, rebuild lag, hit/miss, entry-size rejects, cold-cache state, and downstream saturation. Set hit-rate alerts tight against the normal operating point — at high hit rates, a small absolute drop translates to a multiplicative increase in backing load (a hit rate falling from 95% to 85% triples the miss rate, not doubles it), so alarming on a fixed absolute floor misses the operating-point sensitivity.
 8. **Plan repair.** Include manual and automated invalidation/rebuild with verification.
 
 ## Synthesized Default
@@ -96,6 +97,7 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 - Freshness, TTL, invalidation, and versioning policy.
 - Stampede and miss-amplification protection plan.
 - Failure/degradation behavior.
+- Cache-loss and cold-cache behavior, including entry-size bounds and backing-load impact.
 - Metrics and alerts for freshness, stale reads, rebuilds, and downstream load.
 - Repair/rebuild runbook and verification checks.
 
@@ -104,6 +106,8 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 - `freshness_check`: max staleness, TTL, and user-visible stale behavior are explicit.
 - `invalidation_map`: writers, invalidators, readers, and versioning/repair paths are documented.
 - `stampede_check`: miss storm and hot-key behavior are bounded.
+- `cache_loss_behavior`: cold, flushed, unavailable, or partitioned cache behavior is defined.
+- `cache_size_bound`: cache entries have size bounds or visibility into oversized entries.
 - `downstream_check`: backing dependency capacity under cold/miss conditions is modeled.
 - `repair_check`: rebuild/invalidate/repair runbook and correctness verification exist.
 

@@ -38,6 +38,7 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Datastore type, topology, table/collection size, write rate, read patterns, and critical queries.
+- Whether the datastore is on a user-critical path, with failover mode, connection limits, query tail latency, restore readiness, and write behavior during failover.
 - Proposed DDL/DML, index, backfill, cleanup, or maintenance operation.
 - Lock behavior, replication lag, write amplification, query-plan risks, and operational windows.
 - Backfill batch size, throttle rules, pause/abort controls, checkpointing, and idempotency.
@@ -48,7 +49,7 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 ## Workflow
 
 1. **Classify the change.** Separate additive schema, index, backfill, dual-write, cutover, cleanup, query-plan, and maintenance work.
-2. **Assess production risk.** Identify locks, lag, write amplification, query-plan shifts, shard/partition effects, cache churn, and failover interactions.
+2. **Assess production risk.** Identify locks, lag, write amplification, query-plan shifts, shard/partition effects, cache churn, failover interactions, and whether user-critical paths depend on the datastore behavior during those conditions.
 3. **Use expand/contract in named phases.** Run schema evolution as four sequential phases — Expand (add the new structure, old code ignores it), Migrate (backfill data into the new structure), Transition (new code reads/writes both), Contract (remove the old structure once nothing references it). Each phase except Contract is rollback-safe on its own: a failed Expand drops the new structure, a failed Migrate leaves the old structure authoritative with the new partially populated, a failed Transition reverts code while the old structure still serves; a failed Contract has already validated everything, so investigate before retrying rather than rolling back.
 4. **Throttle and checkpoint.** Run in small batches with pause/abort controls, progress tracking, idempotency, and load-sensitive throttles.
 5. **Validate data.** Use verification queries, invariant checks, counts, sampling, and reconciliation before declaring completion.
@@ -94,6 +95,7 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 
 - Database change plan with phases, confirmation points, and rollback checks.
 - Lock, lag, write-amplification, and query-plan risk assessment.
+- Critical-path database risk table covering failover, connection limits, query tail latency, restore readiness, and write behavior.
 - Backfill or maintenance runbook with throttle, pause, abort, and checkpointing.
 - Verification query/invariant plan.
 - Monitoring and alert additions for the change window.
@@ -103,6 +105,7 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 ## Checks Before Moving On
 
 - `lock_lag_check`: lock behavior, replication lag, and write amplification are assessed.
+- `db_critical_path`: database behavior on user-critical paths is assessed for failover, connection limits, query tail latency, restore readiness, and write behavior.
 - `throttle_abort`: batch size, throttle, pause, abort, and confirmation point are defined.
 - `verification_check`: data correctness verification queries or invariants exist.
 - `rollback_check`: rollback or forward-fix path is written before execution.

@@ -40,6 +40,7 @@ Identity is the control plane for human and workload power.
 - Authentication factors, federation, session lifetime, device/context signals, and step-up requirements.
 - Authorization model, permission granularity, default grants, just-in-time elevation, and break-glass process.
 - Secrets, tokens, keys, certificates, storage locations, rotation cadence, expiry, and consumers.
+- Service-call authentication coverage, credential expiry signals, rotation lead time, and response path when expiry approaches.
 - Encryption needs, key responsibility, key separation, data classification, and long-lived confidentiality requirements.
 - Activity logs, log retention, alerting, access recertification cadence, and revocation path.
 
@@ -48,7 +49,7 @@ Identity is the control plane for human and workload power.
 1. **Inventory access paths.** Include humans, services, jobs, automation, support tools, emergency access, and third parties.
 2. **Replace network trust.** Base access on identity, context, resource sensitivity, and explicit authorization, not location alone.
 3. **Minimize privileges.** Scope permissions by action, resource, tenant, environment, and duration.
-4. **Prefer workload identity and short-lived credentials.** Use managed identity where the runtime and resource share a trust domain; use workload identity federation when crossing platforms or organizations; use expiring tokens, rotation, and revocation over static long-lived secrets.
+4. **Prefer workload identity and short-lived credentials.** Use managed identity where the runtime and resource share a trust domain; use workload identity federation when crossing platforms or organizations; use expiring tokens, rotation, revocation, and expiry signals over static long-lived secrets.
 5. **Protect secrets and keys.** Keep them out of source, logs, images, and broad config; separate key administration from data access where risk warrants it.
 6. **Design break-glass deliberately.** Require strong authentication, limited duration, justification, audit, and post-use verification.
 7. **Use vetted cryptography.** Prefer standard protocols and managed primitives; do not invent algorithms or key-handling schemes.
@@ -93,6 +94,7 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 - Identity and access model.
 - Human/service permission table with least-privilege decisions.
 - Secret and key inventory with storage, rotation, expiry, and consumers.
+- Authentication coverage and credential-expiry table with lead time, signal, owner path, and response.
 - Break-glass and just-in-time access process.
 - Audit event and access-recertification requirements.
 - Cryptography decision record.
@@ -103,6 +105,8 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 - `access_inventory`: human, workload, admin, emergency, and third-party access paths are listed.
 - `least_privilege`: permissions are scoped by action/resource/environment/tenant and default-deny is addressed.
 - `credential_lifetime`: secrets and tokens have storage, expiry, rotation, and revocation plan.
+- `expiry_signal`: credentials, certificates, and tokens that can break production have expiry visibility and response lead time.
+- `auth_coverage`: service calls have authentication coverage or an explicit exception with compensating controls.
 - `activity_log_check`: high-risk access and privilege changes emit linked activity logs.
 - `crypto_check`: cryptographic choices use vetted primitives and key responsibility is defined.
 

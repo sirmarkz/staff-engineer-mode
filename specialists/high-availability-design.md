@@ -42,6 +42,7 @@ High availability is the ability to keep serving through expected failures witho
 - Fault domains: process, node, rack, location, deployment unit, administrative boundary, cluster, deployment ring, tenant, data partition, dependency, and operator action.
 - Capacity by domain, peak traffic, failover headroom, and dependency quotas.
 - Fault-domain independence, per-domain telemetry, data replication model, consistency needs, and any hidden global dependencies.
+- Per-domain health signals, traffic shift path, and last validation result for moving traffic away from an unhealthy domain.
 - Existing failover tests, incidents, game days, chaos experiments, and rollback procedures.
 
 ## Workflow
@@ -53,7 +54,7 @@ High availability is the ability to keep serving through expected failures witho
 5. **Choose topology deliberately.** Decide whether a single-location, location-redundant, multi-location, active-passive, active-active, stamp, or partition model is justified by the survival target.
 6. **Bound blast radius.** Use partitions, stamps, shards, shuffle sharding, tenant isolation, or location boundaries when one failure could otherwise affect the whole fleet. Operational actions should not affect multiple independent fault domains at once unless the user explicitly accepts the emergency risk.
 7. **Remove hidden coupling.** Find global locks, shared queues, shared caches, control-plane calls, cross-location synchronous writes, centrally coupled config, and externally hosted artifacts in the serving, deploy, scale, and startup paths.
-8. **Define failover behavior.** Specify automatic/manual trigger, traffic drain or shift, data consistency, split-brain prevention, client behavior, and rollback to normal.
+8. **Define failover behavior.** Specify automatic/manual trigger, traffic drain or shift, data consistency, split-brain prevention, client behavior, rollback to normal, and when the shift path was last validated.
 9. **Validate safely.** Define the validation objective, then route detailed fault-injection or game-day planning to resilience experiments when that is the main work.
 
 ## Synthesized Default
@@ -99,6 +100,7 @@ Use fault-domain independence, static stability, and explicit fault-domain isola
 - Blast-radius analysis and partition/shard/tenant isolation recommendation.
 - Hidden dependency and control-plane risk list.
 - Failover decision record with trigger, authority, data behavior, and rollback.
+- Per-fault-domain health and traffic-shift table with signal, action path, expected capacity, and last validation result.
 - Validation plan with scope, abort criteria, telemetry, and details to capture.
 
 ## Checks Before Moving On
@@ -108,6 +110,8 @@ Use fault-domain independence, static stability, and explicit fault-domain isola
 - `static_capacity`: remaining domains can serve target traffic after the named failure without emergency scaling.
 - `blast_radius_bound`: a single fault cannot exceed the documented partition, tenant, shard, or location impact boundary.
 - `failover_behavior`: trigger, authority, data consistency, traffic behavior, and rollback are written down.
+- `per_domain_signals`: each critical fault domain has health signals that can identify local impairment.
+- `shift_path`: moving traffic away from an unhealthy domain has an automatic or manual path and a last validation result.
 - `validation_plan`: failover, game day, or chaos test has scope, abort criteria, telemetry, and check path.
 
 ## Red Flags - Stop And Rework

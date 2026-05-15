@@ -40,6 +40,7 @@ Resilience experiments test whether the system behaves the way the design says i
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - System tier, SLOs, critical journeys, known failure modes, and previous incident classes.
 - Existing fault-domain map, dependency matrix, capacity model, and recovery runbooks.
+- Previous tests for dependency unavailability, dependency slowness, cache loss, fault-domain loss, and alert/runbook response.
 - Steady-state signals: availability, latency, correctness, freshness, saturation, queue age, and user-impact indicators.
 - Experiment target, injected fault, blast radius, duration, traffic scope, customer exposure, and abort criteria.
 - Production cadence or trigger for recurring drills, based on tier and change rate.
@@ -53,7 +54,7 @@ Resilience experiments test whether the system behaves the way the design says i
 3. **Bound the blast radius.** Start with shift-left simulation or staging when needed, then a small partition, tenant, shard, deployment unit, or traffic slice.
 4. **Set abort criteria.** Decide in advance which SLO burn, error, latency, saturation, data, or operator signal stops the experiment.
 5. **Prepare responders.** Confirm on-call, runbooks, rollback, communication channel, and user decision point.
-6. **Inject one failure.** Change one variable at a time unless the explicit goal is compound-failure validation.
+6. **Inject one failure.** Change one variable at a time unless the explicit goal is compound-failure validation; cover the highest-risk missing modes across dependency down, dependency slow, cache loss, fault-domain loss, and response-path failure.
 7. **Observe and decide.** Compare actual behavior to hypothesis, abort on criteria, and record results while the system is still fresh.
 8. **Set recurrence deliberately.** For tier-critical recovery mechanisms, define when to repeat the drill after topology, traffic, dependency, or runbook changes.
 9. **Close the loop.** File fixes, update runbooks, add regression checks, and rerun only after material changes.
@@ -95,6 +96,7 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 ## Required Outputs
 
 - Experiment hypothesis.
+- Experiment portfolio showing failure mode, expected user behavior, stop condition, last run, next trigger, and follow-up.
 - Steady-state signal list and dashboard links.
 - Fault injection method and blast-radius boundary.
 - Abort criteria and rollback/fallback actions.
@@ -110,7 +112,8 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 - `abort_criteria`: stop thresholds and user decision point are defined before the experiment.
 - `telemetry_check`: steady-state and causal signals are visible during the test.
 - `learning_loop`: findings create maintained fixes or explicit risk acceptance.
-- `recurrence_rule`: critical recovery behavior has a repeat trigger, deadline, or cadence tied to tier, topology change, or incident learning.
+- `recurrence_rule`: critical recovery behavior has a repeat trigger, deadline, or cadence tied to tier, topology, traffic, dependency, or incident learning.
+- `fault_mode_coverage`: the experiment set covers the highest-risk failure modes or lists the skipped modes and reason.
 
 ## Red Flags - Stop And Rework
 

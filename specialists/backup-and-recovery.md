@@ -36,7 +36,7 @@ Backups do not matter until a restore works.
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Critical data sets, customer journeys, data classification, and deletion/corruption blast radius.
+- Essential and critical data sets, customer journeys, data classification, and deletion/corruption blast radius.
 - RTO/RPO expectations by journey, tenant, data class, and regulatory/customer commitment.
 - Backup method, cadence, retention, location, encryption, key responsibility, immutability, and access policy.
 - Replication topology, lag, consistency model, PITR capability, and location dependencies.
@@ -45,7 +45,7 @@ Backups do not matter until a restore works.
 
 ## Workflow
 
-1. **Classify what must be recovered.** Separate serving availability, data durability, data correctness, and audit/history requirements.
+1. **Classify what must be recovered.** Separate essential user-critical data sets from broader serving availability, durability, correctness, and audit/history requirements.
 2. **Set RTO/RPO.** Record maximum tolerable downtime and data loss for each critical journey and data set.
 3. **Map backup coverage.** Include data, metadata, schema, config, secrets/keys, object stores, queues, indexes, and derived state.
 4. **Check isolation.** Ensure backups and keys survive accidental deletion, malicious operator action, account compromise, and ransomware.
@@ -92,6 +92,7 @@ Use recent restore tests tied to RTO/RPO as the default. Protect backups and enc
 
 - DR strategy decision record.
 - RTO/RPO table by journey and data set.
+- Essential-data coverage table showing source of truth, restore type, validation, and measured result.
 - Backup coverage, retention, encryption, key, and immutability matrix.
 - Restore runbook with prerequisites, commands, validation, and rollback.
 - PITR, partial restore, corruption repair, and location recovery plan.
@@ -101,7 +102,9 @@ Use recent restore tests tied to RTO/RPO as the default. Protect backups and enc
 ## Checks Before Moving On
 
 - `restore_test`: a recent restore test exists, or its absence is called out as a blocker.
+- `essential_data_list`: data needed for user-critical recovery is identified separately from lower-criticality copies.
 - `rto_rpo_fit`: measured restore time and data loss meet the stated targets, or exceptions have a user-accepted deadline and verification path.
+- `measured_restore`: restore behavior is measured against the stated objective rather than described from intent.
 - `coverage_matrix`: critical data, metadata, schema, config, and keys have backup or rebuild coverage.
 - `isolation_check`: backups and keys are protected from destructive operator, compromised credential, and ransomware scenarios.
 - `validation_queries`: restored data has correctness checks, not just process completion.

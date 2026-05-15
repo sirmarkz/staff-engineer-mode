@@ -39,6 +39,7 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 - Critical user journeys, API operations, tenants, customer tiers, and response paths.
 - Candidate SLIs for availability, latency, freshness, correctness, durability, and data loss.
 - Current metrics, logs, traces, dashboards, alerts, and incident history.
+- Missing-metric behavior, low-traffic detection strategy, and any synthetic or heartbeat signal needed to see user impact when organic traffic is sparse.
 - Traffic shape: request volume, batch cadence, peak/seasonal behavior, and dependency fanout.
 - External commitments or contractual SLAs, support tier, business-critical periods, and known customer commitments.
 - Release process: canary checks, freeze rules, rollback authority, and reliability-work intake.
@@ -46,12 +47,12 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 ## Workflow
 
 1. **Name the user journey.** Write the journey in user terms: "checkout succeeds", "message is delivered", "dataset is fresh", not "instances are healthy".
-2. **Choose the SLI.** Prefer direct measures of good events over proxy infrastructure health. If direct measurement is missing, mark telemetry work as a blocker or explicit proxy risk.
+2. **Choose the SLI.** Prefer direct measures of good events over proxy infrastructure health. If direct measurement is missing, mark telemetry work as a blocker or explicit proxy risk; missing samples are unknown or bad, never green by default.
 3. **Define good and bad events.** Specify numerator, denominator, exclusion rules, sampling source, and data-retention limits.
 4. **Model health states.** Define healthy, degraded, unavailable, and recovering for the journey so partial failures and degraded quality do not disappear inside raw uptime.
 5. **Set the SLO target and window.** Pick a target users need and the system can plausibly meet. Keep internal thresholds tighter than external customer commitments when they exist. Include availability, latency, freshness, recovery, or correctness targets only when they match the journey. Avoid 100 percent unless failure is impossible by construction.
 6. **Calculate the budget.** Convert target and window into allowed bad events or bad minutes. Include low-traffic math so one event does not create nonsensical burn.
-7. **Design alerts from burn.** Trigger urgent alerts on fast and sustained budget burn. Ticket slow burns. As a starting point, interrupt only when short-window and longer-window burn both show urgent exhaustion risk, ticket when multi-hour or multi-day burn threatens the window, and recompute thresholds for low traffic.
+7. **Design alerts from burn.** Trigger urgent alerts on fast and sustained budget burn. Ticket slow burns. As a starting point, interrupt only when short-window and longer-window burn both show urgent exhaustion risk, ticket when multi-hour or multi-day burn threatens the window, and recompute thresholds for low traffic; use synthetic or heartbeat signals when real traffic cannot detect failure quickly enough.
 8. **Handle latency correctly.** State where latency is measured and how percentiles are aggregated. Do not average percentiles across services or windows; merge compatible distributions or measure at the user-journey boundary.
 9. **Define budget responses.** State what happens when budget is healthy, threatened, exhausted, or repeatedly exhausted: urgent alert, ticket, slow release, override, or prioritize reliability work.
 10. **Route gaps.** Missing telemetry goes to observability; staged rollout rules go to progressive delivery; launch aggregation goes to PRR.
@@ -98,6 +99,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - Health-state definitions for healthy, degraded, unavailable, and recovering conditions where partial degradation matters.
 - Error-budget calculation in bad events or bad minutes.
 - Burn-rate alert rules with urgent-alert and ticket thresholds, including windows, budget-consumption rate, low-traffic handling, and diagnostic non-urgent rules.
+- Missing-data policy for each SLI, plus synthetic or heartbeat detection for low-traffic journeys where needed.
 - Dashboard requirements that show SLO state, burn, traffic, fault-domain scope where relevant, and recent deployments.
 - Budget-state release rules and reliability-work triggers.
 - Assumptions, proxy risks, blockers, and follow-up routes.
@@ -108,6 +110,8 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 - `health_state`: the SLO can distinguish successful, degraded, unavailable, and excluded events where users experience partial failure.
 - `math_check`: every SLO has a target, window, denominator, allowed bad events or minutes, and low-traffic handling.
 - `promise_margin`: internal alert or stop thresholds are stricter than external commitments where such commitments exist.
+- `missing_data_policy`: missing SLI samples have an explicit health meaning and response.
+- `low_traffic_detection`: low-volume journeys use event-count math, synthetic checks, heartbeat signals, or a documented proxy risk.
 - `alert_mapping`: every urgent alert maps to SLO burn or has a documented urgent/actionable exception.
 - `budget_response`: exhausted-budget behavior is stated, including who can allow releases and what work is prioritized.
 - `telemetry_check`: every SLI names its metric/log/event source or marks observability work as a blocker.

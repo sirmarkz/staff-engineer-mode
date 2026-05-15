@@ -43,6 +43,7 @@ Release engineering turns source changes into trustworthy artifacts.
 - Cache strategy, cache keys, invalidation rules, remote/local differences, and flaky build examples.
 - Release checks: tests, static checks, compatibility checks, security checks, and confirmation requirements.
 - Artifact identity, metadata, storage, promotion path, deployment consumers, and rollback path.
+- Deploy or scale dependencies on live artifact sources, mirrored or cached artifacts, and behavior when artifact sources are unavailable.
 
 ## Workflow
 
@@ -50,7 +51,7 @@ Release engineering turns source changes into trustworthy artifacts.
 2. **Pin every input.** Record source revision, dependencies, toolchains, build image, generators, and configuration needed to recreate the artifact.
 3. **Make builds hermetic.** Remove undeclared local files, ambient credentials, network fetches, clock-sensitive output, and machine-specific behavior.
 4. **Stabilize the graph.** Define build/test targets, cache keys, generated-output responsibility, and invalidation rules so cache hits cannot hide missing dependencies.
-5. **Build once, promote many.** Create an immutable artifact once and move the same artifact through validation, staging, and production.
+5. **Build once, promote many.** Create an immutable artifact once and move the same artifact through validation, staging, and production; deploy and scale paths should use pinned, available artifacts rather than live resolution during an emergency where feasible.
 6. **Define release lines.** Choose trunk release, release branch, train, or candidate flow based on support window and rollback needs.
 7. **Keep main recoverable.** Prefer short-lived topic branches, protected main, and release branches with explicit cherry-pick/backport policy so hotfixes do not disappear from the next release.
 8. **Check releases deliberately.** Keep checks fast and signal-rich; quarantine flaky checks, but do not let flakes silently weaken the release signal.
@@ -95,6 +96,7 @@ Use hermetic, reproducible, build-once promotion with pinned inputs, explicit ar
 - Build and release pipeline map.
 - Pinned-input and hermeticity checklist.
 - Artifact identity and metadata standard.
+- Deploy/scale artifact dependency table with source, pinning, availability, mirror/cache, and unavailable-source behavior.
 - Release branch/train/candidate policy.
 - Build cache and invalidation policy.
 - Release check list with required versus advisory checks.
@@ -105,6 +107,7 @@ Use hermetic, reproducible, build-once promotion with pinned inputs, explicit ar
 - `input_pinning`: source, dependencies, toolchains, generated inputs, and build environment are pinned or explicitly exempted.
 - `hermeticity_check`: build does not depend on undeclared local files, ambient network, machine state, or unscoped credentials.
 - `artifact_identity`: artifact has immutable identifier, source revision, build metadata, and storage location.
+- `artifact_availability`: deploy and scale paths use pinned artifacts with availability behavior defined for missing artifact sources.
 - `cache_safety`: cache keys and invalidation rules show stale output cannot satisfy changed inputs.
 - `release_record`: promotion and rollback path link artifact, checks, deployment, and verification results.
 

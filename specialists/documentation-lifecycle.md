@@ -39,6 +39,7 @@ Engineering documentation is useful only when it is findable, maintained, curren
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Doc type, audience, source of truth, repo or system link, and user decision point.
 - Current doc set, duplicates, stale pages, search paths, and missing operational references.
+- Operational docs, runbooks, dashboard metric definitions, source of truth, freshness triggers, and alert/dashboard link health.
 - Change triggers: code responsibility, service behavior, alerts, runbooks, interfaces, migrations, and deprecations.
 - Verification cadence, freshness signal, archival rule, and exception path.
 - Signs that users can find and apply the doc during real work.
@@ -49,7 +50,7 @@ Engineering documentation is useful only when it is findable, maintained, curren
 2. **Name the audience.** State who uses the doc and what decision or task it supports.
 3. **Assign responsibility.** Give every critical doc a user/agent responsibility path and an update trigger tied to the system lifecycle. Anonymous docs become stale silently.
 4. **Pick the source of truth.** Remove or mark duplicates so readers know where authority lives.
-5. **Add freshness signals.** Include last-verified state, lifecycle stage, change trigger, and archive rule.
+5. **Add freshness signals.** Include last-verified state, lifecycle stage, change trigger, and archive rule; operational docs refresh after incidents, threshold changes, dependency changes, or readiness findings.
 6. **Connect docs to delivery.** Link docs to code, alerts, dashboards, runbooks, release checks, or decision records where they are used.
 7. **Test usability.** Verify a fresh agent or the user from a clean clone can find and follow the doc under realistic conditions.
 8. **Retire stale docs.** Archive misleading content rather than keeping it searchable with no current source of truth.
@@ -94,6 +95,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 - Freshness rule naming **both verification cadence AND staleness signal** (e.g., "verify every 90 days; mark `stale` if last-verified > cadence or if linked alert/code changed without doc update").
 - Docs-as-code workflow: **traceable doc changes AND automated checks** (link-checker, markdown lint, CI build) running on every doc PR.
 - Required docs for launch, operations, migration, or maintenance.
+- Operational-doc freshness matrix for runbooks and dashboard metric definitions.
 - Update triggers tied to code, operations, and release events.
 - Stale-doc cleanup plan.
 - Usability and findability checks.
@@ -108,6 +110,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 - `docs_as_code`: doc changes flow through linked changes AND automated checks (lint, link-check, or CI).
 - `freshness_rule`: change trigger, lifecycle state, and archive rule exist.
 - `delivery_link`: docs required for operation or launch are tied to delivery checks.
+- `operational_doc_freshness`: runbooks and dashboard metric definitions have source of truth, freshness trigger, and last-verified signal.
 - `usability_check`: someone can find and use the doc without tribal knowledge.
 
 ## Red Flags - Stop And Rework

@@ -37,6 +37,7 @@ Infrastructure is safer when desired state, policy checks, drift handling, and r
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Infrastructure resources, environments, responsible change path, desired-state repositories, and change workflow.
+- Infrastructure boundaries for independent fault domains, shared control-plane dependencies, drift detection, and emergency reconciliation path.
 - Policy requirements: security, reliability, identity, network, secrets, tagging, cost, and operational standards.
 - Deployment/admission points, promotion model, user confirmations, and emergency-change path.
 - Drift sources, detection methods, reconciliation authority, and incident history.
@@ -49,7 +50,7 @@ Infrastructure is safer when desired state, policy checks, drift handling, and r
 2. **Keep secrets out of desired-state diffs.** Store secret references, encrypted envelopes, or external secret bindings instead of plaintext; redact plans/diffs and fail the change if secret values appear in change artifacts.
 3. **Make changes traceable in version control.** Require responsible change path, plans/diffs, checks, and user confirmations appropriate to risk.
 4. **Encode and test policies.** Convert standards into automated rules with clear failure messages, fixture tests, historical dry runs where feasible, and an exception path.
-5. **Separate platform and workload boundaries.** Make shared services, application environments, and responsibility explicit so policy inheritance and exceptions are understandable.
+5. **Separate platform and workload boundaries.** Make shared services, application environments, fault-domain boundaries, shared control-plane dependencies, and responsibility explicit so policy inheritance and exceptions are understandable.
 6. **Enforce at the right point.** Use pre-merge, pre-deploy, admission, or continuous drift checks depending on risk and feasibility.
 7. **Detect drift.** Compare actual state to desired state and decide whether to alert, reconcile, or open a ticket.
 8. **Plan rollback.** State when rollback is possible, when roll-forward is safer, and how state is protected.
@@ -95,6 +96,7 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 
 - Infrastructure change workflow.
 - Desired-state scope and responsibility.
+- Fault-domain infrastructure boundary map, including shared state or control-plane dependencies that can defeat intended independence.
 - Policy-as-code control matrix.
 - Enforcement point and exception model.
 - Drift detection and reconciliation plan.
@@ -110,6 +112,7 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 - `secret_check`: desired state and change artifacts do not expose plaintext secrets.
 - `policy_check`: policies map to engineering standards and enforcement/advisory mode.
 - `drift_check`: drift detection and reconciliation response are defined.
+- `infra_fault_boundary`: intended independent fault domains have separate configurable boundaries or an explicit shared-dependency exception.
 - `emergency_check`: manual break-glass changes require separate identity, expiry, change history, reconciliation, and re-locking.
 
 ## Red Flags - Stop And Rework

@@ -43,6 +43,7 @@ Multi-tenancy fails when tenant context is optional.
 - Request, query, cache, event, batch, search, analytics, and support/admin paths that carry tenant data.
 - Access controls, tenant context propagation, activity logs, row/object boundaries, and break-glass behavior.
 - Quotas, rate limits, concurrency caps, noisy-neighbor risks, and per-tenant isolation needs.
+- Admission point for tenant limits, dynamic limit update path, fair-share behavior, and privacy-safe impact scoping.
 - Logging, metrics, traces, crash/error reports, and support tooling that may expose sensitive data.
 
 ## Workflow
@@ -52,7 +53,7 @@ Multi-tenancy fails when tenant context is optional.
 3. **Choose isolation model.** Use silo, pool, bridge, hybrid, or isolation-group boundaries based on data sensitivity, blast radius, scale, cost, and tenant-specific residency or compliance needs. Isolation groups separate sets of tenants from each other while preserving finer isolation inside each group.
 4. **Choose data partitioning.** State whether tenants use separate stores, separate schemas/namespaces, shared schemas with enforced tenant predicates, or tenant-scoped encryption and credentials.
 5. **Enforce data boundaries.** Apply tenant filters, scoped credentials, row/object boundaries, query guards, cache-key tenant assertions, and cross-tenant tests.
-6. **Control noisy neighbors.** Add per-tenant quotas, rate limits, concurrency caps, and load-shedding rules where shared capacity exists.
+6. **Control noisy neighbors.** Add per-tenant quotas, rate limits, concurrency caps, and load-shedding rules where shared capacity exists; enforce cheap admission checks before expensive work when possible and define how limits change safely during an event.
 7. **Protect privacy surfaces.** Minimize, redact, tokenize, encrypt, or segregate sensitive data in logs, telemetry, exports, and support views.
 8. **Handle tenant offboarding.** Propagate deletion and access removal through stores, caches, indexes, derived data, exports, backup expiry, and support tooling.
 9. **Audit high-risk access.** Record administrative, support, export, deletion, and cross-tenant operations in tenant-scoped activity logs; define retention long enough for investigation, compliance, and incident investigation.
@@ -101,6 +102,7 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 - Access, query, cache, event, and job boundary controls.
 - Tenant offboarding and deletion propagation plan.
 - Noisy-neighbor quota and capacity policy.
+- Dynamic tenant-limit update path and privacy-safe impact scoping signals.
 - Privacy-safe logging/telemetry/support review.
 - Tenant-scoped audit log requirements, including covered events, protected fields, retention period or retention policy, and review responsibility.
 - Cross-tenant test requirements, including forced-tenant mismatch, missing-tenant-filter detection, random tenant-ID probes, and cache-key assertions.
@@ -111,6 +113,9 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 - `data_boundary`: data access controls enforce tenant isolation where shared stores exist.
 - `privacy_check`: sensitive data handling is defined for logs, traces, metrics, errors, exports, and support tools.
 - `quota_check`: shared capacity has tenant-aware quotas or an explicit risk acceptance.
+- `early_admission`: tenant or caller limits apply before expensive shared work where feasible.
+- `dynamic_limit_path`: emergency or routine limit changes have a safe update, rollback, and verification path.
+- `tenant_impact_scope`: tenant impact can be scoped with privacy-safe operational signals.
 - `activity_log_check`: tenant-scoped activity logs cover high-risk access and define retention for forensics and incident investigation.
 - `cross_tenant_test`: tests or probes cover unauthorized cross-tenant read/write paths.
 

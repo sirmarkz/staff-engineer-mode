@@ -37,6 +37,7 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Fleet inventory: components, versions, environments, criticality, support status, and local ownership info when available.
+- Baseline runtime or platform drift, defects already fixed in newer baselines but still present in older ones, and exception expiry.
 - Version-skew policy, compatibility matrix, upgrade order, and blocked combinations.
 - Tests for mixed versions, client/server compatibility, data compatibility, and operational tooling.
 - Rollout batches, maintenance windows, traffic exposure, rollback or roll-forward path, and freeze dates.
@@ -46,7 +47,7 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 
 ## Workflow
 
-1. **Inventory the fleet.** List versions, support windows, criticality, local ownership info, and unknowns.
+1. **Inventory the fleet.** List versions, support windows, baseline drift, criticality, local ownership info, and unknowns.
 2. **Define allowed skew.** State which old/new combinations are supported during rollout and for how long.
 3. **Communicate support deadlines.** Tell affected consumers when old versions leave support, what action they must take, and when reminders, follow-up, or enforcement start.
 4. **Find breaking changes.** Check behavior, config, interfaces, data formats, tooling, and operational assumptions.
@@ -54,7 +55,7 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 6. **Batch rollout.** Move low-risk cohorts first, then critical paths with checks, user confirmation, and monitoring.
 7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local details needed to close them.
 8. **Update operations.** Refresh runbooks, alerts, dashboards, and local operating procedures for the new version.
-9. **Close old paths.** Remove compatibility shims, stale versions, and exceptions after adoption is verified.
+9. **Close old paths.** Remove compatibility shims, stale versions, and exceptions after adoption is verified; keep baselines current enough that available fixes do not linger unnoticed.
 
 ## Synthesized Default
 
@@ -94,6 +95,7 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 ## Required Outputs
 
 - Fleet inventory with version, criticality, support status, and local ownership info when available.
+- Baseline drift table showing current baseline, target baseline, available fixes not yet adopted, and exception expiry.
 - Version-skew and compatibility matrix.
 - Upgrade order as an explicit tier list (e.g., control plane → data plane / nodes → clients/operators), with one-line rationale per tier and the allowed skew range between tiers stated as a numeric window with breakage criteria.
 - End-of-support / support-window communication plan with announcement date, final support date, affected consumers, required consumer action, reminder cadence, and follow-up or enforcement path.
@@ -107,6 +109,7 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 ## Checks Before Moving On
 
 - `inventory_complete`: supported, unsupported, unknown, and critical versions are visible.
+- `baseline_freshness`: baseline drift, available fixes not yet adopted, and exception expiry are visible for maintained components.
 - `skew_policy`: allowed mixed-version combinations and duration are explicit.
 - `support_comms`: affected consumers, support deadline, required action, reminder cadence, and follow-up date are visible.
 - `compatibility_test`: representative old/new paths are tested before broad rollout.

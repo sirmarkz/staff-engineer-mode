@@ -40,6 +40,7 @@ A good platform makes the safe path the easy path.
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Target users, service types, common workflows, pain points, and current failure modes.
 - Required defaults: responsibility, SLOs, telemetry, deployment, rollback, runbooks, security, secrets, cost tags, and recovery.
+- Generated operational defaults: starter SLO, dashboard, alert/runbook, rollout, recovery, dependency inventory, and secure settings.
 - Existing templates, catalogs, scorecards, delivery workflows, infrastructure modules, and exception process.
 - Migration needs for existing services and adoption blockers.
 - Platform responsibility, operating model, upgrade cadence, and feedback channels.
@@ -48,7 +49,7 @@ A good platform makes the safe path the easy path.
 
 1. **Start from repeated pain.** Choose platform capabilities that remove recurring setup, safety, security, or operations work.
 2. **Define the golden path.** Specify the service lifecycle from create, build, test, deploy, observe, operate, secure, recover, and retire.
-3. **Bake in defaults.** Include responsibility, SLO hooks, telemetry, safe deploys, secret handling, access boundaries, runbooks, and records.
+3. **Bake in defaults.** Include responsibility, SLO hooks, telemetry, safe deploys, secret handling, access boundaries, runbooks, recovery, dependency inventory, and secure settings. Each generated default should be a usable artifact, not a placeholder.
 4. **Make start-right templates.** Bootstrap repositories, delivery, infrastructure, observability, security, and policy defaults together so projects do not assemble safety by hand.
 5. **Expose self-service with guardrails.** Make the path usable without bespoke platform intervention for normal cases while policy, security, cost, and operations controls stay automatic.
 6. **Design scorecards.** Measure capability maturity across investment, adoption, controls, provisioning and management, interfaces, and feedback; use source records for meaningful capabilities, not vanity checkboxes.
@@ -95,6 +96,7 @@ Build golden paths around capabilities rather than tools: service creation, buil
 - Platform capability map.
 - Golden-path lifecycle and template requirements.
 - Required service defaults and records hooks.
+- Readiness-defaults matrix showing which operational defaults are created, usable, and checked by the golden path.
 - Service catalog and responsibility model.
 - Capability scorecard with meaningful checks, adoption feedback, and exception workflow.
 - Migration/adoption plan.
@@ -103,6 +105,7 @@ Build golden paths around capabilities rather than tools: service creation, buil
 ## Checks Before Moving On
 
 - `template_defaults`: golden path includes responsibility, SLO/telemetry, deploy/rollback, runbook, security, and secrets defaults.
+- `readiness_defaults`: generated defaults for SLO, dashboard, alert/runbook, rollout, recovery, dependency inventory, and secure settings are usable, not placeholders.
 - `self_service`: normal workflow can be completed without bespoke platform work.
 - `exception_model`: exceptions have user-confirmed reason, expiry, compensating control, and migration path.
 - `adoption_plan`: target services, migration order, and operating model are stated.

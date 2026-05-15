@@ -39,6 +39,7 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 - Critical user journeys, SLOs, service tier, and incident history.
 - Request paths, dependency map, queues, data stores, batch jobs, and external integrations.
 - Existing metrics, logs, traces, dashboards, alerts, runbooks, and known blind spots.
+- Dashboard purpose, first-screen health question, metric definitions, missing-signal behavior, visual status rules, and alert-to-runbook links.
 - Fault-domain labels needed for impact analysis, such as location, deployment unit, partition, shard, tenant, and deployment stage.
 - Deployment markers, version identifiers, feature/config flags, tenant/customer context, and correlation identifiers.
 - Privacy constraints, sensitive fields, retention requirements, and sampling limits.
@@ -52,10 +53,11 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 4. **Connect events.** Propagate trace context across every service boundary so the trace identifier is global to a request and span identifiers are local to each unit of work; attach deployment/change markers.
 5. **Structure logs and events.** Require a baseline field set on every entry — UTC timestamp, severity, service identifier, trace identifier, request identifier, and message — plus stable fields for operation, tenant/customer context where safe, dependency, result, error class, and latency.
 6. **Define the health model.** State healthy, degraded, unavailable, and recovering conditions at component, dependency, journey, and workload levels; distinguish transient degradation from sustained unavailability.
-7. **Design dashboards for questions.** Build views around impact, scope, fault domain, recent changes, dependencies, saturation, and recovery progress.
-8. **Alert on symptoms.** Use SLO burn or direct user-impact alerts. Keep diagnostic and causal alerts as tickets unless urgent and actionable.
-9. **Identify affected customers safely.** For customer-impacting services, define privacy-safe signals that support impact scoping and notification.
-10. **Attach runbooks.** Every urgent alert needs triage steps, impact check, mitigation options, fallback path, and rollback/fallback links.
+7. **Design dashboards for questions.** Build the first view so impact is visible quickly, then drill down by scope, fault domain, recent changes, dependencies, saturation, and recovery progress. Every displayed metric needs unit, source, label semantics, threshold/window, and missing-data behavior; color cannot be the only status signal.
+8. **Make absent signals explicit.** Emit zero when zero is meaningful, and treat missing samples as a separate health state instead of letting silence look healthy.
+9. **Alert on symptoms.** Use SLO burn or direct user-impact alerts. Keep diagnostic and causal alerts as tickets unless urgent and actionable.
+10. **Identify affected customers safely.** For customer-impacting services, define privacy-safe signals that support impact scoping and notification.
+11. **Attach runbooks.** Every urgent alert needs triage steps, impact check, mitigation options, fallback path, and rollback/fallback links.
 
 ## Synthesized Default
 
@@ -95,6 +97,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 
 - Telemetry requirements mapped to user journeys and dependencies.
 - Dashboard specification for impact, scope, dependencies, saturation, and recent changes.
+- Metric definition table covering unit, source, labels, threshold/window, owner path, and missing-signal behavior.
 - Fault-domain and affected-customer scoping signals where relevant.
 - Alert policy with urgent/ticket/diagnostic classification.
 - Structured log/event field standard and sensitive-data handling.
@@ -108,6 +111,9 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 - `health_model`: component and dependency signals aggregate into critical-journey and workload health states.
 - `causal_context`: telemetry includes dependency, correlation, version/change, and saturation context.
 - `fault_domain_context`: telemetry can separate impact by location, deployment unit, partition, shard, tenant, or deployment stage where those domains exist.
+- `dashboard_scan`: the first dashboard view shows user impact quickly and supports drill-down by scope, fault domain, dependency, change, and recovery state.
+- `metric_definition`: user-facing metrics define unit, source, labels, threshold/window, and missing-signal behavior.
+- `missing_signal_behavior`: missing samples and zero values are distinguishable where that difference changes health.
 - `runbook_link`: every urgent alert has a runbook with impact check, mitigation, fallback, and verification.
 - `privacy_check`: sensitive data handling is defined for logs, traces, labels, and events.
 - `debug_path`: dashboards answer impact, scope, cause candidates, recent changes, and recovery state.

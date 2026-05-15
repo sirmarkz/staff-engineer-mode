@@ -154,6 +154,7 @@ Use this section for common routing precedence. Load `references/routing-matrix.
 - Prefer newer narrow routes over broad neighbors. Concrete PR, branch, patch, or diff review routes to `agent-pr-review` even when test results are mentioned; otherwise route the engineering decision to the narrow surface specialist.
 - Reliability policy, telemetry construction, interrupt load, fault-domain topology/static failover capacity, restore capability, failure experiments, overload controls, and state invariants are separate surfaces.
 - API compatibility, data contracts, migrations, hygiene, fleet upgrades, event replay/DLQ, database backfills, cross-service database/storage correctness, cache freshness, and pipeline freshness stay distinct.
+- Database migration execution is `database-operations`; if the same prompt separately asks for future blocking checks, add `testing-and-quality-gates` as secondary.
 - Build/release artifacts, production exposure, rollback plans, config or automation mutation, and feature-flag lifecycle are separate delivery artifacts.
 - Desired-state capture, drift detection, reconciliation, or emergency exception rules after manual infrastructure changes route to `infrastructure-and-policy-as-code`.
 - Deprecation PRs/no-new-usage checks stay with `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback stays with `ml-reliability-and-evaluation`.

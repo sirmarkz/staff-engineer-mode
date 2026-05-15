@@ -45,17 +45,19 @@ Engineering controls are useful only when they are close to the work and produce
 - Refresh cadence, exception rules, and who can accept the risk.
 - Current scorecards, manual collection burden, gaps, incidents, and recurring findings.
 - Required engineering expectations or internal guidelines and how they map to engineering behavior.
+- Broad practice or checklist inputs that need translation into concrete engineering behavior and one owning specialist per item.
 
 ## Workflow
 
 1. **Check cross-surface scope.** Confirm the work spans at least two specialist engineering surfaces and that no single specialist covers the full record set. If the request is single-launch readiness, use `production-readiness-review`. If the request is single-domain records, use the matching specialist and stop.
 2. **Map expectations to behavior.** Express each expectation as something engineers do, prevent, detect, confirm, test, or verify.
-3. **Locate records near engineering work.** Prefer generated records from changes, CI, deploys, access systems, scanners, runbooks, and incidents.
-4. **Assign responsibility and cadence.** Every record source needs an owner, refresh cadence, and failure response.
-5. **Define exceptions.** Require expiry, compensating control, refresh trigger, and risk-acceptance authority appropriate to severity.
-6. **Build scorecards carefully.** Score capabilities and record state, not vanity metrics. Normalize overlapping security, reliability, supply-chain, operations, and internal engineering expectations into one record map.
-7. **Create standards backlog.** Record gaps from failed record pulls, expired exceptions, incidents, and recurring findings with severity, expected fix path, and target date.
-8. **Feed findings back.** Use incidents, failed reviews, and recurring exceptions to update standards and platform defaults.
+3. **Translate source material.** For broad practice inputs, rewrite each technical item into capability language, assign one owning specialist, and skip org-only or non-technical items.
+4. **Locate records near engineering work.** Prefer generated records from changes, CI, deploys, access systems, scanners, runbooks, and incidents.
+5. **Assign responsibility and cadence.** Every record source needs an owner, refresh cadence, and failure response.
+6. **Define exceptions.** Require expiry, compensating control, refresh trigger, and risk-acceptance authority appropriate to severity.
+7. **Build scorecards carefully.** Score capabilities and record state, not vanity metrics. Normalize overlapping security, reliability, supply-chain, operations, and internal engineering expectations into one record map.
+8. **Create standards backlog.** Record gaps from failed record pulls, expired exceptions, incidents, and recurring findings with severity, expected fix path, and target date.
+9. **Feed findings back.** Use incidents, failed reviews, and recurring exceptions to update standards and platform defaults.
 
 ## Synthesized Default
 
@@ -94,6 +96,7 @@ Keep records close to engineering workflows and automate collection where possib
 ## Required Outputs
 
 - Engineering expectation-to-behavior-to-record map.
+- Translation map from broad practice items to one owning specialist, with non-technical items marked skipped.
 - Record inventory with source, cadence, and retention.
 - Scorecard with pass/fail/exception states.
 - Exception register with expiry, compensating controls, refresh trigger, residual risk, and acceptance authority.
@@ -104,6 +107,7 @@ Keep records close to engineering workflows and automate collection where possib
 
 - `scope_check`: request explicitly spans two or more engineering surfaces, no single specialist covers the full record set, and non-engineering program management is excluded.
 - `record_source`: every expectation maps to a repeatable engineering artifact source.
+- `source_translation`: broad practice inputs are rewritten as concrete engineering behavior and assigned to one owning specialist, with org-only items skipped.
 - `cadence_check`: every record source has refresh cadence and failure response.
 - `exception_check`: exceptions have expiry, compensating control, and refresh trigger.
 - `workflow_fit`: records are captured from normal engineering workflows where possible.

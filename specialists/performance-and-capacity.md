@@ -44,6 +44,7 @@ Users experience tail latency, not averages.
 - Resource signals: CPU, memory, IO, network, lock contention, connection pools, thread pools, queue depth, queue age, and GC.
 - Load-balancing behavior, locality, shard keys, hot partitions, cache hit rate, and downstream quotas.
 - Existing load tests, production incidents, profiling/flame graphs, and regression data.
+- Tested breakpoint, startup-to-ready time, recovery time after stress, and profile differences between normal and heavy load.
 - Headroom rule, autoscaling behavior, static failed-domain capacity, and unit-cost constraints.
 
 ## Workflow
@@ -53,7 +54,7 @@ Users experience tail latency, not averages.
 3. **Build the demand model.** Capture request rate, burstiness, concurrency, fanout, payload, tenant skew, and seasonal peaks.
 4. **Apply queueing sanity checks.** Use Little's Law to connect arrival rate, latency, and concurrency; identify queues that can hide saturation.
 5. **Find saturation points.** Track RED for services and USE for resources. Include locks, connection pools, thread pools, caches, and downstream quotas.
-6. **Test to the knee.** Run load/stress/spike/soak tests in production-like environments until latency or errors become nonlinear; stop before uncontrolled damage.
+6. **Test to the knee.** Run load/stress/spike/soak tests in production-like environments until latency or errors become nonlinear; record the breakpoint, startup-to-ready time, recovery behavior after stress, and the profile differences that explain bottlenecks.
 7. **Protect the system.** Define admission control, load shedding, prioritization, and graceful degradation before saturation.
 8. **Investigate regressions scientifically.** Compare before/after profiles, deploy markers, dependency metrics, cache behavior, and resource saturation.
 9. **Model failed-domain headroom.** For HA requirements, show remaining domains have enough already-available capacity at peak; do not count emergency scaling as the primary recovery mechanism.
@@ -103,7 +104,7 @@ Every answer — including narrow regression diagnoses — must state, in this o
 4. **Overload behavior**: load-shedding or admission-control mechanism AND which traffic class is preserved by priority.
 5. **Queue/backpressure model** for any asynchronous path: queue-depth metric and the backpressure response.
 6. **Hot-path / hot-key analysis**: the suspected hot path or hot key and its mitigation.
-7. Capacity model (normal/peak/burst/failure-domain), latency budget by hop, regression analysis, and cost/headroom tradeoff when cost is in scope.
+7. Capacity model (normal/peak/burst/failure-domain), latency budget by hop, regression analysis, tested breakpoint, recovery-after-stress result, and cost/headroom tradeoff when cost is in scope.
 
 ## Checks Before Moving On
 
@@ -111,7 +112,9 @@ Every answer — including narrow regression diagnoses — must state, in this o
 - `traffic_model`: peak, burst, concurrency, fanout, and tenant skew are modeled or marked unknown.
 - `saturation_signals`: resource, queue, pool, and downstream saturation metrics are identified.
 - `test_result`: load or regression test has scenario, stop criteria, result, and check path.
-- `headroom_check`: capacity includes peak and expected failure-domain conditions, with static capacity separated from emergency scaling.
+- `breakpoint_known`: the nonlinear failure point, or the reason it was not tested, is recorded.
+- `headroom_check`: capacity includes peak, resource or dependency limits, and expected failure-domain conditions, with static capacity separated from emergency scaling.
+- `recovery_after_stress`: recovery time and behavior after stress are measured or explicitly unknown.
 
 ## Red Flags - Stop And Rework
 

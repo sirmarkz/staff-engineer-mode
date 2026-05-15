@@ -36,6 +36,7 @@ Architecture decision work turns "components and opinions" into explicit goals, 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Problem statement, users, goals, non-goals, constraints, success criteria.
 - Current and proposed architecture, data flows, trust boundaries, interfaces, dependencies, and runtime responsibility model.
+- Critical-path storage and runtime dependency choices, including latency, availability, failover, coupling, alternatives, and reversal or isolation plan.
 - Operability notes: how the user or agent debugs, replaces, or degrades around the design, what the fallback path is, and where that path is tested or documented.
 - Alternatives considered, including "do nothing", "keep modular", "split later".
 - Reliability, security, privacy, deploy, data consistency, migration, operational risks.
@@ -62,7 +63,7 @@ inferred field as ASSUMED so the user can correct it.
 5. **Prefer simpler boundaries first.** Start with modular design and explicit contracts. Add distribution only for independent scaling, release cadence, responsibility, isolation, or blast-radius needs.
 6. **Compare alternatives.** Evaluate at least two real options plus the current state. Include consequences, rejected alternatives, and what would make the decision wrong later.
 7. **Specify fitness functions.** Write the architectural invariants the system must hold as testable checks. Each fitness function names: the property under test, the metric, the threshold or rule, the measurement source, the evaluation cadence, the failure response, and the local check path. Cover at minimum the dependency-direction rules, the public-contract compatibility rules, the latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant the design relies on.
-8. **Evaluate runtime dependency responsibility.** For any critical runtime dependency, state how the user or agent can debug it, patch or change it, work around issues, and exit or degrade if it fails. Keep this at design-time adoption criteria; timeout/retry policy goes to `dependency-resilience`, and launch details go to `production-readiness-review`.
+8. **Evaluate runtime dependency responsibility.** For any critical runtime dependency or storage choice, state how the user or agent can debug it, patch or change it, work around issues, isolate or reverse the decision, and exit or degrade if it fails. Keep this at design-time adoption criteria; timeout/retry policy goes to `dependency-resilience`, and launch details go to `production-readiness-review`.
 9. **Evaluate cross-cutting risks.** Cover reliability, overload, data correctness, security, observability, deployment safety, recovery, cost, and maintainability.
 10. **Record the decision.** Create an ADR or design-decision summary with status, context (>=2 forces with rationale), decision, consequences (split positive and negative), reversibility (cost + reconsideration trigger), supporting details, fitness-function references, and follow-up checks.
 11. **Use specialist checks internally.** Apply the SLO, HA, dependency resilience, secure design, rollout, or data consistency skill when the design exposes that surface.
@@ -108,6 +109,7 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 - ADR with status, decision, alternatives, consequences, and a concrete responsibility value (user, local check path, or supplied project role; if unknown, use `ASSUMED: <component> responsibility` rather than a blank or `TBD`).
 - System map covering data flow, dependencies, trust boundaries, and responsibility.
 - Runtime dependency adoption criteria covering supportability, changeability, fallback, and exit/degradation path.
+- Critical-path storage or dependency decision entry with forces, alternatives, failure model, and reversal or isolation path.
 - Bounded-context map listing each context with fields: name, responsibility owner or check path, model/language, upstream contexts, downstream contexts, relationship to each neighbor (conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways), and the translation surface where a neighbor's model is adapted.
 - Fitness-function specification listing each architectural invariant with fields: property under test, metric, threshold or rule, measurement source, evaluation cadence, failure response, and local check path. Cover dependency-direction rules, public-contract compatibility, latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant.
 - Risk register with likelihood, impact, mitigation, and records.
@@ -123,6 +125,7 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 - `fitness_functions`: every architectural invariant the design depends on has a property, metric, threshold or rule, measurement source, evaluation cadence, failure response, and local check path; vague "should be fast" or "should be loosely coupled" entries are rejected as not testable.
 - `risk_coverage`: reliability, security, data, deploy, observability, and operations risks are considered.
 - `dependency_responsibility`: critical runtime dependencies have supportability, change path, fallback path, and exit or degradation plan.
+- `critical_path_tradeoff`: critical-path storage and dependency choices state forces, alternatives, failure behavior, and reversal or isolation path.
 - `follow_up_cap`: no more than two follow-up skills are recommended unless the output is a sequencing plan.
 
 ## Red Flags - Stop And Rework

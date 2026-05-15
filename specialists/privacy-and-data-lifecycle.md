@@ -38,6 +38,7 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Data inventory: fields, classifications, purpose, source, users, and downstream copies.
 - Collection points, transformations, derived data, logs, telemetry, exports, backups, caches, and support views.
+- Log, trace, and metric fields that may contain sensitive or stale data, with retention and cleanup path.
 - Retention requirements, deletion triggers, legal holds if any, archival behavior, and backup expiration model.
 - Data residency, cross-border transfer constraints, third-party processors, and subprocessors that store or receive personal data.
 - Consent or purpose constraints that must be enforced by code, configuration, policy, or workflow.
@@ -51,7 +52,7 @@ Privacy controls fail when personal data is collected, copied, logged, retained,
 2. **Classify fields.** Mark sensitivity, purpose, allowed uses, residency, retention, and whether the field can be tokenized, redacted, aggregated, or omitted.
 3. **Minimize collection.** Remove fields that are not needed; prefer derived, aggregated, tokenized, or on-device/local processing when it satisfies the purpose.
 4. **Constrain use.** Enforce purpose, consent, and access constraints in code, data jobs, schemas, policy, or workflow checks.
-5. **Control copies.** Apply privacy rules to logs, traces, metrics labels, crash reports, caches, search indexes, analytics, ML features, support tools, and third-party processors.
+5. **Control copies.** Apply privacy rules to logs, traces, metrics labels, crash reports, caches, search indexes, analytics, ML features, support tools, and third-party processors; remove stale telemetry fields and classify sensitive ones.
 6. **Engineer deletion and retention.** Define retention classes, delete propagation, deletion markers for asynchronous cleanup, derived-copy repair, backup expiry, audit trail, holds/exclusions, and failure handling.
 7. **Define the data-subject-rights workflow.** Specify how access, export, erasure, and portability requests are received, authenticated, scoped to stores and processors, completed within an SLA, verified for completeness, and closed with an audit record.
 8. **Assess anonymization labels.** Do not call data anonymized unless reidentification risk has been assessed with an explicit method such as equivalence-class thresholds, diversity checks, noise-based aggregation, motivated-intruder assessment, or equivalent domain assessment; otherwise call it pseudonymized, aggregated, or tokenized.
@@ -99,6 +100,7 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 - Field classification and minimization plan.
 - Purpose/consent/access enforcement plan.
 - Privacy-safe telemetry and support-tool controls.
+- Telemetry data review table for sensitive or stale log, trace, and metric fields.
 - Retention, deletion, backup, and derived-data propagation design.
 - Data-subject-rights workflow for access, erasure, export, and portability with intake, scope, SLA, verification, exclusions, and audit closure.
 - Anonymization or pseudonymization risk assessment when those labels are used.
@@ -110,6 +112,7 @@ Use privacy-by-design as engineering controls: data inventory, classification, m
 - `data_inventory`: personal and sensitive fields are mapped through primary and derived copies.
 - `minimization_check`: every collected field has purpose, and keep/remove/tokenize decision.
 - `copy_control`: logs, metrics, traces, caches, exports, support tools, and analytics have privacy handling.
+- `telemetry_data_review`: log, trace, and metric fields are reviewed for sensitive data, stale fields, retention, and minimization.
 - `deletion_path`: retention, deletion trigger, propagation, backup behavior, and failure handling are defined.
 - `dsr_workflow`: access, erasure, export, or portability requests have intake, SLA, scope, verification, exclusions, and closure notes.
 - `anonymization_check`: anonymized or pseudonymized outputs state reidentification-risk method and residual limits.
