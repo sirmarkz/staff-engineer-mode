@@ -11,7 +11,7 @@ description: "Use when telemetry, dashboards, alert rules, or runbooks need desi
 TELEMETRY STARTS FROM USER SYMPTOMS; URGENT ALERTS NEED USER IMPACT, URGENCY, ACTIONABILITY, AND A RUNBOOK
 ```
 
-Telemetry that does not map to a user-visible symptom is decoration. An alert that lacks impact, urgency, actionability, or a runbook should not interrupt by default. The two halves are co-designed: signals exist so that someone can act on them, and urgent alerts fire only on signals that show user-felt impact.
+Telemetry that does not map to a user-visible symptom is decoration. An alert that lacks impact, urgency, actionability, or a runbook should not be urgent by default. The two halves are co-designed: signals exist so that someone can act on them, and urgent alerts fire only on signals that show user-felt impact.
 
 ## Overview
 
@@ -28,7 +28,7 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 
 ## When Not To Use
 
-- The user needs reliability targets, SLO math, SLO-based urgent/ticket policy, or budget policy; use `slo-and-error-budgets` instead.
+- The user needs reliability targets, SLO math, SLO-based urgent/follow-up policy, or budget policy; use `slo-and-error-budgets` instead.
 - The user needs to reduce existing urgent-alert volume or toil; use `oncall-health` instead unless new telemetry is central.
 - The user is in a live incident; route to `incident-response-and-postmortems` first.
 - The work is only local development logging without production operations impact.
@@ -55,13 +55,13 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 6. **Define the health model.** State healthy, degraded, unavailable, and recovering conditions at component, dependency, journey, and workload levels; distinguish transient degradation from sustained unavailability.
 7. **Design dashboards for questions.** Build the first view so impact is visible quickly, then drill down by scope, fault domain, recent changes, dependencies, saturation, and recovery progress. Every displayed metric needs unit, source, label semantics, threshold/window, and missing-data behavior; color cannot be the only status signal.
 8. **Make absent signals explicit.** Emit zero when zero is meaningful, and treat missing samples as a separate health state instead of letting silence look healthy.
-9. **Alert on symptoms.** Use SLO burn or direct user-impact alerts. Keep diagnostic and causal alerts as tickets unless urgent and actionable.
+9. **Alert on symptoms.** Use SLO burn or direct user-impact alerts. Keep diagnostic and causal alerts as follow-ups unless urgent and actionable.
 10. **Identify affected customers safely.** For customer-impacting services, define privacy-safe signals that support impact scoping and notification.
 11. **Attach runbooks.** Every urgent alert needs triage steps, impact check, mitigation options, fallback path, and rollback/fallback links.
 
 ## Synthesized Default
 
-Use SLO/user-journey symptoms, layered health models, golden signals, fault-domain labels, structured events, distributed context, deployment markers, and dependency signals as the default telemetry set. Interrupt only when action is required now; use dashboards and tickets for investigation and slow-burn work.
+Use SLO/user-journey symptoms, layered health models, golden signals, fault-domain labels, structured events, distributed context, deployment markers, and dependency signals as the default telemetry set. Use urgent alerts only when action is required now; use dashboards and follow-ups for investigation and slow-burn work.
 
 
 
@@ -99,7 +99,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 - Dashboard specification for impact, scope, dependencies, saturation, and recent changes.
 - Metric definition table covering unit, source, labels, threshold/window, owner path, and missing-signal behavior.
 - Fault-domain and affected-customer scoping signals where relevant.
-- Alert policy with urgent/ticket/diagnostic classification.
+- Alert policy with urgent/follow-up/diagnostic classification.
 - Structured log/event field standard and sensitive-data handling.
 - Trace or context propagation requirements.
 - Runbook requirements for every urgent alert.

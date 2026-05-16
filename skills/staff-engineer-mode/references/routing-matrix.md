@@ -43,7 +43,7 @@ Return the canonical `specialists/<slug>.md` slug, not a semantic alias.
 
 ## High-Risk Boundaries
 
-- Reliability targets, SLO-based alert tuning, and page-vs-ticket rules route to `slo-and-error-budgets`; telemetry construction routes to `observability-and-alerting`; page fatigue routes to `oncall-health`.
+- Reliability targets, SLO-based alert tuning, and urgent/follow-up rules route to `slo-and-error-budgets`; telemetry construction routes to `observability-and-alerting`; alert fatigue routes to `oncall-health`.
 - When a prompt mixes noisy pages and missing reliability targets, route the immediate operator pain to `oncall-health` and use `slo-and-error-budgets` only as a secondary policy artifact.
 - Launch readiness routes to `production-readiness-review` only when launch, major traffic shift, tier upgrade, or broad readiness checks are explicit. Generic design decisions route elsewhere.
 - Active incident command, live mitigation, and postmortem authorship route to `incident-response-and-postmortems` before root-cause specialty work.

@@ -35,9 +35,9 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `slo-and-error-budgets`
 
 - "Design SLIs and SLOs for the new checkout API before launch using its user journeys and expected traffic."
-- "Inspect this service's SLO burn-rate rules and separate urgent alerts from ticket-only budget responses."
+- "Inspect this service's SLO burn-rate rules and separate urgent alerts from follow-up-only budget responses."
 - "Use the service code and recent incidents to draft error-budget release rules."
-- "Checkout has fast failures and slow successes; decide which user outcome should burn budget and which alerts should stay tickets."
+- "Checkout has fast failures and slow successes; decide which user outcome should burn budget and which alerts should stay non-urgent follow-ups."
 
 ### `high-availability-design`
 
@@ -199,10 +199,10 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `oncall-health`
 
-- "Inspect the alert history and runbooks in this repo, then find the noisiest safe pages to remove."
-- "Design on-call routing and runbook ownership for the new import job before it becomes production-supported."
+- "We get paged all night for this service; cut the noise without missing real incidents."
 - "Inspect these on-call suppression rules and verify page-noise reduction is not hiding real user impact."
-- "The same job wakes primary every morning and gets manually retried; decide what to automate or downgrade."
+- "This alert fires every week and the runbook says to rerun a job manually; decide what engineering fix should replace that manual step."
+- "Find which alerts should page, which should become follow-ups, and which should be deleted or grouped."
 
 ## Security And Privacy
 

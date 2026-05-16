@@ -49,9 +49,9 @@ cases:
     expected_behavior: "route SLI/SLO proposal to error-budget skill without inventing reliability-target aliases"
     category: direct
     expected_checks: [single_primary, intent_inference]
-  - prompt: "Inspect the alert rules against this service's SLOs and separate paging alerts from ticket-only alerts."
+  - prompt: "Inspect the alert rules against this service's SLOs and separate urgent alerts from follow-up-only alerts."
     expected_primary: slo-and-error-budgets
-    expected_behavior: "route urgent-vs-ticket rules tied to SLOs to error-budget skill"
+    expected_behavior: "route urgent-vs-follow-up rules tied to SLOs to error-budget skill"
     category: direct
     expected_checks: [single_primary, intent_inference]
   - prompt: "Use the service code and recent incidents to draft error-budget release rules."
@@ -79,7 +79,7 @@ cases:
     expected_behavior: "route to retry-budget and partial-batch dependency behavior"
     category: direct
     expected_checks: [single_primary, intent_inference]
-  - prompt: "The ticket keeps blaming the cache product, but the actual failure is slow cache reads causing checkout retries and queue buildup."
+  - prompt: "The bug report keeps blaming the cache product, but the actual failure is slow cache reads causing checkout retries and queue buildup."
     expected_primary: dependency-resilience
     expected_behavior: "translate named infrastructure into dependency overload behavior instead of routing by tool class"
     category: paraphrase
