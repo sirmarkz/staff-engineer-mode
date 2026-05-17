@@ -1,5 +1,18 @@
 # Staff Engineer Mode Release Notes
 
+## 1.5.1 - 2026-05-16
+
+Operational guidance patch.
+
+- Tightens operational specialist guidance across release, resilience,
+  observability, on-call, performance, platform, API, and data surfaces with
+  more concrete checks and plainer developer wording.
+- Clarifies on-call health routing so direct responder interruption, rotation
+  load, escalation, and handoff work routes to `oncall-health`, while
+  telemetry, SLO, and capacity alert design stays with the narrower specialist.
+- Updates sample prompts and router fixtures around on-call health and adjacent
+  operational surfaces so common wording continues to route correctly.
+
 ## 1.5.0 - 2026-05-15
 
 Flattened specialist file release.

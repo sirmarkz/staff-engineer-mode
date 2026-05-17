@@ -8,11 +8,11 @@
     {
       "name": "staff-engineer-mode",
       "description": "Staff-engineering decision guidance for Claude Code. Routes design, development, testing, release, operations, reliability, security, API, data, and platform work to specialist guidance.",
-      "version": "1.5.0",
+      "version": "1.5.1",
       "source": {
         "source": "url",
         "url": "https://github.com/sirmarkz/staff-engineer-mode.git",
-        "ref": "v1.5.0",
+        "ref": "v1.5.1",
         "sha": "25c654b4f40308d640c1e35d00149b13323282cf"
       },
       "author": {
