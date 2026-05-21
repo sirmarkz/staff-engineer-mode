@@ -26,6 +26,7 @@
     "longDescription": "Technology-agnostic guidance for applying large-scale engineering practices to architecture, reliability, resilience, delivery, operations, security, privacy, data, platform, client, and cost-aware reliability work. The router automatically selects the smallest useful routed specialist set from natural-language engineering requests.",
     "developerName": "sirmarkz",
     "category": "Coding",
+    "composerIcon": "./assets/icon.svg",
     "capabilities": [
       "Interactive",
       "Read",
