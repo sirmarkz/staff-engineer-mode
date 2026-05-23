@@ -1,5 +1,20 @@
 # Staff Engineer Mode Release Notes
 
+## 1.5.2 - 2026-05-23
+
+Builders Library guidance and marketplace metadata patch.
+
+- Adds missing AWS Builders' Library sources and folds the lessons into
+  specialist guidance for API shape, tenant fairness, dependency backpressure,
+  unknown distributed outcomes, distributed-boundary testing, and release
+  rollback or promotion control.
+- Clarifies release and rollout guidance around multiple inflight releases,
+  supersession, stalled stages, emergency branch bounds, and rollback target
+  selection when a harmful change is older than the previous deployment.
+- Refreshes Codex marketplace metadata and packaging ignores so the plugin
+  presents correctly in marketplace surfaces without changing the router
+  contract.
+
 ## 1.5.1 - 2026-05-16
 
 Operational guidance patch.
