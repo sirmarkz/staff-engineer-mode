@@ -53,6 +53,10 @@ publisher, or named author. They are not grouped by skill topic.
 - [S288] AWS Builders' Library - Using Dependency Isolation to Contain Concurrency Overload: https://aws.amazon.com/builders-library/dependency-isolation/
 - [S289] AWS Builders' Library - Minimizing Correlated Failures in Distributed Systems: https://aws.amazon.com/builders-library/minimizing-correlated-failures-in-distributed-systems/
 - [S290] AWS Builders' Library - Caching Challenges and Strategies: https://aws.amazon.com/builders-library/caching-challenges-and-strategies/
+- [S291] AWS Builders' Library - Resilience Lessons from the Lunch Rush: https://aws.amazon.com/builders-library/resilience-lessons-from-the-lunch-rush/
+- [S292] AWS Builders' Library - My CI/CD Pipeline Is My Release Captain: https://aws.amazon.com/builders-library/cicd-pipeline/
+- [S293] AWS Builders' Library - Fairness in Multi-Tenant Systems: https://aws.amazon.com/builders-library/fairness-in-multi-tenant-systems/
+- [S294] AWS Builders' Library - Challenges with Distributed Systems: https://aws.amazon.com/builders-library/challenges-with-distributed-systems/
 
 ### Anthropic
 - [S259] Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
