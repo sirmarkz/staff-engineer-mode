@@ -55,7 +55,6 @@ They are not grouped by skill topic.
 - [S294] AWS Builders' Library - Challenges with Distributed Systems: https://aws.amazon.com/builders-library/challenges-with-distributed-systems/
 
 ### Apple
-- [S130] Apple Platform Security: https://support.apple.com/guide/security/welcome/web
 - [S131] Apple Secure Coding Guide: https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/
 - [S132] Apple Security Research - Private Cloud Compute: https://security.apple.com/blog/private-cloud-compute/
 - [S176] Apple App Store Connect - Release a version update in phases: https://developer.apple.com/help/app-store-connect/update-your-app/release-a-version-update-in-phases
