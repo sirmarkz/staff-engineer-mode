@@ -6,21 +6,17 @@ Use primary sources whenever available: first-party engineering publications,
 official cloud/vendor documentation, standards bodies, peer-reviewed papers, or
 widely cited practitioner references that originated a named pattern. Vendor and
 company engineering blogs are acceptable only as large-scale case studies or
-original pattern writeups, not as unchecked marketing claims. Do not add
+original pattern writeups, not as unchecked marketing claims. Do not add generic
+product, trust, privacy, initiative, or documentation landing pages when a
+specific engineering guide, standard, paper, or implementation reference exists.
+Do not add
 encyclopedias, Q&A/forum threads, scraped mirrors, SEO summaries, anonymous
 content farms, or unmaintained unofficial copies when a primary source exists.
 
 Sections below are grouped by source owner: company, project, standards body,
-publisher, or named author. They are not grouped by skill topic.
-
-### ACM Queue
-- [S190] ACM Queue - Systems Correctness Practices at AWS: https://queue.acm.org/detail.cfm?id=3712057
-
-### ADR GitHub Organization
-- [S106] ADR GitHub organization and templates: https://adr.github.io/
-
-### Alistair Cockburn
-- [S110] Alistair Cockburn - Hexagonal Architecture: https://alistair.cockburn.us/hexagonal-architecture
+publisher, or named author. The FAANG source-owner sections appear first
+alphabetically, followed by Microsoft, then the remaining source-owner sections.
+They are not grouped by skill topic.
 
 ### Amazon And AWS
 - [S30] AWS Well-Architected Framework: https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html
@@ -58,77 +54,13 @@ publisher, or named author. They are not grouped by skill topic.
 - [S293] AWS Builders' Library - Fairness in Multi-Tenant Systems: https://aws.amazon.com/builders-library/fairness-in-multi-tenant-systems/
 - [S294] AWS Builders' Library - Challenges with Distributed Systems: https://aws.amazon.com/builders-library/challenges-with-distributed-systems/
 
-### Anthropic
-- [S259] Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
-
-### Apache Cassandra
-- [S154] Cassandra Data Modeling: https://cassandra.apache.org/doc/latest/cassandra/developing/data-modeling/intro.html
-
 ### Apple
 - [S130] Apple Platform Security: https://support.apple.com/guide/security/welcome/web
 - [S131] Apple Secure Coding Guide: https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/
 - [S132] Apple Security Research - Private Cloud Compute: https://security.apple.com/blog/private-cloud-compute/
 - [S176] Apple App Store Connect - Release a version update in phases: https://developer.apple.com/help/app-store-connect/update-your-app/release-a-version-update-in-phases
 - [S179] Apple MetricKit: https://developer.apple.com/documentation/metrickit
-- [S210] Apple - Privacy Features: https://www.apple.com/privacy/features/
-
-### Argo CD
-- [S122] Argo CD Documentation: https://argo-cd.readthedocs.io/
-
-### AsyncAPI Initiative
-- [S262] AsyncAPI Specification: https://www.asyncapi.com/docs/reference/specification/latest
-
-### Backstage
-- [S123] Backstage Documentation: https://backstage.io/docs/
-
-### Brendan Gregg
-- [S143] Brendan Gregg - USE Method and Flame Graphs: https://www.brendangregg.com/usemethod.html
-
-### CA/Browser Forum
-- [S263] CA/Browser Forum - Baseline Requirements for TLS Server Certificates: https://cabforum.org/working-groups/server/baseline-requirements/requirements/
-
-### CISA
-- [S72] CISA Secure by Design: https://www.cisa.gov/resources-tools/resources/secure-by-design
-- [S82] CISA Zero Trust Maturity Model: https://www.cisa.gov/zero-trust-maturity-model
-- [S193] CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
-- [S264] CISA - Joint Guidance on Deploying AI Systems Securely: https://www.cisa.gov/news-events/alerts/2024/04/15/joint-guidance-deploying-ai-systems-securely
-
-### CloudEvents
-- [S265] CloudEvents Specification: https://github.com/cloudevents/spec
-
-### Cloudflare
-- [S184] Cloudflare DDoS Protection Documentation: https://developers.cloudflare.com/ddos-protection/
-
-### Confluent
-- [S118] Confluent - Schema Registry: https://docs.confluent.io/platform/current/schema-registry/index.html
-
-### Diataxis
-- [S266] Diataxis Documentation Framework: https://diataxis.fr/
-
-### Discord
-- [S152] Discord Engineering - How Discord Stores Trillions of Messages: https://discord.com/blog/how-discord-stores-trillions-of-messages
-
-### DORA
-- [S22] DORA DevOps Capabilities and Metrics: https://dora.dev/devops-capabilities/
-
-### Envoy
-- [S129] Envoy Documentation: https://www.envoyproxy.io/docs/
-
-### Eric Evans
-- [S109] Eric Evans - Domain-Driven Design Reference: https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf
-
-### Etsy
-- [S141] Etsy Debriefing Facilitation Guide: https://extfiles.etsy.com/DebriefingFacilitationGuide.pdf
-
-### FinOps Foundation
-- [S155] FinOps Framework: https://www.finops.org/framework/
-
-### FIRST
-- [S194] FIRST Exploit Prediction Scoring System: https://www.first.org/epss/
-
-### GitHub
-- [S186] GitHub Blog - gh-ost: GitHub's Online Schema Migration Tool for MySQL: https://github.blog/news-insights/company-news/gh-ost-github-s-online-migration-tool-for-mysql/
-- [S189] GitHub Docs - About Secret Scanning: https://docs.github.com/en/code-security/concepts/secret-security/about-secret-scanning
+- [S210] Apple Developer - Describing Data Use in Privacy Manifests: https://developer.apple.com/documentation/bundleresources/describing-data-use-in-privacy-manifests
 
 ### Google And Firebase
 - [S1] Google SRE Book - Embracing Risk: https://sre.google/sre-book/embracing-risk/
@@ -170,23 +102,173 @@ publisher, or named author. They are not grouped by skill topic.
 - [S177] Google Play Console - Release app updates with staged rollouts: https://support.google.com/googleplay/android-developer/answer/6346149
 - [S178] Firebase Crashlytics - Understand crash-free metrics: https://firebase.google.com/docs/crashlytics/crash-free-metrics
 - [S180] web.dev - Web Vitals: https://web.dev/articles/vitals
-- [S183] Google Cloud Armor Documentation: https://docs.cloud.google.com/armor/docs
+- [S183] Google Cloud Armor Best Practices: https://docs.cloud.google.com/armor/docs/best-practices
 - [S197] Google Cloud Observability - Data Processing SLIs: https://docs.cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/data-proc-metrics
 - [S199] Google SRE Workbook - Configuration Design and Best Practices: https://sre.google/workbook/configuration-design/
 - [S200] Google SRE Book - Production Services Best Practices: https://sre.google/sre-book/service-best-practices/
 - [S201] Software Engineering at Google - Deprecation: https://abseil.io/resources/swe-book/html/ch15.html
 - [S202] Software Engineering at Google - Build Systems and Build Philosophy: https://abseil.io/resources/swe-book/html/ch18.html
-- [S209] Google Privacy & Terms - How Google Retains Data We Collect: https://policies.google.com/technologies/retention
+- [S209] Google Cloud - Data Deletion on Google Cloud: https://cloud.google.com/docs/security/deletion
 - [S267] Google Research - Overlapping Experiment Infrastructure: https://research.google.com/pubs/archive/36500.pdf
 - [S268] Google Cloud - Runtime Lifecycle: https://cloud.google.com/appengine/docs/standard/lifecycle/runtime-lifecycle
 - [S260] Android Developers - Test Your App's Accessibility: https://developer.android.com/guide/topics/ui/accessibility/testing
+
+### Meta
+- [S50] Meta Engineering - Move Faster, Wait Less: Improving Code Review Time at Meta: https://engineering.fb.com/2022/11/16/culture/meta-code-review-time-improving/
+- [S51] Meta Engineering - Open-sourcing Facebook Infer: https://engineering.fb.com/developer-tools/open-sourcing-facebook-infer-identify-bugs-before-you-ship/
+- [S52] Meta Engineering - Sapienz: Intelligent Automated Software Testing at Scale: https://engineering.fb.com/developer-tools/sapienz-intelligent-automated-software-testing-at-scale/
+- [S53] Meta Engineering - TAO: The Power of the Graph: https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/
+- [S54] Meta Engineering - Scaling Memcache at Facebook: https://engineering.fb.com/2013/04/15/core-infra/scaling-memcache-at-facebook/
+- [S55] Meta Engineering - Cache Made Consistent: https://engineering.fb.com/2022/06/08/core-infra/cache-made-consistent/
+- [S56] Meta Engineering - More Details About the October 4 Outage: https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/
+- [S58] Meta Engineering - Automating Dead Code Cleanup: https://engineering.fb.com/2023/10/24/data-infrastructure/automating-dead-code-cleanup/
+- [S205] Meta Engineering - Automating Product Deprecation: https://engineering.fb.com/2023/10/17/data-infrastructure/automating-product-deprecation-meta/
+- [S206] Meta Engineering - Automating Data Removal: https://engineering.fb.com/2023/10/31/data-infrastructure/automating-data-removal/
+- [S207] Meta Engineering - DELF: Safeguarding Deletion Correctness: https://engineering.fb.com/2020/08/12/security/delf/
+- [S208] Meta Engineering - Privacy Aware Infrastructure Purpose Limitation: https://engineering.fb.com/2024/08/27/security/privacy-aware-infrastructure-purpose-limitation-meta/
+- [S211] Meta Engineering - How Meta Understands Data at Scale: https://engineering.fb.com/2025/04/28/security/how-meta-understands-data-at-scale/
+
+### Netflix
+- [S62] A Platform for Automating Chaos Experiments: https://arxiv.org/abs/1702.05849
+- [S63] Netflix Chaos Monkey Documentation: https://netflix.github.io/chaosmonkey/
+- [S64] Netflix DGS Framework - Federation: https://netflix.github.io/dgs/federation/
+- [S65] Netflix Repokid: https://github.com/Netflix/repokid
+- [S212] Netflix - Automating Chaos Experiments in Production: https://arxiv.org/abs/1905.04648
+
+### Microsoft And Azure
+- [S90] Azure Well-Architected Framework: https://learn.microsoft.com/en-us/azure/well-architected/
+- [S91] Azure Well-Architected - Mission-Critical Design Principles: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-design-principles
+- [S92] Microsoft Security Development Lifecycle: https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle
+- [S93] Microsoft Learn - Integrating Threat Modeling with DevOps: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-with-dev-ops
+- [S94] Azure Architecture Center - Retry Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/retry
+- [S95] Azure Architecture Center - Circuit Breaker Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker
+- [S96] Azure Architecture Center - Bulkhead Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead
+- [S214] Azure Well-Architected - Reliability Checklist: https://learn.microsoft.com/en-us/azure/well-architected/reliability/checklist
+- [S215] Azure Well-Architected - Safe Deployment Practices: https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/safe-deployments
+- [S216] Azure Well-Architected - Incident Management Process: https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/mitigation-strategy
+- [S217] Azure Well-Architected - Performance Efficiency Checklist: https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/checklist
+- [S218] Azure Well-Architected - Performance Testing Strategies: https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/performance-test
+- [S219] Azure Well-Architected - Cost Optimization Tradeoffs: https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/tradeoffs
+- [S220] Azure Architecture Center - Deployment Stamps Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/deployment-stamp
+- [S221] Azure Well-Architected - Availability Zones and Regions: https://learn.microsoft.com/en-us/azure/well-architected/reliability/regions-availability-zones
+- [S222] Azure Architecture Center - Rate Limiting Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/rate-limiting-pattern
+- [S223] Azure Architecture Center - Queue-Based Load Leveling Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling
+- [S224] Microsoft DevOps - How Microsoft Develops with DevOps: https://learn.microsoft.com/en-us/devops/develop/how-microsoft-develops-devops
+- [S225] Microsoft DevOps - How Microsoft Delivers Software with DevOps: https://learn.microsoft.com/en-us/devops/deliver/how-microsoft-delivers-devops
+- [S226] Microsoft DevOps - How Microsoft Operates Reliable Systems with DevOps: https://learn.microsoft.com/en-us/devops/operate/how-microsoft-operates-devops
+- [S227] Microsoft DevOps - Shift Testing Left with Unit Tests: https://learn.microsoft.com/en-us/devops/develop/shift-left-make-testing-fast-reliable
+- [S228] Microsoft DevOps - Continuous Delivery: https://learn.microsoft.com/en-us/devops/deliver/what-is-continuous-delivery
+- [S229] Microsoft Platform Engineering - Self-Service with Guardrails: https://learn.microsoft.com/en-us/platform-engineering/about/self-service
+- [S230] Microsoft Cloud Adoption Framework - Azure Landing Zones: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/
+- [S231] Microsoft Entra - Configure Zero Trust to Protect Identities and Secrets: https://learn.microsoft.com/en-us/entra/fundamentals/zero-trust-protect-identities
+- [S232] Microsoft Entra - Workload Identities: https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview
+- [S233] Microsoft Cloud Security Benchmark v2 Preview - DevOps Security: https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-v2-devop-security
+- [S234] Microsoft Secure Future Initiative - Protect the Software Supply Chain: https://learn.microsoft.com/en-us/security/zero-trust/sfi/protect-software-supply-chain
+- [S235] Azure DDoS Protection - Fundamental Best Practices: https://learn.microsoft.com/en-us/azure/ddos-protection/fundamental-best-practices
+- [S236] Azure Architecture Center - API Design: https://learn.microsoft.com/en-us/azure/architecture/microservices/design/api-design
+- [S237] Azure Architecture Center - Data Partitioning Strategies: https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning-strategies
+- [S238] Azure Architecture Center - Cache-Aside Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside
+- [S239] Azure Architecture Center - CQRS Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs
+- [S240] Azure Architecture Center - Event Sourcing Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing
+- [S241] Azure Well-Architected - Data Classification: https://learn.microsoft.com/en-us/azure/well-architected/security/data-classification
+- [S242] Microsoft Purview - Data Lifecycle Management: https://learn.microsoft.com/en-us/purview/data-lifecycle-management
+- [S243] Azure Well-Architected - Security Checklist: https://learn.microsoft.com/en-us/azure/well-architected/security/checklist
+- [S244] Azure Well-Architected - Threat Analysis Strategies: https://learn.microsoft.com/en-us/azure/architecture/framework/security/design-threat-model
+- [S245] Azure Well-Architected - Build a Monitoring System: https://learn.microsoft.com/en-us/azure/well-architected/design-guides/monitoring
+- [S246] Azure Reliability - Business Continuity, High Availability, and Disaster Recovery: https://learn.microsoft.com/en-us/azure/reliability/disaster-recovery-overview
+- [S247] Azure Well-Architected - Reliability Testing Strategy: https://learn.microsoft.com/en-us/azure/well-architected/reliability/testing-strategy
+- [S248] Azure Well-Architected - Mission-Critical Health Modeling: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-health-modeling
+- [S249] Azure Well-Architected - Health Modeling for Workloads: https://learn.microsoft.com/en-us/azure/well-architected/design-guides/health-modeling
+- [S250] Microsoft Entra - Managed Identities for Azure Resources: https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview
+- [S251] Microsoft Entra - Workload Identity Federation: https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation
+- [S252] Microsoft Platform Engineering - Platform Engineering Capability Model: https://learn.microsoft.com/en-us/platform-engineering/platform-engineering-capability-model
+- [S253] Microsoft Azure AI Foundry - Planning Red Teaming for Large Language Models: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/red-teaming
+- [S254] Microsoft Security Engineering - Threat Modeling AI/ML Systems and Dependencies: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-aiml
+- [S255] Microsoft Security Engineering - Failure Modes in Machine Learning: https://learn.microsoft.com/en-us/security/engineering/failure-modes-in-machine-learning
+- [S256] Azure Well-Architected - Security Incident Response: https://learn.microsoft.com/en-us/azure/well-architected/security/incident-response
+- [S257] Azure Architecture Center - Tenancy Models for a Multitenant Solution: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/tenancy-models
+- [S258] Microsoft Cloud Security Benchmark v2 Preview - Overview: https://learn.microsoft.com/en-us/security/benchmark/azure/overview
+- [S272] Microsoft Research - Diagnosing Sample Ratio Mismatch in Online Controlled Experiments: https://www.microsoft.com/en-us/research/publication/diagnosing-sample-ratio-mismatch-in-online-controlled-experiments-a-taxonomy-and-rules-of-thumb-for-practitioners/
+
+### ACM Queue
+- [S190] ACM Queue - Systems Correctness Practices at AWS: https://queue.acm.org/detail.cfm?id=3712057
+
+### ADR GitHub Organization
+- [S106] ADR GitHub organization and templates: https://adr.github.io/
+
+### Alistair Cockburn
+- [S110] Alistair Cockburn - Hexagonal Architecture: https://alistair.cockburn.us/hexagonal-architecture
+
+### Anthropic
+- [S259] Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
+
+### Apache Cassandra
+- [S154] Cassandra Data Modeling: https://cassandra.apache.org/doc/latest/cassandra/developing/data-modeling/intro.html
+
+### Argo CD
+- [S122] Argo CD Documentation: https://argo-cd.readthedocs.io/
+
+### AsyncAPI Initiative
+- [S262] AsyncAPI Specification: https://www.asyncapi.com/docs/reference/specification/latest
+
+### Backstage
+- [S123] Backstage Documentation: https://backstage.io/docs/
+
+### Brendan Gregg
+- [S143] Brendan Gregg - USE Method and Flame Graphs: https://www.brendangregg.com/usemethod.html
+
+### CA/Browser Forum
+- [S263] CA/Browser Forum - Baseline Requirements for TLS Server Certificates: https://cabforum.org/working-groups/server/baseline-requirements/requirements/
+
+### CISA
+- [S72] CISA Secure by Design: https://www.cisa.gov/resources-tools/resources/secure-by-design
+- [S82] CISA Zero Trust Maturity Model: https://www.cisa.gov/zero-trust-maturity-model
+- [S193] CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+- [S264] CISA And Partners - Deploying AI Systems Securely: https://media.defense.gov/2024/Apr/15/2003439257/-1/-1/0/CSI-DEPLOYING-AI-SYSTEMS-SECURELY.PDF
+
+### CloudEvents
+- [S265] CloudEvents Specification: https://github.com/cloudevents/spec
+
+### Cloudflare
+- [S184] Cloudflare DDoS Protection Documentation: https://developers.cloudflare.com/ddos-protection/
+
+### Confluent
+- [S118] Confluent - Schema Registry: https://docs.confluent.io/platform/current/schema-registry/index.html
+
+### Diataxis
+- [S266] Diataxis Documentation Framework: https://diataxis.fr/
+
+### Discord
+- [S152] Discord Engineering - How Discord Stores Trillions of Messages: https://discord.com/blog/how-discord-stores-trillions-of-messages
+
+### DORA
+- [S22] DORA - Software Delivery Performance Metrics: https://dora.dev/guides/dora-metrics-four-keys/
+
+### Envoy
+- [S129] Envoy Documentation: https://www.envoyproxy.io/docs/envoy/latest/
+
+### Eric Evans
+- [S109] Eric Evans - Domain-Driven Design Reference: https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf
+
+### Etsy
+- [S141] Etsy Debriefing Facilitation Guide: https://extfiles.etsy.com/DebriefingFacilitationGuide.pdf
+
+### FinOps Foundation
+- [S155] FinOps Framework: https://www.finops.org/framework/
+
+### FIRST
+- [S194] FIRST Exploit Prediction Scoring System: https://www.first.org/epss/
+
+### GitHub
+- [S186] GitHub Blog - gh-ost: GitHub's Online Schema Migration Tool for MySQL: https://github.blog/news-insights/company-news/gh-ost-github-s-online-migration-tool-for-mysql/
+- [S189] GitHub Docs - About Secret Scanning: https://docs.github.com/en/code-security/concepts/secret-security/about-secret-scanning
 
 ### Grafana
 - [S125] Grafana Documentation: https://grafana.com/docs/
 - [S144] Grafana - The RED Method: https://grafana.com/blog/the-red-method-how-to-instrument-your-services/
 
 ### Great Expectations
-- [S198] Great Expectations - Validate Data: https://docs.greatexpectations.io/docs/guides/validation/validate_data_overview/
+- [S198] Great Expectations - Run Validations: https://docs.greatexpectations.io/docs/core/run_validations/
 
 ### HashiCorp
 - [S121] Terraform Documentation: https://developer.hashicorp.com/terraform/docs
@@ -231,22 +313,7 @@ publisher, or named author. They are not grouped by skill topic.
 - [S163] Martin Fowler - CanaryRelease: https://martinfowler.com/bliki/CanaryRelease.html
 
 ### Martin Kleppmann
-- [S148] Designing Data-Intensive Applications: https://dataintensive.net/
-
-### Meta
-- [S50] Meta Engineering - Move Faster, Wait Less: Improving Code Review Time at Meta: https://engineering.fb.com/2022/11/16/culture/meta-code-review-time-improving/
-- [S51] Meta Engineering - Open-sourcing Facebook Infer: https://engineering.fb.com/developer-tools/open-sourcing-facebook-infer-identify-bugs-before-you-ship/
-- [S52] Meta Engineering - Sapienz: Intelligent Automated Software Testing at Scale: https://engineering.fb.com/developer-tools/sapienz-intelligent-automated-software-testing-at-scale/
-- [S53] Meta Engineering - TAO: The Power of the Graph: https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/
-- [S54] Meta Engineering - Scaling Memcache at Facebook: https://engineering.fb.com/2013/04/15/core-infra/scaling-memcache-at-facebook/
-- [S55] Meta Engineering - Cache Made Consistent: https://engineering.fb.com/2022/06/08/core-infra/cache-made-consistent/
-- [S56] Meta Engineering - Update About the October 4th Outage: https://engineering.fb.com/2021/10/04/networking-traffic/outage/
-- [S58] Meta Engineering - Automating Dead Code Cleanup: https://engineering.fb.com/2023/10/24/data-infrastructure/automating-dead-code-cleanup/
-- [S205] Meta Engineering - Automating Product Deprecation: https://engineering.fb.com/2023/10/17/data-infrastructure/automating-product-deprecation-meta/
-- [S206] Meta Engineering - Automating Data Removal: https://engineering.fb.com/2023/10/31/data-infrastructure/automating-data-removal/
-- [S207] Meta Engineering - DELF: Safeguarding Deletion Correctness: https://engineering.fb.com/2020/08/12/security/delf/
-- [S208] Meta Engineering - Privacy Aware Infrastructure Purpose Limitation: https://engineering.fb.com/2024/08/27/security/privacy-aware-infrastructure-purpose-limitation-meta/
-- [S211] Meta Engineering - How Meta Understands Data at Scale: https://engineering.fb.com/2025/04/28/security/how-meta-understands-data-at-scale/
+- [S148] Designing Data-Intensive Applications, 2nd Edition: https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/
 
 ### Michael Nygard
 - [S191] Michael Nygard - Documenting Architecture Decisions: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
@@ -255,73 +322,11 @@ publisher, or named author. They are not grouped by skill topic.
 - [S116] Microservices.io - Transactional Outbox: https://microservices.io/patterns/data/transactional-outbox.html
 - [S117] Microservices.io - Saga: https://microservices.io/patterns/data/saga.html
 
-### Microsoft And Azure
-- [S90] Azure Well-Architected Framework: https://learn.microsoft.com/en-us/azure/well-architected/
-- [S91] Azure Well-Architected - Mission-Critical Design Principles: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-design-principles
-- [S92] Microsoft Security Development Lifecycle: https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle
-- [S93] Microsoft Learn - Integrating Threat Modeling with DevOps: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-with-dev-ops
-- [S94] Azure Architecture Center - Retry Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/retry
-- [S95] Azure Architecture Center - Circuit Breaker Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker
-- [S96] Azure Architecture Center - Bulkhead Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead
-- [S214] Azure Well-Architected - Reliability Checklist: https://learn.microsoft.com/en-us/azure/well-architected/reliability/checklist
-- [S215] Azure Well-Architected - Safe Deployment Practices: https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/safe-deployments
-- [S216] Azure Well-Architected - Incident Management Process: https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/mitigation-strategy
-- [S217] Azure Well-Architected - Performance Efficiency Checklist: https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/checklist
-- [S218] Azure Well-Architected - Performance Testing Strategies: https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/performance-test
-- [S219] Azure Well-Architected - Cost Optimization Tradeoffs: https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/tradeoffs
-- [S220] Azure Architecture Center - Deployment Stamps Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/deployment-stamp
-- [S221] Azure Well-Architected - Availability Zones and Regions: https://learn.microsoft.com/en-us/azure/well-architected/reliability/regions-availability-zones
-- [S222] Azure Architecture Center - Rate Limiting Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/rate-limiting-pattern
-- [S223] Azure Architecture Center - Queue-Based Load Leveling Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling
-- [S224] Microsoft DevOps - How Microsoft Develops with DevOps: https://learn.microsoft.com/en-us/devops/develop/how-microsoft-develops-devops
-- [S225] Microsoft DevOps - How Microsoft Delivers Software with DevOps: https://learn.microsoft.com/en-us/devops/deliver/how-microsoft-delivers-devops
-- [S226] Microsoft DevOps - How Microsoft Operates Reliable Systems with DevOps: https://learn.microsoft.com/en-us/devops/operate/how-microsoft-operates-devops
-- [S227] Microsoft DevOps - Shift Testing Left with Unit Tests: https://learn.microsoft.com/en-us/devops/develop/shift-left-make-testing-fast-reliable
-- [S228] Microsoft DevOps - Continuous Delivery: https://learn.microsoft.com/en-us/devops/deliver/what-is-continuous-delivery
-- [S229] Microsoft Platform Engineering - Self-Service with Guardrails: https://learn.microsoft.com/en-us/platform-engineering/about/self-service
-- [S230] Microsoft Cloud Adoption Framework - Azure Landing Zones: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/
-- [S231] Microsoft Entra - Configure Zero Trust to Protect Identities and Secrets: https://learn.microsoft.com/en-us/entra/fundamentals/zero-trust-protect-identities
-- [S232] Microsoft Entra - Workload Identities: https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview
-- [S233] Microsoft Cloud Security Benchmark v2 Preview - DevOps Security: https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-v2-devop-security
-- [S234] Microsoft Secure Future Initiative - Protect the Software Supply Chain: https://learn.microsoft.com/en-us/security/zero-trust/sfi/protect-software-supply-chain
-- [S235] Azure DDoS Protection - Fundamental Best Practices: https://learn.microsoft.com/en-us/azure/ddos-protection/fundamental-best-practices
-- [S236] Azure Architecture Center - API Design: https://learn.microsoft.com/en-us/azure/architecture/microservices/design/api-design
-- [S237] Azure Architecture Center - Data Partitioning Strategies: https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning-strategies
-- [S238] Azure Architecture Center - Cache-Aside Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside
-- [S239] Azure Architecture Center - CQRS Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs
-- [S240] Azure Architecture Center - Event Sourcing Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing
-- [S241] Microsoft Trust Center - Privacy: https://www.microsoft.com/en-us/trust-center/privacy
-- [S242] Microsoft Purview - Data Lifecycle Management: https://learn.microsoft.com/en-us/purview/data-lifecycle-management
-- [S243] Azure Well-Architected - Security Checklist: https://learn.microsoft.com/en-us/azure/well-architected/security/checklist
-- [S244] Azure Well-Architected - Threat Analysis Strategies: https://learn.microsoft.com/en-us/azure/architecture/framework/security/design-threat-model
-- [S245] Azure Well-Architected - Build a Monitoring System: https://learn.microsoft.com/en-us/azure/well-architected/design-guides/monitoring
-- [S246] Azure Reliability - Business Continuity, High Availability, and Disaster Recovery: https://learn.microsoft.com/en-us/azure/reliability/disaster-recovery-overview
-- [S247] Azure Chaos Studio - Chaos Engineering and Resilience: https://learn.microsoft.com/en-us/azure/chaos-studio/chaos-studio-chaos-engineering-overview
-- [S248] Azure Well-Architected - Mission-Critical Health Modeling: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-health-modeling
-- [S249] Azure Well-Architected - Health Modeling for Workloads: https://learn.microsoft.com/en-us/azure/well-architected/design-guides/health-modeling
-- [S250] Microsoft Entra - Managed Identities for Azure Resources: https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview
-- [S251] Microsoft Entra - Workload Identity Federation: https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation
-- [S252] Microsoft Platform Engineering - Platform Engineering Capability Model: https://learn.microsoft.com/en-us/platform-engineering/platform-engineering-capability-model
-- [S253] Microsoft AI Red Team: https://learn.microsoft.com/en-us/security/ai-red-team/
-- [S254] Microsoft Security Engineering - Threat Modeling AI/ML Systems and Dependencies: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-aiml
-- [S255] Microsoft Security Engineering - Failure Modes in Machine Learning: https://learn.microsoft.com/en-us/security/engineering/failure-modes-in-machine-learning
-- [S256] Azure Well-Architected - Security Incident Response: https://learn.microsoft.com/en-us/azure/well-architected/security/incident-response
-- [S257] Azure Architecture Center - Tenancy Models for a Multitenant Solution: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/tenancy-models
-- [S258] Microsoft Cloud Security Benchmark v2 Preview - Overview: https://learn.microsoft.com/en-us/security/benchmark/azure/overview
-- [S272] Microsoft Research - Diagnosing Sample Ratio Mismatch in Online Controlled Experiments: https://www.microsoft.com/en-us/research/publication/diagnosing-sample-ratio-mismatch-in-online-controlled-experiments-a-taxonomy-and-rules-of-thumb-for-practitioners/
-
 ### MITRE
 - [S87] MITRE ATT&CK: https://attack.mitre.org/
 
-### Netflix
-- [S62] A Platform for Automating Chaos Experiments: https://arxiv.org/abs/1702.05849
-- [S63] Netflix Chaos Monkey Documentation: https://netflix.github.io/chaosmonkey/
-- [S64] Netflix DGS Framework - Federation: https://netflix.github.io/dgs/federation/
-- [S65] Netflix Repokid: https://github.com/Netflix/repokid
-- [S212] Netflix - Automating Chaos Experiments in Production: https://arxiv.org/abs/1905.04648
-
 ### NIST
-- [S70] NIST SP 800-218 - Secure Software Development Framework: https://csrc.nist.gov/Projects/ssdf
+- [S70] NIST SP 800-218 - Secure Software Development Framework: https://csrc.nist.gov/pubs/sp/800/218/final
 - [S81] NIST SP 800-207 - Zero Trust Architecture: https://csrc.nist.gov/pubs/sp/800/207/final
 - [S86] NIST Post-Quantum Cryptography Project: https://csrc.nist.gov/projects/post-quantum-cryptography
 - [S192] NIST FIPS 203 - Module-Lattice-Based Key-Encapsulation Mechanism Standard: https://csrc.nist.gov/pubs/fips/203/final
@@ -346,7 +351,7 @@ publisher, or named author. They are not grouped by skill topic.
 - [S78] OpenSSF Scorecard: https://github.com/ossf/scorecard
 - [S79] OpenSSF Open Source Project Security Baseline: https://baseline.openssf.org/
 - [S280] OpenSSF - Security-Focused Guide for AI Code Assistant Instructions: https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions
-- [S281] OpenSSF - AI/ML Security Working Group: https://openssf.org/technical-initiatives/ai-ml-security/
+- [S281] OpenSSF AI/ML Security Working Group Repository: https://github.com/ossf/ai-ml-security
 
 ### OpenTelemetry
 - [S89] OpenTelemetry Documentation: https://opentelemetry.io/docs/what-is-opentelemetry/
@@ -391,7 +396,7 @@ publisher, or named author. They are not grouped by skill topic.
 - [S77] SLSA Build Provenance Specification: https://slsa.dev/spec/v1.2/build-provenance
 
 ### SPIFFE/SPIRE
-- [S83] SPIFFE/SPIRE: https://spiffe.io/
+- [S83] SPIFFE Standard: https://raw.githubusercontent.com/spiffe/spiffe/main/standards/SPIFFE.md
 
 ### Stripe
 - [S102] Stripe - Designing Robust and Predictable APIs with Idempotency: https://stripe.com/blog/idempotency
