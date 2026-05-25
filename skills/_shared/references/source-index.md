@@ -134,7 +134,6 @@ They are not grouped by skill topic.
 - [S212] Netflix - Automating Chaos Experiments in Production: https://arxiv.org/abs/1905.04648
 
 ### Microsoft And Azure
-- [S90] Azure Well-Architected Framework Structure and Pillars: https://learn.microsoft.com/en-us/azure/well-architected/what-is-well-architected-framework
 - [S91] Azure Well-Architected - Mission-Critical Design Principles: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-design-principles
 - [S92] Microsoft Security Development Lifecycle: https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle
 - [S93] Microsoft Learn - Integrating Threat Modeling with DevOps: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-with-dev-ops
