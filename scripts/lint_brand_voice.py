@@ -48,8 +48,6 @@ from staff_engineer_mode_contract import BRAND_LINTER_SPECIALIST_VENDOR_NAMES
 # Default scope: top-level user-facing docs plus router and specialist files.
 DEFAULT_SCOPE: tuple[str, ...] = (
     "README.md",
-    "MAINTAINERS.md",
-    "STYLE.md",
     "CONTRIBUTING.md",
     "skills/staff-engineer-mode/SKILL.md",
     "specialists/*.md",
