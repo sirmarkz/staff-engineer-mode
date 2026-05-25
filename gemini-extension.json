@@ -1,7 +1,7 @@
 {
   "name": "staff-engineer-mode",
   "description": "Staff-engineering decision guidance for AI coding agents. Routes design, development, testing, release, operations, reliability, security, API, data, and platform work to specialist guidance.",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "contextFileName": "GEMINI.md",
   "license": "MIT"
 }

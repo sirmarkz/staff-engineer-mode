@@ -1,5 +1,22 @@
 # Staff Engineer Mode Release Notes
 
+## 1.6.0 - 2026-05-25
+
+Source-quality and packaging cleanup release.
+
+- Reorganizes the shared source index so FAANG sources appear first
+  alphabetically, followed by Microsoft, then the remaining source owners.
+- Replaces broad marketing, trust, privacy, product, and documentation landing
+  pages with higher-quality engineering sources, including official PDFs,
+  specifications, architecture references, implementation guides, and targeted
+  operational docs.
+- Strengthens specialist guidance for privacy/data lifecycle, resilience
+  experiments, LLM application security, cost-aware reliability, platform golden
+  paths, and observability/alerting based on the improved source set.
+- Aligns public README and contributor docs with the streamlined package shape,
+  removes stale auxiliary docs and screenshots, and hardens release metadata
+  checks so version bumps keep the marketplace ref synchronized.
+
 ## 1.5.2 - 2026-05-23
 
 Builders Library guidance and marketplace metadata patch.
