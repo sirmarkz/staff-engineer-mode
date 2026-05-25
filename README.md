@@ -2,13 +2,25 @@
 
 [![Release](https://img.shields.io/github/v/release/sirmarkz/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
 
-**Your AI coding agent ships fast. This makes it ship with judgment.**
+**Your AI coding agent ships fast. This makes it ship with judgment of a staff engineer.**
 
-Staff-level engineering reasoning for design, development, testing, release, and operations decisions.
+Best software engineering practices from FAANG, packaged as decision guidance
+for AI coding agents. As agents write material amounts of production code, the
+bottleneck is no longer how fast they write; it is whether they reason about
+what happens when the code runs at 3am. Staff Engineer Mode closes that gap
+before an agent ships code without the reliability, security, operability,
+compatibility, and rollout judgment production systems need.
 
-## Why Now
+## Sources
 
-AI coding agents now write material amounts of production code. The bottleneck is no longer how fast the agent writes — it is whether the agent reasoned about what happens when the code runs at 3am. Agents will happily design an endpoint without a compatibility plan, implement a migration with no rollback, add tests that miss the failure mode, or ship a config change with no canary. This pack closes that gap.
+Staff Engineer Mode distills public engineering practices from AWS Builders'
+Library, Google SRE and Software Engineering at Google, Meta Engineering,
+Microsoft SDL and DevOps guidance, Apple security and privacy docs, Netflix
+resilience work, and standards from NIST, CISA, OWASP, OpenSSF, IETF, and W3C
+into practical guidance for AI coding agents. See the [source
+index](skills/_shared/references/source-index.md) for references and stable
+source IDs. Staff Engineer Mode is independent and is not endorsed by or
+affiliated with those organizations.
 
 ## How It Works
 
@@ -179,30 +191,12 @@ Examples by surface (the full catalog with prompts for every specialist file is 
 
 Every specialist file appears in [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) with four representative prompts.
 
-## Compared To Alternatives
-
-Staff Engineer Mode can be used alongside workflow skills like Superpowers.
-Workflow skills shape how the agent plans and executes; Staff Engineer Mode
-shapes the engineering checks and decisions it applies to the work.
-
 ## Contributing
 
 Patches welcome — especially additional practices from authoritative sources: first-party engineering publications, official documentation, standards bodies, peer-reviewed papers, or widely cited practitioner references.
 
-New specialist files must be technology-agnostic, cite stable source IDs, and avoid vendor endorsement. Read [STYLE.md](STYLE.md) before opening a PR. The voice is enforced.
-
-## Maintainers
-
-See [MAINTAINERS.md](MAINTAINERS.md).
-
-## Sources And Influences
-
-This pack focuses on the intersection of the strongest publicly documented engineering practices from leading software engineering organizations. It synthesizes large-operator engineering writing (Google, Amazon, Meta, Microsoft, Apple, Netflix) and standards work cited by their teams (NIST, CISA, OWASP, OpenSSF, IETF, W3C). Specific source IDs are in `skills/_shared/references/source-index.md`. This is an independent project; nothing here is endorsed by or affiliated with those organizations.
+New specialist files must be technology-agnostic, cite stable source IDs, and avoid vendor endorsement. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. The voice is enforced.
 
 ## License
 
 MIT — see [LICENSE](LICENSE). The project notice is included there.
-
----
-
-*Fewer vibes. More engineering.*

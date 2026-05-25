@@ -72,8 +72,14 @@ import sys
 with open(sys.argv[1], encoding="utf-8") as handle:
     config = json.load(handle)
 for item in config["files"]:
-    print(f'{item["path"]}\t{item["field"]}')
+    fmt = item.get("format", "{version}")
+    print(f'{item["path"]}\t{item["field"]}\t{fmt}')
 PY
+}
+
+apply_format() {
+  local fmt="$1" version="$2"
+  echo "${fmt//\{version\}/$version}"
 }
 
 audit_excludes() {
@@ -90,34 +96,49 @@ PY
 
 cmd_check() {
   local has_drift=0
-  local versions=()
+  local canonical=""
 
-  echo "Version check:"
+  # Derive the canonical version from the first plain {version} entry.
+  while IFS=$'\t' read -r path field format; do
+    [[ "$format" != "{version}" ]] && continue
+    local fullpath="$REPO_ROOT/$path"
+    [[ ! -f "$fullpath" ]] && continue
+    canonical="$(read_json_field "$fullpath" "$field")"
+    break
+  done < <(declared_files)
+
+  if [[ -z "$canonical" ]]; then
+    echo "error: no plain {version} entry available to derive canonical version" >&2
+    return 1
+  fi
+
+  echo "Version check (canonical: $canonical):"
   echo
 
-  while IFS=$'\t' read -r path field; do
+  while IFS=$'\t' read -r path field format; do
     local fullpath="$REPO_ROOT/$path"
     if [[ ! -f "$fullpath" ]]; then
-      printf "  %-45s  MISSING\n" "$path ($field)"
+      printf "  %-55s  MISSING\n" "$path ($field)"
       has_drift=1
       continue
     fi
-    local version
-    version="$(read_json_field "$fullpath" "$field")"
-    printf "  %-45s  %s\n" "$path ($field)" "$version"
-    versions+=("$version")
+    local actual expected
+    actual="$(read_json_field "$fullpath" "$field")"
+    expected="$(apply_format "$format" "$canonical")"
+    if [[ "$actual" == "$expected" ]]; then
+      printf "  %-55s  %s\n" "$path ($field)" "$actual"
+    else
+      printf "  %-55s  %s (expected %s) DRIFT\n" "$path ($field)" "$actual" "$expected"
+      has_drift=1
+    fi
   done < <(declared_files)
 
   echo
 
-  local unique
-  unique="$(printf '%s\n' "${versions[@]}" | sort -u | wc -l | tr -d ' ')"
-  if [[ "$unique" -gt 1 ]]; then
-    echo "DRIFT DETECTED - versions are not in sync:"
-    printf '%s\n' "${versions[@]}" | sort | uniq -c | sort -rn
-    has_drift=1
+  if [[ "$has_drift" -eq 0 ]]; then
+    echo "All declared files are in sync at $canonical"
   else
-    echo "All declared files are in sync at ${versions[0]}"
+    echo "DRIFT DETECTED - one or more declared fields do not match the expected value."
   fi
 
   return "$has_drift"
@@ -129,7 +150,8 @@ cmd_audit() {
 
   local current_version
   current_version="$(
-    while IFS=$'\t' read -r path field; do
+    while IFS=$'\t' read -r path field format; do
+      [[ "$format" != "{version}" ]] && continue
       local fullpath="$REPO_ROOT/$path"
       [[ -f "$fullpath" ]] && read_json_field "$fullpath" "$field"
     done < <(declared_files) | sort | uniq -c | sort -rn | head -1 | awk '{print $2}'
@@ -150,7 +172,7 @@ cmd_audit() {
   exclude_args+=("--exclude-dir=.git" "--exclude-dir=node_modules" "--binary-files=without-match")
 
   local -a declared_paths=()
-  while IFS=$'\t' read -r path _field; do
+  while IFS=$'\t' read -r path _field _format; do
     declared_paths+=("$path")
   done < <(declared_files)
 
@@ -196,16 +218,17 @@ cmd_bump() {
   echo "Bumping all declared files to $new_version..."
   echo
 
-  while IFS=$'\t' read -r path field; do
+  while IFS=$'\t' read -r path field format; do
     local fullpath="$REPO_ROOT/$path"
     if [[ ! -f "$fullpath" ]]; then
       echo "  SKIP (missing): $path"
       continue
     fi
-    local old_version
-    old_version="$(read_json_field "$fullpath" "$field")"
-    write_json_field "$fullpath" "$field" "$new_version"
-    printf "  %-45s  %s -> %s\n" "$path ($field)" "$old_version" "$new_version"
+    local old_value new_value
+    old_value="$(read_json_field "$fullpath" "$field")"
+    new_value="$(apply_format "$format" "$new_version")"
+    write_json_field "$fullpath" "$field" "$new_value"
+    printf "  %-55s  %s -> %s\n" "$path ($field)" "$old_value" "$new_value"
   done < <(declared_files)
 
   echo
@@ -215,8 +238,9 @@ cmd_bump() {
 
   echo
   echo "Next: commit chore(release): $new_version, tag v$new_version, push,"
-  echo "publish hosted release, then capture SHA for any pending directory"
-  echo "listing with: git rev-parse v$new_version^{commit}"
+  echo "publish hosted release, then update .claude-plugin/marketplace.json"
+  echo "plugins.0.source.sha to the new tag commit and push a follow-up commit:"
+  echo "  git rev-parse v$new_version^{commit}"
 }
 
 case "${1:-}" in

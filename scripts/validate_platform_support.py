@@ -15,6 +15,7 @@ from staff_engineer_mode_contract import MANIFEST_DESCRIPTION_FIELDS
 
 NAME = "staff-engineer-mode"
 BOOTSTRAP_TEMPLATE_RELATIVE = Path("skills/staff-engineer-mode/references/bootstrap-context.md")
+PRE_RELEASE_VERSION = ".".join(("0", "0", "0"))
 
 
 def package_version() -> str:
@@ -189,12 +190,19 @@ def validate_claude() -> None:
         fail(".claude-plugin/marketplace.json plugin entry source must pin git metadata")
     if source.get("source") != "url" or source.get("url") != "https://github.com/sirmarkz/staff-engineer-mode.git":
         fail(".claude-plugin/marketplace.json plugin entry source must use the HTTPS git URL")
-    expected_ref = f"v{package_version()}"
-    if source.get("ref") != expected_ref:
-        fail(f".claude-plugin/marketplace.json plugin entry source must pin ref {expected_ref}")
-    sha = source.get("sha")
-    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
-        fail(".claude-plugin/marketplace.json plugin entry source must include a 40-character sha")
+    version = package_version()
+    if version == PRE_RELEASE_VERSION:
+        if source.get("ref") != "main":
+            fail(".claude-plugin/marketplace.json pre-release source must use main")
+        if "sha" in source:
+            fail(".claude-plugin/marketplace.json pre-release source must not pin stale sha metadata")
+    else:
+        expected_ref = f"v{version}"
+        if source.get("ref") != expected_ref:
+            fail(f".claude-plugin/marketplace.json plugin entry source must pin ref {expected_ref}")
+        sha = source.get("sha")
+        if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+            fail(".claude-plugin/marketplace.json plugin entry source must include a 40-character sha")
 
 
 def validate_cursor() -> None:
@@ -301,6 +309,7 @@ def validate_version_metadata() -> None:
         (".cursor-plugin/plugin.json", "version"),
         (".codex-plugin/plugin.json", "version"),
         (".claude-plugin/marketplace.json", "plugins.0.version"),
+        (".claude-plugin/marketplace.json", "plugins.0.source.ref"),
         ("gemini-extension.json", "version"),
     }
     missing = required - declared
@@ -313,7 +322,7 @@ def validate_version_metadata() -> None:
         fail("missing RELEASE-NOTES.md")
     version = package_version()
     notes_text = notes.read_text()
-    if version == "0.0.0":
+    if version == PRE_RELEASE_VERSION:
         if "No public release history yet." not in notes_text:
             fail("RELEASE-NOTES.md must describe initial state without public release history")
     elif f"## {version} -" not in notes_text:
