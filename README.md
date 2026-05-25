@@ -2,7 +2,7 @@
 
 [![Release](https://img.shields.io/github/v/release/sirmarkz/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
 
-**Your AI coding agent ships fast. This makes it ship with judgment of a principal engineer.**
+**Your AI coding agent ships fast. This makes it ship with judgment.**
 
 Best software engineering practices from FAANG, packaged as
 decision guidance for AI coding agents. As agents write material amounts of
