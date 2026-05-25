@@ -19,10 +19,10 @@ alphabetically, followed by Microsoft, then the remaining source-owner sections.
 They are not grouped by skill topic.
 
 ### Amazon And AWS
-- [S30] AWS Well-Architected Framework: https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html
-- [S31] AWS Well-Architected - Operational Excellence Pillar: https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html
-- [S32] AWS Well-Architected - Reliability Pillar: https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html
-- [S33] AWS Well-Architected - Security Pillar: https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html
+- [S30] AWS Well-Architected Framework PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf
+- [S31] AWS Well-Architected Operational Excellence Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/operational-excellence-pillar/wellarchitected-operational-excellence-pillar.pdf
+- [S32] AWS Well-Architected Reliability Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/reliability-pillar/wellarchitected-reliability-pillar.pdf
+- [S33] AWS Well-Architected Security Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/security-pillar/wellarchitected-security-pillar.pdf
 - [S34] AWS Builders' Library - Timeouts, Retries, and Backoff with Jitter: https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
 - [S35] AWS Builders' Library - Static Stability Using Availability Zones: https://aws.amazon.com/builders-library/static-stability-using-availability-zones/
 - [S36] AWS Builders' Library - Using Load Shedding to Avoid Overload: https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/
@@ -129,13 +129,12 @@ They are not grouped by skill topic.
 
 ### Netflix
 - [S62] A Platform for Automating Chaos Experiments: https://arxiv.org/abs/1702.05849
-- [S63] Netflix Chaos Monkey Documentation: https://netflix.github.io/chaosmonkey/
 - [S64] Netflix DGS Framework - Federation: https://netflix.github.io/dgs/federation/
 - [S65] Netflix Repokid: https://github.com/Netflix/repokid
 - [S212] Netflix - Automating Chaos Experiments in Production: https://arxiv.org/abs/1905.04648
 
 ### Microsoft And Azure
-- [S90] Azure Well-Architected Framework: https://learn.microsoft.com/en-us/azure/well-architected/
+- [S90] Azure Well-Architected Framework Structure and Pillars: https://learn.microsoft.com/en-us/azure/well-architected/what-is-well-architected-framework
 - [S91] Azure Well-Architected - Mission-Critical Design Principles: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-design-principles
 - [S92] Microsoft Security Development Lifecycle: https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle
 - [S93] Microsoft Learn - Integrating Threat Modeling with DevOps: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-with-dev-ops
@@ -205,13 +204,13 @@ They are not grouped by skill topic.
 - [S154] Cassandra Data Modeling: https://cassandra.apache.org/doc/latest/cassandra/developing/data-modeling/intro.html
 
 ### Argo CD
-- [S122] Argo CD Documentation: https://argo-cd.readthedocs.io/
+- [S122] Argo CD Core Concepts: https://argo-cd.readthedocs.io/en/stable/core_concepts/
 
 ### AsyncAPI Initiative
 - [S262] AsyncAPI Specification: https://www.asyncapi.com/docs/reference/specification/latest
 
 ### Backstage
-- [S123] Backstage Documentation: https://backstage.io/docs/
+- [S123] Backstage Software Catalog: https://backstage.io/docs/features/software-catalog/
 
 ### Brendan Gregg
 - [S143] Brendan Gregg - USE Method and Flame Graphs: https://www.brendangregg.com/usemethod.html
@@ -229,7 +228,7 @@ They are not grouped by skill topic.
 - [S265] CloudEvents Specification: https://github.com/cloudevents/spec
 
 ### Cloudflare
-- [S184] Cloudflare DDoS Protection Documentation: https://developers.cloudflare.com/ddos-protection/
+- [S184] Cloudflare DDoS Protection - Proactive Defense: https://developers.cloudflare.com/ddos-protection/best-practices/proactive-defense/
 
 ### Confluent
 - [S118] Confluent - Schema Registry: https://docs.confluent.io/platform/current/schema-registry/index.html
@@ -244,7 +243,7 @@ They are not grouped by skill topic.
 - [S22] DORA - Software Delivery Performance Metrics: https://dora.dev/guides/dora-metrics-four-keys/
 
 ### Envoy
-- [S129] Envoy Documentation: https://www.envoyproxy.io/docs/envoy/latest/
+- [S129] Envoy Architecture Overview: https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/arch_overview
 
 ### Eric Evans
 - [S109] Eric Evans - Domain-Driven Design Reference: https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf
@@ -253,7 +252,7 @@ They are not grouped by skill topic.
 - [S141] Etsy Debriefing Facilitation Guide: https://extfiles.etsy.com/DebriefingFacilitationGuide.pdf
 
 ### FinOps Foundation
-- [S155] FinOps Framework: https://www.finops.org/framework/
+- [S155] FinOps Usage Optimization: https://www.finops.org/framework/capabilities/workload-optimization/
 
 ### FIRST
 - [S194] FIRST Exploit Prediction Scoring System: https://www.first.org/epss/
@@ -263,14 +262,14 @@ They are not grouped by skill topic.
 - [S189] GitHub Docs - About Secret Scanning: https://docs.github.com/en/code-security/concepts/secret-security/about-secret-scanning
 
 ### Grafana
-- [S125] Grafana Documentation: https://grafana.com/docs/
+- [S125] Grafana - Dashboard Best Practices: https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/
 - [S144] Grafana - The RED Method: https://grafana.com/blog/the-red-method-how-to-instrument-your-services/
 
 ### Great Expectations
 - [S198] Great Expectations - Run Validations: https://docs.greatexpectations.io/docs/core/run_validations/
 
 ### HashiCorp
-- [S121] Terraform Documentation: https://developer.hashicorp.com/terraform/docs
+- [S121] Terraform Language Documentation: https://developer.hashicorp.com/terraform/language
 
 ### Honeycomb
 - [S145] Honeycomb - Observability 2.0: https://www.honeycomb.io/blog/one-key-difference-observability1dot0-2dot0
@@ -297,7 +296,7 @@ They are not grouped by skill topic.
 - [S270] JSON Schema Specification: https://json-schema.org/specification
 
 ### Kubernetes
-- [S120] Kubernetes Documentation: https://kubernetes.io/docs/home/
+- [S120] Kubernetes Components: https://kubernetes.io/docs/concepts/overview/components/
 - [S196] Kubernetes Gateway API: https://kubernetes.io/docs/concepts/services-networking/gateway/
 - [S271] Kubernetes Version Skew Policy: https://kubernetes.io/releases/version-skew-policy
 
@@ -329,7 +328,7 @@ They are not grouped by skill topic.
 - [S81] NIST SP 800-207 - Zero Trust Architecture: https://csrc.nist.gov/pubs/sp/800/207/final
 - [S86] NIST Post-Quantum Cryptography Project: https://csrc.nist.gov/projects/post-quantum-cryptography
 - [S192] NIST FIPS 203 - Module-Lattice-Based Key-Encapsulation Mechanism Standard: https://csrc.nist.gov/pubs/fips/203/final
-- [S203] NIST Privacy Framework: https://www.nist.gov/privacy-framework/privacy-framework
+- [S203] NIST Privacy Framework 1.0: https://csrc.nist.gov/pubs/cswp/10/nist-privacy-framework-version-10/final
 - [S204] NIST SP 800-53 Revision 5 - Security and Privacy Controls: https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
 - [S273] NIST SP 800-128 - Security-Focused Configuration Management: https://csrc.nist.gov/publications/detail/sp/800-128/final
 - [S274] NIST AI Risk Management Framework 1.0: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10
@@ -344,7 +343,7 @@ They are not grouped by skill topic.
 - [S279] OpenAPI Specification: https://spec.openapis.org/oas/
 
 ### Open Policy Agent
-- [S126] Open Policy Agent Documentation: https://www.openpolicyagent.org/docs/latest/
+- [S126] Open Policy Agent Policy Language: https://www.openpolicyagent.org/docs/latest/policy-language/
 
 ### OpenSSF
 - [S78] OpenSSF Scorecard: https://github.com/ossf/scorecard
@@ -353,8 +352,8 @@ They are not grouped by skill topic.
 - [S281] OpenSSF AI/ML Security Working Group Repository: https://github.com/ossf/ai-ml-security
 
 ### OpenTelemetry
-- [S89] OpenTelemetry Documentation: https://opentelemetry.io/docs/what-is-opentelemetry/
-- [S128] OpenTelemetry Collector Documentation: https://opentelemetry.io/docs/collector/
+- [S89] OpenTelemetry Specification: https://opentelemetry.io/docs/specs/otel/
+- [S128] OpenTelemetry Collector Configuration: https://opentelemetry.io/docs/collector/configuration/
 
 ### OWASP
 - [S73] OWASP Application Security Verification Standard: https://owasp.org/www-project-application-security-verification-standard/
@@ -375,7 +374,8 @@ They are not grouped by skill topic.
 - [S61] Principles of Chaos Engineering: https://principlesofchaos.org/
 
 ### Prometheus
-- [S124] Prometheus Documentation: https://prometheus.io/docs/introduction/overview/
+- [S124] Prometheus Querying Basics: https://prometheus.io/docs/prometheus/latest/querying/basics/
+- [S295] Prometheus Alerting Rules: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
 
 ### Richard Cook
 - [S142] Richard Cook - How Complex Systems Fail: https://how.complexsystems.fail/
@@ -387,11 +387,11 @@ They are not grouped by skill topic.
 - [S112] Shopify Engineering - Deconstructing the Monolith: https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity
 
 ### Sigstore
-- [S80] Sigstore Documentation: https://docs.sigstore.dev/about/overview/
+- [S80] Sigstore Security Model: https://docs.sigstore.dev/about/security/
 - [S127] Cosign Documentation: https://docs.sigstore.dev/cosign/signing/overview/
 
 ### SLSA
-- [S76] SLSA Framework: https://slsa.dev/spec/
+- [S76] SLSA Specification: https://slsa.dev/spec/
 - [S77] SLSA Build Provenance Specification: https://slsa.dev/spec/v1.2/build-provenance
 
 ### SPIFFE/SPIRE
