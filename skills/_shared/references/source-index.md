@@ -130,7 +130,6 @@ They are not grouped by skill topic.
 ### Netflix
 - [S62] A Platform for Automating Chaos Experiments: https://arxiv.org/abs/1702.05849
 - [S64] Netflix DGS Framework - Federation: https://netflix.github.io/dgs/federation/
-- [S65] Netflix Repokid: https://github.com/Netflix/repokid
 - [S212] Netflix - Automating Chaos Experiments in Production: https://arxiv.org/abs/1905.04648
 
 ### Microsoft And Azure
@@ -310,22 +309,8 @@ They are not grouped by skill topic.
 - [S76] SLSA Specification: https://slsa.dev/spec/
 - [S77] SLSA Build Provenance Specification: https://slsa.dev/spec/v1.2/build-provenance
 
-### SPIFFE/SPIRE
-- [S83] SPIFFE Standard: https://raw.githubusercontent.com/spiffe/spiffe/main/standards/SPIFFE.md
-
-### Stripe
-- [S102] Stripe - Designing Robust and Predictable APIs with Idempotency: https://stripe.com/blog/idempotency
-- [S103] Stripe - API Versioning: https://stripe.com/blog/api-versioning
-- [S185] Stripe - Online Migrations at Scale: https://stripe.com/blog/online-migrations
-
-### Trunk Based Development
-- [S146] Trunk Based Development: https://trunkbaseddevelopment.com/
-
 ### Uber
 - [S113] Uber Engineering - DOMA: https://www.uber.com/us/en/blog/microservice-architecture/
-
-### Vitess
-- [S188] Vitess Documentation - Managed, Online Schema Changes: https://vitess.io/docs/24.0/user-guides/schema-changes/managed-online-schema-changes/
 
 ### W3C
 - [S88] W3C Trace Context: https://www.w3.org/TR/trace-context/
