@@ -16,8 +16,8 @@ compatibility, and rollout judgment production systems need.
 Staff Engineer Mode distills public engineering practices from AWS Builders' Library,
 Google SRE and Software Engineering at Google, Meta Engineering, Microsoft SDL
 and DevOps guidance, Apple security and privacy docs, Netflix resilience work,
-and standards from NIST, CISA, OWASP, OpenSSF, IETF, and W3C into practical
-guidance for AI coding agents. See the
+and technical standards or guidance from NIST, CISA, OWASP, OpenSSF, IETF, and
+W3C into practical guidance for AI coding agents. See the
 [source index](skills/_shared/references/source-index.md) for references and
 stable source IDs. Staff Engineer Mode is independent and is not endorsed by or
 affiliated with those organizations.

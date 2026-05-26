@@ -25,7 +25,7 @@ DISALLOWED_HOSTS = {
 }
 
 REQUIRED_POLICY_HEADING = "## Source Quality Policy"
-ENTRY_RE = re.compile(r"^- \[(S\d+)\] (?P<title>.+?): (?P<url>https?://\S+)$")
+ENTRY_RE = re.compile(r"^- (?:\[(?P<source_id>S\d+)\] )?(?P<title>.+?): (?P<url>https?://\S+)$")
 
 
 def fail(message: str) -> None:
@@ -47,23 +47,26 @@ def main() -> int:
 
     entries = []
     for line_number, line in enumerate(text.splitlines(), start=1):
-        if not line.startswith("- [S"):
+        if not line.startswith("- "):
             continue
         match = ENTRY_RE.match(line)
         if not match:
             fail(f"malformed source entry on line {line_number}: {line}")
-        source_id = match.group(1)
+        source_id = match.group("source_id")
+        source_label = source_id or f"line {line_number}"
         url = match.group("url")
         parsed = urlparse(url)
         host = parsed.hostname or ""
         if parsed.scheme != "https":
-            fail(f"{source_id} must use https: {url}")
+            fail(f"{source_label} must use https: {url}")
         if host_is_disallowed(host):
-            fail(f"{source_id} uses a disallowed low-authority host: {host}")
+            fail(f"{source_label} uses a disallowed low-authority host: {host}")
         entries.append((source_id, line_number))
 
     seen: dict[str, int] = {}
     for source_id, line_number in entries:
+        if source_id is None:
+            continue
         if source_id in seen:
             fail(f"{source_id} duplicated on lines {seen[source_id]} and {line_number}")
         seen[source_id] = line_number

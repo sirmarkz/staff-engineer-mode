@@ -245,23 +245,22 @@ They are not grouped by skill topic.
 - MITRE ATT&CK Data and Tools: https://attack.mitre.org/resources/attack-data-and-tools/
 
 ### NIST
-- [S70] NIST SP 800-218 - Secure Software Development Framework: https://csrc.nist.gov/pubs/sp/800/218/final
-- [S81] NIST SP 800-207 - Zero Trust Architecture: https://csrc.nist.gov/pubs/sp/800/207/final
-- [S86] NIST Post-Quantum Cryptography Project: https://csrc.nist.gov/projects/post-quantum-cryptography
-- [S192] NIST FIPS 203 - Module-Lattice-Based Key-Encapsulation Mechanism Standard: https://csrc.nist.gov/pubs/fips/203/final
-- [S203] NIST Privacy Framework 1.0: https://csrc.nist.gov/pubs/cswp/10/nist-privacy-framework-version-10/final
-- [S204] NIST SP 800-53 Revision 5 - Security and Privacy Controls: https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
-- [S273] NIST SP 800-128 - Security-Focused Configuration Management: https://csrc.nist.gov/publications/detail/sp/800-128/final
+- NIST SP 800-218 - Secure Software Development Framework PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf
+- NIST SP 800-207 - Zero Trust Architecture PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf
+- NIST Cybersecurity Framework 2.0 PDF: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf
+- NIST FIPS 203 - Module-Lattice-Based Key-Encapsulation Mechanism Standard PDF: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf
+- NIST FIPS 204 - Module-Lattice-Based Digital Signature Standard PDF: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf
+- NIST FIPS 205 - Stateless Hash-Based Digital Signature Standard PDF: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.pdf
+- NIST Privacy Framework 1.0 PDF: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.01162020.pdf
+- NIST SP 800-53 Revision 5 - Security and Privacy Controls PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf
+- NIST SP 800-128 - Security-Focused Configuration Management PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-128.pdf
 - NIST AI 100-1 - Artificial Intelligence Risk Management Framework 1.0 PDF: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=936225
 - NIST AI 600-1 - Generative AI Profile PDF: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=958388
-- [S276] NIST SP 800-57 Part 1 Revision 5 - Recommendation for Key Management: https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final
-- [S277] NIST SP 800-131A Revision 2 - Transitioning Cryptographic Algorithms and Key Lengths: https://csrc.nist.gov/pubs/sp/800/131/a/r2/final
+- NIST SP 800-57 Part 1 Revision 5 - Recommendation for Key Management PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf
+- NIST SP 800-131A Revision 2 - Transitioning Cryptographic Algorithms and Key Lengths PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
 
 ### OpenAI
 - [S278] OpenAI API - Agent Evals: https://platform.openai.com/docs/guides/agent-evals
-
-### OpenAPI Initiative
-- [S279] OpenAPI Specification: https://spec.openapis.org/oas/
 
 ### Open Policy Agent
 - [S126] Open Policy Agent Policy Language: https://www.openpolicyagent.org/docs/latest/policy-language/
