@@ -74,7 +74,8 @@ maintaining complex software systems.
 
 - Write docs for someone who has never seen the repository.
 - Keep documentation plain, direct, and technically accurate.
-- Cite sources by stable source IDs from `skills/_shared/references/source-index.md`.
+- Cite source-index references from `skills/_shared/references/source-index.md`,
+  using source IDs where present.
 - Use authoritative sources: first-party engineering publications, official
   documentation, standards bodies, peer-reviewed papers, or widely cited
   practitioner references that originated the named pattern. Do not cite
@@ -86,7 +87,7 @@ maintaining complex software systems.
 ## Tests And Validation
 
 - Validation protects supported skill contracts, routing behavior, references,
-  source IDs, templates, and artifact shape.
+  source-index citations, templates, and artifact shape.
 - Avoid tests that only pin incidental wording, heading prose, or implementation
   churn with no supported contract.
 - Run repo-local validation scripts before committing skill changes.
@@ -146,7 +147,7 @@ maintaining complex software systems.
 ## Bar A Change Must Clear
 
 1. Repo-local validation scripts pass.
-2. Skills, source IDs, templates, and router fixtures are internally consistent.
+2. Skills, source-index citations, templates, and router fixtures are internally consistent.
 3. Cross-tool manifests still support Claude Code, Codex, Cursor, OpenCode, and
    Gemini CLI when packaging artifacts change.
 4. Relevant docs, references, templates, and router fixtures are updated.

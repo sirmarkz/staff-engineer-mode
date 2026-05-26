@@ -41,6 +41,7 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
+- Intended use, affected user groups, misuse context, unacceptable harms or unsafe actions, and human escalation or override expectations.
 - LLM workflow, actors, prompts, system instructions, retrieved data, tools, actions, and output sinks.
 - Trust boundaries among user input, developer instructions, retrieved documents, model output, tool results, and external systems.
 - Data classification, tenant boundaries, permissions, secrets, and privacy constraints.
@@ -54,19 +55,20 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 
 ## Workflow
 
-1. **Map boundaries.** Identify every place untrusted text can influence prompts, retrieval, tool calls, code paths, messages, or stored state.
-2. **Constrain tools.** Give tools minimum permissions, explicit schemas, rate limits, loop/depth limits, side-effect boundaries, and confirmation checks for high-risk actions.
-3. **Protect retrieval.** Enforce tenant/data permissions before retrieval and again before answer/action use.
-4. **Treat output as untrusted by sink.** Commands need allowlisted operations and dry-run/confirmation where risky; queries need parameterization and scoped credentials; rendered text needs contextual encoding; structured tool inputs need schema validation; documents/messages need destination policy checks; downstream prompts need boundary markers and instruction-isolation.
-5. **Validate inputs and feedback.** Bound length and tokens, validate uploaded files by content and declared type, normalize or reject hidden/control characters, set an explicit link/URL policy, redact or block sensitive data by purpose, and apply the same controls to free-form feedback.
-6. **Separate instructions from data.** Do not let retrieved or user content override developer/system policy. Use structural boundaries, markers, and deterministic checks as defense in depth, not as guarantees.
-7. **Protect stored prompts and responses.** Classify prompts and outputs, minimize retention, restrict human access by need, encrypt with accountable key responsibility, and audit access.
-8. **Protect session isolation.** Keep user sessions, conversation state, retrieved context, and mutable objects scoped per user/request; test race conditions that could leak history across users or tenants.
-9. **Plan emergency stop and rollback.** Define independent disable or rollback paths for prompt templates, tool permissions, model/config, retrieval corpus, index, and training or fine-tuning inputs.
-10. **Scope model chains.** When one model output feeds another model or agent, give each step separate permissions, retrieval boundary, audit trail, and injection eval.
-11. **Evaluate adversarially.** Test prompt injection, tool misuse, data leakage, refusal bypass, unsafe output, dependency substitution, recursive tool loops, retrieval amplification, and regression cases with a repeatable adversarial corpus; for high-impact workflows, run a scoped red-team pass with severity triage and retest criteria.
-12. **Audit decisions.** Log prompts, retrieval identifiers, tool calls, user confirmations, denials, and outcomes with privacy-preserving redaction, retention, and replay-for-investigation rules.
-13. **Control supply chain.** Track prompts, tools, models, datasets, retrieval corpora, indexes, and deployment artifacts as versioned inputs with version, source, eval result, integrity checks, rollback target, and retirement date. Treat executable or code-loading model artifacts as unsafe unless isolated, allowlisted, and justified.
+1. **Frame impact and misuse.** State intended use, affected user groups, unacceptable harms or unsafe actions, misuse context, and where human escalation or override must exist.
+2. **Map boundaries.** Identify every place untrusted text can influence prompts, retrieval, tool calls, code paths, messages, or stored state.
+3. **Constrain tools.** Give tools minimum permissions, explicit schemas, rate limits, loop/depth limits, side-effect boundaries, and confirmation checks for high-risk actions.
+4. **Protect retrieval.** Enforce tenant/data permissions before retrieval and again before answer/action use.
+5. **Treat output as untrusted by sink.** Commands need allowlisted operations and dry-run/confirmation where risky; queries need parameterization and scoped credentials; rendered text needs contextual encoding; structured tool inputs need schema validation; documents/messages need destination policy checks; downstream prompts need boundary markers and instruction-isolation.
+6. **Validate inputs and feedback.** Bound length and tokens, validate uploaded files by content and declared type, normalize or reject hidden/control characters, set an explicit link/URL policy, redact or block sensitive data by purpose, and apply the same controls to free-form feedback.
+7. **Separate instructions from data.** Do not let retrieved or user content override developer/system policy. Use structural boundaries, markers, and deterministic checks as defense in depth, not as guarantees.
+8. **Protect stored prompts and responses.** Classify prompts and outputs, minimize retention, restrict human access by need, encrypt with accountable key responsibility, and audit access.
+9. **Protect session isolation.** Keep user sessions, conversation state, retrieved context, and mutable objects scoped per user/request; test race conditions that could leak history across users or tenants.
+10. **Plan emergency stop and rollback.** Define independent disable or rollback paths for prompt templates, tool permissions, model/config, retrieval corpus, index, and training or fine-tuning inputs.
+11. **Scope model chains.** When one model output feeds another model or agent, give each step separate permissions, retrieval boundary, audit trail, and injection eval.
+12. **Evaluate adversarially.** Test prompt injection, tool misuse, data leakage, refusal bypass, unsafe output, dependency substitution, recursive tool loops, retrieval amplification, and regression cases with a repeatable adversarial corpus; for high-impact workflows, run a scoped red-team pass with severity triage and retest criteria.
+13. **Audit decisions.** Log prompts, retrieval identifiers, tool calls, user confirmations, denials, and outcomes with privacy-preserving redaction, retention, and replay-for-investigation rules.
+14. **Control supply chain.** Track prompts, tools, models, datasets, retrieval corpora, indexes, and deployment artifacts as versioned inputs with version, source, eval result, integrity checks, rollback target, and retirement date. Treat executable or code-loading model artifacts as unsafe unless isolated, allowlisted, and justified.
 
 ## Synthesized Default
 
@@ -107,6 +109,7 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 ## Required Outputs
 
 - LLM threat model and trust-boundary map.
+- Intended-use, affected-user, misuse, unacceptable-harm, and escalation or override context.
 - Prompt, retrieval, tool, and output permission matrix.
 - Tool confirmation, rate-limit, and audit requirements.
 - Retrieval data-boundary and tenant-isolation checks.
@@ -122,6 +125,7 @@ Use least-privilege tools, permission-checked retrieval, input validation, untru
 ## Checks Before Moving On
 
 - `boundary_map`: prompt, user input, retrieved data, tool output, model output, and action sinks are mapped.
+- `impact_context`: intended use, affected user groups, unacceptable harms or unsafe actions, misuse context, and escalation or override expectations are stated where relevant.
 - `least_privilege`: tools and retrieval are scoped by user, tenant, action, and side effect.
 - `input_validation`: prompt, feedback, file, link, hidden/control-character, and size/token controls are defined before model use.
 - `output_handling`: model output is validated, encoded, or constrained before use in sensitive sinks.

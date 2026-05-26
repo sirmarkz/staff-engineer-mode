@@ -4,8 +4,8 @@
 
 **Your AI coding agent ships fast. This makes it ship with judgment.**
 
-Best software engineering practices from FAANG, packaged as
-decision guidance for AI coding agents. As agents write material amounts of
+Public production-engineering practices, packaged as decision guidance for AI
+coding agents. As agents write material amounts of
 production code, the bottleneck is no longer how fast they write; it is whether
 they reason about what happens when the code runs at 3am. Staff Engineer Mode closes that
 gap before an agent ships code without the reliability, security, operability,
@@ -19,8 +19,8 @@ and DevOps guidance, Apple security and privacy docs, Netflix resilience work,
 and technical standards or guidance from NIST, CISA, OWASP, OpenSSF, IETF, and
 W3C into practical guidance for AI coding agents. See the
 [source index](skills/_shared/references/source-index.md) for references and
-stable source IDs. Staff Engineer Mode is independent and is not endorsed by or
-affiliated with those organizations.
+source IDs where present. Staff Engineer Mode is independent and is not
+endorsed by or affiliated with those organizations.
 
 ## How It Works
 
@@ -124,7 +124,7 @@ Examples by surface:
 
 Patches welcome — especially additional practices from authoritative sources: first-party engineering publications, official documentation, standards bodies, peer-reviewed papers, or widely cited practitioner references.
 
-New specialist files must be technology-agnostic, cite stable source IDs, and avoid vendor endorsement. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. The voice is enforced.
+New specialist files must be technology-agnostic, cite source-index references, and avoid vendor endorsement. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. The voice is enforced.
 
 ## License
 

@@ -39,6 +39,7 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 - Actors, identities, roles, trust boundaries, data flows, assets, and deployment surfaces.
 - Data classification, sensitive fields, privacy constraints, logging/telemetry handling, and retention.
 - Entry points, APIs, background jobs, admin paths, operational access, and third-party integrations.
+- Server-side outbound request paths such as fetchers, webhooks, callbacks, link previews, imports, and URL-based integrations.
 - Abuse cases, attacker goals, known vulnerability classes, dependency assumptions, and misuse paths.
 - Existing controls, tests, self-checks, scanning results, incidents, and residual risks.
 
@@ -49,9 +50,11 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 3. **List abuse cases.** Write what an attacker or malicious/buggy client tries to accomplish, not only what component might fail.
 4. **Apply a threat frame.** Use spoofing, tampering, repudiation, disclosure, denial, privilege elevation, or equivalent categories to avoid blind spots.
 5. **Map controls.** Assign authentication, authorization, validation, output handling, rate limits, audit, secrets handling, encryption, and isolation controls.
-6. **Make controls testable.** Define unit/integration/security tests, self-checks, runtime monitors, or operational checks for each high-risk control.
-7. **Record residual risk.** State compensating control, expiry, acceptance condition, and explicit user risk acceptance.
-8. **Route specialized surfaces.** Identity/secrets, supply chain, LLM, tenant isolation, and vulnerability remediation go to their specialist skills when central.
+6. **Constrain outbound requests.** For server-side fetchers, webhooks, callback URLs, or imports, define destination allowlists where feasible, DNS/IP rebinding checks, private and metadata address blocking, redirect policy, egress controls, timeout, size, content-type limits, and audit fields.
+7. **Map detection needs.** For high-risk abuse cases, state the detection hypothesis, telemetry or audit data needed, alert or review route, and runbook owner. Route detailed signal design to `observability-and-alerting` when detection coverage is central.
+8. **Make controls testable.** Define unit/integration/security tests, self-checks, runtime monitors, or operational checks for each high-risk control.
+9. **Record residual risk.** State compensating control, expiry, acceptance condition, and explicit user risk acceptance.
+10. **Route specialized surfaces.** Identity/secrets, supply chain, LLM, tenant isolation, and vulnerability remediation go to their specialist skills when central.
 
 ## Synthesized Default
 
@@ -92,6 +95,8 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 - Trust-boundary and data-flow map.
 - Threat and abuse-case table.
 - Security requirements and control mapping.
+- Server-side outbound request and egress-control decision where URLs, callbacks, webhooks, or external fetches exist.
+- Security detection and audit requirements for high-risk abuse cases.
 - Verification plan for controls.
 - Residual-risk register with explicit user acceptance and expiry.
 - Sensitive-data and logging decision.
@@ -101,6 +106,8 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 
 - `boundary_check`: actors, trust boundaries, data flows, and privileged paths are explicit.
 - `threat_coverage`: high-risk abuse cases map to controls.
+- `outbound_request_control`: server-side URL fetching and callback paths have destination, redirect, network, timeout, size, and audit controls.
+- `detection_route`: high-risk abuse cases define the telemetry, audit event, alert, or review path that would show attempted or successful abuse.
 - `verification_check`: every high-risk control has a test, self-check, runtime check, or source to inspect.
 - `data_handling`: sensitive data storage, transmission, logging, and retention behavior is addressed.
 - `risk_responsibility`: residual risks have explicit user acceptance, expiry, and compensating control.

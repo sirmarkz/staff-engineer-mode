@@ -36,7 +36,7 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Workflow, user tasks, expected outputs, unacceptable failures, and release decision to support.
+- Intended use, affected user groups, workflow, user tasks, expected outputs, unacceptable failures, misuse context, human escalation or override path, and release decision to support.
 - Eval cases, production examples, synthetic cases, edge cases, slices, and known regressions.
 - Scoring method, graders, rubrics, deterministic checks, human judgment, and tie-break rules.
 - Thresholds, confidence needs, flake rate, baseline result, and comparison target.
@@ -46,13 +46,14 @@ LLM behavior is production behavior when prompts, tools, retrieval, or model out
 ## Workflow
 
 1. **Name the decision.** State whether the eval checks merge, release, prompt change, model change, or rollback.
-2. **Build representative cases.** Include production-like tasks, edge cases, regressions, adversarial examples, and important user slices.
-3. **Separate scoring types.** Use exact checks for structured requirements, rubric scoring for judgment, and human judgment for ambiguous high-impact cases.
-4. **Control grader risk.** Define rubrics, blind comparisons where useful, calibration cases, and checks for scoring drift.
-5. **Set thresholds first.** Declare pass, warn, and block criteria before looking at the new result.
-6. **Version inputs.** Link prompts, model, retrieval corpus, tool policy, eval cases, graders, and harness code to the result.
-7. **Triage failures.** Classify blockers, acceptable regressions, flaky cases, data issues, and missing coverage.
-8. **Keep history.** Track baseline, deltas, regressions, waived failures, and production incidents that should become future cases.
+2. **Frame the risk context.** State intended use, affected user groups, unacceptable harms or workflow failures, misuse context, and human escalation or override expectations where impact warrants it.
+3. **Build representative cases.** Include production-like tasks, edge cases, regressions, adversarial examples, and important user slices.
+4. **Separate scoring types.** Use exact checks for structured requirements, rubric scoring for judgment, and human judgment for ambiguous high-impact cases.
+5. **Control grader risk.** Define rubrics, blind comparisons where useful, calibration cases, and checks for scoring drift.
+6. **Set thresholds first.** Declare pass, warn, and block criteria before looking at the new result.
+7. **Version inputs.** Link prompts, model, retrieval corpus, tool policy, eval cases, graders, and harness code to the result.
+8. **Triage failures.** Classify blockers, acceptable regressions, flaky cases, data issues, and missing coverage.
+9. **Keep history.** Track baseline, deltas, regressions, waived failures, and production incidents that should become future cases.
 
 ## Synthesized Default
 
@@ -90,6 +91,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 ## Required Outputs
 
 - Eval harness specification.
+- Intended-use, affected-user, unacceptable-failure, misuse, and escalation context.
 - Case inventory with production, synthetic, edge, regression, and slice coverage.
 - Scoring and grader rubric.
 - Thresholds for pass, warn, block, and rollback.
@@ -100,6 +102,7 @@ Use a versioned eval harness with representative cases, slice coverage, determin
 ## Checks Before Moving On
 
 - `decision_named`: eval result maps to a merge, release, rollback, or investigation decision.
+- `risk_context`: intended use, affected user groups, unacceptable failures, misuse context, and escalation or override expectations are stated where relevant.
 - `case_coverage`: representative cases include critical tasks, slices, and known regressions.
 - `scoring_defined`: checks, graders, rubrics, and tie-break rules are explicit.
 - `thresholds_predeclared`: pass, warn, and block criteria are set before judging the change.

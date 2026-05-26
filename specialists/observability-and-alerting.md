@@ -43,6 +43,7 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 - Dashboard purpose, first-screen health question, metric definitions, missing-signal behavior, visual status rules, and alert-to-runbook links.
 - Fault-domain labels needed for impact analysis, such as location, deployment unit, partition, shard, tenant, and deployment stage.
 - Deployment markers, version identifiers, feature/config flags, tenant/customer context, and correlation identifiers.
+- Security detection hypotheses from threat models, with required telemetry or audit data, severity, owner, and response path.
 - Privacy constraints, sensitive fields, retention requirements, and sampling limits.
 - Responder workflow: where urgent alerts go, what local response path handles them, and how runbooks are used.
 
@@ -53,13 +54,14 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 3. **Instrument dependencies.** Include call count, latency, errors, timeouts, retries, queue depth, queue age, and drain rate.
 4. **Connect events.** Propagate trace context across every service boundary so the trace identifier is global to a request and span identifiers are local to each unit of work; attach deployment/change markers.
 5. **Structure logs and events.** Require a baseline field set on every entry — UTC timestamp, severity, service identifier, trace identifier, request identifier, and message — plus stable fields for operation, tenant/customer context where safe, dependency, result, error class, and latency.
-6. **Design telemetry pipelines.** Define where telemetry is received, transformed, sampled, redacted, queued, routed, and exported; state what happens under collector, sink, quota, or backpressure failure.
-7. **Define the health model.** State healthy, degraded, unavailable, and recovering conditions at component, dependency, journey, and workload levels; distinguish transient degradation from sustained unavailability.
-8. **Design dashboards for questions.** Build the first view so impact is visible quickly, then drill down by scope, fault domain, recent changes, dependencies, saturation, and recovery progress. Every displayed metric needs unit, source, label semantics, threshold/window, and missing-data behavior; color cannot be the only status signal.
-9. **Make absent signals explicit.** Emit zero when zero is meaningful, and treat missing samples as a separate health state instead of letting silence look healthy.
-10. **Alert on symptoms.** Use SLO burn or direct user-impact alerts. Keep diagnostic and causal alerts as follow-ups unless urgent and actionable. Each alert rule should name the expression or symptom, window, labels, severity, owner, annotations, runbook, and expected noise behavior.
-11. **Identify affected customers safely.** For customer-impacting services, define privacy-safe signals that support impact scoping and notification.
-12. **Attach runbooks.** Every urgent alert needs triage steps, impact check, mitigation options, fallback path, and rollback/fallback links.
+6. **Map threat detections when required.** For security detection work, connect each abuse case to a detection hypothesis, data component or audit event, signal expression, owner, severity, and response route. Do not turn generic operational metrics into security claims without a threat-specific hypothesis.
+7. **Design telemetry pipelines.** Define where telemetry is received, transformed, sampled, redacted, queued, routed, and exported; state what happens under collector, sink, quota, or backpressure failure.
+8. **Define the health model.** State healthy, degraded, unavailable, and recovering conditions at component, dependency, journey, and workload levels; distinguish transient degradation from sustained unavailability.
+9. **Design dashboards for questions.** Build the first view so impact is visible quickly, then drill down by scope, fault domain, recent changes, dependencies, saturation, and recovery progress. Every displayed metric needs unit, source, label semantics, threshold/window, and missing-data behavior; color cannot be the only status signal.
+10. **Make absent signals explicit.** Emit zero when zero is meaningful, and treat missing samples as a separate health state instead of letting silence look healthy.
+11. **Alert on symptoms.** Use SLO burn or direct user-impact alerts. Keep diagnostic and causal alerts as follow-ups unless urgent and actionable. Each alert rule should name the expression or symptom, window, labels, severity, owner, annotations, runbook, and expected noise behavior.
+12. **Identify affected customers safely.** For customer-impacting services, define privacy-safe signals that support impact scoping and notification.
+13. **Attach runbooks.** Every urgent alert needs triage steps, impact check, mitigation options, fallback path, and rollback/fallback links.
 
 ## Synthesized Default
 
@@ -103,6 +105,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 - Fault-domain and affected-customer scoping signals where relevant.
 - Alert policy with urgent/follow-up/diagnostic classification.
 - Structured log/event field standard and sensitive-data handling.
+- Security detection mapping for threat-model-driven abuse cases when detection is in scope.
 - Telemetry pipeline map with source, processor, redaction/sampling, queue/backpressure, sink, and drop behavior.
 - Trace or context propagation requirements.
 - Alert-rule specification and runbook requirements for every urgent alert.
@@ -118,6 +121,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 - `metric_definition`: user-facing metrics define unit, source, labels, threshold/window, and missing-signal behavior.
 - `missing_signal_behavior`: missing samples and zero values are distinguishable where that difference changes health.
 - `telemetry_pipeline`: collection, processing, redaction/sampling, routing, sink, backpressure, and drop behavior are defined.
+- `security_detection_map`: threat-driven detections connect abuse case, data source, signal, owner, severity, and response route.
 - `alert_rule_definition`: urgent alerts define expression or symptom, window, labels, severity, owner, annotations, runbook, and expected noise behavior.
 - `runbook_link`: every urgent alert has a runbook with impact check, mitigation, fallback, and verification.
 - `privacy_check`: sensitive data handling is defined for logs, traces, labels, and events.

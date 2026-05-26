@@ -42,6 +42,7 @@ Production should run artifacts whose source, build, dependencies, and confirmat
 - Deployment path, admission controls, environment promotion, and rollback.
 - Automation credentials, token scopes, secret exposure, and third-party integrations.
 - Scanning coverage, vulnerability checkpoint, and incident/exception process.
+- Vulnerability-reporting or security-policy intake route when external reports or project users can report supply-chain issues.
 
 ## Workflow
 
@@ -56,6 +57,7 @@ Production should run artifacts whose source, build, dependencies, and confirmat
 9. **Control deployment.** Verify artifact integrity/provenance at admission and keep environment promotion traceable.
 10. **Constrain automation.** Use least-privilege, short-lived credentials and secret scanning across source/build paths.
 11. **Screen common attack classes.** Check for dependency confusion, typo or name-squatting, compromised package publishing, build-cache poisoning, unchecked install hooks, and compromised automation credentials.
+12. **Route vulnerability intake.** Define where security reports about dependencies, build artifacts, or release integrity enter triage, then hand deployed-risk decisions to `vulnerability-management` with artifact, exposure, and provenance details.
 
 ## Synthesized Default
 
@@ -100,6 +102,7 @@ Use accepted source, controlled production pipelines, isolated builds, provenanc
 - Structured dependency inventory policy with producer, consumer, retention, and vulnerability checkpoint.
 - Build and deployment credential hardening plan.
 - Secret scanning and exposure response plan.
+- Vulnerability-reporting intake and triage handoff for supply-chain findings.
 - Exceptions with expiry, and compensating controls.
 
 ## Checks Before Moving On

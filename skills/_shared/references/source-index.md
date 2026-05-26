@@ -14,9 +14,9 @@ encyclopedias, Q&A/forum threads, scraped mirrors, SEO summaries, anonymous
 content farms, or unmaintained unofficial copies when a primary source exists.
 
 Sections below are grouped by source owner: company, project, standards body,
-publisher, or named author. The FAANG source-owner sections appear first
-alphabetically, followed by Microsoft, then the remaining source-owner sections.
-They are not grouped by skill topic.
+publisher, or named author. The large company source-owner sections appear
+first alphabetically, followed by Microsoft, then the remaining source-owner
+sections. They are not grouped by skill topic.
 
 ### Amazon And AWS
 - [S30] AWS Well-Architected Framework PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf
@@ -41,7 +41,6 @@ They are not grouped by skill topic.
 - [S151] DynamoDB partition key best practices: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html
 - [S182] AWS Best Practices for DDoS Resiliency: https://docs.aws.amazon.com/whitepapers/latest/aws-best-practices-ddos-resiliency/aws-best-practices-ddos-resiliency.html
 - [S213] Amazon Science - How Amazon Web Services Uses Formal Methods: https://www.amazon.science/publications/how-amazon-web-services-uses-formal-methods
-- [S261] Amazon EKS - Kubernetes Versions: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
 - [S284] AWS Builders' Library - Ensuring Rollback Safety During Deployments: https://aws.amazon.com/builders-library/ensuring-rollback-safety-during-deployments/
 - [S285] AWS Builders' Library - Instrumenting Distributed Systems for Operational Visibility: https://aws.amazon.com/builders-library/instrumenting-distributed-systems-for-operational-visibility/
 - [S286] AWS Builders' Library - Building Dashboards for Operational Visibility: https://aws.amazon.com/builders-library/building-dashboards-for-operational-visibility/
@@ -129,7 +128,6 @@ They are not grouped by skill topic.
 
 ### Netflix
 - [S62] A Platform for Automating Chaos Experiments: https://arxiv.org/abs/1702.05849
-- [S64] Netflix DGS Framework - Federation: https://netflix.github.io/dgs/federation/
 - [S212] Netflix - Automating Chaos Experiments in Production: https://arxiv.org/abs/1905.04648
 
 ### Microsoft And Azure
@@ -262,27 +260,24 @@ They are not grouped by skill topic.
 ### OpenAI
 - [S278] OpenAI API - Agent Evals: https://platform.openai.com/docs/guides/agent-evals
 
-### Open Policy Agent
-- [S126] Open Policy Agent Policy Language: https://www.openpolicyagent.org/docs/latest/policy-language/
-
 ### OpenSSF
-- [S78] OpenSSF Scorecard Check Documentation: https://github.com/ossf/scorecard/blob/main/docs/checks.md
+- [S78] OpenSSF Scorecard Check Documentation: https://raw.githubusercontent.com/ossf/scorecard/main/docs/checks.md
 - [S79] OpenSSF OSPS Baseline v2026.02.19: https://baseline.openssf.org/versions/2026-02-19
 - [S280] OpenSSF - Security-Focused Guide for AI Code Assistant Instructions: https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions
-- [S281] OpenSSF AI/ML Security WG MVSR: https://github.com/ossf/ai-ml-security/blob/main/mvsr.md
+- [S281] OpenSSF AI/ML Security WG MVSR: https://raw.githubusercontent.com/ossf/ai-ml-security/main/mvsr.md
 
 ### OWASP
 - [S73] OWASP ASVS 5.0.0 Requirements CSV: https://raw.githubusercontent.com/OWASP/ASVS/v5.0.0/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv
-- [S74] OWASP Top 10:2021 A01 Broken Access Control: https://owasp.org/Top10/A01_2021-Broken_Access_Control/
-- [S295] OWASP Top 10:2021 A02 Cryptographic Failures: https://owasp.org/Top10/A02_2021-Cryptographic_Failures/
-- [S296] OWASP Top 10:2021 A03 Injection: https://owasp.org/Top10/A03_2021-Injection/
-- [S297] OWASP Top 10:2021 A04 Insecure Design: https://owasp.org/Top10/A04_2021-Insecure_Design/
-- [S298] OWASP Top 10:2021 A05 Security Misconfiguration: https://owasp.org/Top10/A05_2021-Security_Misconfiguration/
-- [S299] OWASP Top 10:2021 A06 Vulnerable and Outdated Components: https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/
-- [S300] OWASP Top 10:2021 A07 Identification and Authentication Failures: https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/
-- [S301] OWASP Top 10:2021 A08 Software and Data Integrity Failures: https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/
-- [S302] OWASP Top 10:2021 A09 Security Logging and Monitoring Failures: https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/
-- [S303] OWASP Top 10:2021 A10 Server-Side Request Forgery: https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/
+- [S74] OWASP Top 10:2021 A01 Broken Access Control: https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/
+- [S295] OWASP Top 10:2021 A02 Cryptographic Failures: https://owasp.org/Top10/2021/A02_2021-Cryptographic_Failures/
+- [S296] OWASP Top 10:2021 A03 Injection: https://owasp.org/Top10/2021/A03_2021-Injection/
+- [S297] OWASP Top 10:2021 A04 Insecure Design: https://owasp.org/Top10/2021/A04_2021-Insecure_Design/
+- [S298] OWASP Top 10:2021 A05 Security Misconfiguration: https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/
+- [S299] OWASP Top 10:2021 A06 Vulnerable and Outdated Components: https://owasp.org/Top10/2021/A06_2021-Vulnerable_and_Outdated_Components/
+- [S300] OWASP Top 10:2021 A07 Identification and Authentication Failures: https://owasp.org/Top10/2021/A07_2021-Identification_and_Authentication_Failures/
+- [S301] OWASP Top 10:2021 A08 Software and Data Integrity Failures: https://owasp.org/Top10/2021/A08_2021-Software_and_Data_Integrity_Failures/
+- [S302] OWASP Top 10:2021 A09 Security Logging and Monitoring Failures: https://owasp.org/Top10/2021/A09_2021-Security_Logging_and_Monitoring_Failures/
+- [S303] OWASP Top 10:2021 A10 Server-Side Request Forgery: https://owasp.org/Top10/2021/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/
 - [S75] OWASP Cheat Sheet Series - Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
 - [S175] OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
 
@@ -292,21 +287,12 @@ They are not grouped by skill topic.
 ### Principles Of Chaos Engineering
 - [S61] Principles of Chaos Engineering: https://principlesofchaos.org/
 
-### Richard Cook
-- [S142] Richard Cook - How Complex Systems Fail: https://how.complexsystems.fail/
-
 ### Semantic Versioning
 - [S282] Semantic Versioning Specification: https://semver.org/
-
-### Shopify
-- [S112] Shopify Engineering - Deconstructing the Monolith: https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity
 
 ### SLSA
 - [S76] SLSA Specification: https://slsa.dev/spec/
 - [S77] SLSA Build Provenance Specification: https://slsa.dev/spec/v1.2/build-provenance
-
-### Uber
-- [S113] Uber Engineering - DOMA: https://www.uber.com/us/en/blog/microservice-architecture/
 
 ### W3C
 - [S88] W3C Trace Context: https://www.w3.org/TR/trace-context/
