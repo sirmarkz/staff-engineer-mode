@@ -211,9 +211,6 @@ They are not grouped by skill topic.
 ### DORA
 - [S22] DORA - Software Delivery Performance Metrics: https://dora.dev/guides/dora-metrics-four-keys/
 
-### Eric Evans
-- [S109] Eric Evans - Domain-Driven Design Reference: https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf
-
 ### FinOps Foundation
 - [S155] FinOps Usage Optimization: https://www.finops.org/framework/capabilities/workload-optimization/
 
