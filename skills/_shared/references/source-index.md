@@ -189,9 +189,6 @@ They are not grouped by skill topic.
 ### ACM Queue
 - [S190] ACM Queue - Systems Correctness Practices at AWS: https://queue.acm.org/detail.cfm?id=3712057
 
-### Alistair Cockburn
-- [S110] Alistair Cockburn - Hexagonal Architecture: https://alistair.cockburn.us/hexagonal-architecture
-
 ### Anthropic
 - [S259] Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
 
@@ -282,7 +279,16 @@ They are not grouped by skill topic.
 
 ### OWASP
 - [S73] OWASP ASVS 5.0.0 Requirements CSV: https://raw.githubusercontent.com/OWASP/ASVS/v5.0.0/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv
-- [S74] OWASP Top 10:2021 Documentation: https://owasp.org/Top10/2021/
+- [S74] OWASP Top 10:2021 A01 Broken Access Control: https://owasp.org/Top10/A01_2021-Broken_Access_Control/
+- [S295] OWASP Top 10:2021 A02 Cryptographic Failures: https://owasp.org/Top10/A02_2021-Cryptographic_Failures/
+- [S296] OWASP Top 10:2021 A03 Injection: https://owasp.org/Top10/A03_2021-Injection/
+- [S297] OWASP Top 10:2021 A04 Insecure Design: https://owasp.org/Top10/A04_2021-Insecure_Design/
+- [S298] OWASP Top 10:2021 A05 Security Misconfiguration: https://owasp.org/Top10/A05_2021-Security_Misconfiguration/
+- [S299] OWASP Top 10:2021 A06 Vulnerable and Outdated Components: https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/
+- [S300] OWASP Top 10:2021 A07 Identification and Authentication Failures: https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/
+- [S301] OWASP Top 10:2021 A08 Software and Data Integrity Failures: https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/
+- [S302] OWASP Top 10:2021 A09 Security Logging and Monitoring Failures: https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/
+- [S303] OWASP Top 10:2021 A10 Server-Side Request Forgery: https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/
 - [S75] OWASP Cheat Sheet Series - Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
 - [S175] OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
 
