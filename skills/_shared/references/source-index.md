@@ -187,6 +187,9 @@ sections. They are not grouped by skill topic.
 ### ACM Queue
 - ACM Queue - Systems Correctness Practices at AWS: https://queue.acm.org/detail.cfm?id=3712057
 
+### AICPA
+- AICPA Trust Services Criteria 2017 with 2022 Revisions: https://www.aicpa-cima.com/resources/download/2017-trust-services-criteria-with-revised-points-of-focus-2022
+
 ### Anthropic
 - Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
 
@@ -216,6 +219,11 @@ sections. They are not grouped by skill topic.
 
 ### IETF
 - RFC 7696 - Guidelines for Cryptographic Algorithm Agility: https://www.rfc-editor.org/rfc/rfc7696
+
+### ISO/IEC
+- ISO/IEC 27001:2022 - Information Security Management Systems Requirements: https://www.iso.org/standard/27001
+- ISO 31000:2018 - Risk Management Guidelines: https://www.iso.org/standard/65694.html
+- ISO/IEC 27005:2022 - Information Security Risk Management: https://www.iso.org/standard/80585.html
 
 ### Martin Fowler
 - Martin Fowler - What do you mean by Event-Driven?: https://martinfowler.com/articles/201701-event-driven.html
@@ -251,6 +259,8 @@ sections. They are not grouped by skill topic.
 - NIST FIPS 205 - Stateless Hash-Based Digital Signature Standard PDF: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.pdf
 - NIST Privacy Framework 1.0 PDF: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.01162020.pdf
 - NIST SP 800-53 Revision 5 - Security and Privacy Controls PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf
+- NIST SP 800-37 Revision 2 - Risk Management Framework PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-37r2.pdf
+- NIST SP 800-39 - Managing Information Security Risk PDF: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-39.pdf
 - NIST SP 800-128 - Security-Focused Configuration Management PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-128.pdf
 - NIST AI 100-1 - Artificial Intelligence Risk Management Framework 1.0 PDF: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=936225
 - NIST AI 600-1 - Generative AI Profile PDF: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=958388
@@ -280,6 +290,9 @@ sections. They are not grouped by skill topic.
 - OWASP Top 10:2021 A10 Server-Side Request Forgery: https://owasp.org/Top10/2021/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/
 - OWASP Cheat Sheet Series - Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
 - OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
+
+### PCI Security Standards Council
+- PCI DSS v4.0.1 - Requirements and Testing Procedures PDF: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf
 
 ### Perfdynamics
 - Universal Scalability Law: https://www.perfdynamics.com/Manifesto/USLscalability.html

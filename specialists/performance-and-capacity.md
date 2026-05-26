@@ -80,7 +80,7 @@ Optimize around tail percentiles, saturation, queue age, and headroom rather tha
 ## Exceptions
 
 - Batch pipelines may use freshness and completion latency instead of request p99; route to data pipeline reliability when the system is mainly ETL.
-- Internal low-tier tools may use lower headroom or follow-up-only alerts when the user accepts the SLO tradeoff.
+- Internal low-impact tools may use lower headroom or follow-up-only alerts when the user accepts the SLO tradeoff.
 - Hedged requests can reduce tail latency only when extra load is budgeted and duplicate work is safe.
 - Predictive scaling helps predictable demand, but cold-start latency must not sit on a critical synchronous path.
 

@@ -43,7 +43,7 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 - **Diff scope:** files changed, lines added/removed, public-surface changes, generated-file changes, and deleted code.
 - **Authorship context:** human, AI agent, or mixed; which agent or contributor produced the diff; what prompt or task it was given; what the task summary says changed.
 - **Change type:** new feature, refactor, bug fix, dependency update, migration, generated code, or mixed.
-- **Environment context:** target repo's tier, exposed surfaces, user-stated scope, local responsibility metadata or recent commits when available, and whether the change touches production paths, data, or shared libraries.
+- **Environment context:** target repo's declared impact, exposed surfaces, user-stated scope, local responsibility metadata or recent commits when available, and whether the change touches production paths, data, or shared libraries.
 - **Test coverage state:** which tests exist for the touched paths, which were added, and which were modified or deleted.
 - **Prior review state:** whether a human or other agent has already passed over the diff and what was flagged.
 - **Stated intent versus diff:** the author's or agent's summary, the originating task, and the actual file-by-file delta.
@@ -85,7 +85,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 
 - Throwaway prototypes isolated from production may use a lighter pass focused on hallucinated APIs and unmotivated edits.
 - Mechanical or generated changes may use sample review plus a non-regression check rather than line-by-line review, when the generator and pattern are maintained and verified.
-- Emergency fixes may merge with a documented blocker list, explicit user risk acceptance, and an immediate post-merge review and rollback plan.
+- Emergency fixes may merge with a documented blocker list, explicit user risk acceptance per NIST SP 800-39 section 2.4, and an immediate post-merge review and rollback plan.
 - Diffs already checked once may use this skill to verify failure modes a routine review would not have looked for.
 
 ## Response Quality Bar

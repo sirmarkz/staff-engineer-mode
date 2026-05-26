@@ -43,7 +43,7 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Environment inventory: local developer machines, CI runners, ephemeral or preview environments, staging, production, and any tier in between, with the person or script responsible for changing each environment.
+- Environment inventory: local developer machines, CI runners, ephemeral or preview environments, staging, production, and any environment in between, with the person or script responsible for changing each environment.
 - Dependency manifest per environment: language runtime version, system library versions, package lockfile state, and how each environment resolves them.
 - Configuration manifest per environment: feature flags, environment variables, defaults, overrides, and the rule for how production-like each non-prod environment is.
 - Preflight stage parity for critical release paths: configuration, dependencies, network, data shape, policy, and traffic-relevant limits.
@@ -56,7 +56,7 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 
 ## Workflow
 
-1. **Inventory the environments.** Name every environment a developer or CI uses, its purpose, who can change it, and the tier of confidence its results carry.
+1. **Inventory the environments.** Name every environment a developer or CI uses, its purpose, who can change it, and the confidence level its results carry.
 2. **Build the parity matrix.** For each environment pair, list the parity status across dimensions: dependency versions, configuration, data shape, time and clock, network policy, and secret handling. Mark each entry as required-parity, allowed-divergence (with reason), or unknown (a finding by itself).
 3. **Define the required-parity dimensions.** Decide which dimensions must match across environments to keep test results meaningful. Dependency versions and configuration shape are usually required; production data values are usually forbidden in non-prod.
 4. **Define the allowed-divergence dimensions.** Decide which dimensions are intentionally different and what the contract is: data scale, secret values, account identifiers, real third-party dependencies versus stand-ins, network egress scope.
@@ -66,12 +66,12 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 8. **Handle ephemeral and preview environments.** Ephemeral environments are useful only when their parity contract is explicit. State which dimensions they replicate from production and which they intentionally diverge on, so a passing preview means something specific.
 9. **Define preflight parity.** For release preflight stages, state which critical path dimensions must match production closely enough for the result to be trusted.
 10. **Bound third-party dependencies in non-prod.** Decide per dependency whether non-prod uses a stand-in, a sandbox, or the real production endpoint. Each choice has different parity properties; document them.
-11. **Reproduce the failure across environments.** When a "works here, fails there" failure appears, the first action is to reproduce in each tier and identify the dimension responsible. The fix lives in that dimension, not only in the failing tier.
+11. **Reproduce the failure across environments.** When a "works here, fails there" failure appears, the first action is to reproduce in each relevant environment and identify the dimension responsible. The fix lives in that dimension, not only in the failing environment.
 12. **Update the parity contract.** After every drift-related incident, update the matrix, the drift budget, or the detection so the same divergence cannot hide again.
 
 ## Synthesized Default
 
-Define required parity and allowed divergence per dimension. Detect drift on parity-required dimensions on a defined cadence. Bound divergence with a budget and a named action when the budget is exceeded. Treat ephemeral and preview environments as parity-explicit, not parity-by-vibes. Reproduce environment-divergent failures in every tier before declaring a fix. Update the contract after every drift-rooted incident.
+Define required parity and allowed divergence per dimension. Detect drift on parity-required dimensions on a defined cadence. Bound divergence with a budget and a named action when the budget is exceeded. Treat ephemeral and preview environments as parity-explicit, not parity-by-vibes. Reproduce environment-divergent failures in every relevant environment before declaring a fix. Update the contract after every drift-rooted incident.
 
 
 
@@ -115,12 +115,12 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 - Ephemeral and preview environment contract stating replicated and diverged dimensions and what a passing run in those environments means.
 - Preflight parity matrix for critical release paths, including which results are meaningful when intentional divergence remains.
 - Third-party dependency stand-in policy per dependency with the parity properties of each choice.
-- Reproduction protocol for "works here, fails there" failures with the order of tiers to reproduce in and the dimension-isolation steps.
+- Reproduction protocol for "works here, fails there" failures with the order of environments to reproduce in and the dimension-isolation steps.
 - Follow-up routes to release reproducibility, infrastructure-as-code, platform paths, configuration safety, identity, internal networking, or incident response as needed.
 
 ## Checks Before Moving On
 
-- `environment_inventory_present`: every environment a developer or CI uses is named with change path and tier of confidence.
+- `environment_inventory_present`: every environment a developer or CI uses is named with change path and confidence level.
 - `parity_matrix_present`: parity status is recorded per dimension per environment pair; unknowns are listed as findings.
 - `divergence_taxonomy`: required-parity, allowed-divergence with reason, and forbidden combinations are explicit.
 - `drift_budget_set`: each parity-required dimension has a numeric or categorical budget and a named action when exceeded.
@@ -128,7 +128,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 - `action_triggers_named`: drift-budget breaches map to specific actions, not generic ticket creation.
 - `preflight_environment_match`: release preflight stages match the production dimensions needed for critical-path confidence or state the limits of the result.
 - `ephemeral_contract`: preview and ephemeral environments declare replicated and diverged dimensions explicitly.
-- `reproduction_protocol`: a documented order and method for reproducing environment-divergent failures across tiers exists and is used.
+- `reproduction_protocol`: a documented order and method for reproducing environment-divergent failures across environments exists and is used.
 
 ## Red Flags - Stop And Rework
 
@@ -145,10 +145,10 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 
 | Mistake | Correction |
 | --- | --- |
-| "Works on my machine" closes the ticket | Reproduce across tiers; the fix lives in the diverged dimension. |
+| "Works on my machine" closes the ticket | Reproduce across environments; the fix lives in the diverged dimension. |
 | Drift treated only as developer annoyance | Set a drift budget with a named action when exceeded. |
 | Ephemeral environments trusted by default | State the parity contract; results count only for replicated dimensions. |
-| Secrets shared across tiers for convenience | Scope secrets per environment; document any cross-tier exception with user-confirmed reason and expiry. |
+| Secrets shared across environments for convenience | Scope secrets per environment; document any cross-environment exception with user-confirmed reason and expiry. |
 | Detection without action | Map every breach to block, trigger an urgent alert, or open follow-up. |
 | Divergence considered only on incident | Compare parity-required dimensions on a defined cadence. |
 | Treating data shape and data values the same | Forbid production values in non-prod; require shape parity for the paths under test. |

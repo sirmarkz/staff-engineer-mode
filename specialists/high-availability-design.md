@@ -37,7 +37,7 @@ High availability is the ability to keep serving through expected failures witho
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Service tier, SLOs, critical user journeys, and maximum tolerable interruption.
+- External commitment, customer-criticality, SLOs, critical user journeys, and maximum tolerable interruption.
 - Current topology: hosts, deployment units, locations, partitions, shards, queues, load balancers, stores, and control planes.
 - Fault domains: process, node, rack, location, deployment unit, administrative boundary, cluster, deployment ring, tenant, data partition, dependency, and operator action.
 - Capacity by domain, peak traffic, failover headroom, and dependency quotas.
@@ -78,7 +78,7 @@ Use fault-domain independence, static stability, and explicit fault-domain isola
 
 - Active-active multi-location is justified only when serving requirements exceed the complexity cost and data semantics can tolerate the replication model.
 - Active-passive, warm standby, or pilot light may be better when RTO/RPO and operational maturity are the true constraints.
-- Some internal or low-tier services can document a lower survival target if the SLO and user-confirmed risk decision accept it.
+- Some internal or low-impact services can document a lower survival target if the SLO and user-confirmed risk decision accept it.
 - Chaos experiments must be scoped down or simulated when blast radius cannot be ethically bounded.
 
 ## Response Quality Bar
@@ -122,7 +122,7 @@ Use fault-domain independence, static stability, and explicit fault-domain isola
 - Critical serving calls depend synchronously on a global control plane, config service, or cross-location dependency.
 - A deploy, scale-up, startup, or recovery path depends on artifacts or control planes unavailable during the named fault.
 - One operational action can damage multiple locations, deployment units, partitions, or shards at once.
-- Chaos testing is proposed without blast-radius limits or abort criteria.
+- Resilience experiments are proposed without blast-radius limits or abort criteria.
 
 ## Common Mistakes
 

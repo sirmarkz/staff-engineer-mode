@@ -78,7 +78,7 @@ Pages should be urgent, actionable, user-visible, and novel. Everything else sho
 ## Exceptions
 
 - Some pre-user-impact alerts may page if they are tested leading indicators with a safe, immediate mitigation.
-- Low-tier internal systems may route most operational signals to non-paging follow-up if user impact is limited and the user accepts the response latency.
+- Low-impact internal systems may route most operational signals to non-paging follow-up if user impact is limited and the user accepts the response latency.
 - Temporary noisy alerts are allowed during a risky migration only with expiry, and cleanup task.
 - Staffing and compensation questions remain out of scope unless translated into technical page/toil reduction.
 

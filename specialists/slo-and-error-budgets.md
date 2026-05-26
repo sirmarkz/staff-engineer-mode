@@ -23,7 +23,7 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 
 - The user asks what reliability target, availability target, latency target, freshness target, correctness target, or durability target a service should meet.
 - The user asks which alerts need urgent response, how burn-rate alerts should work, or how to connect alerts to SLOs.
-- A launch, PRR, tier upgrade, or reliability decision needs SLI/SLO details.
+- A launch, PRR, impact increase, or reliability decision needs SLI/SLO details.
 - Existing alerts are noisy because they monitor causes instead of user-visible symptoms.
 
 ## When Not To Use
@@ -36,12 +36,12 @@ Produces an SLI/SLO table tied to named user journeys, an error-budget calculati
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Critical user journeys, API operations, tenants, customer tiers, and response paths.
+- Critical user journeys, API operations, tenants, customer segments, and response paths.
 - Candidate SLIs for availability, latency, freshness, correctness, durability, and data loss.
 - Current metrics, logs, traces, dashboards, alerts, and incident history.
 - Missing-metric behavior, low-traffic detection strategy, and any synthetic or heartbeat signal needed to see user impact when organic traffic is sparse.
 - Traffic shape: request volume, batch cadence, peak/seasonal behavior, and dependency fanout.
-- External commitments or contractual SLAs, support tier, business-critical periods, and known customer commitments.
+- External commitments or contractual SLAs, support commitments, business-critical periods, and known customer commitments.
 - Release process: canary checks, freeze rules, rollback authority, and reliability-work intake.
 
 ## Workflow
@@ -94,7 +94,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 
 ## Required Outputs
 
-- Critical journey inventory with tier and response path.
+- Critical journey inventory with impact and response path.
 - SLI/SLO table with target, window, source metric, numerator, denominator, and exclusions.
 - Health-state definitions for healthy, degraded, unavailable, and recovering conditions where partial degradation matters.
 - Error-budget calculation in bad events or bad minutes.
@@ -106,7 +106,7 @@ Use the standard SRE sequence as the default: user journey -> health model -> SL
 
 ## Checks Before Moving On
 
-- `journey_coverage`: every tier-1 or explicitly requested journey has a SLI, and user-visible success definition.
+- `journey_coverage`: every externally committed or explicitly user-critical journey has a SLI and user-visible success definition.
 - `health_state`: the SLO can distinguish successful, degraded, unavailable, and excluded events where users experience partial failure.
 - `math_check`: every SLO has a target, window, denominator, allowed bad events or minutes, and low-traffic handling.
 - `promise_margin`: internal alert or stop thresholds are stricter than external commitments where such commitments exist.

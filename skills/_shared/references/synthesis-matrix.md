@@ -14,6 +14,7 @@ This file records the normalized defaults used by the hand-authored skills. It i
 | Platform and infrastructure | Encode standards as reusable capabilities with desired state, policy, drift control, and operational responsibility. |
 | Client and edge experience | Gate client releases on user-visible runtime quality, segmented telemetry, and rollback or forward-fix paths. |
 | AI and experimentation | Gate AI-assisted development, model-backed workflows, and experiments with scoped authority, representative evaluation, metric trust, and reviewable evidence. |
+| Risk acceptance and control evidence | Use ISO 31000 and NIST SP 800-39 risk-acceptance lifecycle with review cadence; use PCI DSS v4.0.1 Appendix B compensating-control format when accepting deviations; require continuous-monitoring evidence per NIST SP 800-37 Revision 2 RMF Step 7. |
 
 ## Cross-Cutting Rules
 

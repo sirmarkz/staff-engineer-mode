@@ -38,13 +38,13 @@ Resilience experiments test whether the system behaves the way the design says i
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- System tier, SLOs, critical journeys, known failure modes, and previous incident classes.
+- Impact dimensions, SLOs, critical journeys, known failure modes, and previous incident classes.
 - Existing fault-domain map, dependency matrix, capacity model, and recovery runbooks.
 - Previous tests for dependency unavailability, dependency slowness, cache loss, fault-domain loss, and alert/runbook response.
 - Existing reliability test strategy across simulation, staging, production drills, load or stress tests, failover tests, and restore tests.
 - Steady-state signals: availability, latency, correctness, freshness, saturation, queue age, and user-impact indicators.
 - Experiment target, injected fault, blast radius, duration, traffic scope, customer exposure, and abort criteria.
-- Production cadence or trigger for recurring drills, based on tier and change rate.
+- Production cadence or trigger for recurring drills, based on impact and change rate.
 - Participants, on-call coverage, communication channel, user decision point, and rollback/fallback actions.
 - What to record, expected outcome, safety constraints, and follow-up tracking path.
 
@@ -57,7 +57,7 @@ Resilience experiments test whether the system behaves the way the design says i
 5. **Prepare responders.** Confirm on-call, runbooks, rollback, communication channel, and user decision point.
 6. **Inject one failure.** Change one variable at a time unless the explicit goal is compound-failure validation; choose the smallest environment that exercises the control, then cover the highest-risk missing modes across dependency down, dependency slow, cache loss, fault-domain loss, overload, restore, and response-path failure.
 7. **Observe and decide.** Compare actual behavior to hypothesis, abort on criteria, and record results while the system is still fresh.
-8. **Set recurrence deliberately.** For tier-critical recovery mechanisms, define when to repeat the drill after topology, traffic, dependency, or runbook changes.
+8. **Set recurrence deliberately.** For critical recovery mechanisms, define when to repeat the drill after topology, traffic, dependency, or runbook changes.
 9. **Close the loop.** File fixes, update runbooks, add regression checks, and rerun only after material changes.
 
 ## Synthesized Default
@@ -82,7 +82,7 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 - Tabletop or disaster role play is appropriate before risky operational drills, but it does not replace technical validation.
 - Production experiments may be inappropriate for safety-critical, destructive, or unbounded failure modes; use simulation or isolated environments.
 - Compound failures are valid only after single-failure behavior is understood and observability is strong.
-- Low-tier internal services may use lightweight drills when the user explicitly accepts the risk.
+- Low-impact internal services may use lightweight drills when the user explicitly accepts the risk.
 
 ## Response Quality Bar
 
@@ -112,8 +112,8 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 - `blast_radius`: affected users, partitions, tenants, shards, locations, or traffic percentage are bounded.
 - `abort_criteria`: stop thresholds and user decision point are defined before the experiment.
 - `telemetry_check`: steady-state and causal signals are visible during the test.
-- `learning_loop`: findings create maintained fixes or explicit risk acceptance.
-- `recurrence_rule`: critical recovery behavior has a repeat trigger, deadline, or cadence tied to tier, topology, traffic, dependency, or incident learning.
+- `learning_loop`: findings create maintained fixes or explicit risk acceptance per NIST SP 800-39 section 2.4.
+- `recurrence_rule`: critical recovery behavior has a repeat trigger, deadline, or cadence tied to impact, topology, traffic, dependency, or incident learning.
 - `fault_mode_coverage`: the experiment set covers the highest-risk failure modes or lists the skipped modes and reason.
 
 ## Red Flags - Stop And Rework

@@ -111,7 +111,7 @@ cases:
     expected_behavior: "route active incident response to incident-response-and-postmortems"
     category: direct
     expected_checks: [single_primary, intent_inference]
-  - prompt: "Before tomorrow's tier-1 launch, run readiness across code, deploy config, dashboards, runbooks, rollback, and support details."
+  - prompt: "Before tomorrow's high-impact launch, run readiness across code, deploy config, dashboards, runbooks, rollback, and support details."
     expected_primary: production-readiness-review
     expected_behavior: "route launch go/no-go readiness to production-readiness-review"
     expected_phase: release

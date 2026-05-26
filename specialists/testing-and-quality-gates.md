@@ -36,7 +36,7 @@ Quality checks should catch real risk early without turning delivery into ritual
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Supported behaviors, critical journeys, system tier, risk areas, and recent defect history.
+- Supported behaviors, critical journeys, impact dimensions, risk areas, and recent defect history.
 - Existing test inventory: unit/component/contract/integration/end-to-end/performance/security/accessibility/static checks.
 - Pre-traffic health checks, critical-path sanity checks, production-like integration checks, synthetic or canary checks, and performance bottleneck tests.
 - Distributed edge cases: independent client, network, server, timeout, duplicate, and retry outcomes for request/reply or workflow boundaries.
@@ -94,7 +94,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - Make recommendations actionable with blocking/advisory status, validation commands, quarantine rules, stop criteria, and rollout of new checks where relevant.
 - Name the details to inspect, such as defect history, critical journeys, CI runtime, flake rate, coverage gaps, static findings, and release failure data; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside verification and quality checks. Route production rollout checks or chaos testing only when they are the central unresolved risk; generic review workflow has no routed specialist.
+- Stay inside verification and quality checks. Route production rollout checks or resilience experiments only when they are the central unresolved risk; generic review workflow has no routed specialist.
 - Be concise and prefer compact risk-to-check matrices, but always state: a flake-rate metric paired with a quarantine timer, a coverage metric+target paired with a meaningful-vs-vanity caveat, a CI runtime target paired with how it is measured, and per-layer test ratios with rationale when test composition is in scope.
 
 ## Required Outputs

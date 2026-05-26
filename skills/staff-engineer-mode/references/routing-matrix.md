@@ -45,7 +45,7 @@ Return the canonical `specialists/<slug>.md` slug, not a semantic alias.
 
 - Reliability targets, SLO-based alert tuning, and urgent/follow-up rules route to `slo-and-error-budgets`; telemetry construction routes to `observability-and-alerting`; alert fatigue routes to `oncall-health`.
 - When a prompt mixes noisy pages and missing reliability targets, route the immediate operator pain to `oncall-health` and use `slo-and-error-budgets` only as a secondary policy artifact.
-- Launch readiness routes to `production-readiness-review` only when launch, major traffic shift, tier upgrade, or broad readiness checks are explicit. Generic design decisions route elsewhere.
+- Launch readiness routes to `production-readiness-review` only when launch, major traffic shift, impact increase, or broad readiness checks are explicit. Generic design decisions route elsewhere.
 - Active incident command, live mitigation, and postmortem authorship route to `incident-response-and-postmortems` before root-cause specialty work.
 - Newer narrow routes beat broad neighbors when their artifact is present: config/automation safety, documentation lifecycle, data contracts, accessibility checks, AI coding controls, agent PR review, LLM eval, experimentation guardrails, fleet upgrades, cryptography/key lifecycle, feature flag lifecycle, LLM serving cost and latency, code readability for agents, test data engineering, and dev environment parity.
 - Fault-domain topology routes to `high-availability-design`; restore capability routes to `backup-and-recovery`; controlled failure tests route to `resilience-experiments`.

@@ -113,7 +113,7 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 - `tenant_context`: every request/query/job/event/cache path preserves tenant context or is explicitly tenant-neutral.
 - `data_boundary`: data access controls enforce tenant isolation where shared stores exist.
 - `privacy_check`: sensitive data handling is defined for logs, traces, metrics, errors, exports, and support tools.
-- `quota_check`: shared capacity has tenant-aware quotas or an explicit risk acceptance.
+- `quota_check`: shared capacity has tenant-aware quotas or explicit risk acceptance per NIST SP 800-39 section 2.4.
 - `fairness_model`: shared capacity defines quota keys, burst behavior, priority under contention, and admission accuracy signals such as configured limits matching enforced behavior or bounded false-allow/false-deny decisions.
 - `early_admission`: tenant or caller limits apply before expensive shared work where feasible.
 - `dynamic_limit_path`: emergency or routine limit changes have a safe update, rollback, and verification path.

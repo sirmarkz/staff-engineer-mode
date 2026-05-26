@@ -125,7 +125,7 @@ Treat "review" as a verb until the artifact proves otherwise.
 - Concrete PR, branch, patch, last commit, or diff review before merge routes to `agent-pr-review`.
 - Changed files alone do not make a diff review; route static-analysis or maintenance backlog prioritization to `dependency-and-code-hygiene`.
 - Generic review-system design, reviewer routing, ownership, change size, review latency, or DORA workflow has no routed specialist unless a concrete engineering surface is present.
-- Launch readiness, go/no-go, tier upgrade, or broad release readiness routes to `production-readiness-review`.
+- Launch readiness, go/no-go, impact increase, or broad release readiness routes to `production-readiness-review`.
 - Design review, architecture review, security review, API review, data review, rollout review, or test review without a concrete diff routes by the engineering surface, not by the word "review".
 - A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, deprecation, migration, safety, rollout, security, accessibility, data, or test results rather than a general diff verdict.
 
@@ -150,7 +150,7 @@ Treat "review" as a verb until the artifact proves otherwise.
 
 Use this section for common routing precedence. Load `references/routing-matrix.md` for exact-slug guardrails, eval runs, exact-slug uncertainty, or adjacent surfaces.
 
-- Explicit launch, major traffic shift, tier upgrade, or readiness decision routes to `production-readiness-review`; active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
+- Explicit launch, major traffic shift, impact increase, or readiness decision routes to `production-readiness-review`; active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
 - Prefer newer narrow routes over broad neighbors. Concrete PR, branch, patch, or diff review routes to `agent-pr-review` even when test results are mentioned; otherwise route the engineering decision to the narrow surface specialist.
 - Reliability policy, telemetry construction, on-call load, fault-domain topology/static failover capacity, restore capability, failure experiments, overload controls, and state invariants are separate surfaces.
 - API compatibility, data contracts, migrations, hygiene, fleet upgrades, event replay/DLQ, database backfills, cross-service database/storage correctness, cache freshness, and pipeline freshness stay distinct.

@@ -36,7 +36,7 @@ Cost is an operational signal, but reliability headroom is not waste by default.
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Service tier, SLOs, traffic, capacity model, failover headroom, and degradation behavior.
+- External commitment, customer-criticality, SLOs, traffic, capacity model, failover headroom, and degradation behavior.
 - Unit metrics: request, tenant, job, dataset, device, model inference, or business transaction.
 - Cost allocation: environment, tenant/customer, feature, location, and workload class.
 - Scaling policies, reserved/committed/interruptible mix, idle resources, and peak patterns.
@@ -79,7 +79,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 
 - Non-critical batch or preemptible workloads may use cheaper interruptible capacity if retries, deadlines, and data correctness are safe.
 - Emergency cost controls can temporarily degrade non-critical features if user impact and rollback are explicit.
-- Regulated, safety-critical, or tier-1 systems may keep high headroom even when utilization looks inefficient.
+- Regulated, safety-critical, or externally committed systems may keep high headroom even when utilization looks inefficient.
 - Public abuse cost spikes should use `edge-traffic-and-ddos-defense` instead.
 - Small estates may not justify heavy allocation pipelines; use coarse unit tracking until savings exceed instrumentation cost.
 
@@ -87,7 +87,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 
 - Lead with the unit-cost model, cost driver, reliability tradeoff, optimization plan, or anomaly diagnosis requested.
 - Cover allocation, unit metrics, driver separation, SLO/headroom preservation, failure-condition capacity, rollback, anomaly monitoring, and refresh cadence before optional FinOps breadth.
-- Make recommendations actionable with metrics, savings ranges, risk acceptance, stop criteria, rollback steps, and post-change checks where relevant.
+- Make recommendations actionable with metrics, savings ranges, risk acceptance per NIST SP 800-39, stop criteria, rollback steps, and post-change checks where relevant.
 - Name the details to inspect, such as spend by usage units, traffic, capacity headroom, SLOs, peak/failure demand, deploy markers, anomaly timeline, and retry/abuse signals; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside cost-aware reliability. Route capacity, edge defense, platform, or data work only when those are the central unresolved risk.

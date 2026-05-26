@@ -36,7 +36,7 @@ Produces telemetry requirements tied to user journeys, a dashboard specification
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Critical user journeys, SLOs, service tier, and incident history.
+- Critical user journeys, SLOs, customer-criticality, and incident history.
 - Request paths, dependency map, queues, data stores, batch jobs, and external integrations.
 - Existing metrics, logs, traces, dashboards, alerts, runbooks, and known blind spots.
 - Telemetry pipeline: sources, processors, redaction/sampling, routing, exporters or sinks, queue/backpressure behavior, and drop policy.

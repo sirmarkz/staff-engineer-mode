@@ -137,7 +137,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Build a production-readiness decision for the new service in this repo before launch."
 - "Before this migration moves traffic tomorrow, inspect code, deploy config, dashboards, and runbooks for launch blockers."
 - "Inspect the code, deploy config, dashboards, and runbooks, then say what launch details are missing."
-- "Before the new importer becomes tier 1, collect blockers across code, deploy, telemetry, and support docs."
+- "Before the new importer becomes high impact, collect blockers across code, deploy, telemetry, and support docs."
 
 ### `migration-and-deprecation`
 

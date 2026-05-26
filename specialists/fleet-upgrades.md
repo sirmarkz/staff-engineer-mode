@@ -15,7 +15,7 @@ If you cannot see what versions exist and what combinations are supported, the u
 
 ## Overview
 
-Fleet upgrades are compatibility projects spread across runtimes, control planes, clients, services, and operators.
+Fleet upgrades are compatibility projects spread across runtimes, control planes, clients, services, and operators. Exception register format follows ISO/IEC 27005 with shared compensating-control fields.
 
 **Core principle:** inventory support windows, define allowed skew, test mixed-version compatibility, stage rollout, and keep rollback or roll-forward paths ready.
 
@@ -43,7 +43,7 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 - Rollout batches, maintenance windows, traffic exposure, rollback or roll-forward path, and freeze dates.
 - Known deprecated features, removed behavior, config changes, and operator runbooks.
 - Support-window communication plan: affected components or consumers, deadline, required consumer action, reminder cadence, and user-confirmed follow-up path.
-- Exception list, expiry, risk, and compensating controls.
+- Exception list, expiry, risk, and compensating controls per ISO/IEC 27005 and the shared compensating-control format.
 
 ## Workflow
 
@@ -53,13 +53,13 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 4. **Find breaking changes.** Check behavior, config, interfaces, data formats, tooling, and operational assumptions.
 5. **Check compatibility.** Test mixed-version paths, upgrade order, downgrade or roll-forward behavior, and representative workloads.
 6. **Batch rollout.** Move low-risk cohorts first, then critical paths with checks, user confirmation, and monitoring.
-7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local details needed to close them.
+7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local details needed to close them per ISO/IEC 27005 and the shared compensating-control format.
 8. **Update operations.** Refresh runbooks, alerts, dashboards, and local operating procedures for the new version.
 9. **Close old paths.** Remove compatibility shims, stale versions, and exceptions after adoption is verified; keep baselines current enough that available fixes do not linger unnoticed.
 
 ## Synthesized Default
 
-Use a support-window inventory, explicit version-skew policy, compatibility matrix, staged rollout, support-deadline communication plan, exception register, operational runbook update, and retirement check for old versions. Prefer proving mixed-version behavior before the first production batch.
+Use a support-window inventory, explicit version-skew policy, compatibility matrix, staged rollout, support-deadline communication plan, exception register per ISO/IEC 27005 and the shared compensating-control format, operational runbook update, and retirement check for old versions. Prefer proving mixed-version behavior before the first production batch.
 
 
 
@@ -90,19 +90,19 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside fleet upgrade and version-skew management. Route dependency hygiene, API compatibility, or deprecation work only when that surface dominates.
 - Be concise: prefer upgrade matrices and batch plans over broad migration prose.
-- Emit upgrade order as a discrete labeled tier list before the time-phased rollout, not buried inside a weekly schedule.
+- Emit upgrade order as discrete labeled waves before the time-phased rollout, not buried inside a weekly schedule.
 
 ## Required Outputs
 
 - Fleet inventory with version, criticality, support status, and local ownership info when available.
 - Baseline drift table showing current baseline, target baseline, available fixes not yet adopted, and exception expiry.
 - Version-skew and compatibility matrix.
-- Upgrade order as an explicit tier list (e.g., control plane → data plane / nodes → clients/operators), with one-line rationale per tier and the allowed skew range between tiers stated as a numeric window with breakage criteria.
+- Upgrade order as explicit waves (e.g., control plane to data plane / nodes to clients/operators), with one-line rationale per wave and the allowed skew range between waves stated as a numeric window with breakage criteria.
 - End-of-support / support-window communication plan with announcement date, final support date, affected consumers, required consumer action, reminder cadence, and follow-up or enforcement path.
 - Rollout batches (waves) with progression criteria per wave.
 - Mixed-version test plan and records requirements.
 - Rollback or roll-forward plan stating both the procedure and the state-compatibility note (which prior state is restorable, which is not).
-- Exception register with expiry, compensating control, and closure note.
+- Exception register with expiry, compensating control, and closure note per ISO/IEC 27005 and the shared compensating-control format.
 - Operations update checklist.
 - Old-version retirement check.
 
@@ -114,14 +114,14 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 - `support_comms`: affected consumers, support deadline, required action, reminder cadence, and follow-up date are visible.
 - `compatibility_test`: representative old/new paths are tested before broad rollout.
 - `rollout_responsibility`: every batch has user confirmation, check, and halt criteria.
-- `exception_expiry`: blocked components have risk, compensating control, expiry, and closure note.
+- `exception_expiry`: blocked components have risk, compensating control, expiry, and closure note per ISO/IEC 27005 and the shared compensating-control format.
 
 ## Red Flags - Stop And Rework
 
 - The fleet inventory is based on guesses or stale spreadsheets.
 - Old and new versions are assumed compatible without tests.
 - Upgrade order ignores clients, jobs, agents, or operational tooling.
-- Unsupported versions have no exception expiry, compensating control, or consumer communication deadline.
+- Unsupported versions have no exception expiry, compensating control, or consumer communication deadline per ISO/IEC 27005 and the shared compensating-control format.
 - Rollback is impossible but roll-forward criteria are not defined.
 
 ## Common Mistakes

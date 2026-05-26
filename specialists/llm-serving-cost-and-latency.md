@@ -17,7 +17,7 @@ A route without all three is uncontrolled spend and uncontrolled tail. The first
 
 Produces a per-route token and latency budget table, a cache strategy spec for prompts, embeddings, and responses, a degradation policy that names the fallback model and the degraded contract, and a cost-attribution model that maps spend to route, feature, and tenant. Refuses to ship an LLM-backed route whose tail latency, retry behavior, or per-call cost is not modeled.
 
-**Core principle:** an LLM call is a remote, expensive, tail-latency-dominated dependency whose unit cost is set per request by the prompt the caller assembles. Treat the prompt, the model tier, the cache, and the fallback as production design choices, not implementation details.
+**Core principle:** an LLM call is a remote, expensive, tail-latency-dominated dependency whose unit cost is set per request by the prompt the caller assembles. Treat the prompt, the model class, the cache, and the fallback as production design choices, not implementation details.
 
 ## When To Use
 
@@ -36,15 +36,15 @@ Produces a per-route token and latency budget table, a cache strategy spec for p
 - The work is dataset construction, graders, regression thresholds, or eval checks; use `llm-evaluation`.
 - The model is a custom-trained or fine-tuned production ML model with training/serving skew, drift, and rollback as the dominant concern; use `ml-reliability-and-evaluation`.
 - The conversation is generic backend latency, queueing, or saturation with no model-specific behavior; use `performance-and-capacity`.
-- The conversation is generic dollar cost without LLM-specific token and tier choices; use `cost-aware-reliability`.
+- The conversation is generic dollar cost without LLM-specific token and model-class choices; use `cost-aware-reliability`.
 - The conversation is generic remote-call resilience that happens to call a model; use `dependency-resilience` for circuit breakers, timeouts, and idempotency once the LLM-specific budgets and fallback are set here.
 
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Route inventory: each LLM-backed user-facing route, agent loop, and background job, with caller, expected QPS, peak factor, and tier.
+- Route inventory: each LLM-backed user-facing route, agent loop, and background job, with caller, expected QPS, peak factor, and model class.
 - Per-route prompt structure: system prompt size, context inserted per request, retrieved-document size and count, conversation history retained, tool definitions included, and structured-output schema where used.
-- Model tier choice per route: which model is the default, which is the fallback or smaller alternative, and whether cascading or routing across tiers is in use.
+- Model class choice per route: which model is the default, which is the fallback or smaller alternative, and whether cascading or routing across model classes is in use.
 - Token accounting: input tokens, output tokens, cached or reused tokens, average and tail per request, and whether streaming is used.
 - Latency profile: p50, p95, p99 end-to-end, time-to-first-token where streaming, and provider-side latency vs in-process overhead.
 - Cache state: prompt-prefix cache, embedding cache, full-response cache, semantic cache, per-tenant scope, TTL, invalidation triggers, and observed hit rates.
@@ -58,7 +58,7 @@ Produces a per-route token and latency budget table, a cache strategy spec for p
 1. **Enumerate the routes.** List every path where the model is called, including tool-call loops and background jobs. A route you forgot is the route that breaks the cost model.
 2. **Set token budgets per route.** Define a per-request input-token cap, an expected output-token cap, and a hard cap that triggers a degraded response. The budget is a contract; the prompt assembler must enforce it.
 3. **Set latency budgets per route.** Define p50, p95, and p99 end-to-end targets. For interactive routes, also define a time-to-first-token target if streaming is used. For background jobs, define a wall-clock deadline and a per-item cost ceiling.
-4. **Choose the model tier deliberately.** Match the smallest acceptable model to the route's quality bar. State the fallback tier and the conditions that switch to it. Cascading from cheaper to more expensive models is allowed when the cheaper model has a measurable quality threshold; without that threshold, cascading just doubles the cost.
+4. **Choose the model class deliberately.** Match the smallest acceptable model to the route's quality bar. State the fallback model class and the conditions that switch to it. Cascading from cheaper to more expensive models is allowed when the cheaper model has a measurable quality threshold; without that threshold, cascading just doubles the cost.
 5. **Design the cache layers.** Distinguish prompt-prefix cache (provider-side, depends on stable prefix), embedding cache (deterministic per text plus model version), full-response cache (deterministic per prompt), and semantic cache (lossy, requires confidence threshold and false-hit budget). State scope and invalidation per layer; per-tenant scope is required where prompts contain tenant data.
 6. **Bound retries and timeouts.** Set max retries, backoff, and a per-call timeout shorter than the upstream timeout. Confirm the operation is idempotent at the model layer or that retries are guarded by an idempotency key. Compute the worst-case token cost as cost-per-attempt times max attempts; that is the real per-request budget.
 7. **Write the degradation policy.** For each route, state what happens when the primary model is unavailable, rate-limited, slower than the latency budget, or returns malformed output. Options include fallback model, cached response, cached approximate response, partial answer with explicit signaling, queued for later, or refused with a defined error contract. Silent fallback that changes user-visible quality without signaling is not allowed.
@@ -96,7 +96,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 ## Response Quality Bar
 
 - Lead with the per-route budget table, cache strategy, degradation policy, or attribution model requested.
-- Cover token budget, latency budget, model-tier choice, cache layers, retry and timeout bounds, degradation path, and attribution before optional model breadth.
+- Cover token budget, latency budget, model-class choice, cache layers, retry and timeout bounds, degradation path, and attribution before optional model breadth.
 - Make recommendations actionable with per-route numbers, cache scopes and TTLs, fallback conditions, retry caps, and the alerts that catch regression.
 - Name the details to inspect, such as per-route token histograms, latency percentiles, cache hit rates, fallback rate, retry rate, and per-tag spend; do not state a budget without the data behind it.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
@@ -106,7 +106,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 ## Required Outputs
 
 - Per-route budget table with input-token cap, output-token cap, hard cap action, p50/p95/p99 latency target, and time-to-first-token target where streaming.
-- Model-tier matrix per route with primary, fallback, and cascade conditions.
+- Model-class matrix per route with primary, fallback, and cascade conditions.
 - Cache strategy spec covering prompt-prefix, embedding, full-response, and semantic caches with scope, TTL, invalidation, and observed or target hit rate per layer.
 - Retry, timeout, and idempotency policy per route with computed worst-case token cost.
 - Degradation policy per route covering primary unavailable, rate-limited, over-budget, and malformed-output cases, with the user-visible contract for each.
@@ -119,7 +119,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 
 - `token_budget_present`: every LLM-backed route has an input-token cap, an output-token cap, and a defined action when the cap is exceeded.
 - `latency_budget_present`: every LLM-backed route has p50/p95/p99 targets and, where streaming, a time-to-first-token target.
-- `model_tier_chosen`: every route names a primary model, a fallback model or refusal contract, and any cascade conditions.
+- `model_class_chosen`: every route names a primary model, a fallback model or refusal contract, and any cascade conditions.
 - `cache_strategy_specified`: cache layers in use have scope, TTL, invalidation rule, and a target or measured hit rate.
 - `retry_bound`: retry count, backoff, timeout, idempotency, and worst-case per-call token cost are computed.
 - `degradation_path_specified`: each failure mode (unavailable, rate-limited, over-budget, malformed) has a user-visible contract and is rehearsed.

@@ -55,7 +55,7 @@ Accessibility is a release quality property, not a post-launch polish pass.
 
 ## Synthesized Default
 
-Check critical journeys with a named conformance target, automated checks, manual assistive-technology scripts, keyboard completion tests, dated exceptions with repair criteria, and regression tests for known defects. Accessibility checks should be part of launch readiness for user-facing changes.
+Check critical journeys with a named conformance target, automated checks, manual assistive-technology scripts, keyboard completion tests, dated repair plans for accepted deviations, and regression tests for known defects. Accessibility checks should be part of launch readiness for user-facing changes.
 
 
 
@@ -93,7 +93,7 @@ Check critical journeys with a named conformance target, automated checks, manua
 - Accessibility conformance target and journey inventory.
 - Release check matrix: automated checks, manual checks, blocking status, and repair path.
 - Critical journey manual test script.
-- Exception register with severity, expiry, compensating path, and retest.
+- Exception register with severity, expiry, compensating path, and retest, using ISO 31000 and NIST SP 800-39 risk-acceptance lifecycle plus the shared compensating-control format where a deviation is accepted.
 - Regression-prevention plan for recurring defects.
 - Follow-up routes for performance or mobile-specific release risk where needed.
 

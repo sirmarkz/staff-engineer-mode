@@ -37,7 +37,7 @@ Most cascading failures are dependency failures amplified by callers.
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Dependency matrix: caller, callee, operation, protocol, tier, and criticality.
+- Dependency matrix: caller, callee, operation, protocol, criticality, and failure consequence.
 - User impact if the dependency is slow or unavailable, caller-side dependency signals, and startup or scale behavior when runtime dependencies are unavailable.
 - End-to-end request deadline, per-hop timeout, connection timeout, and cancellation behavior.
 - Retry count, retry locations, backoff, jitter, retryable status codes/errors, adaptive retry budget, and overload signals that stop retries.

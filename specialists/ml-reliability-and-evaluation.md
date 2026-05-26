@@ -36,7 +36,7 @@ Production ML reliability is software reliability plus data reliability plus mod
 ## Info To Gather
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
-- Model use case, user impact, failure consequence, and production tier.
+- Model use case, user impact, failure consequence, and production criticality.
 - Training data, feature definitions, schemas, labels, transform code, and serving data sources.
 - Offline eval metrics, acceptance thresholds, slices/cohorts, fairness/safety checks where relevant, and regression history.
 - Training-serving consistency checks, feature freshness, null/default behavior, and schema drift.
