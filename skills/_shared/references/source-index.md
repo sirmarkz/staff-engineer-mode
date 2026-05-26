@@ -198,12 +198,6 @@ They are not grouped by skill topic.
 - [S193] CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 - [S264] CISA And Partners - Deploying AI Systems Securely: https://media.defense.gov/2024/Apr/15/2003439257/-1/-1/0/CSI-DEPLOYING-AI-SYSTEMS-SECURELY.PDF
 
-### CloudEvents
-- [S265] CloudEvents Specification: https://github.com/cloudevents/spec
-
-### Discord
-- [S152] Discord Engineering - How Discord Stores Trillions of Messages: https://discord.com/blog/how-discord-stores-trillions-of-messages
-
 ### DORA
 - [S22] DORA - Software Delivery Performance Metrics: https://dora.dev/guides/dora-metrics-four-keys/
 
