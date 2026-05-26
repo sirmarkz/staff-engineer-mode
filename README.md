@@ -18,9 +18,9 @@ Google SRE and Software Engineering at Google, Meta Engineering, Microsoft SDL
 and DevOps guidance, Apple security and privacy docs, Netflix resilience work,
 and technical standards or guidance from NIST, CISA, OWASP, OpenSSF, IETF, and
 W3C into practical guidance for AI coding agents. See the
-[source index](skills/_shared/references/source-index.md) for references and
-source IDs where present. Staff Engineer Mode is independent and is not
-endorsed by or affiliated with those organizations.
+[source index](skills/_shared/references/source-index.md) for references. Staff
+Engineer Mode is independent and is not endorsed by or affiliated with those
+organizations.
 
 ## How It Works
 

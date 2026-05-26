@@ -74,8 +74,7 @@ maintaining complex software systems.
 
 - Write docs for someone who has never seen the repository.
 - Keep documentation plain, direct, and technically accurate.
-- Cite source-index references from `skills/_shared/references/source-index.md`,
-  using source IDs where present.
+- Cite source-index references from `skills/_shared/references/source-index.md`.
 - Use authoritative sources: first-party engineering publications, official
   documentation, standards bodies, peer-reviewed papers, or widely cited
   practitioner references that originated the named pattern. Do not cite

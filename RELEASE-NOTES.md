@@ -98,7 +98,7 @@ Specialist language simplification release.
   Codex.
 - Clarifies README sources and influences as the intersection of strongest
   publicly documented practices from leading software engineering
-  organizations, with stable source IDs retained in the shared source index.
+  organizations, with source references retained in the shared source index.
 
 ## 1.3.2 - 2026-05-11
 

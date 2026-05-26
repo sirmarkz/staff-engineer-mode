@@ -107,7 +107,7 @@ Avoid:
 Use sources to support operational rules, not to borrow prestige.
 
 - Cite source-index references from
-  `skills/_shared/references/source-index.md`, using source IDs where present.
+  `skills/_shared/references/source-index.md`.
 - Prefer authoritative sources: official documentation, standards bodies,
   peer-reviewed papers, first-party engineering publications, or widely cited
   practitioner references that originated the pattern.

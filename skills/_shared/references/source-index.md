@@ -19,216 +19,216 @@ first alphabetically, followed by Microsoft, then the remaining source-owner
 sections. They are not grouped by skill topic.
 
 ### Amazon And AWS
-- [S30] AWS Well-Architected Framework PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf
-- [S31] AWS Well-Architected Operational Excellence Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/operational-excellence-pillar/wellarchitected-operational-excellence-pillar.pdf
-- [S32] AWS Well-Architected Reliability Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/reliability-pillar/wellarchitected-reliability-pillar.pdf
-- [S33] AWS Well-Architected Security Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/security-pillar/wellarchitected-security-pillar.pdf
-- [S34] AWS Builders' Library - Timeouts, Retries, and Backoff with Jitter: https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
-- [S35] AWS Builders' Library - Static Stability Using Availability Zones: https://aws.amazon.com/builders-library/static-stability-using-availability-zones/
-- [S36] AWS Builders' Library - Using Load Shedding to Avoid Overload: https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/
-- [S37] AWS Builders' Library - Avoiding Overload in Distributed Systems by Putting the Smaller Service in Control: https://aws.amazon.com/builders-library/avoiding-overload-in-distributed-systems-by-putting-the-smaller-service-in-control/
-- [S38] AWS Builders' Library - Avoiding Insurmountable Queue Backlogs: https://aws.amazon.com/builders-library/avoiding-insurmountable-queue-backlogs/
-- [S39] AWS Builders' Library - Implementing Health Checks: https://aws.amazon.com/builders-library/implementing-health-checks/
-- [S40] AWS Builders' Library - Leader Election in Distributed Systems: https://aws.amazon.com/builders-library/leader-election-in-distributed-systems/
-- [S41] AWS Builders' Library - Making Retries Safe with Idempotent APIs: https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/
-- [S42] AWS Builders' Library - Reliability and Constant Work: https://aws.amazon.com/builders-library/reliability-and-constant-work/
-- [S43] AWS Builders' Library - Workload Isolation Using Shuffle-Sharding: https://aws.amazon.com/builders-library/workload-isolation-using-shuffle-sharding/
-- [S44] AWS Builders' Library - Automating Safe, Hands-Off Deployments: https://aws.amazon.com/builders-library/automating-safe-hands-off-deployments/
-- [S45] AWS Architecture Blog - Disaster Recovery Strategies for Recovery in the Cloud: https://aws.amazon.com/blogs/architecture/disaster-recovery-dr-architecture-on-aws-part-i-strategies-for-recovery-in-the-cloud/
-- [S46] AWS SaaS Tenant Isolation Strategies: https://d1.awsstatic.com/whitepapers/saas-tenant-isolation-strategies.pdf
-- [S47] Amazon Dynamo: Amazon's Highly Available Key-value Store: https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf
-- [S97] AWS Builders' Library - Avoiding Fallback in Distributed Systems: https://aws.amazon.com/builders-library/avoiding-fallback-in-distributed-systems/
-- [S151] DynamoDB partition key best practices: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html
-- [S182] AWS Best Practices for DDoS Resiliency: https://docs.aws.amazon.com/whitepapers/latest/aws-best-practices-ddos-resiliency/aws-best-practices-ddos-resiliency.html
-- [S213] Amazon Science - How Amazon Web Services Uses Formal Methods: https://www.amazon.science/publications/how-amazon-web-services-uses-formal-methods
-- [S284] AWS Builders' Library - Ensuring Rollback Safety During Deployments: https://aws.amazon.com/builders-library/ensuring-rollback-safety-during-deployments/
-- [S285] AWS Builders' Library - Instrumenting Distributed Systems for Operational Visibility: https://aws.amazon.com/builders-library/instrumenting-distributed-systems-for-operational-visibility/
-- [S286] AWS Builders' Library - Building Dashboards for Operational Visibility: https://aws.amazon.com/builders-library/building-dashboards-for-operational-visibility/
-- [S287] AWS Builders' Library - Going Faster with Continuous Delivery: https://aws.amazon.com/builders-library/going-faster-with-continuous-delivery/
-- [S288] AWS Builders' Library - Using Dependency Isolation to Contain Concurrency Overload: https://aws.amazon.com/builders-library/dependency-isolation/
-- [S289] AWS Builders' Library - Minimizing Correlated Failures in Distributed Systems: https://aws.amazon.com/builders-library/minimizing-correlated-failures-in-distributed-systems/
-- [S290] AWS Builders' Library - Caching Challenges and Strategies: https://aws.amazon.com/builders-library/caching-challenges-and-strategies/
-- [S291] AWS Builders' Library - Resilience Lessons from the Lunch Rush: https://aws.amazon.com/builders-library/resilience-lessons-from-the-lunch-rush/
-- [S292] AWS Builders' Library - My CI/CD Pipeline Is My Release Captain: https://aws.amazon.com/builders-library/cicd-pipeline/
-- [S293] AWS Builders' Library - Fairness in Multi-Tenant Systems: https://aws.amazon.com/builders-library/fairness-in-multi-tenant-systems/
-- [S294] AWS Builders' Library - Challenges with Distributed Systems: https://aws.amazon.com/builders-library/challenges-with-distributed-systems/
+- AWS Well-Architected Framework PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf
+- AWS Well-Architected Operational Excellence Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/operational-excellence-pillar/wellarchitected-operational-excellence-pillar.pdf
+- AWS Well-Architected Reliability Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/reliability-pillar/wellarchitected-reliability-pillar.pdf
+- AWS Well-Architected Security Pillar PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/security-pillar/wellarchitected-security-pillar.pdf
+- AWS Builders' Library - Timeouts, Retries, and Backoff with Jitter: https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
+- AWS Builders' Library - Static Stability Using Availability Zones: https://aws.amazon.com/builders-library/static-stability-using-availability-zones/
+- AWS Builders' Library - Using Load Shedding to Avoid Overload: https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/
+- AWS Builders' Library - Avoiding Overload in Distributed Systems by Putting the Smaller Service in Control: https://aws.amazon.com/builders-library/avoiding-overload-in-distributed-systems-by-putting-the-smaller-service-in-control/
+- AWS Builders' Library - Avoiding Insurmountable Queue Backlogs: https://aws.amazon.com/builders-library/avoiding-insurmountable-queue-backlogs/
+- AWS Builders' Library - Implementing Health Checks: https://aws.amazon.com/builders-library/implementing-health-checks/
+- AWS Builders' Library - Leader Election in Distributed Systems: https://aws.amazon.com/builders-library/leader-election-in-distributed-systems/
+- AWS Builders' Library - Making Retries Safe with Idempotent APIs: https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/
+- AWS Builders' Library - Reliability and Constant Work: https://aws.amazon.com/builders-library/reliability-and-constant-work/
+- AWS Builders' Library - Workload Isolation Using Shuffle-Sharding: https://aws.amazon.com/builders-library/workload-isolation-using-shuffle-sharding/
+- AWS Builders' Library - Automating Safe, Hands-Off Deployments: https://aws.amazon.com/builders-library/automating-safe-hands-off-deployments/
+- AWS Architecture Blog - Disaster Recovery Strategies for Recovery in the Cloud: https://aws.amazon.com/blogs/architecture/disaster-recovery-dr-architecture-on-aws-part-i-strategies-for-recovery-in-the-cloud/
+- AWS SaaS Tenant Isolation Strategies: https://d1.awsstatic.com/whitepapers/saas-tenant-isolation-strategies.pdf
+- Amazon Dynamo: Amazon's Highly Available Key-value Store: https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf
+- AWS Builders' Library - Avoiding Fallback in Distributed Systems: https://aws.amazon.com/builders-library/avoiding-fallback-in-distributed-systems/
+- DynamoDB partition key best practices: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html
+- AWS Best Practices for DDoS Resiliency: https://docs.aws.amazon.com/whitepapers/latest/aws-best-practices-ddos-resiliency/aws-best-practices-ddos-resiliency.html
+- Amazon Science - How Amazon Web Services Uses Formal Methods: https://www.amazon.science/publications/how-amazon-web-services-uses-formal-methods
+- AWS Builders' Library - Ensuring Rollback Safety During Deployments: https://aws.amazon.com/builders-library/ensuring-rollback-safety-during-deployments/
+- AWS Builders' Library - Instrumenting Distributed Systems for Operational Visibility: https://aws.amazon.com/builders-library/instrumenting-distributed-systems-for-operational-visibility/
+- AWS Builders' Library - Building Dashboards for Operational Visibility: https://aws.amazon.com/builders-library/building-dashboards-for-operational-visibility/
+- AWS Builders' Library - Going Faster with Continuous Delivery: https://aws.amazon.com/builders-library/going-faster-with-continuous-delivery/
+- AWS Builders' Library - Using Dependency Isolation to Contain Concurrency Overload: https://aws.amazon.com/builders-library/dependency-isolation/
+- AWS Builders' Library - Minimizing Correlated Failures in Distributed Systems: https://aws.amazon.com/builders-library/minimizing-correlated-failures-in-distributed-systems/
+- AWS Builders' Library - Caching Challenges and Strategies: https://aws.amazon.com/builders-library/caching-challenges-and-strategies/
+- AWS Builders' Library - Resilience Lessons from the Lunch Rush: https://aws.amazon.com/builders-library/resilience-lessons-from-the-lunch-rush/
+- AWS Builders' Library - My CI/CD Pipeline Is My Release Captain: https://aws.amazon.com/builders-library/cicd-pipeline/
+- AWS Builders' Library - Fairness in Multi-Tenant Systems: https://aws.amazon.com/builders-library/fairness-in-multi-tenant-systems/
+- AWS Builders' Library - Challenges with Distributed Systems: https://aws.amazon.com/builders-library/challenges-with-distributed-systems/
 
 ### Apple
-- [S131] Apple Secure Coding Guide: https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/
-- [S132] Apple Security Research - Private Cloud Compute: https://security.apple.com/blog/private-cloud-compute/
-- [S176] Apple App Store Connect - Release a version update in phases: https://developer.apple.com/help/app-store-connect/update-your-app/release-a-version-update-in-phases
-- [S179] Apple MetricKit: https://developer.apple.com/documentation/metrickit
-- [S210] Apple Developer - Describing Data Use in Privacy Manifests: https://developer.apple.com/documentation/bundleresources/describing-data-use-in-privacy-manifests
+- Apple Secure Coding Guide: https://developer.apple.com/library/archive/documentation/Security/Conceptual/SecureCodingGuide/
+- Apple Security Research - Private Cloud Compute: https://security.apple.com/blog/private-cloud-compute/
+- Apple App Store Connect - Release a version update in phases: https://developer.apple.com/help/app-store-connect/update-your-app/release-a-version-update-in-phases
+- Apple MetricKit: https://developer.apple.com/documentation/metrickit
+- Apple Developer - Describing Data Use in Privacy Manifests: https://developer.apple.com/documentation/bundleresources/describing-data-use-in-privacy-manifests
 
 ### Google And Firebase
-- [S1] Google SRE Book - Embracing Risk: https://sre.google/sre-book/embracing-risk/
-- [S2] Google SRE Book - Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
-- [S3] Google SRE Book - Monitoring Distributed Systems: https://sre.google/sre-book/monitoring-distributed-systems/
-- [S4] Google SRE Book - Release Engineering: https://sre.google/sre-book/release-engineering/
-- [S5] Google SRE Book - Addressing Cascading Failures: https://sre.google/sre-book/addressing-cascading-failures/
-- [S6] Google SRE Book - Managing Incidents: https://sre.google/sre-book/managing-incidents/
-- [S7] Google SRE Book - Postmortem Culture: https://sre.google/sre-book/postmortem-culture/
-- [S8] Google SRE Book - Eliminating Toil: https://sre.google/sre-book/eliminating-toil/
-- [S9] Google SRE Book - The Production Environment at Google, from the Viewpoint of an SRE: https://sre.google/sre-book/production-environment/
-- [S10] Google SRE Workbook - Alerting on SLOs: https://sre.google/workbook/alerting-on-slos/
-- [S11] Google SRE Workbook - Canarying Releases: https://sre.google/workbook/canarying-releases/
-- [S12] Google SRE Workbook - Postmortem Culture: Learning from Failure: https://sre.google/workbook/postmortem-culture/
-- [S13] Google - Building Secure and Reliable Systems: https://google.github.io/building-secure-and-reliable-systems/raw/toc.html
-- [S14] Software Engineering at Google - Testing Overview: https://abseil.io/resources/swe-book/html/ch11.html
-- [S15] Software Engineering at Google - Documentation: https://abseil.io/resources/swe-book/html/ch10.html
-- [S16] Software Engineering at Google - Version Control: https://abseil.io/resources/swe-book/html/ch16.html
-- [S17] Software Engineering at Google - Continuous Delivery: https://abseil.io/resources/swe-book/html/ch24.html
-- [S18] Software Engineering at Google - Large-Scale Changes: https://abseil.io/resources/swe-book/html/ch22.html
-- [S19] Google Engineering Practices - Code Review: https://google.github.io/eng-practices/review/
-- [S20] Google Style Guides: https://google.github.io/styleguide/
-- [S21] Google Cloud - Infrastructure Reliability Guide: https://docs.cloud.google.com/architecture/infra-reliability-guide
-- [S23] The Tail at Scale: https://research.google/pubs/the-tail-at-scale/
-- [S24] Large-scale Cluster Management at Google with Borg: https://research.google.com/pubs/archive/43438.pdf
-- [S25] Dapper, a Large-Scale Distributed Systems Tracing Infrastructure: https://research.google/pubs/dapper-a-large-scale-distributed-systems-tracing-infrastructure/
-- [S26] Spanner: Google's Globally-Distributed Database: https://research.google.com/archive/spanner-osdi2012.pdf
-- [S27] Bigtable: A Distributed Storage System for Structured Data: https://research.google.com/archive/bigtable-osdi06.pdf
-- [S28] Maglev: A Fast and Reliable Software Network Load Balancer: https://research.google.com/pubs/archive/44824.pdf
-- [S60] Google Cloud Blog - Introducing Kayenta, an Open Automated Canary Analysis Tool from Google and Netflix: https://cloud.google.com/blog/products/gcp/introducing-kayenta-an-open-automated-canary-analysis-tool-from-google-and-netflix
-- [S66] Google Research - Autopilot: Workload Autoscaling at Google Scale: https://research.google/pubs/autopilot-workload-autoscaling-at-google-scale/
-- [S100] Google AIP-180 - Backwards Compatibility: https://google.aip.dev/180
-- [S101] Google AIP-185 - Versioning: https://google.aip.dev/185
-- [S133] Google BeyondCorp: https://research.google/pubs/beyondcorp-a-new-approach-to-enterprise-security/
-- [S170] Google - Rules of Machine Learning: https://developers.google.com/machine-learning/guides/rules-of-ml/
-- [S171] Hidden Technical Debt in Machine Learning Systems: https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems.pdf
-- [S172] Google Research - The ML Test Score: https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/
-- [S173] Google Cloud - MLOps: Continuous delivery and automation pipelines in machine learning: https://cloud.google.com/solutions/machine-learning/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning
-- [S177] Google Play Console - Release app updates with staged rollouts: https://support.google.com/googleplay/android-developer/answer/6346149
-- [S178] Firebase Crashlytics - Understand crash-free metrics: https://firebase.google.com/docs/crashlytics/crash-free-metrics
-- [S180] web.dev - Web Vitals: https://web.dev/articles/vitals
-- [S183] Google Cloud Armor Best Practices: https://docs.cloud.google.com/armor/docs/best-practices
-- [S197] Google Cloud Observability - Data Processing SLIs: https://docs.cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/data-proc-metrics
-- [S199] Google SRE Workbook - Configuration Design and Best Practices: https://sre.google/workbook/configuration-design/
-- [S200] Google SRE Book - Production Services Best Practices: https://sre.google/sre-book/service-best-practices/
-- [S201] Software Engineering at Google - Deprecation: https://abseil.io/resources/swe-book/html/ch15.html
-- [S202] Software Engineering at Google - Build Systems and Build Philosophy: https://abseil.io/resources/swe-book/html/ch18.html
-- [S209] Google Cloud - Data Deletion on Google Cloud: https://cloud.google.com/docs/security/deletion
-- [S267] Google Research - Overlapping Experiment Infrastructure: https://research.google.com/pubs/archive/36500.pdf
-- [S268] Google Cloud - Runtime Lifecycle: https://cloud.google.com/appengine/docs/standard/lifecycle/runtime-lifecycle
-- [S260] Android Developers - Test Your App's Accessibility: https://developer.android.com/guide/topics/ui/accessibility/testing
+- Google SRE Book - Embracing Risk: https://sre.google/sre-book/embracing-risk/
+- Google SRE Book - Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
+- Google SRE Book - Monitoring Distributed Systems: https://sre.google/sre-book/monitoring-distributed-systems/
+- Google SRE Book - Release Engineering: https://sre.google/sre-book/release-engineering/
+- Google SRE Book - Addressing Cascading Failures: https://sre.google/sre-book/addressing-cascading-failures/
+- Google SRE Book - Managing Incidents: https://sre.google/sre-book/managing-incidents/
+- Google SRE Book - Postmortem Culture: https://sre.google/sre-book/postmortem-culture/
+- Google SRE Book - Eliminating Toil: https://sre.google/sre-book/eliminating-toil/
+- Google SRE Book - The Production Environment at Google, from the Viewpoint of an SRE: https://sre.google/sre-book/production-environment/
+- Google SRE Workbook - Alerting on SLOs: https://sre.google/workbook/alerting-on-slos/
+- Google SRE Workbook - Canarying Releases: https://sre.google/workbook/canarying-releases/
+- Google SRE Workbook - Postmortem Culture: Learning from Failure: https://sre.google/workbook/postmortem-culture/
+- Google - Building Secure and Reliable Systems: https://google.github.io/building-secure-and-reliable-systems/raw/toc.html
+- Software Engineering at Google - Testing Overview: https://abseil.io/resources/swe-book/html/ch11.html
+- Software Engineering at Google - Documentation: https://abseil.io/resources/swe-book/html/ch10.html
+- Software Engineering at Google - Version Control: https://abseil.io/resources/swe-book/html/ch16.html
+- Software Engineering at Google - Continuous Delivery: https://abseil.io/resources/swe-book/html/ch24.html
+- Software Engineering at Google - Large-Scale Changes: https://abseil.io/resources/swe-book/html/ch22.html
+- Google Engineering Practices - Code Review: https://google.github.io/eng-practices/review/
+- Google Style Guides: https://google.github.io/styleguide/
+- Google Cloud - Infrastructure Reliability Guide: https://docs.cloud.google.com/architecture/infra-reliability-guide
+- The Tail at Scale: https://research.google/pubs/the-tail-at-scale/
+- Large-scale Cluster Management at Google with Borg: https://research.google.com/pubs/archive/43438.pdf
+- Dapper, a Large-Scale Distributed Systems Tracing Infrastructure: https://research.google/pubs/dapper-a-large-scale-distributed-systems-tracing-infrastructure/
+- Spanner: Google's Globally-Distributed Database: https://research.google.com/archive/spanner-osdi2012.pdf
+- Bigtable: A Distributed Storage System for Structured Data: https://research.google.com/archive/bigtable-osdi06.pdf
+- Maglev: A Fast and Reliable Software Network Load Balancer: https://research.google.com/pubs/archive/44824.pdf
+- Google Cloud Blog - Introducing Kayenta, an Open Automated Canary Analysis Tool from Google and Netflix: https://cloud.google.com/blog/products/gcp/introducing-kayenta-an-open-automated-canary-analysis-tool-from-google-and-netflix
+- Google Research - Autopilot: Workload Autoscaling at Google Scale: https://research.google/pubs/autopilot-workload-autoscaling-at-google-scale/
+- Google AIP-180 - Backwards Compatibility: https://google.aip.dev/180
+- Google AIP-185 - Versioning: https://google.aip.dev/185
+- Google BeyondCorp: https://research.google/pubs/beyondcorp-a-new-approach-to-enterprise-security/
+- Google - Rules of Machine Learning: https://developers.google.com/machine-learning/guides/rules-of-ml/
+- Hidden Technical Debt in Machine Learning Systems: https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems.pdf
+- Google Research - The ML Test Score: https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/
+- Google Cloud - MLOps: Continuous delivery and automation pipelines in machine learning: https://cloud.google.com/solutions/machine-learning/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning
+- Google Play Console - Release app updates with staged rollouts: https://support.google.com/googleplay/android-developer/answer/6346149
+- Firebase Crashlytics - Understand crash-free metrics: https://firebase.google.com/docs/crashlytics/crash-free-metrics
+- web.dev - Web Vitals: https://web.dev/articles/vitals
+- Google Cloud Armor Best Practices: https://docs.cloud.google.com/armor/docs/best-practices
+- Google Cloud Observability - Data Processing SLIs: https://docs.cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/data-proc-metrics
+- Google SRE Workbook - Configuration Design and Best Practices: https://sre.google/workbook/configuration-design/
+- Google SRE Book - Production Services Best Practices: https://sre.google/sre-book/service-best-practices/
+- Software Engineering at Google - Deprecation: https://abseil.io/resources/swe-book/html/ch15.html
+- Software Engineering at Google - Build Systems and Build Philosophy: https://abseil.io/resources/swe-book/html/ch18.html
+- Google Cloud - Data Deletion on Google Cloud: https://cloud.google.com/docs/security/deletion
+- Google Research - Overlapping Experiment Infrastructure: https://research.google.com/pubs/archive/36500.pdf
+- Google Cloud - Runtime Lifecycle: https://cloud.google.com/appengine/docs/standard/lifecycle/runtime-lifecycle
+- Android Developers - Test Your App's Accessibility: https://developer.android.com/guide/topics/ui/accessibility/testing
 
 ### Meta
-- [S50] Meta Engineering - Move Faster, Wait Less: Improving Code Review Time at Meta: https://engineering.fb.com/2022/11/16/culture/meta-code-review-time-improving/
-- [S51] Meta Engineering - Open-sourcing Facebook Infer: https://engineering.fb.com/developer-tools/open-sourcing-facebook-infer-identify-bugs-before-you-ship/
-- [S52] Meta Engineering - Sapienz: Intelligent Automated Software Testing at Scale: https://engineering.fb.com/developer-tools/sapienz-intelligent-automated-software-testing-at-scale/
-- [S53] Meta Engineering - TAO: The Power of the Graph: https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/
-- [S54] Meta Engineering - Scaling Memcache at Facebook: https://engineering.fb.com/2013/04/15/core-infra/scaling-memcache-at-facebook/
-- [S55] Meta Engineering - Cache Made Consistent: https://engineering.fb.com/2022/06/08/core-infra/cache-made-consistent/
-- [S56] Meta Engineering - More Details About the October 4 Outage: https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/
-- [S58] Meta Engineering - Automating Dead Code Cleanup: https://engineering.fb.com/2023/10/24/data-infrastructure/automating-dead-code-cleanup/
-- [S205] Meta Engineering - Automating Product Deprecation: https://engineering.fb.com/2023/10/17/data-infrastructure/automating-product-deprecation-meta/
-- [S206] Meta Engineering - Automating Data Removal: https://engineering.fb.com/2023/10/31/data-infrastructure/automating-data-removal/
-- [S207] Meta Engineering - DELF: Safeguarding Deletion Correctness: https://engineering.fb.com/2020/08/12/security/delf/
-- [S208] Meta Engineering - Privacy Aware Infrastructure Purpose Limitation: https://engineering.fb.com/2024/08/27/security/privacy-aware-infrastructure-purpose-limitation-meta/
-- [S211] Meta Engineering - How Meta Understands Data at Scale: https://engineering.fb.com/2025/04/28/security/how-meta-understands-data-at-scale/
+- Meta Engineering - Move Faster, Wait Less: Improving Code Review Time at Meta: https://engineering.fb.com/2022/11/16/culture/meta-code-review-time-improving/
+- Meta Engineering - Open-sourcing Facebook Infer: https://engineering.fb.com/developer-tools/open-sourcing-facebook-infer-identify-bugs-before-you-ship/
+- Meta Engineering - Sapienz: Intelligent Automated Software Testing at Scale: https://engineering.fb.com/developer-tools/sapienz-intelligent-automated-software-testing-at-scale/
+- Meta Engineering - TAO: The Power of the Graph: https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/
+- Meta Engineering - Scaling Memcache at Facebook: https://engineering.fb.com/2013/04/15/core-infra/scaling-memcache-at-facebook/
+- Meta Engineering - Cache Made Consistent: https://engineering.fb.com/2022/06/08/core-infra/cache-made-consistent/
+- Meta Engineering - More Details About the October 4 Outage: https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/
+- Meta Engineering - Automating Dead Code Cleanup: https://engineering.fb.com/2023/10/24/data-infrastructure/automating-dead-code-cleanup/
+- Meta Engineering - Automating Product Deprecation: https://engineering.fb.com/2023/10/17/data-infrastructure/automating-product-deprecation-meta/
+- Meta Engineering - Automating Data Removal: https://engineering.fb.com/2023/10/31/data-infrastructure/automating-data-removal/
+- Meta Engineering - DELF: Safeguarding Deletion Correctness: https://engineering.fb.com/2020/08/12/security/delf/
+- Meta Engineering - Privacy Aware Infrastructure Purpose Limitation: https://engineering.fb.com/2024/08/27/security/privacy-aware-infrastructure-purpose-limitation-meta/
+- Meta Engineering - How Meta Understands Data at Scale: https://engineering.fb.com/2025/04/28/security/how-meta-understands-data-at-scale/
 
 ### Netflix
-- [S62] A Platform for Automating Chaos Experiments: https://arxiv.org/abs/1702.05849
-- [S212] Netflix - Automating Chaos Experiments in Production: https://arxiv.org/abs/1905.04648
+- A Platform for Automating Chaos Experiments: https://arxiv.org/abs/1702.05849
+- Netflix - Automating Chaos Experiments in Production: https://arxiv.org/abs/1905.04648
 
 ### Microsoft And Azure
-- [S91] Azure Well-Architected - Mission-Critical Design Principles: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-design-principles
-- [S92] Microsoft Security Development Lifecycle: https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle
-- [S93] Microsoft Learn - Integrating Threat Modeling with DevOps: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-with-dev-ops
-- [S94] Azure Architecture Center - Retry Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/retry
-- [S95] Azure Architecture Center - Circuit Breaker Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker
-- [S96] Azure Architecture Center - Bulkhead Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead
-- [S214] Azure Well-Architected - Reliability Checklist: https://learn.microsoft.com/en-us/azure/well-architected/reliability/checklist
-- [S215] Azure Well-Architected - Safe Deployment Practices: https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/safe-deployments
-- [S216] Azure Well-Architected - Incident Management Process: https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/mitigation-strategy
-- [S217] Azure Well-Architected - Performance Efficiency Checklist: https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/checklist
-- [S218] Azure Well-Architected - Performance Testing Strategies: https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/performance-test
-- [S219] Azure Well-Architected - Cost Optimization Tradeoffs: https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/tradeoffs
-- [S220] Azure Architecture Center - Deployment Stamps Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/deployment-stamp
-- [S221] Azure Well-Architected - Availability Zones and Regions: https://learn.microsoft.com/en-us/azure/well-architected/reliability/regions-availability-zones
-- [S222] Azure Architecture Center - Rate Limiting Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/rate-limiting-pattern
-- [S223] Azure Architecture Center - Queue-Based Load Leveling Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling
-- [S224] Microsoft DevOps - How Microsoft Develops with DevOps: https://learn.microsoft.com/en-us/devops/develop/how-microsoft-develops-devops
-- [S225] Microsoft DevOps - How Microsoft Delivers Software with DevOps: https://learn.microsoft.com/en-us/devops/deliver/how-microsoft-delivers-devops
-- [S226] Microsoft DevOps - How Microsoft Operates Reliable Systems with DevOps: https://learn.microsoft.com/en-us/devops/operate/how-microsoft-operates-devops
-- [S227] Microsoft DevOps - Shift Testing Left with Unit Tests: https://learn.microsoft.com/en-us/devops/develop/shift-left-make-testing-fast-reliable
-- [S228] Microsoft DevOps - Continuous Delivery: https://learn.microsoft.com/en-us/devops/deliver/what-is-continuous-delivery
-- [S229] Microsoft Platform Engineering - Self-Service with Guardrails: https://learn.microsoft.com/en-us/platform-engineering/about/self-service
-- [S230] Microsoft Cloud Adoption Framework - Azure Landing Zones: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/
-- [S231] Microsoft Entra - Configure Zero Trust to Protect Identities and Secrets: https://learn.microsoft.com/en-us/entra/fundamentals/zero-trust-protect-identities
-- [S232] Microsoft Entra - Workload Identities: https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview
-- [S233] Microsoft Cloud Security Benchmark v2 Preview - DevOps Security: https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-v2-devop-security
-- [S234] Microsoft Secure Future Initiative - Protect the Software Supply Chain: https://learn.microsoft.com/en-us/security/zero-trust/sfi/protect-software-supply-chain
-- [S235] Azure DDoS Protection - Fundamental Best Practices: https://learn.microsoft.com/en-us/azure/ddos-protection/fundamental-best-practices
-- [S236] Azure Architecture Center - API Design: https://learn.microsoft.com/en-us/azure/architecture/microservices/design/api-design
-- [S237] Azure Architecture Center - Data Partitioning Strategies: https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning-strategies
-- [S238] Azure Architecture Center - Cache-Aside Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside
-- [S239] Azure Architecture Center - CQRS Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs
-- [S240] Azure Architecture Center - Event Sourcing Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing
-- [S241] Azure Well-Architected - Data Classification: https://learn.microsoft.com/en-us/azure/well-architected/security/data-classification
-- [S242] Microsoft Purview - Data Lifecycle Management: https://learn.microsoft.com/en-us/purview/data-lifecycle-management
-- [S243] Azure Well-Architected - Security Checklist: https://learn.microsoft.com/en-us/azure/well-architected/security/checklist
-- [S244] Azure Well-Architected - Threat Analysis Strategies: https://learn.microsoft.com/en-us/azure/architecture/framework/security/design-threat-model
-- [S245] Azure Well-Architected - Build a Monitoring System: https://learn.microsoft.com/en-us/azure/well-architected/design-guides/monitoring
-- [S246] Azure Reliability - Business Continuity, High Availability, and Disaster Recovery: https://learn.microsoft.com/en-us/azure/reliability/disaster-recovery-overview
-- [S247] Azure Well-Architected - Reliability Testing Strategy: https://learn.microsoft.com/en-us/azure/well-architected/reliability/testing-strategy
-- [S248] Azure Well-Architected - Mission-Critical Health Modeling: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-health-modeling
-- [S249] Azure Well-Architected - Health Modeling for Workloads: https://learn.microsoft.com/en-us/azure/well-architected/design-guides/health-modeling
-- [S250] Microsoft Entra - Managed Identities for Azure Resources: https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview
-- [S251] Microsoft Entra - Workload Identity Federation: https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation
-- [S252] Microsoft Platform Engineering - Platform Engineering Capability Model: https://learn.microsoft.com/en-us/platform-engineering/platform-engineering-capability-model
-- [S253] Microsoft Azure AI Foundry - Planning Red Teaming for Large Language Models: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/red-teaming
-- [S254] Microsoft Security Engineering - Threat Modeling AI/ML Systems and Dependencies: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-aiml
-- [S255] Microsoft Security Engineering - Failure Modes in Machine Learning: https://learn.microsoft.com/en-us/security/engineering/failure-modes-in-machine-learning
-- [S256] Azure Well-Architected - Security Incident Response: https://learn.microsoft.com/en-us/azure/well-architected/security/incident-response
-- [S257] Azure Architecture Center - Tenancy Models for a Multitenant Solution: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/tenancy-models
-- [S258] Microsoft Cloud Security Benchmark v2 Preview - Overview: https://learn.microsoft.com/en-us/security/benchmark/azure/overview
-- [S272] Microsoft Research - Diagnosing Sample Ratio Mismatch in Online Controlled Experiments: https://www.microsoft.com/en-us/research/publication/diagnosing-sample-ratio-mismatch-in-online-controlled-experiments-a-taxonomy-and-rules-of-thumb-for-practitioners/
+- Azure Well-Architected - Mission-Critical Design Principles: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-design-principles
+- Microsoft Security Development Lifecycle: https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle
+- Microsoft Learn - Integrating Threat Modeling with DevOps: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-with-dev-ops
+- Azure Architecture Center - Retry Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/retry
+- Azure Architecture Center - Circuit Breaker Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker
+- Azure Architecture Center - Bulkhead Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead
+- Azure Well-Architected - Reliability Checklist: https://learn.microsoft.com/en-us/azure/well-architected/reliability/checklist
+- Azure Well-Architected - Safe Deployment Practices: https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/safe-deployments
+- Azure Well-Architected - Incident Management Process: https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/mitigation-strategy
+- Azure Well-Architected - Performance Efficiency Checklist: https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/checklist
+- Azure Well-Architected - Performance Testing Strategies: https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/performance-test
+- Azure Well-Architected - Cost Optimization Tradeoffs: https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/tradeoffs
+- Azure Architecture Center - Deployment Stamps Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/deployment-stamp
+- Azure Well-Architected - Availability Zones and Regions: https://learn.microsoft.com/en-us/azure/well-architected/reliability/regions-availability-zones
+- Azure Architecture Center - Rate Limiting Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/rate-limiting-pattern
+- Azure Architecture Center - Queue-Based Load Leveling Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling
+- Microsoft DevOps - How Microsoft Develops with DevOps: https://learn.microsoft.com/en-us/devops/develop/how-microsoft-develops-devops
+- Microsoft DevOps - How Microsoft Delivers Software with DevOps: https://learn.microsoft.com/en-us/devops/deliver/how-microsoft-delivers-devops
+- Microsoft DevOps - How Microsoft Operates Reliable Systems with DevOps: https://learn.microsoft.com/en-us/devops/operate/how-microsoft-operates-devops
+- Microsoft DevOps - Shift Testing Left with Unit Tests: https://learn.microsoft.com/en-us/devops/develop/shift-left-make-testing-fast-reliable
+- Microsoft DevOps - Continuous Delivery: https://learn.microsoft.com/en-us/devops/deliver/what-is-continuous-delivery
+- Microsoft Platform Engineering - Self-Service with Guardrails: https://learn.microsoft.com/en-us/platform-engineering/about/self-service
+- Microsoft Cloud Adoption Framework - Azure Landing Zones: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/
+- Microsoft Entra - Configure Zero Trust to Protect Identities and Secrets: https://learn.microsoft.com/en-us/entra/fundamentals/zero-trust-protect-identities
+- Microsoft Entra - Workload Identities: https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview
+- Microsoft Cloud Security Benchmark v2 Preview - DevOps Security: https://learn.microsoft.com/en-us/security/benchmark/azure/mcsb-v2-devop-security
+- Microsoft Secure Future Initiative - Protect the Software Supply Chain: https://learn.microsoft.com/en-us/security/zero-trust/sfi/protect-software-supply-chain
+- Azure DDoS Protection - Fundamental Best Practices: https://learn.microsoft.com/en-us/azure/ddos-protection/fundamental-best-practices
+- Azure Architecture Center - API Design: https://learn.microsoft.com/en-us/azure/architecture/microservices/design/api-design
+- Azure Architecture Center - Data Partitioning Strategies: https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning-strategies
+- Azure Architecture Center - Cache-Aside Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside
+- Azure Architecture Center - CQRS Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs
+- Azure Architecture Center - Event Sourcing Pattern: https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing
+- Azure Well-Architected - Data Classification: https://learn.microsoft.com/en-us/azure/well-architected/security/data-classification
+- Microsoft Purview - Data Lifecycle Management: https://learn.microsoft.com/en-us/purview/data-lifecycle-management
+- Azure Well-Architected - Security Checklist: https://learn.microsoft.com/en-us/azure/well-architected/security/checklist
+- Azure Well-Architected - Threat Analysis Strategies: https://learn.microsoft.com/en-us/azure/architecture/framework/security/design-threat-model
+- Azure Well-Architected - Build a Monitoring System: https://learn.microsoft.com/en-us/azure/well-architected/design-guides/monitoring
+- Azure Reliability - Business Continuity, High Availability, and Disaster Recovery: https://learn.microsoft.com/en-us/azure/reliability/disaster-recovery-overview
+- Azure Well-Architected - Reliability Testing Strategy: https://learn.microsoft.com/en-us/azure/well-architected/reliability/testing-strategy
+- Azure Well-Architected - Mission-Critical Health Modeling: https://learn.microsoft.com/en-us/azure/well-architected/mission-critical/mission-critical-health-modeling
+- Azure Well-Architected - Health Modeling for Workloads: https://learn.microsoft.com/en-us/azure/well-architected/design-guides/health-modeling
+- Microsoft Entra - Managed Identities for Azure Resources: https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview
+- Microsoft Entra - Workload Identity Federation: https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation
+- Microsoft Platform Engineering - Platform Engineering Capability Model: https://learn.microsoft.com/en-us/platform-engineering/platform-engineering-capability-model
+- Microsoft Azure AI Foundry - Planning Red Teaming for Large Language Models: https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/red-teaming
+- Microsoft Security Engineering - Threat Modeling AI/ML Systems and Dependencies: https://learn.microsoft.com/en-us/security/engineering/threat-modeling-aiml
+- Microsoft Security Engineering - Failure Modes in Machine Learning: https://learn.microsoft.com/en-us/security/engineering/failure-modes-in-machine-learning
+- Azure Well-Architected - Security Incident Response: https://learn.microsoft.com/en-us/azure/well-architected/security/incident-response
+- Azure Architecture Center - Tenancy Models for a Multitenant Solution: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/tenancy-models
+- Microsoft Cloud Security Benchmark v2 Preview - Overview: https://learn.microsoft.com/en-us/security/benchmark/azure/overview
+- Microsoft Research - Diagnosing Sample Ratio Mismatch in Online Controlled Experiments: https://www.microsoft.com/en-us/research/publication/diagnosing-sample-ratio-mismatch-in-online-controlled-experiments-a-taxonomy-and-rules-of-thumb-for-practitioners/
 
 ### ACM Queue
-- [S190] ACM Queue - Systems Correctness Practices at AWS: https://queue.acm.org/detail.cfm?id=3712057
+- ACM Queue - Systems Correctness Practices at AWS: https://queue.acm.org/detail.cfm?id=3712057
 
 ### Anthropic
-- [S259] Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
+- Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
 
 ### CISA
-- [S72] CISA - Shifting the Balance of Cybersecurity Risk: Principles and Approaches for Secure by Design Software: https://www.cisa.gov/sites/default/files/2023-10/Shifting-the-Balance-of-Cybersecurity-Risk-Principles-and-Approaches-for-Secure-by-Design-Software.pdf
-- [S82] CISA - Zero Trust Maturity Model Version 2: https://www.cisa.gov/sites/default/files/2023-04/zero_trust_maturity_model_v2_508.pdf
-- [S193] CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
-- [S264] CISA And Partners - Deploying AI Systems Securely: https://media.defense.gov/2024/Apr/15/2003439257/-1/-1/0/CSI-DEPLOYING-AI-SYSTEMS-SECURELY.PDF
+- CISA - Shifting the Balance of Cybersecurity Risk: Principles and Approaches for Secure by Design Software: https://www.cisa.gov/sites/default/files/2023-10/Shifting-the-Balance-of-Cybersecurity-Risk-Principles-and-Approaches-for-Secure-by-Design-Software.pdf
+- CISA - Zero Trust Maturity Model Version 2: https://www.cisa.gov/sites/default/files/2023-04/zero_trust_maturity_model_v2_508.pdf
+- CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+- CISA And Partners - Deploying AI Systems Securely: https://media.defense.gov/2024/Apr/15/2003439257/-1/-1/0/CSI-DEPLOYING-AI-SYSTEMS-SECURELY.PDF
 
 ### DORA
-- [S22] DORA - Software Delivery Performance Metrics: https://dora.dev/guides/dora-metrics-four-keys/
+- DORA - Software Delivery Performance Metrics: https://dora.dev/guides/dora-metrics-four-keys/
 
 ### FinOps Foundation
-- [S155] FinOps Usage Optimization: https://www.finops.org/framework/capabilities/workload-optimization/
+- FinOps Usage Optimization: https://www.finops.org/framework/capabilities/workload-optimization/
 
 ### FIRST
-- [S194] FIRST EPSS Model: https://www.first.org/epss/model
-- [S304] FIRST EPSS Data and Statistics: https://www.first.org/epss/data_stats
-- [S305] FIRST EPSS User Guide: https://www.first.org/epss/user-guide
-- [S306] FIRST EPSS API: https://www.first.org/epss/api
+- FIRST EPSS Model: https://www.first.org/epss/model
+- FIRST EPSS Data and Statistics: https://www.first.org/epss/data_stats
+- FIRST EPSS User Guide: https://www.first.org/epss/user-guide
+- FIRST EPSS API: https://www.first.org/epss/api
 
 ### Grafana
-- [S125] Grafana - Dashboard Best Practices: https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/
+- Grafana - Dashboard Best Practices: https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/
 
 ### Honeycomb
-- [S145] Honeycomb - Observability 2.0: https://www.honeycomb.io/blog/one-key-difference-observability1dot0-2dot0
+- Honeycomb - Observability 2.0: https://www.honeycomb.io/blog/one-key-difference-observability1dot0-2dot0
 
 ### IETF
-- [S269] RFC 7696 - Guidelines for Cryptographic Algorithm Agility: https://www.rfc-editor.org/rfc/rfc7696
+- RFC 7696 - Guidelines for Cryptographic Algorithm Agility: https://www.rfc-editor.org/rfc/rfc7696
 
 ### Martin Fowler
-- [S108] Martin Fowler - What do you mean by Event-Driven?: https://martinfowler.com/articles/201701-event-driven.html
-- [S111] Martin Fowler - Bounded Context: https://martinfowler.com/bliki/BoundedContext.html
-- [S114] Martin Fowler - MonolithFirst: https://martinfowler.com/bliki/MonolithFirst.html
-- [S115] Martin Fowler - Feature Toggles: https://martinfowler.com/articles/feature-toggles.html
-- [S160] Martin Fowler - The Practical Test Pyramid: https://martinfowler.com/articles/practical-test-pyramid.html
-- [S161] Martin Fowler - Circuit Breaker: https://martinfowler.com/bliki/CircuitBreaker.html
-- [S162] Martin Fowler - Microservice Premium: https://martinfowler.com/bliki/MicroservicePremium.html
-- [S163] Martin Fowler - CanaryRelease: https://martinfowler.com/bliki/CanaryRelease.html
+- Martin Fowler - What do you mean by Event-Driven?: https://martinfowler.com/articles/201701-event-driven.html
+- Martin Fowler - Bounded Context: https://martinfowler.com/bliki/BoundedContext.html
+- Martin Fowler - MonolithFirst: https://martinfowler.com/bliki/MonolithFirst.html
+- Martin Fowler - Feature Toggles: https://martinfowler.com/articles/feature-toggles.html
+- Martin Fowler - The Practical Test Pyramid: https://martinfowler.com/articles/practical-test-pyramid.html
+- Martin Fowler - Circuit Breaker: https://martinfowler.com/bliki/CircuitBreaker.html
+- Martin Fowler - Microservice Premium: https://martinfowler.com/bliki/MicroservicePremium.html
+- Martin Fowler - CanaryRelease: https://martinfowler.com/bliki/CanaryRelease.html
 
 ### Michael Nygard
-- [S191] Michael Nygard - Documenting Architecture Decisions: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
+- Michael Nygard - Documenting Architecture Decisions: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 
 ### MITRE
 - MITRE ATT&CK Enterprise Matrix: https://attack.mitre.org/matrices/enterprise/
@@ -258,46 +258,46 @@ sections. They are not grouped by skill topic.
 - NIST SP 800-131A Revision 2 - Transitioning Cryptographic Algorithms and Key Lengths PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
 
 ### OpenAI
-- [S278] OpenAI API - Agent Evals: https://platform.openai.com/docs/guides/agent-evals
+- OpenAI API - Agent Evals: https://platform.openai.com/docs/guides/agent-evals
 
 ### OpenSSF
-- [S78] OpenSSF Scorecard Check Documentation: https://raw.githubusercontent.com/ossf/scorecard/main/docs/checks.md
-- [S79] OpenSSF OSPS Baseline v2026.02.19: https://baseline.openssf.org/versions/2026-02-19
-- [S280] OpenSSF - Security-Focused Guide for AI Code Assistant Instructions: https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions
-- [S281] OpenSSF AI/ML Security WG MVSR: https://raw.githubusercontent.com/ossf/ai-ml-security/main/mvsr.md
+- OpenSSF Scorecard Check Documentation: https://raw.githubusercontent.com/ossf/scorecard/main/docs/checks.md
+- OpenSSF OSPS Baseline v2026.02.19: https://baseline.openssf.org/versions/2026-02-19
+- OpenSSF - Security-Focused Guide for AI Code Assistant Instructions: https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions
+- OpenSSF AI/ML Security WG MVSR: https://raw.githubusercontent.com/ossf/ai-ml-security/main/mvsr.md
 
 ### OWASP
-- [S73] OWASP ASVS 5.0.0 Requirements CSV: https://raw.githubusercontent.com/OWASP/ASVS/v5.0.0/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv
-- [S74] OWASP Top 10:2021 A01 Broken Access Control: https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/
-- [S295] OWASP Top 10:2021 A02 Cryptographic Failures: https://owasp.org/Top10/2021/A02_2021-Cryptographic_Failures/
-- [S296] OWASP Top 10:2021 A03 Injection: https://owasp.org/Top10/2021/A03_2021-Injection/
-- [S297] OWASP Top 10:2021 A04 Insecure Design: https://owasp.org/Top10/2021/A04_2021-Insecure_Design/
-- [S298] OWASP Top 10:2021 A05 Security Misconfiguration: https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/
-- [S299] OWASP Top 10:2021 A06 Vulnerable and Outdated Components: https://owasp.org/Top10/2021/A06_2021-Vulnerable_and_Outdated_Components/
-- [S300] OWASP Top 10:2021 A07 Identification and Authentication Failures: https://owasp.org/Top10/2021/A07_2021-Identification_and_Authentication_Failures/
-- [S301] OWASP Top 10:2021 A08 Software and Data Integrity Failures: https://owasp.org/Top10/2021/A08_2021-Software_and_Data_Integrity_Failures/
-- [S302] OWASP Top 10:2021 A09 Security Logging and Monitoring Failures: https://owasp.org/Top10/2021/A09_2021-Security_Logging_and_Monitoring_Failures/
-- [S303] OWASP Top 10:2021 A10 Server-Side Request Forgery: https://owasp.org/Top10/2021/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/
-- [S75] OWASP Cheat Sheet Series - Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
-- [S175] OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
+- OWASP ASVS 5.0.0 Requirements CSV: https://raw.githubusercontent.com/OWASP/ASVS/v5.0.0/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv
+- OWASP Top 10:2021 A01 Broken Access Control: https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/
+- OWASP Top 10:2021 A02 Cryptographic Failures: https://owasp.org/Top10/2021/A02_2021-Cryptographic_Failures/
+- OWASP Top 10:2021 A03 Injection: https://owasp.org/Top10/2021/A03_2021-Injection/
+- OWASP Top 10:2021 A04 Insecure Design: https://owasp.org/Top10/2021/A04_2021-Insecure_Design/
+- OWASP Top 10:2021 A05 Security Misconfiguration: https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/
+- OWASP Top 10:2021 A06 Vulnerable and Outdated Components: https://owasp.org/Top10/2021/A06_2021-Vulnerable_and_Outdated_Components/
+- OWASP Top 10:2021 A07 Identification and Authentication Failures: https://owasp.org/Top10/2021/A07_2021-Identification_and_Authentication_Failures/
+- OWASP Top 10:2021 A08 Software and Data Integrity Failures: https://owasp.org/Top10/2021/A08_2021-Software_and_Data_Integrity_Failures/
+- OWASP Top 10:2021 A09 Security Logging and Monitoring Failures: https://owasp.org/Top10/2021/A09_2021-Security_Logging_and_Monitoring_Failures/
+- OWASP Top 10:2021 A10 Server-Side Request Forgery: https://owasp.org/Top10/2021/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/
+- OWASP Cheat Sheet Series - Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+- OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
 
 ### Perfdynamics
-- [S156] Universal Scalability Law: https://www.perfdynamics.com/Manifesto/USLscalability.html
+- Universal Scalability Law: https://www.perfdynamics.com/Manifesto/USLscalability.html
 
 ### Principles Of Chaos Engineering
-- [S61] Principles of Chaos Engineering: https://principlesofchaos.org/
+- Principles of Chaos Engineering: https://principlesofchaos.org/
 
 ### Semantic Versioning
-- [S282] Semantic Versioning Specification: https://semver.org/
+- Semantic Versioning Specification: https://semver.org/
 
 ### SLSA
-- [S76] SLSA Specification: https://slsa.dev/spec/
-- [S77] SLSA Build Provenance Specification: https://slsa.dev/spec/v1.2/build-provenance
+- SLSA Specification: https://slsa.dev/spec/
+- SLSA Build Provenance Specification: https://slsa.dev/spec/v1.2/build-provenance
 
 ### W3C
-- [S88] W3C Trace Context: https://www.w3.org/TR/trace-context/
-- [S181] W3C - Web Content Accessibility Guidelines 2.2: https://www.w3.org/TR/WCAG22/
-- [S283] W3C - Accessibility Conformance Testing Rules Format: https://www.w3.org/TR/act-rules-format/
+- W3C Trace Context: https://www.w3.org/TR/trace-context/
+- W3C - Web Content Accessibility Guidelines 2.2: https://www.w3.org/TR/WCAG22/
+- W3C - Accessibility Conformance Testing Rules Format: https://www.w3.org/TR/act-rules-format/
 
 ### Werner Vogels
-- [S48] Werner Vogels - Eventually Consistent: https://www.allthingsdistributed.com/2008/12/eventually_consistent.html
+- Werner Vogels - Eventually Consistent: https://www.allthingsdistributed.com/2008/12/eventually_consistent.html

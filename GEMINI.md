@@ -52,6 +52,5 @@ under `skills/`; routed specialist files live under `specialists/`. Shared
 sources and assets live under `skills/_shared/`.
 
 When citing sources, use references from
-`skills/_shared/references/source-index.md`, including source IDs where present.
-Do not quote source text unless the quote is short, necessary, and clearly
-attributed.
+`skills/_shared/references/source-index.md`. Do not quote source text unless the
+quote is short, necessary, and clearly attributed.
