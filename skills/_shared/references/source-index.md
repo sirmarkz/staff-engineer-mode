@@ -233,7 +233,16 @@ They are not grouped by skill topic.
 - [S191] Michael Nygard - Documenting Architecture Decisions: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 
 ### MITRE
-- [S87] MITRE ATT&CK: https://attack.mitre.org/
+- MITRE ATT&CK Enterprise Matrix: https://attack.mitre.org/matrices/enterprise/
+- MITRE ATT&CK Enterprise Tactics: https://attack.mitre.org/tactics/enterprise/
+- MITRE ATT&CK Enterprise Techniques: https://attack.mitre.org/techniques/enterprise/
+- MITRE ATT&CK Enterprise Mitigations: https://attack.mitre.org/mitigations/enterprise/
+- MITRE ATT&CK Detection Strategies: https://attack.mitre.org/detectionstrategies/
+- MITRE ATT&CK Data Components: https://attack.mitre.org/datacomponents/
+- MITRE ATT&CK Groups: https://attack.mitre.org/groups/
+- MITRE ATT&CK Software: https://attack.mitre.org/software/
+- MITRE ATT&CK Campaigns: https://attack.mitre.org/campaigns/
+- MITRE ATT&CK Data and Tools: https://attack.mitre.org/resources/attack-data-and-tools/
 
 ### NIST
 - [S70] NIST SP 800-218 - Secure Software Development Framework: https://csrc.nist.gov/pubs/sp/800/218/final
