@@ -1,5 +1,18 @@
 # Staff Engineer Mode Release Notes
 
+## 1.6.1 - 2026-05-26
+
+Source-index curation and icon patch.
+
+- Removes source IDs from the shared source index and aligns repository
+  documentation to cite source-index references directly.
+- Prunes additional weak or overly specific references, fixes OWASP Top 10
+  links to concrete 2021 pages, and points OpenSSF references at raw technical
+  content.
+- Adds targeted specialist coverage for detection mapping, SSRF/egress
+  controls, AI risk framing, and supply-chain vulnerability intake handoff.
+- Replaces the Codex composer icon asset with the current repository avatar.
+
 ## 1.6.0 - 2026-05-25
 
 Source-quality and packaging cleanup release.
