@@ -1,5 +1,16 @@
 # Staff Engineer Mode Release Notes
 
+## 1.6.2 - 2026-05-26
+
+Specialist terminology patch.
+
+- Replaces service-tier wording with impact dimensions and high-impact language
+  across specialist, router, and sample prompt surfaces.
+- Adds shared source backing for risk acceptance, risk registers, control
+  evidence, compensating controls, and continuous monitoring.
+- Keeps specialist bodies focused on operational guidance by moving explicit
+  standards citations behind shared reference terminology.
+
 ## 1.6.1 - 2026-05-26
 
 Source-index curation and icon patch.
