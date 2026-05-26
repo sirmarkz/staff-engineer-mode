@@ -190,50 +190,20 @@ They are not grouped by skill topic.
 ### ACM Queue
 - [S190] ACM Queue - Systems Correctness Practices at AWS: https://queue.acm.org/detail.cfm?id=3712057
 
-### ADR GitHub Organization
-- [S106] ADR GitHub organization and templates: https://adr.github.io/
-
 ### Alistair Cockburn
 - [S110] Alistair Cockburn - Hexagonal Architecture: https://alistair.cockburn.us/hexagonal-architecture
 
 ### Anthropic
 - [S259] Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
 
-### Apache Cassandra
-- [S154] Cassandra Data Modeling: https://cassandra.apache.org/doc/latest/cassandra/developing/data-modeling/intro.html
-
-### Argo CD
-- [S122] Argo CD Core Concepts: https://argo-cd.readthedocs.io/en/stable/core_concepts/
-
-### AsyncAPI Initiative
-- [S262] AsyncAPI Specification: https://www.asyncapi.com/docs/reference/specification/latest
-
-### Backstage
-- [S123] Backstage Software Catalog: https://backstage.io/docs/features/software-catalog/
-
-### Brendan Gregg
-- [S143] Brendan Gregg - USE Method and Flame Graphs: https://www.brendangregg.com/usemethod.html
-
-### CA/Browser Forum
-- [S263] CA/Browser Forum - Baseline Requirements for TLS Server Certificates: https://cabforum.org/working-groups/server/baseline-requirements/requirements/
-
 ### CISA
-- [S72] CISA Secure by Design: https://www.cisa.gov/resources-tools/resources/secure-by-design
-- [S82] CISA Zero Trust Maturity Model: https://www.cisa.gov/zero-trust-maturity-model
+- [S72] CISA - Shifting the Balance of Cybersecurity Risk: Principles and Approaches for Secure by Design Software: https://www.cisa.gov/sites/default/files/2023-10/Shifting-the-Balance-of-Cybersecurity-Risk-Principles-and-Approaches-for-Secure-by-Design-Software.pdf
+- [S82] CISA - Zero Trust Maturity Model Version 2: https://www.cisa.gov/sites/default/files/2023-04/zero_trust_maturity_model_v2_508.pdf
 - [S193] CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 - [S264] CISA And Partners - Deploying AI Systems Securely: https://media.defense.gov/2024/Apr/15/2003439257/-1/-1/0/CSI-DEPLOYING-AI-SYSTEMS-SECURELY.PDF
 
 ### CloudEvents
 - [S265] CloudEvents Specification: https://github.com/cloudevents/spec
-
-### Cloudflare
-- [S184] Cloudflare DDoS Protection - Proactive Defense: https://developers.cloudflare.com/ddos-protection/best-practices/proactive-defense/
-
-### Confluent
-- [S118] Confluent - Schema Registry: https://docs.confluent.io/platform/current/schema-registry/index.html
-
-### Diataxis
-- [S266] Diataxis Documentation Framework: https://diataxis.fr/
 
 ### Discord
 - [S152] Discord Engineering - How Discord Stores Trillions of Messages: https://discord.com/blog/how-discord-stores-trillions-of-messages
@@ -241,14 +211,8 @@ They are not grouped by skill topic.
 ### DORA
 - [S22] DORA - Software Delivery Performance Metrics: https://dora.dev/guides/dora-metrics-four-keys/
 
-### Envoy
-- [S129] Envoy Architecture Overview: https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/arch_overview
-
 ### Eric Evans
 - [S109] Eric Evans - Domain-Driven Design Reference: https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf
-
-### Etsy
-- [S141] Etsy Debriefing Facilitation Guide: https://extfiles.etsy.com/DebriefingFacilitationGuide.pdf
 
 ### FinOps Foundation
 - [S155] FinOps Usage Optimization: https://www.finops.org/framework/capabilities/workload-optimization/
@@ -264,9 +228,6 @@ They are not grouped by skill topic.
 - [S125] Grafana - Dashboard Best Practices: https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/
 - [S144] Grafana - The RED Method: https://grafana.com/blog/the-red-method-how-to-instrument-your-services/
 
-### Great Expectations
-- [S198] Great Expectations - Run Validations: https://docs.greatexpectations.io/docs/core/run_validations/
-
 ### HashiCorp
 - [S121] Terraform Language Documentation: https://developer.hashicorp.com/terraform/language
 
@@ -279,26 +240,6 @@ They are not grouped by skill topic.
 - [S104] RFC 9457 - Problem Details for HTTP APIs: https://www.rfc-editor.org/rfc/rfc9457.html
 - [S269] RFC 7696 - Guidelines for Cryptographic Algorithm Agility: https://www.rfc-editor.org/rfc/rfc7696
 
-### Industrial Empathy
-- [S159] Industrial Empathy - Design Docs at Google: https://www.industrialempathy.com/posts/design-docs-at-google/
-
-### Istio
-- [S195] Istio Traffic Management: https://istio.io/latest/docs/concepts/traffic-management/
-
-### Jay Kreps
-- [S153] Jay Kreps - The Log: https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying
-
-### John D. C. Little
-- [S157] Little - A Proof for the Queuing Formula L = lambda W: https://pubsonline.informs.org/doi/10.1287/opre.9.3.383
-
-### JSON Schema
-- [S270] JSON Schema Specification: https://json-schema.org/specification
-
-### Kubernetes
-- [S120] Kubernetes Components: https://kubernetes.io/docs/concepts/overview/components/
-- [S196] Kubernetes Gateway API: https://kubernetes.io/docs/concepts/services-networking/gateway/
-- [S271] Kubernetes Version Skew Policy: https://kubernetes.io/releases/version-skew-policy
-
 ### Martin Fowler
 - [S108] Martin Fowler - What do you mean by Event-Driven?: https://martinfowler.com/articles/201701-event-driven.html
 - [S111] Martin Fowler - Bounded Context: https://martinfowler.com/bliki/BoundedContext.html
@@ -309,15 +250,8 @@ They are not grouped by skill topic.
 - [S162] Martin Fowler - Microservice Premium: https://martinfowler.com/bliki/MicroservicePremium.html
 - [S163] Martin Fowler - CanaryRelease: https://martinfowler.com/bliki/CanaryRelease.html
 
-### Martin Kleppmann
-- [S148] Designing Data-Intensive Applications, 2nd Edition: https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/
-
 ### Michael Nygard
 - [S191] Michael Nygard - Documenting Architecture Decisions: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
-
-### Microservices.io
-- [S116] Microservices.io - Transactional Outbox: https://microservices.io/patterns/data/transactional-outbox.html
-- [S117] Microservices.io - Saga: https://microservices.io/patterns/data/saga.html
 
 ### MITRE
 - [S87] MITRE ATT&CK: https://attack.mitre.org/
@@ -345,29 +279,19 @@ They are not grouped by skill topic.
 - [S126] Open Policy Agent Policy Language: https://www.openpolicyagent.org/docs/latest/policy-language/
 
 ### OpenSSF
-- [S78] OpenSSF Scorecard: https://github.com/ossf/scorecard
-- [S79] OpenSSF Open Source Project Security Baseline: https://baseline.openssf.org/
+- [S78] OpenSSF Scorecard Check Documentation: https://github.com/ossf/scorecard/blob/main/docs/checks.md
+- [S79] OpenSSF OSPS Baseline v2026.02.19: https://baseline.openssf.org/versions/2026-02-19
 - [S280] OpenSSF - Security-Focused Guide for AI Code Assistant Instructions: https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions
-- [S281] OpenSSF AI/ML Security Working Group Repository: https://github.com/ossf/ai-ml-security
-
-### OpenTelemetry
-- [S89] OpenTelemetry Specification: https://opentelemetry.io/docs/specs/otel/
-- [S128] OpenTelemetry Collector Configuration: https://opentelemetry.io/docs/collector/configuration/
+- [S281] OpenSSF AI/ML Security WG MVSR: https://github.com/ossf/ai-ml-security/blob/main/mvsr.md
 
 ### OWASP
-- [S73] OWASP Application Security Verification Standard: https://owasp.org/www-project-application-security-verification-standard/
-- [S74] OWASP Top 10: https://owasp.org/Top10/
-- [S75] OWASP Cheat Sheet Series: https://cheatsheetseries.owasp.org/
-- [S175] OWASP Top 10 for LLM Applications 2025: https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/
-
-### PagerDuty
-- [S140] PagerDuty Incident Response: https://response.pagerduty.com/
+- [S73] OWASP ASVS 5.0.0 Requirements CSV: https://raw.githubusercontent.com/OWASP/ASVS/v5.0.0/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv
+- [S74] OWASP Top 10:2021 Documentation: https://owasp.org/Top10/2021/
+- [S75] OWASP Cheat Sheet Series - Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+- [S175] OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
 
 ### Perfdynamics
 - [S156] Universal Scalability Law: https://www.perfdynamics.com/Manifesto/USLscalability.html
-
-### PostgreSQL
-- [S187] PostgreSQL Documentation - Routine Vacuuming: https://www.postgresql.org/docs/current/routine-vacuuming.html
 
 ### Principles Of Chaos Engineering
 - [S61] Principles of Chaos Engineering: https://principlesofchaos.org/
@@ -385,10 +309,6 @@ They are not grouped by skill topic.
 ### Shopify
 - [S112] Shopify Engineering - Deconstructing the Monolith: https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity
 
-### Sigstore
-- [S80] Sigstore Security Model: https://docs.sigstore.dev/about/security/
-- [S127] Cosign Documentation: https://docs.sigstore.dev/cosign/signing/overview/
-
 ### SLSA
 - [S76] SLSA Specification: https://slsa.dev/spec/
 - [S77] SLSA Build Provenance Specification: https://slsa.dev/spec/v1.2/build-provenance
@@ -400,9 +320,6 @@ They are not grouped by skill topic.
 - [S102] Stripe - Designing Robust and Predictable APIs with Idempotency: https://stripe.com/blog/idempotency
 - [S103] Stripe - API Versioning: https://stripe.com/blog/api-versioning
 - [S185] Stripe - Online Migrations at Scale: https://stripe.com/blog/online-migrations
-
-### The Twelve-Factor App
-- [S147] Twelve-Factor App - Config: https://12factor.net/config
 
 ### Trunk Based Development
 - [S146] Trunk Based Development: https://trunkbaseddevelopment.com/
