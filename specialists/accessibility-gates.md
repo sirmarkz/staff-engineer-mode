@@ -11,7 +11,7 @@ description: "Use when designing or releasing user-facing flows needing keyboard
 NO CRITICAL USER FLOW SHIPS WITHOUT A NAMED CONFORMANCE LEVEL, ASSISTIVE-TECH CHECK, AND REGRESSION CHECK
 ```
 
-Pick the conformance level explicitly (for most public web work, WCAG 2.x AA is the named target). Run the critical flow with at least one assistive-technology path before release. Add a regression check so the same defect cannot recur silently. For a solo developer or tiny project, the check can be a keyboard-only and screen-reader walkthrough recorded once per release; the discipline is that the walkthrough happened, not that anyone else performed it.
+Pick the conformance level explicitly for the target surface. Run the critical flow with at least one assistive-technology path before release. Add a regression check so the same defect cannot recur silently. For a solo developer or tiny project, the check can be a keyboard-only and screen-reader walkthrough recorded once per release; the discipline is that the walkthrough happened, not that anyone else performed it.
 
 ## Overview
 
@@ -93,7 +93,7 @@ Check critical journeys with a named conformance target, automated checks, manua
 - Accessibility conformance target and journey inventory.
 - Release check matrix: automated checks, manual checks, blocking status, and repair path.
 - Critical journey manual test script.
-- Exception register with severity, expiry, compensating path, and retest, using ISO 31000 and NIST SP 800-39 risk-acceptance lifecycle plus the shared compensating-control format where a deviation is accepted.
+- Exception register with severity, expiry, compensating path, and retest, using the shared risk-acceptance lifecycle plus the shared compensating-control format where a deviation is accepted.
 - Regression-prevention plan for recurring defects.
 - Follow-up routes for performance or mobile-specific release risk where needed.
 

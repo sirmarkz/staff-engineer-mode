@@ -19,7 +19,7 @@ Architecture decision work turns "components and opinions" into explicit goals, 
 
 ## When To Use
 
-- Making, shaping, or revisiting system design decisions, RFCs/design docs, ADRs, service boundaries, dependency direction, or tradeoff analysis.
+- Making, shaping, or revisiting system design decisions, design proposals, ADRs, service boundaries, dependency direction, or tradeoff analysis.
 - A change affects data responsibility, public contracts, reliability, deployment topology, security boundaries, or operational responsibility.
 - Whether a monolith, module, service, workflow, platform component, or integration boundary "holds up".
 - A prior decision needs to be recorded or revisited with current constraints.
@@ -45,7 +45,7 @@ Architecture decision work turns "components and opinions" into explicit goals, 
 
 ## When Inputs Are Referenced But Not Visible
 
-If the user references an artifact (sketch, RFC, diff, diagram) that is not in
+If the user references an artifact (sketch, design proposal, diff, diagram) that is not in
 the workspace or thread, do not stop at "please paste it." Produce a
 strawman ADR draft from the prompt's named subject (e.g., "split search
 service") with: (a) a Forces table listing ≥2 likely forces with rationale,
@@ -90,7 +90,7 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 ## Exceptions
 
 - Exploratory prototypes can use a lightweight decision note if explicitly non-production and disposable.
-- Regulated, security-sensitive, externally committed, or sensitive-data systems need a fuller risk register per ISO/IEC 27005 and a change trail.
+- Regulated, security-sensitive, externally committed, or sensitive-data systems need a fuller risk register using the shared risk-register format and a change trail.
 - Reversible local implementation choices may be documented in code or PR context instead of an ADR.
 - If the system is already failing operationally, incident or reliability work may precede full architecture cleanup.
 
@@ -102,7 +102,7 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 - Name the details to inspect, such as SLOs, traffic, incidents, data contracts, threat boundaries, and migration checks; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the design or decision. Add at most two specialist follow-ups, only for material unresolved surfaces.
-- Be concise: prefer compact ADRs, decision tables, and risk registers over generic architecture theory. Risk-register format follows ISO/IEC 27005.
+- Be concise: prefer compact ADRs, decision tables, and risk registers over generic architecture theory. Risk-register fields follow the shared risk-register format.
 - For pre-build, ticketing, or milestone-readiness requests, distinguish implementation tasks from unresolved architecture decisions. Use compact decision, risk/tradeoff, alternative, responsibility, and check tables; do not expand into a full narrative ADR unless asked.
 
 ## Required Outputs
@@ -115,7 +115,7 @@ Use a compact design decision plus ADR. Keep the system modular and technology-a
 - Critical-path storage or dependency decision entry with forces, alternatives, failure model, and reversal or isolation path.
 - Bounded-context map listing each context with fields: name, responsibility owner or check path, model/language, upstream contexts, downstream contexts, relationship to each neighbor (conformist, anti-corruption layer, shared kernel, partnership, customer/supplier, separate ways), and the translation surface where a neighbor's model is adapted.
 - Fitness-function specification listing each architectural invariant with fields: property under test, metric, threshold or rule, measurement source, evaluation cadence, failure response, and local check path. Cover dependency-direction rules, public-contract compatibility, latency or throughput budgets the boundary depends on, and any blast-radius or isolation invariant.
-- Risk register with likelihood, impact, mitigation, and records per ISO/IEC 27005.
+- Risk register with likelihood, impact, mitigation, and records using the shared risk-register format.
 - Decision table showing default, alternatives rejected, and exception conditions.
 - Follow-up checks capped at two, each tied to a specific unresolved surface.
 

@@ -85,7 +85,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 
 - Throwaway prototypes isolated from production may use a lighter pass focused on hallucinated APIs and unmotivated edits.
 - Mechanical or generated changes may use sample review plus a non-regression check rather than line-by-line review, when the generator and pattern are maintained and verified.
-- Emergency fixes may merge with a documented blocker list, explicit user risk acceptance per NIST SP 800-39 section 2.4, and an immediate post-merge review and rollback plan.
+- Emergency fixes may merge with a documented blocker list, explicit user risk acceptance per the shared risk-acceptance lifecycle, and an immediate post-merge review and rollback plan.
 - Diffs already checked once may use this skill to verify failure modes a routine review would not have looked for.
 
 ## Response Quality Bar

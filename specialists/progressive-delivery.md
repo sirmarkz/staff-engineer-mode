@@ -84,7 +84,7 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 
 - Emergency fixes may use a narrower or faster rollout when waiting is riskier than release, but stop criteria and rollback checks still apply.
 - Some destructive data changes cannot be rolled back; they require backup/restore test results, delayed cleanup, and forward-fix criteria.
-- Low-risk internal changes may use lighter checks if blast radius and user risk acceptance per NIST SP 800-39 section 2.4 are explicit.
+- Low-risk internal changes may use lighter checks if blast radius and user risk acceptance using the shared risk-acceptance lifecycle are explicit.
 - Client releases with slow adoption may require forward-fix and kill-switch strategy rather than true rollback.
 - Temporary experiment flags should expire within about 90 days by default; long-lived operational kill switches need a renewal cadence and removal or renewal decision.
 

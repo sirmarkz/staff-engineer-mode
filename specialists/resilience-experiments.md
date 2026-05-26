@@ -112,7 +112,7 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 - `blast_radius`: affected users, partitions, tenants, shards, locations, or traffic percentage are bounded.
 - `abort_criteria`: stop thresholds and user decision point are defined before the experiment.
 - `telemetry_check`: steady-state and causal signals are visible during the test.
-- `learning_loop`: findings create maintained fixes or explicit risk acceptance per NIST SP 800-39 section 2.4.
+- `learning_loop`: findings create maintained fixes or explicit risk acceptance using the shared risk-acceptance lifecycle.
 - `recurrence_rule`: critical recovery behavior has a repeat trigger, deadline, or cadence tied to impact, topology, traffic, dependency, or incident learning.
 - `fault_mode_coverage`: the experiment set covers the highest-risk failure modes or lists the skipped modes and reason.
 

@@ -15,7 +15,7 @@ If you cannot see what versions exist and what combinations are supported, the u
 
 ## Overview
 
-Fleet upgrades are compatibility projects spread across runtimes, control planes, clients, services, and operators. Exception register format follows ISO/IEC 27005 with shared compensating-control fields.
+Fleet upgrades are compatibility projects spread across runtimes, control planes, clients, services, and operators. Exception register fields follow the shared risk-register and compensating-control formats.
 
 **Core principle:** inventory support windows, define allowed skew, test mixed-version compatibility, stage rollout, and keep rollback or roll-forward paths ready.
 
@@ -43,7 +43,7 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 - Rollout batches, maintenance windows, traffic exposure, rollback or roll-forward path, and freeze dates.
 - Known deprecated features, removed behavior, config changes, and operator runbooks.
 - Support-window communication plan: affected components or consumers, deadline, required consumer action, reminder cadence, and user-confirmed follow-up path.
-- Exception list, expiry, risk, and compensating controls per ISO/IEC 27005 and the shared compensating-control format.
+- Exception list, expiry, risk, and compensating controls using the shared risk-register and compensating-control formats.
 
 ## Workflow
 
@@ -53,13 +53,13 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 4. **Find breaking changes.** Check behavior, config, interfaces, data formats, tooling, and operational assumptions.
 5. **Check compatibility.** Test mixed-version paths, upgrade order, downgrade or roll-forward behavior, and representative workloads.
 6. **Batch rollout.** Move low-risk cohorts first, then critical paths with checks, user confirmation, and monitoring.
-7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local details needed to close them per ISO/IEC 27005 and the shared compensating-control format.
+7. **Manage exceptions.** Track blockers with expiry, risk, compensating control, and the local details needed to close them using the shared risk-register and compensating-control formats.
 8. **Update operations.** Refresh runbooks, alerts, dashboards, and local operating procedures for the new version.
 9. **Close old paths.** Remove compatibility shims, stale versions, and exceptions after adoption is verified; keep baselines current enough that available fixes do not linger unnoticed.
 
 ## Synthesized Default
 
-Use a support-window inventory, explicit version-skew policy, compatibility matrix, staged rollout, support-deadline communication plan, exception register per ISO/IEC 27005 and the shared compensating-control format, operational runbook update, and retirement check for old versions. Prefer proving mixed-version behavior before the first production batch.
+Use a support-window inventory, explicit version-skew policy, compatibility matrix, staged rollout, support-deadline communication plan, exception register using the shared risk-register and compensating-control formats, operational runbook update, and retirement check for old versions. Prefer proving mixed-version behavior before the first production batch.
 
 
 
@@ -102,7 +102,7 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 - Rollout batches (waves) with progression criteria per wave.
 - Mixed-version test plan and records requirements.
 - Rollback or roll-forward plan stating both the procedure and the state-compatibility note (which prior state is restorable, which is not).
-- Exception register with expiry, compensating control, and closure note per ISO/IEC 27005 and the shared compensating-control format.
+- Exception register with expiry, compensating control, and closure note using the shared risk-register and compensating-control formats.
 - Operations update checklist.
 - Old-version retirement check.
 
@@ -114,14 +114,14 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 - `support_comms`: affected consumers, support deadline, required action, reminder cadence, and follow-up date are visible.
 - `compatibility_test`: representative old/new paths are tested before broad rollout.
 - `rollout_responsibility`: every batch has user confirmation, check, and halt criteria.
-- `exception_expiry`: blocked components have risk, compensating control, expiry, and closure note per ISO/IEC 27005 and the shared compensating-control format.
+- `exception_expiry`: blocked components have risk, compensating control, expiry, and closure note using the shared risk-register and compensating-control formats.
 
 ## Red Flags - Stop And Rework
 
 - The fleet inventory is based on guesses or stale spreadsheets.
 - Old and new versions are assumed compatible without tests.
 - Upgrade order ignores clients, jobs, agents, or operational tooling.
-- Unsupported versions have no exception expiry, compensating control, or consumer communication deadline per ISO/IEC 27005 and the shared compensating-control format.
+- Unsupported versions have no exception expiry, compensating control, or consumer communication deadline using the shared risk-register and compensating-control formats.
 - Rollback is impossible but roll-forward criteria are not defined.
 
 ## Common Mistakes

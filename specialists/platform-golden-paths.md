@@ -17,7 +17,7 @@ If a template creates a service but not an operable service, it is not a golden 
 
 ## Overview
 
-A good platform makes the safe path the easy path. Exception register format follows ISO/IEC 27005 with shared compensating-control fields.
+A good platform makes the safe path the easy path. Exception register fields follow the shared risk-register and compensating-control formats.
 
 **Core principle:** encode standards as reusable workflows, templates, scorecards, and self-service capabilities that projects actually use.
 
@@ -55,7 +55,7 @@ A good platform makes the safe path the easy path. Exception register format fol
 5. **Register ownership as code.** Keep catalog records in a versioned source of truth with owner, lifecycle, system, API/dependency relationships, documentation, runbook, dashboard, and on-call links; avoid manually curated catalogs that drift from reality.
 6. **Expose self-service with guardrails.** Make the path usable without bespoke platform intervention for normal cases while policy, security, cost, and operations controls stay automatic.
 7. **Design scorecards.** Measure capability maturity across investment, adoption, controls, provisioning and management, interfaces, and feedback; use source records for meaningful capabilities, not vanity checkboxes.
-8. **Handle exceptions.** Require user-confirmed reason, expiry, compensating control, and migration plan per ISO/IEC 27005 and the shared compensating-control format.
+8. **Handle exceptions.** Require user-confirmed reason, expiry, compensating control, and migration plan using the shared risk-register and compensating-control formats.
 9. **Plan adoption.** Prioritize new services, high-risk services, and repeated incident classes; avoid big-bang migrations.
 10. **Close feedback loops.** Use incidents, developer friction, and scorecard gaps to improve the platform.
 
@@ -111,7 +111,7 @@ Build golden paths around capabilities rather than tools: service creation, buil
 - `readiness_defaults`: generated defaults for SLO, dashboard, alert/runbook, rollout, recovery, dependency inventory, and secure settings are usable, not placeholders.
 - `self_service`: normal workflow can be completed without bespoke platform work.
 - `catalog_truth`: catalog ownership, lifecycle, dependency, API, and operational records come from a maintained source of truth.
-- `exception_model`: exceptions have user-confirmed reason, expiry, compensating control, and migration path per ISO/IEC 27005 and the shared compensating-control format.
+- `exception_model`: exceptions have user-confirmed reason, expiry, compensating control, and migration path using the shared risk-register and compensating-control formats.
 - `adoption_plan`: target services, migration order, and operating model are stated.
 - `feedback_loop`: incidents, friction, and scorecard gaps feed platform backlog.
 

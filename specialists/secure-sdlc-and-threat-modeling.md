@@ -15,7 +15,7 @@ If threats do not map to controls and verification, the decision is not actionab
 
 ## Overview
 
-Produces a trust-boundary and data-flow map, an abuse-case table, a control mapping with verification for each high-risk control, and a residual-risk register with explicit user acceptance and expiry. Residual-risk register format follows ISO/IEC 27005 with NIST SP 800-39 section 2.4 risk-acceptance lifecycle. Refuses to accept controls that cannot be tested, gated, or observed.
+Produces a trust-boundary and data-flow map, an abuse-case table, a control mapping with verification for each high-risk control, and a residual-risk register with explicit user acceptance and expiry. Residual-risk register fields follow the shared risk-register format and risk-acceptance lifecycle. Refuses to accept controls that cannot be tested, gated, or observed.
 
 **Core principle:** model trust boundaries and abuse cases early, then turn threats into testable controls, explicit checks, and user-accepted residual risk.
 
@@ -53,12 +53,12 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 6. **Constrain outbound requests.** For server-side fetchers, webhooks, callback URLs, or imports, define destination allowlists where feasible, DNS/IP rebinding checks, private and metadata address blocking, redirect policy, egress controls, timeout, size, content-type limits, and audit fields.
 7. **Map detection needs.** For high-risk abuse cases, state the detection hypothesis, telemetry or audit data needed, alert or review route, and runbook owner. Route detailed signal design to `observability-and-alerting` when detection coverage is central.
 8. **Make controls testable.** Define unit/integration/security tests, self-checks, runtime monitors, or operational checks for each high-risk control.
-9. **Record residual risk.** State compensating control, expiry, acceptance condition, and explicit user risk acceptance per ISO/IEC 27005, NIST SP 800-39, and the shared compensating-control format.
+9. **Record residual risk.** State compensating control, expiry, acceptance condition, and explicit user risk acceptance using the shared risk-register, risk-acceptance, and compensating-control formats.
 10. **Route specialized surfaces.** Identity/secrets, supply chain, LLM, tenant isolation, and vulnerability remediation go to their specialist skills when central.
 
 ## Synthesized Default
 
-Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, abuse cases, control mapping, test plan, and residual-risk register per ISO/IEC 27005 and NIST SP 800-39. Prefer controls that are enforced in code, configuration, self-checks, runtime checks, or deployment checks over prose-only rules.
+Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, abuse cases, control mapping, test plan, and residual-risk register using the shared risk-register format and risk-acceptance lifecycle. Prefer controls that are enforced in code, configuration, self-checks, runtime checks, or deployment checks over prose-only rules.
 
 
 
@@ -76,7 +76,7 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 ## Exceptions
 
 - Low-risk internal changes can use a small abuse-case checklist if no trust boundary, data sensitivity, or privileged operation changes.
-- High-risk financial, privacy, safety, or admin paths need deeper checks and explicit user risk acceptance per NIST SP 800-39.
+- High-risk financial, privacy, safety, or admin paths need deeper checks and explicit user risk acceptance using the shared risk-acceptance lifecycle.
 - Emergency fixes may document the minimal threat decision first and complete residual-risk mapping immediately after mitigation.
 - Legal/compliance requirements can constrain controls, but this skill remains focused on engineering implementation and records.
 
@@ -98,7 +98,7 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 - Server-side outbound request and egress-control decision where URLs, callbacks, webhooks, or external fetches exist.
 - Security detection and audit requirements for high-risk abuse cases.
 - Verification plan for controls.
-- Residual-risk register with explicit user acceptance and expiry per ISO/IEC 27005 and NIST SP 800-39.
+- Residual-risk register with explicit user acceptance and expiry using the shared risk-register format and risk-acceptance lifecycle.
 - Sensitive-data and logging decision.
 - Follow-up checks for identity, supply-chain, tenant, LLM, or vulnerability work.
 
@@ -110,7 +110,7 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 - `detection_route`: high-risk abuse cases define the telemetry, audit event, alert, or review path that would show attempted or successful abuse.
 - `verification_check`: every high-risk control has a test, self-check, runtime check, or source to inspect.
 - `data_handling`: sensitive data storage, transmission, logging, and retention behavior is addressed.
-- `risk_responsibility`: residual risks have explicit user acceptance, expiry, and compensating control per ISO/IEC 27005, NIST SP 800-39, and the shared compensating-control format.
+- `risk_responsibility`: residual risks have explicit user acceptance, expiry, and compensating control using the shared risk-register, risk-acceptance, and compensating-control formats.
 
 ## Red Flags - Stop And Rework
 

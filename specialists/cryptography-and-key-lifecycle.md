@@ -41,7 +41,7 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 - Rotation process, automation, manual steps, confirmation, access logs, and emergency revocation path.
 - Client and dependency compatibility, trust-store update path, fallback behavior, and rollback or roll-forward limits.
 - Monitoring, alert thresholds, test environment coverage, and prior expiry or rotation incidents.
-- Deprecation deadline, transition target, exception and compensating controls using ISO 31000 and NIST SP 800-39 risk-acceptance lifecycle plus the shared compensating-control format where a deviation is accepted.
+- Deprecation deadline, transition target, exception and compensating controls using the shared risk-acceptance lifecycle plus the shared compensating-control format where a deviation is accepted.
 
 ## Workflow
 
@@ -53,11 +53,11 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 6. **Rotate without coordinated downtime.** Default to a dual-credential overlap sequence: issue the new credential, configure verifiers to accept both old and new, migrate producers and clients to the new credential, verify zero traffic uses the old, then revoke. The verify-zero-old-traffic check is what makes the rotation zero-downtime; rotations that skip it convert routine rotation into an outage.
 7. **Plan transitions.** Define overlap, dual support, rollout order, client migration, and retirement checks for deprecated algorithms or trust roots.
 8. **Prepare emergency response.** Document revocation, compromise response, rollback or roll-forward, and communication path.
-9. **Close exceptions.** Track unsupported material with expiry, risk, and compensating controls using ISO 31000 and NIST SP 800-39 risk-acceptance lifecycle plus the shared compensating-control format.
+9. **Close exceptions.** Track unsupported material with expiry, risk, and compensating controls using the shared risk-acceptance lifecycle plus the shared compensating-control format.
 
 ## Synthesized Default
 
-Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support transition windows, compatibility checks, emergency revocation plan, and exception register using ISO 31000 and NIST SP 800-39 risk-acceptance lifecycle plus the shared compensating-control format. Prefer designs where cryptographic material can be replaced independently of full application redeploys.
+Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support transition windows, compatibility checks, emergency revocation plan, and exception register using the shared risk-acceptance lifecycle plus the shared compensating-control format. Prefer designs where cryptographic material can be replaced independently of full application redeploys.
 
 
 
@@ -97,7 +97,7 @@ Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support 
 - Algorithm or trust-root transition plan.
 - Monitoring and alert policy for expiry and failed renewal.
 - Emergency revocation and compromise response.
-- Exception register with expiry and compensating control using ISO 31000 and NIST SP 800-39 risk-acceptance lifecycle plus the shared compensating-control format.
+- Exception register with expiry and compensating control using the shared risk-acceptance lifecycle plus the shared compensating-control format.
 
 ## Checks Before Moving On
 

@@ -74,7 +74,7 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 
 ## Exceptions
 
-- Legacy systems may need compensating controls while static credentials are removed; require expiry and rotation using ISO 31000 and NIST SP 800-39 risk-acceptance lifecycle plus the shared compensating-control format.
+- Legacy systems may need compensating controls while static credentials are removed; require expiry and rotation using the shared risk-acceptance lifecycle plus the shared compensating-control format.
 - Offline or embedded environments may require longer-lived secrets, but scope and revocation must be explicit.
 - Very low-risk internal tools can use simpler access models if production data and privileged operations are absent.
 - Long-lived confidentiality may require crypto-agility and post-quantum planning.
@@ -106,7 +106,7 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 - `least_privilege`: permissions are scoped by action/resource/environment/tenant and default-deny is addressed.
 - `credential_lifetime`: secrets and tokens have storage, expiry, rotation, and revocation plan.
 - `expiry_signal`: credentials, certificates, and tokens that can break production have expiry visibility and response lead time.
-- `auth_coverage`: service calls have authentication coverage or an explicit exception with compensating controls per NIST SP 800-39 and the shared compensating-control format.
+- `auth_coverage`: service calls have authentication coverage or an explicit exception with compensating controls using the shared risk-acceptance lifecycle and compensating-control format.
 - `activity_log_check`: high-risk access and privilege changes emit linked activity logs.
 - `crypto_check`: cryptographic choices use vetted primitives and key responsibility is defined.
 
