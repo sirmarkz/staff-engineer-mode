@@ -205,26 +205,18 @@ They are not grouped by skill topic.
 - [S155] FinOps Usage Optimization: https://www.finops.org/framework/capabilities/workload-optimization/
 
 ### FIRST
-- [S194] FIRST Exploit Prediction Scoring System: https://www.first.org/epss/
-
-### GitHub
-- [S186] GitHub Blog - gh-ost: GitHub's Online Schema Migration Tool for MySQL: https://github.blog/news-insights/company-news/gh-ost-github-s-online-migration-tool-for-mysql/
-- [S189] GitHub Docs - About Secret Scanning: https://docs.github.com/en/code-security/concepts/secret-security/about-secret-scanning
+- [S194] FIRST EPSS Model: https://www.first.org/epss/model
+- [S304] FIRST EPSS Data and Statistics: https://www.first.org/epss/data_stats
+- [S305] FIRST EPSS User Guide: https://www.first.org/epss/user-guide
+- [S306] FIRST EPSS API: https://www.first.org/epss/api
 
 ### Grafana
 - [S125] Grafana - Dashboard Best Practices: https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/
-- [S144] Grafana - The RED Method: https://grafana.com/blog/the-red-method-how-to-instrument-your-services/
-
-### HashiCorp
-- [S121] Terraform Language Documentation: https://developer.hashicorp.com/terraform/language
 
 ### Honeycomb
 - [S145] Honeycomb - Observability 2.0: https://www.honeycomb.io/blog/one-key-difference-observability1dot0-2dot0
 
 ### IETF
-- [S84] OAuth 2.1 Draft: https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1
-- [S85] RFC 8446 - TLS 1.3: https://datatracker.ietf.org/doc/html/rfc8446
-- [S104] RFC 9457 - Problem Details for HTTP APIs: https://www.rfc-editor.org/rfc/rfc9457.html
 - [S269] RFC 7696 - Guidelines for Cryptographic Algorithm Agility: https://www.rfc-editor.org/rfc/rfc7696
 
 ### Martin Fowler
