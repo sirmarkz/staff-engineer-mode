@@ -292,10 +292,6 @@ They are not grouped by skill topic.
 ### Principles Of Chaos Engineering
 - [S61] Principles of Chaos Engineering: https://principlesofchaos.org/
 
-### Prometheus
-- [S124] Prometheus Querying Basics: https://prometheus.io/docs/prometheus/latest/querying/basics/
-- [S295] Prometheus Alerting Rules: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
-
 ### Richard Cook
 - [S142] Richard Cook - How Complex Systems Fail: https://how.complexsystems.fail/
 
