@@ -252,8 +252,8 @@ They are not grouped by skill topic.
 - [S203] NIST Privacy Framework 1.0: https://csrc.nist.gov/pubs/cswp/10/nist-privacy-framework-version-10/final
 - [S204] NIST SP 800-53 Revision 5 - Security and Privacy Controls: https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
 - [S273] NIST SP 800-128 - Security-Focused Configuration Management: https://csrc.nist.gov/publications/detail/sp/800-128/final
-- [S274] NIST AI Risk Management Framework 1.0: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10
-- [S275] NIST AI 600-1 - Generative AI Profile: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence
+- NIST AI 100-1 - Artificial Intelligence Risk Management Framework 1.0 PDF: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=936225
+- NIST AI 600-1 - Generative AI Profile PDF: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=958388
 - [S276] NIST SP 800-57 Part 1 Revision 5 - Recommendation for Key Management: https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final
 - [S277] NIST SP 800-131A Revision 2 - Transitioning Cryptographic Algorithms and Key Lengths: https://csrc.nist.gov/pubs/sp/800/131/a/r2/final
 
