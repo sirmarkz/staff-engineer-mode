@@ -25,8 +25,10 @@ Before creating or amending commits, run `agent-pr-review` on the exact staged
 diff. Before tags, version bumps, hosted release records, packages, artifact publication,
 or promotion, run `release-build-reproducibility`. The Claude Code hook blocks
 those shell actions until the matching local Staff Engineer Mode receipt exists.
-Review findings guide the user; if the user explicitly accepts unresolved gaps,
-record an override receipt and proceed.
+Stage changes in a separate shell action before review; a combined `git add &&
+git commit` command is blocked before staging runs. Review findings guide the
+user; if the user explicitly accepts unresolved gaps, record an override receipt
+and proceed.
 
 Keep the pack boundary tight: building, shipping, securing, operating, and
 maintaining complex software systems.

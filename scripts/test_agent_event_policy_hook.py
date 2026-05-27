@@ -37,6 +37,9 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         (self.repo / "README.md").write_text(content, encoding="utf-8")
         subprocess.run(["git", "add", "README.md"], cwd=self.repo, check=True)
 
+    def modify_unstaged(self, content: str) -> None:
+        (self.repo / "README.md").write_text(content, encoding="utf-8")
+
     def test_commit_command_blocks_without_review_receipt(self) -> None:
         self.stage_change("initial\nchanged\n")
 
@@ -73,6 +76,47 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         response = json.loads(result.stdout)
         self.assertIn("agent-pr-review", response["reason"])
         self.assertIn("--repo", response["reason"])
+        self.assertIn(str(self.repo), response["reason"])
+
+    def test_stage_and_commit_command_explains_that_staging_did_not_run(self) -> None:
+        self.modify_unstaged("initial\nchanged\n")
+
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {
+                    "command": 'git add README.md && git commit -m "change" 2>&1 | tail -3'
+                },
+            }
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        reason = response["reason"].lower()
+        self.assertIn("same shell command", reason)
+        self.assertIn("run the staging command separately", reason)
+        self.assertIn("--repo", response["reason"])
+        cached = subprocess.check_output(["git", "diff", "--cached", "--name-only"], cwd=self.repo, text=True)
+        self.assertEqual(cached, "")
+
+    def test_cd_then_stage_and_commit_command_points_at_target_repo(self) -> None:
+        self.modify_unstaged("initial\nchanged\n")
+
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {
+                    "command": f'cd {self.repo} && git add README.md && git commit -m "change"'
+                },
+            },
+            cwd=self.repo.parent,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        reason = response["reason"].lower()
+        self.assertIn("same shell command", reason)
+        self.assertIn("run the staging command separately", reason)
         self.assertIn(str(self.repo), response["reason"])
 
     def test_commit_ack_repo_allows_target_repo_command(self) -> None:

@@ -40,6 +40,8 @@ Staff Engineer Mode treats commit and release actions as review triggers.
   against the exact staged diff regardless of change size.
 - Before tags, version bumps, hosted release records, packages, artifact publication, or
   promotion, the agent should run `release-build-reproducibility`.
+- For Claude Code, stage changes in a separate shell action before review; a
+  combined `git add && git commit` command is blocked before staging runs.
 
 Claude Code installs a `PreToolUse` command hook that blocks those shell actions
 until the matching local receipt is recorded. Codex, Cursor, OpenCode, GitHub
