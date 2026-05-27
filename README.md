@@ -24,34 +24,28 @@ organizations.
 
 ## How It Works
 
-Ask a normal engineering question. Hand the agent a task, design, diff, incident, rollout, or maintenance problem. The router reads the work, picks one specialist (occasionally one secondary), reads that specialist file, and returns concrete decisions, risks, checks, owners, supporting details, and next steps. You never name a specialist.
+Ask a normal engineering question. Hand the agent a task, design, diff,
+incident, rollout, or maintenance problem. The router picks one specialist
+(occasionally one secondary), reads that file, and returns concrete decisions,
+risks, checks, owners, supporting details, and next steps. You never name a
+specialist.
 
-Supported tools should list only the native `staff-engineer-mode` router. Specialist files live under `specialists/` and load only after routing.
-
-The router refuses to load every plausible specialist. One primary specialist at a time, by default.
-
-See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for prompts across every specialist.
-
-## Agent Event Policy
-
-Staff Engineer Mode treats commit and release actions as review triggers.
+Supported tools should list only the native `staff-engineer-mode` router.
+Specialist files live under `specialists/` and load only after routing. The
+router picks one primary specialist by default. See
+[SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for examples.
 
 - Before creating or amending a commit, the agent should run `agent-pr-review`
   against the exact staged diff regardless of change size.
 - Before tags, version bumps, hosted release records, packages, artifact publication, or
   promotion, the agent should run `release-build-reproducibility`.
-- For Claude Code, stage changes in a separate shell action before review; a
-  combined `git add && git commit` command is blocked before staging runs.
 
-Claude Code installs a `PreToolUse` command hook that blocks those shell actions
-until the matching local receipt is recorded. Codex, Cursor, OpenCode, GitHub
-Copilot CLI, and Gemini use router and specialist trigger text for the same
-policy when their current integration surface does not expose a blocking command
-hook for this pack.
-
-The review is guidance, not a veto over the user. If the review finds gaps and
-the user explicitly accepts them, the agent can record an override receipt and
-proceed.
+Claude Code enforces those triggers with a `PreToolUse` hook and local receipts.
+Other supported tools use router and specialist trigger text where no blocking
+command hook is available. For Claude Code, stage changes separately before
+review because a combined `git add && git commit` command is blocked before
+staging runs. Reviews guide the agent and user; explicit user acceptance can
+record an override receipt and proceed.
 
 ## Installation
 
