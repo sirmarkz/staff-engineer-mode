@@ -1,6 +1,6 @@
 ---
 name: agent-pr-review
-description: "Use when a PR or diff needs senior pre-merge review of intent, behavior verification, edge cases, or residual risk"
+description: "Use when reviewing a PR, diff, branch, commit, staged change, merge, or pre-release change set"
 ---
 
 # Pre-Merge PR Review
@@ -19,9 +19,12 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 
 **Core principle:** review the diff against its originating task, not against the author's self-summary. The summary is a hypothesis; the diff is the source of truth.
 
+The review guides the agent and user on gaps to close; it does not remove user authority. If the user explicitly accepts unresolved findings after seeing the review, record the accepted risk and proceed with the requested commit or merge unless another safety rule forbids the action.
+
 ## When To Use
 
 - The user asks to review a PR, branch, diff, or change set before merging — regardless of who or what produced it.
+- The agent is about to create or amend a commit and needs review of the exact staged diff before the commit exists.
 - A coding agent has just finished a multi-file change, refactor, migration, or new feature and the user is deciding whether to merge.
 - The user asks "is this safe to merge," "what would a senior review catch here," "review my last commit," "review this PR," "find risks in this diff," or "did the agent miss anything."
 - The author's summary may not match what actually changed.
@@ -91,6 +94,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 ## Response Quality Bar
 
 - Lead with the structured review artifact, blocker list, or scope-creep finding requested.
+- Treat blocker or request-changes verdicts as a stop for autonomous commits, not as a denial of an explicit user override after the findings are shown.
 - Start the artifact with an `Review anchors` line containing at least two changed `file:line` citations when the diff has two or more changed lines; one anchor may support intent, but blocker and must-fix findings still need separate cited support.
 - Cover intent verification, failure-mode pass, behavior verification, responsibility/scope details, public-surface impact, and missing operational artifacts before optional review breadth.
 - Include a compact code-quality dimensions pass that explicitly covers design, functionality, complexity, tests, naming, comments, and style with issue, OK, or not applicable status tied to the diff.
@@ -106,6 +110,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 - Review anchors: at least two changed `file:line` citations from the diff, unless the diff itself has fewer than two changed lines.
 - One-sentence reconstructed intent and one-sentence assessment of whether the diff matches it, anchored to at least one changed file, function, or line when available.
 - Explicit merge verdict: ready to merge, request changes, or block, with reasons tied to observed issues or their absence.
+- Override posture: whether the agent may proceed autonomously, or whether only explicit user acceptance of the listed gaps should proceed.
 - Code-quality dimensions summary covering design, functionality, complexity, tests, naming, comments, and style, each marked issue, OK, or not applicable with brief support or reason.
 - Categorized findings table with category, support (file/line or behavior), recommended next action, and risk level.
 - Blocker list: changes that must not merge as-is, each with file/line support and next action.

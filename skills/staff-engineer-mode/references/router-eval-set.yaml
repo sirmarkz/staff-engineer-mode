@@ -154,6 +154,11 @@ cases:
     expected_behavior: "route reproducible build and tested artifact identity problems to release build reproducibility"
     category: direct
     expected_checks: [single_primary, intent_inference]
+  - prompt: "Before I tag v2.0.0, verify the version, package, artifact identity, promotion path, and rollback target."
+    expected_primary: release-build-reproducibility
+    expected_behavior: "route tag and release artifact checks to release build reproducibility"
+    category: paraphrase
+    expected_checks: [single_primary, intent_inference]
   - prompt: "We need to expose the new checkout path to one percent of traffic, watch guardrails, and roll back quickly if errors climb."
     expected_primary: progressive-delivery
     expected_behavior: "route to production exposure strategy"
@@ -519,6 +524,11 @@ cases:
   - prompt: "Is this branch from an AI run safe to merge once the tests pass?"
     expected_primary: agent-pr-review
     expected_behavior: "route per-diff agent-output review to agent PR review instead of generic code review workflow"
+    category: paraphrase
+    expected_checks: [single_primary, intent_inference]
+  - prompt: "I am about to commit the staged changes; review the exact staged diff first."
+    expected_primary: agent-pr-review
+    expected_behavior: "route pre-commit staged-diff review to agent PR review"
     category: paraphrase
     expected_checks: [single_primary, intent_inference]
   - prompt: "The rollout is finished; build me an inventory of every live flag with expiry, safe fallback, and removal plan."

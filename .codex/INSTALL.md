@@ -69,6 +69,18 @@ slug -- specialists are files, not registered Codex skills, and a `Skill`
 invocation will fail with `Unknown skill`. No per-user wiring is required;
 the contract is router-borne.
 
+## Commit And Release Policy
+
+Codex does not currently expose a blocking command hook for this pack. The
+policy is therefore router-borne: before creating or amending commits, load
+`agent-pr-review` and review the exact staged diff; before tags, version bumps,
+hosted release records, packages, artifact publication, or promotion, load
+`release-build-reproducibility`.
+
+Review findings guide the user and agent on gaps to close. If the user
+explicitly accepts unresolved gaps, Codex may proceed with the requested commit
+or release action after stating the residual risk.
+
 ## Verify
 
 ```bash

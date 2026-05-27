@@ -1,0 +1,317 @@
+#!/usr/bin/env bash
+# Agent-side event policy hook for Staff Engineer Mode.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+RECEIPT_DIR="staff-engineer-mode/agent-event-receipts"
+
+json_escape() {
+  if command -v python3 >/dev/null 2>&1; then
+    VALUE="$1" python3 - <<'PY'
+import json
+import os
+
+print(json.dumps(os.environ["VALUE"]))
+PY
+    return
+  fi
+
+  local value="$1"
+  value="${value//\\/\\\\}"
+  value="${value//\"/\\\"}"
+  value="${value//$'\n'/\\n}"
+  printf '"%s"\n' "$value"
+}
+
+block_tool() {
+  local reason="$1"
+  printf '{\n  "decision": "block",\n  "reason": %s\n}\n' "$(json_escape "$reason")"
+  exit 2
+}
+
+hash_stdin() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum | awk '{ print $1 }'
+  elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 | awk '{ print $1 }'
+  elif command -v openssl >/dev/null 2>&1; then
+    openssl dgst -sha256 | awk '{ print $NF }'
+  else
+    printf 'staff-engineer-mode: sha256 tool not found\n' >&2
+    exit 1
+  fi
+}
+
+extract_command() {
+  local hook_input="$1"
+
+  if command -v python3 >/dev/null 2>&1; then
+    HOOK_INPUT="$hook_input" python3 - <<'PY'
+import json
+import os
+
+try:
+    value = json.loads(os.environ["HOOK_INPUT"] or "{}")
+except json.JSONDecodeError:
+    value = {}
+
+for path in (
+    ("tool_input", "command"),
+    ("tool_input", "cmd"),
+    ("input", "command"),
+    ("command",),
+):
+    current = value
+    for key in path:
+        if not isinstance(current, dict):
+            current = None
+            break
+        current = current.get(key)
+    if isinstance(current, str):
+        print(current)
+        break
+PY
+    return
+  fi
+
+  if command -v jq >/dev/null 2>&1; then
+    printf '%s' "$hook_input" | jq -r '(.tool_input.command // .tool_input.cmd // .input.command // .command // "")'
+  fi
+}
+
+classify_command() {
+  local command_text="$1"
+
+  if command -v python3 >/dev/null 2>&1; then
+    COMMAND_TEXT="$command_text" python3 - <<'PY'
+import re
+import shlex
+import os
+
+command = os.environ["COMMAND_TEXT"]
+try:
+    tokens = shlex.split(command, posix=True)
+except ValueError:
+    tokens = command.split()
+
+if not tokens:
+    raise SystemExit
+
+def emit(event, cwd="."):
+    print(f"{event}\t{cwd}")
+    raise SystemExit
+
+def is_version_tag(value):
+    return bool(re.match(r"^v?\d+(?:\.\d+){1,3}(?:[-+][A-Za-z0-9_.-]+)?$", value))
+
+for index, token in enumerate(tokens):
+    if token == "git":
+        cursor = index + 1
+        cwd = "."
+        while cursor < len(tokens):
+            current = tokens[cursor]
+            if current == "-C" and cursor + 1 < len(tokens):
+                cwd = tokens[cursor + 1]
+                cursor += 2
+                continue
+            if current.startswith("-C") and len(current) > 2:
+                cwd = current[2:]
+                cursor += 1
+                continue
+            if current in {"-c", "--git-dir", "--work-tree", "--namespace"} and cursor + 1 < len(tokens):
+                cursor += 2
+                continue
+            if current.startswith("-"):
+                cursor += 1
+                continue
+            break
+        if cursor >= len(tokens):
+            continue
+
+        subcommand = tokens[cursor]
+        rest = tokens[cursor + 1:]
+        if subcommand == "commit":
+            for arg in rest:
+                if arg == "-a" or (arg.startswith("-") and not arg.startswith("--") and "a" in arg[1:]):
+                    emit("commit_all", cwd)
+            emit("commit", cwd)
+        if subcommand == "tag":
+            creates_tag = any(not arg.startswith("-") and is_version_tag(arg) for arg in rest)
+            annotated_tag = any(arg in {"-a", "-s", "-u"} for arg in rest)
+            if creates_tag or annotated_tag:
+                emit("release", cwd)
+        if subcommand == "push":
+            if "--tags" in rest or any(is_version_tag(arg) for arg in rest):
+                emit("release", cwd)
+
+    if token == "gh" and tokens[index + 1:index + 3] in (["release", "create"], ["release", "edit"], ["release", "upload"]):
+        emit("release")
+
+    if token.endswith("bump-version.sh"):
+        emit("release")
+PY
+    return
+  fi
+
+  if printf '%s\n' "$command_text" | grep -Eq '(^|[[:space:];|&])git[[:space:]].*commit([[:space:]]|$)'; then
+    printf 'commit\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq '(^|[[:space:];|&])git[[:space:]].*(tag|push)([[:space:]]|$)|(^|[[:space:];|&])gh[[:space:]]+release[[:space:]]+(create|edit|upload)([[:space:]]|$)'; then
+    printf 'release\t.\n'
+  fi
+}
+
+repo_root() {
+  local repo_hint="$1"
+  if git -C "$repo_hint" rev-parse --show-toplevel >/dev/null 2>&1; then
+    git -C "$repo_hint" rev-parse --show-toplevel
+  else
+    return 1
+  fi
+}
+
+git_dir() {
+  local repo="$1"
+  local dir
+  dir="$(git -C "$repo" rev-parse --git-dir)"
+  case "$dir" in
+    /*) printf '%s\n' "$dir" ;;
+    *) printf '%s/%s\n' "$repo" "$dir" ;;
+  esac
+}
+
+commit_key() {
+  local repo="$1"
+  git -C "$repo" diff --cached --binary | hash_stdin
+}
+
+release_key() {
+  local repo="$1"
+  {
+    git -C "$repo" rev-parse HEAD 2>/dev/null || printf 'no-head\n'
+    git -C "$repo" diff --cached --binary
+  } | hash_stdin
+}
+
+receipt_path() {
+  local repo="$1"
+  local event="$2"
+  local key="$3"
+  printf '%s/%s/%s/%s.json\n' "$(git_dir "$repo")" "$RECEIPT_DIR" "$event" "$key"
+}
+
+write_receipt() {
+  local event="$1"
+  local repo="$2"
+  local key="$3"
+  local override="${4:-false}"
+  local rationale="${5:-}"
+  local receipt
+  receipt="$(receipt_path "$repo" "$event" "$key")"
+  mkdir -p "$(dirname "$receipt")"
+  printf '{\n  "event": "%s",\n  "key": "%s",\n  "head": "%s",\n  "created_at": "%s",\n  "override": %s,\n  "rationale": %s\n}\n' \
+    "$event" \
+    "$key" \
+    "$(git -C "$repo" rev-parse HEAD 2>/dev/null || printf 'no-head')" \
+    "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
+    "$override" \
+    "$(json_escape "$rationale")" > "$receipt"
+  printf 'recorded staff-engineer-mode %s receipt for %s\n' "$event" "$key"
+}
+
+has_receipt() {
+  local repo="$1"
+  local event="$2"
+  local key="$3"
+  test -f "$(receipt_path "$repo" "$event" "$key")"
+}
+
+ack_event() {
+  local event="${1:-}"
+  shift || true
+  local override="false"
+  local rationale=""
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --override)
+        override="true"
+        shift
+        rationale="${*:-user accepted unresolved review findings}"
+        break
+        ;;
+      --override=*)
+        override="true"
+        rationale="${1#--override=}"
+        shift
+        ;;
+      *)
+        printf 'usage: %s ack commit|release [--override rationale]\n' "$0" >&2
+        exit 1
+        ;;
+    esac
+  done
+
+  local repo
+  repo="$(repo_root ".")" || {
+    printf 'staff-engineer-mode: not inside a git repository\n' >&2
+    exit 1
+  }
+
+  case "$event" in
+    commit) write_receipt "commit" "$repo" "$(commit_key "$repo")" "$override" "$rationale" ;;
+    release) write_receipt "release" "$repo" "$(release_key "$repo")" "$override" "$rationale" ;;
+    *)
+      printf 'usage: %s ack commit|release [--override rationale]\n' "$0" >&2
+      exit 1
+      ;;
+  esac
+}
+
+pretooluse() {
+  local hook_input command_text classification event repo_hint repo
+  hook_input="$(cat || true)"
+  command_text="$(extract_command "$hook_input")"
+  [ -n "$command_text" ] || exit 0
+
+  classification="$(classify_command "$command_text")"
+  [ -n "$classification" ] || exit 0
+
+  event="${classification%%	*}"
+  repo_hint="${classification#*	}"
+  [ "$repo_hint" != "$classification" ] || repo_hint="."
+
+  repo="$(repo_root "$repo_hint")" || exit 0
+
+  case "$event" in
+    commit_all)
+      block_tool "Staff Engineer Mode before_commit policy requires review of the exact staged diff. Stage intended changes first, run agent-pr-review on that staged diff, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit, then retry the commit without commit -a."
+      ;;
+    commit)
+      local key
+      key="$(commit_key "$repo")"
+      if ! has_receipt "$repo" "commit" "$key"; then
+        block_tool "Staff Engineer Mode before_commit policy requires agent-pr-review before creating or amending a commit. Read ${PLUGIN_ROOT}/specialists/agent-pr-review.md and review the staged diff. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit. If the user explicitly accepts unresolved gaps, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --override \"<rationale>\". Then retry the commit."
+      fi
+      ;;
+    release)
+      local key
+      key="$(release_key "$repo")"
+      if ! has_receipt "$repo" "release" "$key"; then
+        block_tool "Staff Engineer Mode before_release policy requires release-build-reproducibility before release, tag, version, package, artifact, or promotion commands. Read ${PLUGIN_ROOT}/specialists/release-build-reproducibility.md and check pinned inputs, artifact identity, promotion, and rollback traceability. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release. If the user explicitly accepts unresolved gaps, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --override \"<rationale>\". Then retry the release command."
+      fi
+      ;;
+  esac
+}
+
+case "${1:-pretooluse}" in
+  pretooluse) pretooluse ;;
+  ack)
+    shift
+    ack_event "$@"
+    ;;
+  *)
+    printf 'usage: %s pretooluse|ack commit|ack release\n' "$0" >&2
+    exit 1
+    ;;
+esac

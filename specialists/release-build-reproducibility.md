@@ -1,6 +1,6 @@
 ---
 name: release-build-reproducibility
-description: "Use when cutting releases, release trains, release candidates, builds, packaging, artifact identity, or promotion"
+description: "Use when cutting releases, tags, versions, builds, packages, artifact identity, or promotion"
 ---
 
 # Release Engineering And Build Reproducibility
@@ -23,6 +23,7 @@ Release engineering turns source changes into trustworthy artifacts.
 
 - The user asks about build systems, release engineering, release trains, release branches, release candidates, packaging, versioning, or artifact promotion.
 - The user is making a release and needs release-cut steps, branch or candidate handling, versioning, packaging, artifact identity, or promotion checks.
+- The agent is about to create a tag, bump a version, publish a hosted release record, build a release package, publish an artifact, or promote an artifact.
 - Builds are slow, flaky, non-hermetic, non-reproducible, cache-sensitive, or dependent on local developer machines.
 - A release process needs build-once promotion, release cut criteria, release branch policy, or artifact identity.
 - You need to separate build, deploy, and release responsibilities.

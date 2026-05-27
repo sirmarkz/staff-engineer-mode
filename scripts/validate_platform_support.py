@@ -266,11 +266,29 @@ def validate_hooks() -> None:
     for relative in [
         "hooks/hooks.json",
         "hooks/hooks-cursor.json",
+        "hooks/agent-event-policy",
         "hooks/session-start",
         "hooks/run-hook.cmd",
     ]:
         if not (ROOT / relative).exists():
             fail(f"missing {relative}")
+    hooks_config = (ROOT / "hooks" / "hooks.json").read_text()
+    for term in [
+        '"PreToolUse"',
+        '"Bash"',
+        "agent-event-policy pretooluse",
+    ]:
+        if term not in hooks_config:
+            fail(f"hooks/hooks.json missing {term}")
+    agent_event_policy = (ROOT / "hooks" / "agent-event-policy").read_text()
+    for term in [
+        "before_commit",
+        "before_release",
+        "agent-pr-review",
+        "release-build-reproducibility",
+    ]:
+        if term not in agent_event_policy:
+            fail(f"hooks/agent-event-policy missing {term}")
     session_start = (ROOT / "hooks" / "session-start").read_text()
     bootstrap_text = bootstrap_template_text()
     for term in [
@@ -289,6 +307,8 @@ def validate_hooks() -> None:
         "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
         "Read ${SPECIALIST_ROOT}/<slug>.md",
         "Keep guidance technology-agnostic by default",
+        "agent-pr-review",
+        "release-build-reproducibility",
     ]:
         if term not in bootstrap_text:
             fail(f"bootstrap-context.md missing {term}")
@@ -340,9 +360,12 @@ def validate_ci_workflow() -> None:
         "python3 -m py_compile",
         "scripts/run_router_eval.py",
         "scripts/test_run_router_eval.py",
+        "scripts/test_agent_event_policy_hook.py",
         "scripts/test_validate_platform_support.py",
+        "bash -n hooks/agent-event-policy",
         "bash -n scripts/bump-version.sh",
         "python3 -m unittest scripts/test_run_router_eval.py",
+        "python3 -m unittest scripts/test_agent_event_policy_hook.py",
         "python3 -m unittest scripts/test_validate_platform_support.py",
         "scripts/bump-version.sh --check",
         "scripts/bump-version.sh --audit",

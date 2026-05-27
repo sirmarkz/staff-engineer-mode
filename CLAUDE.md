@@ -21,5 +21,12 @@ Keep guidance technology-agnostic by default. Do not introduce cloud providers,
 frameworks, databases, monitoring products, protocols, or command examples unless
 the user supplied them or explicitly asks for tool-specific guidance.
 
+Before creating or amending commits, run `agent-pr-review` on the exact staged
+diff. Before tags, version bumps, hosted release records, packages, artifact publication,
+or promotion, run `release-build-reproducibility`. The Claude Code hook blocks
+those shell actions until the matching local Staff Engineer Mode receipt exists.
+Review findings guide the user; if the user explicitly accepts unresolved gaps,
+record an override receipt and proceed.
+
 Keep the pack boundary tight: building, shipping, securing, operating, and
 maintaining complex software systems.

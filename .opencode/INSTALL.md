@@ -40,6 +40,13 @@ Normal use should not require the user to name a specialist; the router
 bootstrap is loaded automatically and reads routed specialist files from
 `specialists/`.
 
+The bootstrap also carries the commit and release policy. Before creating or
+amending commits, route to `agent-pr-review` for the exact staged diff. Before
+tags, version bumps, hosted release records, packages, artifact publication, or
+promotion, route to `release-build-reproducibility`.
+If the user explicitly accepts unresolved review gaps, state the residual risk
+and proceed.
+
 ## Updating
 
 OpenCode updates Git plugins when it restarts.

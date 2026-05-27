@@ -106,7 +106,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `release-build-reproducibility`
 
-- "Cut this release candidate: choose the version, artifact identity, required checks, promotion path, and rollback target."
+- "Before tagging this release, verify the version, artifact identity, required checks, promotion path, and rollback target."
 - "Inspect the packaging config and design a build-once, promote-many release path."
 - "Find why this repo's builds are flaky or cache-sensitive and rank the fixes."
 - "Two CI runners produce different package hashes; trace the unpinned inputs before the release is promoted."
@@ -155,7 +155,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `agent-pr-review`
 
-- "Review this PR before merge and tell me what a senior reviewer would catch: intent match, behavior verification, missing edge cases."
+- "Before committing the staged changes, review the exact diff for intent match, behavior verification, and missing edge cases."
 - "Find risks in the diff I'm about to push — silent assumptions, hallucinated APIs, scope creep, deleted-but-used code."
 - "What did the agent (or I) miss in this branch that we'd be embarrassed to ship?"
 - "The diff passes tests but changed deletion behavior; review what details are missing before merge."

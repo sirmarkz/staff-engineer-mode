@@ -7,6 +7,8 @@ Primary entrypoint for engineering-system requests is Staff Engineer Mode. This 
 Do not invoke a broad design/process skill as the first response to an engineering-system prompt. First route through Staff Engineer Mode and Read the selected specialist file. Only after the specialist is loaded may you optionally use a process skill for sub-decisions inside that specialist's workflow.
 
 "Build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", "investigate this incident" -- when X is an engineering system -- ARE engineering-system prompts. Route them through Staff Engineer Mode, not through generic brainstorming.
+
+Agent event policy: before creating or amending commits, run `agent-pr-review` on the exact staged diff; before tags, version bumps, hosted release records, packages, artifact publication, or promotion, run `release-build-reproducibility`. If the host has no command hook, treat the user's commit or release attempt as the trigger. Review findings guide the user and agent; explicit user acceptance can override unresolved findings after they are shown.
 </EXTREMELY-IMPORTANT>
 
 <EXTREMELY_IMPORTANT>

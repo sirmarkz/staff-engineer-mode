@@ -30,6 +30,11 @@ Specialists are reference files, not registered skills. To load a specialist:
 - Pick one primary specialist file by default.
 - Add at most one secondary specialist file when the request clearly includes a separate
   engineering surface.
+- Before creating or amending commits, route to `agent-pr-review` for the exact
+  staged diff. Before tags, version bumps, hosted release records, packages, artifact
+  publication, or promotion, route to `release-build-reproducibility`.
+- Review findings guide the user and agent. If the user explicitly accepts
+  unresolved gaps, proceed after stating the residual risk.
 - Ask only focused intake questions when confidence is low. Do not expose
   candidate specialist names, confidence labels, or routing drafts while asking.
 - Translate vendor, tool, framework, or cloud names into capabilities before

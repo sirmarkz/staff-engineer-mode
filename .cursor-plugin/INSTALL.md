@@ -55,6 +55,13 @@ Design the production readiness checks for this service.
 The router should select the smallest useful specialist set instead of
 requiring a named skill invocation.
 
+Cursor receives the same router-borne commit and release policy. Before
+creating or amending commits, route to `agent-pr-review` for the exact staged
+diff. Before tags, version bumps, hosted release records, packages, artifact publication,
+or promotion, route to `release-build-reproducibility`.
+If the user explicitly accepts unresolved review gaps, state the residual risk
+and proceed.
+
 ## Updating
 
 ```bash

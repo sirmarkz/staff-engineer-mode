@@ -142,6 +142,40 @@ class PlatformDocsValidationTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 self.validator.validate_https_plugin_install_paths()
 
+    def test_hooks_require_agent_event_policy_wiring(self) -> None:
+        self.write(
+            "skills/staff-engineer-mode/references/bootstrap-context.md",
+            "\n".join(
+                [
+                    "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
+                    "Read ${SPECIALIST_ROOT}/<slug>.md",
+                    "Keep guidance technology-agnostic by default",
+                    "agent-pr-review",
+                    "release-build-reproducibility",
+                    "",
+                ]
+            ),
+        )
+        self.write(
+            "hooks/session-start",
+            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists\n",
+        )
+        self.write("hooks/run-hook.cmd", "exec bash hook\n")
+        self.write("hooks/hooks-cursor.json", "{}\n")
+        self.write("hooks/hooks.json", '{"hooks":{"SessionStart":[]}}\n')
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_hooks()
+
+        self.write("hooks/agent-event-policy", "before_commit before_release agent-pr-review release-build-reproducibility\n")
+        self.write(
+            "hooks/hooks.json",
+            '{"hooks":{"SessionStart":[],"PreToolUse":[{"matcher":"Bash","hooks":[{"command":"agent-event-policy pretooluse"}]}]}}\n',
+        )
+
+        self.validator.validate_hooks()
+
 
 if __name__ == "__main__":
     unittest.main()

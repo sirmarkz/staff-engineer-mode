@@ -32,6 +32,25 @@ The router refuses to load every plausible specialist. One primary specialist at
 
 See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for prompts across every specialist.
 
+## Agent Event Policy
+
+Staff Engineer Mode treats commit and release actions as review triggers.
+
+- Before creating or amending a commit, the agent should run `agent-pr-review`
+  against the exact staged diff.
+- Before tags, version bumps, hosted release records, packages, artifact publication, or
+  promotion, the agent should run `release-build-reproducibility`.
+
+Claude Code installs a `PreToolUse` command hook that blocks those shell actions
+until the matching local receipt is recorded. Codex, Cursor, OpenCode, GitHub
+Copilot CLI, and Gemini use router and specialist trigger text for the same
+policy when their current integration surface does not expose a blocking command
+hook for this pack.
+
+The review is guidance, not a veto over the user. If the review finds gaps and
+the user explicitly accepts them, the agent can record an override receipt and
+proceed.
+
 ## Installation
 
 ### Claude Code
