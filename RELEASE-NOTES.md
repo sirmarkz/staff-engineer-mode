@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.7.1 - 2026-05-27
+
+Agent event policy patch.
+
+- Ensures agent commit and amend attempts route to `agent-pr-review` regardless
+  of change size, including tiny documentation and mechanical corrections.
+- Fixes Claude hook receipt handling for `git -C <repo>` and
+  `cd <repo> && git ...` command forms so commit and release receipts bind to
+  the target repository.
+- Adds validation coverage for small commit routing and target-repository hook
+  acknowledgements, including explicit user override behavior.
+
 ## 1.7.0 - 2026-05-27
 
 Agent event policy release.
