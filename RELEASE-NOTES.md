@@ -1,5 +1,21 @@
 # Staff Engineer Mode Release Notes
 
+## 1.7.0 - 2026-05-27
+
+Agent event policy release.
+
+- Adds agent-event policy hooks for commit and release actions, including
+  staged-diff receipts for commit review and source-revision receipts for
+  release review.
+- Routes commit attempts to `agent-pr-review` and release, tag, version,
+  package, artifact, or promotion attempts to `release-build-reproducibility`
+  across hook-aware and hookless agent environments.
+- Keeps review advisory to the agent and user: unresolved gaps stop autonomous
+  commits, while explicit user acceptance can record an override receipt and
+  continue.
+- Updates cross-tool install docs, router fixtures, sample prompts, and
+  validation tests for the new commit and release policy.
+
 ## 1.6.2 - 2026-05-26
 
 Specialist terminology patch.
