@@ -23,10 +23,10 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         subprocess.run(["git", "add", "README.md"], cwd=self.repo, check=True)
         subprocess.run(["git", "commit", "-m", "initial"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
 
-    def run_hook(self, payload: dict[str, object]) -> subprocess.CompletedProcess[str]:
+    def run_hook(self, payload: dict[str, object], cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
             [str(HOOK), "pretooluse"],
-            cwd=self.repo,
+            cwd=cwd or self.repo,
             input=json.dumps(payload),
             text=True,
             capture_output=True,
@@ -46,6 +46,52 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         response = json.loads(result.stdout)
         self.assertEqual(response["decision"], "block")
         self.assertIn("agent-pr-review", response["reason"])
+
+    def test_git_c_commit_command_blocks_for_target_repo(self) -> None:
+        self.stage_change("initial\nchanged\n")
+
+        result = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": f"git -C {self.repo} commit -m change"}},
+            cwd=self.repo.parent,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn("agent-pr-review", response["reason"])
+        self.assertIn("--repo", response["reason"])
+        self.assertIn(str(self.repo), response["reason"])
+
+    def test_cd_then_commit_blocks_for_target_repo(self) -> None:
+        self.stage_change("initial\nchanged\n")
+
+        result = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": f"cd {self.repo} && git commit -m change"}},
+            cwd=self.repo.parent,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn("agent-pr-review", response["reason"])
+        self.assertIn("--repo", response["reason"])
+        self.assertIn(str(self.repo), response["reason"])
+
+    def test_commit_ack_repo_allows_target_repo_command(self) -> None:
+        self.stage_change("initial\nchanged\n")
+        ack = subprocess.run(
+            [str(HOOK), "ack", "commit", "--repo", str(self.repo)],
+            cwd=self.repo.parent,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(ack.returncode, 0, ack.stderr)
+
+        allowed = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": f"cd {self.repo} && git commit -m change"}},
+            cwd=self.repo.parent,
+        )
+        self.assertEqual(allowed.returncode, 0, allowed.stderr)
+        self.assertEqual(allowed.stdout, "")
 
     def test_commit_receipt_allows_same_staged_diff_only(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -103,6 +149,47 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         response = json.loads(result.stdout)
         self.assertEqual(response["decision"], "block")
         self.assertIn("release-build-reproducibility", response["reason"])
+
+    def test_git_c_release_command_blocks_for_target_repo(self) -> None:
+        result = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": f"git -C {self.repo} tag v1.2.3"}},
+            cwd=self.repo.parent,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn("release-build-reproducibility", response["reason"])
+        self.assertIn("--repo", response["reason"])
+        self.assertIn(str(self.repo), response["reason"])
+
+    def test_cd_then_release_command_blocks_for_target_repo(self) -> None:
+        result = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": f"cd {self.repo} && git tag v1.2.3"}},
+            cwd=self.repo.parent,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn("release-build-reproducibility", response["reason"])
+        self.assertIn("--repo", response["reason"])
+        self.assertIn(str(self.repo), response["reason"])
+
+    def test_release_ack_repo_allows_target_repo_command(self) -> None:
+        ack = subprocess.run(
+            [str(HOOK), "ack", "release", "--repo", str(self.repo)],
+            cwd=self.repo.parent,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(ack.returncode, 0, ack.stderr)
+
+        allowed = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": f"cd {self.repo} && git tag v1.2.3"}},
+            cwd=self.repo.parent,
+        )
+        self.assertEqual(allowed.returncode, 0, allowed.stderr)
+        self.assertEqual(allowed.stdout, "")
 
     def test_release_receipt_allows_release_command(self) -> None:
         ack = subprocess.run(

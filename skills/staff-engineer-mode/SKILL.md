@@ -122,7 +122,7 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 Treat "review" as a verb until the artifact proves otherwise.
 
-- Concrete PR, branch, patch, last commit, staged change, commit attempt, or diff review before merge routes to `agent-pr-review`.
+- Concrete PR, branch, patch, last commit, staged change, commit attempt, or diff review before merge routes to `agent-pr-review`; commit and amend attempts route there regardless of change size.
 - Changed files alone do not make a diff review; route static-analysis or maintenance backlog prioritization to `dependency-and-code-hygiene`.
 - Generic review-system design, reviewer routing, ownership, change size, review latency, or DORA workflow has no routed specialist unless a concrete engineering surface is present.
 - Launch readiness, go/no-go, impact increase, or broad release readiness routes to `production-readiness-review`.
@@ -151,7 +151,7 @@ Treat "review" as a verb until the artifact proves otherwise.
 Use for common routing precedence. Load `references/routing-matrix.md` for exact-slug guardrails, eval runs, exact-slug uncertainty, or adjacent surfaces.
 
 - Explicit launch, major traffic shift, impact increase, or readiness decision routes to `production-readiness-review`; active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
-- Prefer newer narrow routes over broad neighbors. Concrete PR, branch, patch, or diff review routes to `agent-pr-review` even when test results are mentioned; otherwise route the engineering decision to the narrow surface specialist.
+- Prefer newer narrow routes over broad neighbors. Concrete PR, branch, patch, commit attempt, or diff review routes to `agent-pr-review`, including tiny changes; otherwise route the engineering decision to the narrow surface specialist.
 - Reliability policy, telemetry construction, on-call load, fault-domain topology/static failover capacity, restore capability, failure experiments, overload controls, and state invariants are separate surfaces.
 - API compatibility, data contracts, migrations, hygiene, fleet upgrades, event replay/DLQ, database backfills, cross-service database/storage correctness, cache freshness, and pipeline freshness stay distinct.
 - Database migration execution is `database-operations`; if the same prompt separately asks for future blocking checks, add `testing-and-quality-gates` as secondary.

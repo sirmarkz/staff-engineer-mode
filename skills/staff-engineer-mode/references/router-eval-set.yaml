@@ -196,11 +196,10 @@ cases:
     category: direct
     expected_checks: [single_primary, intent_inference]
   - prompt: "Make a small mechanical correction in one documentation file and commit it."
-    expected_primary: none
-    expected_behavior: "handle as routine docs maintenance without routing to a Staff Engineer Mode specialist"
-    category: out_of_scope
-    expected_checks: [scope_check]
-    forbidden_in_response: [all_specialist_names]
+    expected_primary: agent-pr-review
+    expected_behavior: "route small commit attempts to agent PR review because commit size does not exempt agent-created commits"
+    category: paraphrase
+    expected_checks: [single_primary, intent_inference]
   - prompt: "Clean up stale libraries, remove dead feature paths, and keep the lockfile from drifting again."
     expected_primary: dependency-and-code-hygiene
     expected_behavior: "route to dependency and code health, not supply-chain trust"
@@ -529,6 +528,11 @@ cases:
   - prompt: "I am about to commit the staged changes; review the exact staged diff first."
     expected_primary: agent-pr-review
     expected_behavior: "route pre-commit staged-diff review to agent PR review"
+    category: paraphrase
+    expected_checks: [single_primary, intent_inference]
+  - prompt: "Commit this tiny typo fix after checking the staged diff."
+    expected_primary: agent-pr-review
+    expected_behavior: "route tiny commit attempts to agent PR review regardless of change size"
     category: paraphrase
     expected_checks: [single_primary, intent_inference]
   - prompt: "The rollout is finished; build me an inventory of every live flag with expiry, safe fallback, and removal plan."

@@ -37,7 +37,7 @@ See [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for prompts across every specialist.
 Staff Engineer Mode treats commit and release actions as review triggers.
 
 - Before creating or amending a commit, the agent should run `agent-pr-review`
-  against the exact staged diff.
+  against the exact staged diff regardless of change size.
 - Before tags, version bumps, hosted release records, packages, artifact publication, or
   promotion, the agent should run `release-build-reproducibility`.
 

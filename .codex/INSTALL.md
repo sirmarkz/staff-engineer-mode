@@ -73,8 +73,8 @@ the contract is router-borne.
 
 Codex does not currently expose a blocking command hook for this pack. The
 policy is therefore router-borne: before creating or amending commits, load
-`agent-pr-review` and review the exact staged diff; before tags, version bumps,
-hosted release records, packages, artifact publication, or promotion, load
+`agent-pr-review` and review the exact staged diff regardless of change size;
+before tags, version bumps, hosted release records, packages, artifact publication, or promotion, load
 `release-build-reproducibility`.
 
 Review findings guide the user and agent on gaps to close. If the user

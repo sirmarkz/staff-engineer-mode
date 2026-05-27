@@ -22,6 +22,55 @@ def load_validator():
 
 
 class ValidateSkillPackPhaseBehaviorTest(unittest.TestCase):
+    def test_agent_pr_review_rejects_trivial_commit_skip(self) -> None:
+        validator = load_validator()
+        text = """---
+name: agent-pr-review
+description: Use when reviewing a PR, diff, branch, commit, staged change, merge, or pre-release change set
+---
+
+# Pre-Merge PR Review
+
+## When To Use
+
+- The agent is about to create or amend a commit and needs review of the exact staged diff before the commit exists, regardless of change size.
+
+## When Not To Use
+
+- The diff is one trivial fix the human author can self-review without a structured pass.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "agent-pr-review" / "SKILL.md"
+            path.parent.mkdir()
+            path.write_text(text)
+            stderr = io.StringIO()
+            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+                validator.validate_agent_pr_review_commit_policy(text, path)
+            self.assertIn("trivial change skip", stderr.getvalue())
+
+    def test_agent_pr_review_requires_commit_attempts_regardless_of_size(self) -> None:
+        validator = load_validator()
+        text = """---
+name: agent-pr-review
+description: Use when reviewing a PR, diff, branch, commit, staged change, merge, or pre-release change set
+---
+
+# Pre-Merge PR Review
+
+## When To Use
+
+- The agent is about to create or amend a commit and needs review of the exact staged diff before the commit exists, regardless of change size.
+
+## When Not To Use
+
+- The work is pre-design: there is no diff yet; use another specialist instead.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "agent-pr-review" / "SKILL.md"
+            path.parent.mkdir()
+            path.write_text(text)
+            validator.validate_agent_pr_review_commit_policy(text, path)
+
     def test_specialist_phase_behavior_requires_lifecycle_guidance(self) -> None:
         validator = load_validator()
         text = """---

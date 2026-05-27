@@ -215,6 +215,19 @@ AUDIT_ONLY_EXCEPTIONS = {
     "vulnerability-management",
 }
 
+AGENT_PR_REVIEW_COMMIT_REQUIRED_TERMS = [
+    "create or amend a commit",
+    "exact staged diff",
+    "regardless of change size",
+]
+
+AGENT_PR_REVIEW_COMMIT_SKIP_PATTERNS = [
+    "trivial fix",
+    "trivial change",
+    "human author can self-review",
+    "without a structured pass",
+]
+
 SPECIALIST_DESCRIPTION_REVIEW_EXCEPTIONS = {
     "agent-pr-review",
 }
@@ -386,6 +399,23 @@ def validate_decision_guide_framing(text: str, path: Path) -> None:
             fail(f"{path} has audit-only framing pattern: {pattern}")
 
 
+def validate_agent_pr_review_commit_policy(text: str, path: Path) -> None:
+    if skill_name_for_path(path) != "agent-pr-review":
+        return
+    when_to_use = section_body(text, "## When To Use", path).lower()
+    missing = [term for term in AGENT_PR_REVIEW_COMMIT_REQUIRED_TERMS if term not in when_to_use]
+    if missing:
+        fail(f"{path} agent-pr-review commit policy missing terms: {', '.join(missing)}")
+
+    when_not_to_use = section_body(text, "## When Not To Use", path).lower()
+    for pattern in AGENT_PR_REVIEW_COMMIT_SKIP_PATTERNS:
+        if pattern in when_not_to_use:
+            fail(
+                f"{path} agent-pr-review permits a trivial change skip via {pattern!r}; "
+                "commit and amend attempts must be reviewed regardless of size"
+            )
+
+
 def validate_specialist_skill(text: str, path: Path) -> None:
     slug = skill_name_for_path(path)
     description = parse_frontmatter(text, path)["description"].lower()
@@ -401,6 +431,7 @@ def validate_specialist_skill(text: str, path: Path) -> None:
     validate_operational_sections(text, path, SPECIALIST_OPERATIONAL_SECTIONS)
     validate_phase_behavior(text, path)
     validate_decision_guide_framing(text, path)
+    validate_agent_pr_review_commit_policy(text, path)
     checks = check_ids(text, path, "## Checks Before Moving On")
     if len(checks) < 3:
         fail(f"{path} needs at least three checks under ## Checks Before Moving On")

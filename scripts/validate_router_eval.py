@@ -173,6 +173,23 @@ def validate_main_fixture(cases: list[dict[str, Any]], path: Path) -> None:
     if secondary_cases < MIN_SECONDARY_CASES:
         fail(f"{path} expected at least {MIN_SECONDARY_CASES} expected_secondary cases, found {secondary_cases}")
 
+    small_commit_cases = [
+        index
+        for index, case in enumerate(cases, 1)
+        if "commit" in str(case["prompt"]).lower()
+        and any(word in str(case["prompt"]).lower() for word in ["small", "tiny", "typo", "mechanical"])
+    ]
+    missing_agent_review = [
+        index
+        for index in small_commit_cases
+        if cases[index - 1]["expected_primary"] != "agent-pr-review"
+    ]
+    if missing_agent_review:
+        fail(
+            f"{path} small commit cases must route to agent-pr-review regardless of size: "
+            f"{missing_agent_review}"
+        )
+
 
 def has_explicit_phase_word(prompt: str) -> bool:
     prompt_lower = prompt.lower()
