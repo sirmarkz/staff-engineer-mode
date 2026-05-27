@@ -1,5 +1,16 @@
 # Staff Engineer Mode Release Notes
 
+## 1.7.2 - 2026-05-27
+
+Claude hook staging patch.
+
+- Detects combined `git add && git commit` shell commands and explains that the
+  staging command has not run yet because the hook blocked the full command.
+- Tells agents to stage in a separate shell action, review `git diff --cached`,
+  acknowledge the target repository, then retry only the commit command.
+- Adds regression coverage for direct and `cd <repo> && git add && git commit`
+  command shapes.
+
 ## 1.7.1 - 2026-05-27
 
 Agent event policy patch.
