@@ -64,21 +64,33 @@ The review guides the agent and user on gaps to close; it does not remove user a
 9. **Check public-surface and contract impact.** Identify breaking changes to APIs, schemas, configs, on-disk formats, events, or shared modules. Confirm consumer impact has been considered.
 10. **Check operational artifacts.** Identify missing rollback path, missing telemetry for new behavior, missing runbook update, missing migration safety, missing SLO/error-budget consideration, missing threat consideration for new trust-boundary changes, and missing docs.
 11. **Classify findings.** For each finding, record category, support (file:line or behavior), recommended next action, and risk level (blocker, must-fix-before-merge, follow-up, or accepted with rationale).
-12. **Use specialist lenses when needed.** If security, database, rollout, observability, accessibility, or contract-evolution concerns dominate, apply that narrower skill rather than expanding this review.
+12. **Run specialist sanity checks.** Use the consolidated table below for extra lenses and follow-ups; do not replace the pre-merge review when a concrete diff is under review.
 13. **Produce the structured artifact.** Output a single review with the categories below, not running prose. The user can use this and can act without re-reading the diff.
 
 ## Synthesized Default
 
-Use a structured pre-merge review pass: verify stated intent matches actual diff, check that changed behavior is exercised by a test that would fail without the change, scan for hallucinated APIs and deleted-but-used code, classify scope creep, and require file/line support plus next action for every blocker. Treat any author or agent self-summary as a hypothesis, not a finding. Use narrower specialist skills only as internal lenses when their surface dominates.
+Use a structured pre-merge review pass: verify stated intent matches actual diff, check that changed behavior is exercised by a test that would fail without the change, scan for hallucinated APIs and deleted-but-used code, classify scope creep, and require file/line support plus next action for every blocker. Treat any author or agent self-summary as a hypothesis, not a finding. Use the sanity-check table only for extra lenses and follow-ups; the PR review remains the primary artifact for concrete diffs.
 
+## Specialist Sanity Checks
 
+Run this table after mapping the diff and before the verdict. These routes are extras, not replacements: finish the `agent-pr-review` artifact first, then apply a narrow lens internally or list at most one prioritized follow-up with rationale. Do not load a pile of specialists.
+
+| Diff signal | Specialist route or follow-up |
+| --- | --- |
+| Security control, trust boundary, abuse case, runtime identity, secret handling, or tenant boundary | `secure-sdlc-and-threat-modeling`; `identity-and-secrets` for runtime identity/secrets; `tenant-isolation` for tenant-boundary proof |
+| API, schema, event, or shared data contract compatibility | `api-design-and-compatibility`; `data-contracts` for cross-surface data contracts; `event-workflows` for replay, ordering, idempotency, or DLQ behavior |
+| Database schema, index, backfill, data migration, locking, or destructive data change | `database-operations`; `distributed-data-and-consistency` when correctness spans storage or service boundaries |
+| Rollout, rollback, exposure control, feature flag, release artifact, package, tag, or promotion | `progressive-delivery`; `feature-flag-lifecycle` for flag expiry/removal; `release-build-reproducibility` for build, artifact, tag, package, or promotion mechanics |
+| Telemetry, alerting, SLO, incident signal, or operator load | `observability-and-alerting`; `slo-and-error-budgets` for reliability targets; `oncall-health` for noisy pages or responder load |
+| Test strategy, CI gates, fixtures, generated-code acceptance, or environment parity | `testing-and-quality-gates`; `test-data-engineering` for fixture/data drift; `dev-environment-parity` for local/CI/staging drift |
+| Accessibility, web release quality, mobile release quality, or client-facing regression risk | `accessibility-gates`; `web-release-gates`; `mobile-release-engineering` |
 
 ## Phase Behavior
 
-- Ideation: do not use this specialist for risks or options before code exists; route pre-code risk shaping to the appropriate design, security, rollout, test, API, data, or architecture specialist.
+- Ideation: do not use this specialist for risks or options before code exists; route pre-code risk shaping through the router.
 - Design: do not use this specialist for tradeoffs or checks unless a concrete diff, branch, or patch already exists.
 - Development: use only after development sequencing produces a diff or change set that needs pre-merge checks and review.
-- Testing: evaluate tests and failure details attached to an existing diff; route test strategy before code exists to the testing specialist.
+- Testing: evaluate tests and failure details attached to an existing diff; route test strategy before code exists through the router.
 - Release: evaluate pre-merge release, rollout, and rollback details attached to the diff.
 - Maintenance: use only when a maintenance change has owners, drift context, and a concrete diff, branch, PR, or change set.
 - Existing artifact: evaluate an existing diff, branch, PR, or change set as context for the pre-merge engineering decision; do not use this skill without the concrete change artifact.
@@ -102,7 +114,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 - Include at least two concrete diff anchors when the diff has enough changed lines: file:line citations, file:function references, or short quoted code excerpts. One anchor may support intent reconstruction; blocker and must-fix findings still need separate support.
 - Name the details to inspect, such as the diff itself, the originating task or prompt, the test results, and the author's stated summary; do not state findings against unseen code.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
-- Stay inside pre-merge review of a single diff. Route security depth, database migration depth, rollout safety, accessibility, and contract evolution to their responsible specialists rather than absorbing them here.
+- Stay inside pre-merge review of a single diff. Use the sanity-check table for extra surface lenses or follow-ups rather than replacing this review.
 - Be concise: prefer a single structured artifact with categorized findings over running narrative.
 
 ## Required Outputs
@@ -117,7 +129,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 - Failure-mode findings covering silent assumptions, plausible-but-wrong logic, hallucinated APIs, deleted-but-used code, unmotivated edits, missing edge cases, and scope creep.
 - Missing-artifact list across rollback path, telemetry for new behavior, runbook updates, migration safety, threat consideration for new trust boundaries, and docs.
 - Behavior-exercise summary stating which changed behaviors have a failing-without-the-change test and which do not.
-- Specialist follow-up routes, capped and prioritized.
+- Specialist sanity-check extras: no follow-up needed, internal lens applied, or one prioritized follow-up route with rationale.
 - Risk classification per finding (blocker, must-fix-before-merge, follow-up, accepted with rationale and user confirmation).
 
 ## Checks Before Moving On
@@ -140,7 +152,7 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 - Deletions are accepted without checking for remaining callers, imports, or references.
 - Out-of-scope file changes are merged because they "look harmless."
 - Hallucinated APIs, types, or imports are not checked even though the author (human or AI) could have invented them.
-- Specialist concerns (security, migration, rollout) are absorbed into this review instead of routed to the responsible specialist.
+- Specialist concerns either replace the PR review or are absorbed without checking the sanity-check table.
 - The review produces prose only, with no categorized findings, support, next actions, or risk levels.
 - The final verdict is given with fewer than two changed `file:line` review anchors when the diff contains enough changed lines.
 
@@ -155,6 +167,6 @@ Use a structured pre-merge review pass: verify stated intent matches actual diff
 | Accepting plausible APIs at face value | Confirm imports, types, and external calls actually exist in the target environment. |
 | Letting scope creep slide | Name out-of-scope edits and require justification or removal. |
 | Skipping code-quality dimensions | Compactly cover design, functionality, complexity, tests, naming, comments, and style as part of the review artifact. |
-| Doing the specialist's work here | Route security, migration, rollout, accessibility, and contract concerns to the responsible specialist. |
+| Doing the specialist's work here | Finish the PR review, then use the sanity-check table for an internal lens or one prioritized follow-up. |
 | Producing vibes review | Output a structured artifact with categories, support, next actions, and risk levels. |
 | Giving a verdict before pinning support | Cite at least two changed `file:line` anchors first, then make the merge decision. |
