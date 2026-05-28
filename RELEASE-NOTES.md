@@ -1,5 +1,18 @@
 # Staff Engineer Mode Release Notes
 
+## 1.7.4 - 2026-05-28
+
+Agent event policy hardening and documentation patch.
+
+- Blocks common cross-repo `gh release` selectors, including `--repo`, `-R`,
+  `--hostname`, `GH_REPO`, and `GH_HOST`, before local release receipts can
+  authorize the wrong repository or host.
+- Clarifies Claude Code's receipt-enforced commit order so agents run
+  `ack commit --repo <repo>` after a clean `agent-pr-review` and before the
+  first `git commit` attempt.
+- Tightens README source, verify-prompt, and license wording while preserving
+  routing signals.
+
 ## 1.7.3 - 2026-05-27
 
 Readiness guidance patch.
