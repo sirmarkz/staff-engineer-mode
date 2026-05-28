@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.7.3 - 2026-05-27
+
+Readiness guidance patch.
+
+- Adds explicit production-readiness checks for launch/rollback ownership when
+  humans operate the path, or the automation path when CI/CD and rollback are
+  fully automatic.
+- Requires responder handoff, post-launch watch window, and success or abort
+  checks in the PRR readiness output.
+- Adds agent PR review sanity-check extras so surface-specific follow-ups stay
+  advisory and do not replace the primary PR review artifact.
+
 ## 1.7.2 - 2026-05-27
 
 Claude hook staging patch.
