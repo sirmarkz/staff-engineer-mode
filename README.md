@@ -109,9 +109,9 @@ gemini extensions install https://github.com/sirmarkz/staff-engineer-mode
 
 Start a fresh session inside any open repo and ask one of:
 
-- "Before implementing partner webhooks, design the event contract, delivery retries, replay path, and dead-letter handling."
-- "During development of the checkout inventory call, decide timeout, retry, fallback, and duplicate-work safeguards."
-- "Review my last commit and tell me what you would catch in PR review."
+- "Before implementing partner webhooks, design delivery retries, replay, and dead-letter handling."
+- "For a new inventory dependency call, decide timeout, retry, and fallback."
+- "Review my last commit."
 
 The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps — not vibes.
 
