@@ -85,6 +85,13 @@ PY
   fi
 }
 
+command_has_ai_commit_attribution() {
+  local command_text="$1"
+  local attribution_marker='(co-authored-by|generated-by|assisted-by|written-by|created-by):'
+  local ai_identity='(noreply@anthropic[.]com|noreply@openai[.]com|anthropic|openai|codex|chatgpt|copilot|gemini|ai[ -]?assistant|claude[[:space:]_-]+(sonnet|opus|code))'
+  printf '%s\n' "$command_text" | grep -Eiq "${attribution_marker}.*${ai_identity}"
+}
+
 classify_command() {
   local command_text="$1"
   local gh_selector_flag='(--repo([[:space:]]+|=)[^[:space:]]+|-R([[:space:]]+|=)?[^[:space:]]+|--hostname([[:space:]]+|=)[^[:space:]]+)'
@@ -427,7 +434,7 @@ ack_event() {
 
   local repo
   repo="$(repo_root "$repo_hint")" || {
-    printf 'staff-engineer-mode: not inside a git repository\n' >&2
+    printf 'staff-engineer-mode: --repo must be a local checkout root from git rev-parse --show-toplevel, not a remote URL or bare repository\n' >&2
     exit 1
   }
 
@@ -463,26 +470,35 @@ pretooluse() {
   repo="$(repo_root "$repo_hint")" || repo="$(repo_root ".")" || exit 0
   local quoted_repo
   quoted_repo="$(shell_quote "$repo")"
+  local has_ai_attribution=false
+  local attribution_instruction=""
+  if command_has_ai_commit_attribution "$command_text"; then
+    has_ai_attribution=true
+    attribution_instruction=" Remove any AI assistant Co-Authored-By or attribution trailer before retrying the commit command."
+  fi
 
   case "$event" in
     stage_and_commit)
-      block_tool "Staff Engineer Mode before_commit policy blocked a command that stages and commits in the same shell command. The staging command in that same shell command has not run yet, so the staged diff may be empty. Run the staging command separately, review git diff --cached with agent-pr-review for ${repo}, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo}, then retry only the commit command. If the user explicitly accepts unresolved gaps after review, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\"."
+      block_tool "Staff Engineer Mode before_commit policy blocked a command that stages and commits in the same shell command. The staging command in that same shell command has not run yet, so the staged diff may be empty. Run the staging command separately; read ${PLUGIN_ROOT}/specialists/agent-pr-review.md; review git diff --cached for ${repo}; run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo}; then retry only the commit command. Do not retry with any combined staging, commit, or push command.${attribution_instruction} If the user explicitly accepts unresolved gaps after review, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\"."
       ;;
     commit_all)
       block_tool "Staff Engineer Mode before_commit policy requires review of the exact staged diff. Stage intended changes first, run agent-pr-review on that staged diff, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo}, then retry the commit without commit -a."
       ;;
     commit)
+      if [ "$has_ai_attribution" = true ]; then
+        block_tool "Staff Engineer Mode before_commit policy blocks AI assistant co-author or attribution trailers in commit messages. Remove the AI co-author or attribution, then retry through the normal agent-pr-review and ack commit flow for ${repo}."
+      fi
       local key
       key="$(commit_key "$repo")"
       if ! has_receipt "$repo" "commit" "$key"; then
-        block_tool "Staff Engineer Mode before_commit policy requires agent-pr-review before creating or amending a commit. Read ${PLUGIN_ROOT}/specialists/agent-pr-review.md and review the staged diff for ${repo}. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo}. If the user explicitly accepts unresolved gaps, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\". Then retry the commit."
+        block_tool "Staff Engineer Mode before_commit policy requires agent-pr-review before creating or amending a commit. Read ${PLUGIN_ROOT}/specialists/agent-pr-review.md and review the staged diff for ${repo}; inspecting git diff --cached or reading CLAUDE.md / SKILL.md alone is not enough. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo}. If the user explicitly accepts unresolved gaps after they are shown, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\". Then retry the commit."
       fi
       ;;
     release)
       local key
       key="$(release_key "$repo")"
       if ! has_receipt "$repo" "release" "$key"; then
-        block_tool "Staff Engineer Mode before_release policy requires release-build-reproducibility and production-readiness-review before release, tag, version, package, artifact, or promotion commands. Read ${PLUGIN_ROOT}/specialists/release-build-reproducibility.md and check pinned inputs, artifact identity, promotion, and rollback traceability for ${repo}. Read ${PLUGIN_ROOT}/specialists/production-readiness-review.md and check release ownership, rollback, watch, and operator impact for ${repo}. If both reviews are clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --repo ${quoted_repo}. If the user explicitly accepts unresolved gaps, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --repo ${quoted_repo} --override \"<rationale>\". Then retry the release command."
+        block_tool "Staff Engineer Mode before_release policy requires release-build-reproducibility and production-readiness-review before release, tag, version, package, artifact, or promotion commands. Read ${PLUGIN_ROOT}/specialists/release-build-reproducibility.md and check pinned inputs, artifact identity, promotion, and rollback traceability for ${repo}. Read ${PLUGIN_ROOT}/specialists/production-readiness-review.md and check release ownership, rollback, watch, and operator impact for ${repo}; reading CLAUDE.md / SKILL.md alone is not enough. If both reviews are clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --repo ${quoted_repo}. If the user explicitly accepts unresolved gaps after they are shown, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --repo ${quoted_repo} --override \"<rationale>\". Then retry the release command. For tags, create the tag and push the tag in separate shell commands."
       fi
       ;;
   esac

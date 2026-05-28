@@ -43,11 +43,13 @@ Users are not expected to know specialist names. Classify by artifact, phase, su
 
 ## Agent Event Policy
 
-Command attempts are event-policy exceptions to the one-primary default. Before
-creating or amending commits, load `agent-pr-review` for the exact staged diff.
-Before tags, version bumps, hosted release records, packages, artifact
-publication, or promotion, load both `release-build-reproducibility` and
-`production-readiness-review` before the first release command.
+Command attempts are event-policy exceptions. Before commits or amends, stage
+separately, inspect the staged diff, read `agent-pr-review`, review, record the
+commit receipt, then commit. Do not combine staging, committing, and pushing or
+add AI assistant co-author/attribution trailers. Before tags, versions, hosted
+releases, packages, artifacts, or promotions, read `release-build-reproducibility`
+and `production-readiness-review`, review, record the release receipt, then run
+the release command.
 
 ## When To Use
 

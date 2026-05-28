@@ -7,6 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 ROUTER_PATH="${PLUGIN_ROOT}/skills/staff-engineer-mode/SKILL.md"
 BOOTSTRAP_TEMPLATE_PATH="${PLUGIN_ROOT}/skills/staff-engineer-mode/references/bootstrap-context.md"
+EVENT_HOOK_PATH="${PLUGIN_ROOT}/hooks/agent-event-policy"
 
 if [ -r "$ROUTER_PATH" ]; then
   router_raw="$(cat "$ROUTER_PATH")"
@@ -41,7 +42,10 @@ escape_for_json() {
 
 router_content="$(printf '%s\n' "$router_raw" | strip_frontmatter)"
 specialist_root="${PLUGIN_ROOT}/specialists"
+current_repo="$(git -C "$PWD" rev-parse --show-toplevel 2>/dev/null || true)"
 session_context="${bootstrap_template//\{\{SPECIALIST_ROOT\}\}/$specialist_root}"
+session_context="${session_context//\{\{EVENT_HOOK\}\}/${EVENT_HOOK_PATH}}"
+session_context="${session_context//\{\{CURRENT_REPO\}\}/${current_repo}}"
 session_context="${session_context//\{\{ROUTER_CONTENT\}\}/${router_content}}"
 session_context="${session_context//\{\{TOOL_MAPPING\}\}/}"
 session_context="$(escape_for_json "$session_context")"

@@ -219,6 +219,62 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 2)
 
+    def test_commit_with_ai_coauthor_is_blocked_even_with_matching_receipt(self) -> None:
+        self.stage_change("initial\nchanged\n")
+        subprocess.run([str(HOOK), "ack", "commit"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {
+                    "command": (
+                        'git commit -m "Add MIT license\n\n'
+                        'Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"'
+                    )
+                },
+            }
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertEqual(response["decision"], "block")
+
+    def test_commit_with_human_named_claude_coauthor_is_allowed_with_matching_receipt(self) -> None:
+        self.stage_change("initial\nchanged\n")
+        subprocess.run([str(HOOK), "ack", "commit"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {
+                    "command": (
+                        'git commit -m "Update docs\n\n'
+                        'Co-Authored-By: Claude Martin <claude.martin@example.com>"'
+                    )
+                },
+            }
+        )
+
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_commit_all_with_ai_coauthor_is_blocked_even_with_matching_receipt(self) -> None:
+        self.stage_change("initial\nchanged\n")
+        subprocess.run([str(HOOK), "ack", "commit"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {
+                    "command": (
+                        'git commit -am "Update docs\n\n'
+                        'Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"'
+                    )
+                },
+            }
+        )
+
+        self.assertEqual(result.returncode, 2)
+
     def test_release_command_blocks_without_release_receipt(self) -> None:
         result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git tag v1.2.3"}})
 

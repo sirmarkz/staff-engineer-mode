@@ -148,18 +148,27 @@ class PlatformDocsValidationTests(unittest.TestCase):
             "\n".join(
                 [
                     "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
+                    "EVENT_HOOK={{EVENT_HOOK}}",
+                    "CURRENT_REPO={{CURRENT_REPO}}",
                     "Read ${SPECIALIST_ROOT}/<slug>.md",
                     "Keep guidance technology-agnostic by default",
                     "agent-pr-review",
                     "release-build-reproducibility",
                     "production-readiness-review",
+                    "Bash preflight",
+                    "Receipt `--repo` means the local checkout root",
+                    "Do not combine staging, committing, or pushing",
+                    "Never run bare `ack`",
+                    "Never run `git add && git commit`",
+                    "reading CLAUDE.md, or reading SKILL.md is not enough",
+                    "Co-Authored-By",
                     "",
                 ]
             ),
         )
         self.write(
             "hooks/session-start",
-            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists\n",
+            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists EVENT_HOOK CURRENT_REPO\n",
         )
         self.write("hooks/run-hook.cmd", "exec bash hook\n")
         self.write("hooks/hooks-cursor.json", "{}\n")

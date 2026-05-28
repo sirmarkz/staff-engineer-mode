@@ -175,6 +175,18 @@ def validate_claude() -> None:
         fail("CLAUDE.md must require technology-agnostic guidance by default")
     if "specialists/<specialist-name>.md" not in claude_text:
         fail("CLAUDE.md must document routed specialist reference files")
+    for term in [
+        "specialists/agent-pr-review.md",
+        "specialists/release-build-reproducibility.md",
+        "specialists/production-readiness-review.md",
+        "## Bash Preflight",
+        "Do not combine staging, committing, or",
+        "Never run `git add && git commit`",
+        "reading this file, or reading `SKILL.md` is not enough",
+        "Co-Authored-By",
+    ]:
+        if term not in claude_text:
+            fail(f"CLAUDE.md missing agent event policy term {term!r}")
     marketplace = ROOT / ".claude-plugin" / "marketplace.json"
     value = read_json(marketplace)
     if value.get("name") != NAME:
@@ -301,16 +313,27 @@ def validate_hooks() -> None:
         "staff-engineer-mode",
         "skills/staff-engineer-mode/SKILL.md",
         "specialists",
+        "EVENT_HOOK",
+        "CURRENT_REPO",
     ]:
         if term not in session_start:
             fail(f"hooks/session-start missing {term}")
     for term in [
         "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
+        "EVENT_HOOK={{EVENT_HOOK}}",
+        "CURRENT_REPO={{CURRENT_REPO}}",
         "Read ${SPECIALIST_ROOT}/<slug>.md",
         "Keep guidance technology-agnostic by default",
         "agent-pr-review",
         "release-build-reproducibility",
         "production-readiness-review",
+        "Bash preflight",
+        "Receipt `--repo` means the local checkout root",
+        "Do not combine staging, committing, or pushing",
+        "Never run bare `ack`",
+        "Never run `git add && git commit`",
+        "reading CLAUDE.md, or reading SKILL.md is not enough",
+        "Co-Authored-By",
     ]:
         if term not in bootstrap_text:
             fail(f"bootstrap-context.md missing {term}")

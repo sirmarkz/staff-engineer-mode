@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.7.6 - 2026-05-28
+
+Claude event-policy flow hardening.
+
+- Adds a Bash preflight to the Claude startup context so commit, push, tag, and
+  release requests run the review, receipt, action, and push steps in order.
+- Injects the installed event-hook path and current local checkout root so
+  agents use the real `agent-event-policy ack ... --repo <checkout>` command
+  instead of bare `ack` commands or remote repository paths.
+- Blocks AI assistant co-author or attribution trailers in commit messages and
+  expands regression coverage for the hook and platform bootstrap contract.
+
 ## 1.7.5 - 2026-05-28
 
 Release readiness policy patch.
