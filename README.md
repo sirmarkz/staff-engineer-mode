@@ -145,4 +145,4 @@ New specialist files must be technology-agnostic, cite source-index references, 
 
 ## License
 
-MIT — see [LICENSE](LICENSE). The project notice is included there.
+MIT
