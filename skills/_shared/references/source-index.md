@@ -187,9 +187,6 @@ sections. They are not grouped by skill topic.
 ### ACM Queue
 - ACM Queue - Systems Correctness Practices at AWS: https://queue.acm.org/detail.cfm?id=3712057
 
-### AICPA
-- AICPA Trust Services Criteria 2017 with 2022 Revisions: https://www.aicpa-cima.com/resources/download/2017-trust-services-criteria-with-revised-points-of-focus-2022
-
 ### Anthropic
 - Anthropic Docs - Create Strong Empirical Evaluations: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
 
@@ -199,23 +196,8 @@ sections. They are not grouped by skill topic.
 - CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 - CISA And Partners - Deploying AI Systems Securely: https://media.defense.gov/2024/Apr/15/2003439257/-1/-1/0/CSI-DEPLOYING-AI-SYSTEMS-SECURELY.PDF
 
-### DORA
-- DORA - Software Delivery Performance Metrics: https://dora.dev/guides/dora-metrics-four-keys/
-
-### FinOps Foundation
-- FinOps Usage Optimization: https://www.finops.org/framework/capabilities/workload-optimization/
-
-### FIRST
-- FIRST EPSS Model: https://www.first.org/epss/model
-- FIRST EPSS Data and Statistics: https://www.first.org/epss/data_stats
-- FIRST EPSS User Guide: https://www.first.org/epss/user-guide
-- FIRST EPSS API: https://www.first.org/epss/api
-
 ### Grafana
 - Grafana - Dashboard Best Practices: https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/
-
-### Honeycomb
-- Honeycomb - Observability 2.0: https://www.honeycomb.io/blog/one-key-difference-observability1dot0-2dot0
 
 ### IETF
 - RFC 7696 - Guidelines for Cryptographic Algorithm Agility: https://www.rfc-editor.org/rfc/rfc7696
@@ -234,9 +216,6 @@ sections. They are not grouped by skill topic.
 - Martin Fowler - Circuit Breaker: https://martinfowler.com/bliki/CircuitBreaker.html
 - Martin Fowler - Microservice Premium: https://martinfowler.com/bliki/MicroservicePremium.html
 - Martin Fowler - CanaryRelease: https://martinfowler.com/bliki/CanaryRelease.html
-
-### Michael Nygard
-- Michael Nygard - Documenting Architecture Decisions: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 
 ### MITRE
 - MITRE ATT&CK Enterprise Matrix: https://attack.mitre.org/matrices/enterprise/
@@ -267,9 +246,6 @@ sections. They are not grouped by skill topic.
 - NIST SP 800-57 Part 1 Revision 5 - Recommendation for Key Management PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf
 - NIST SP 800-131A Revision 2 - Transitioning Cryptographic Algorithms and Key Lengths PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf
 
-### OpenAI
-- OpenAI API - Agent Evals: https://platform.openai.com/docs/guides/agent-evals
-
 ### OpenSSF
 - OpenSSF Scorecard Check Documentation: https://raw.githubusercontent.com/ossf/scorecard/main/docs/checks.md
 - OpenSSF OSPS Baseline v2026.02.19: https://baseline.openssf.org/versions/2026-02-19
@@ -291,24 +267,7 @@ sections. They are not grouped by skill topic.
 - OWASP Cheat Sheet Series - Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
 - OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
 
-### PCI Security Standards Council
-- PCI DSS v4.0.1 - Requirements and Testing Procedures PDF: https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf
-
-### Perfdynamics
-- Universal Scalability Law: https://www.perfdynamics.com/Manifesto/USLscalability.html
-
-### Principles Of Chaos Engineering
-- Principles of Chaos Engineering: https://principlesofchaos.org/
-
-### Semantic Versioning
-- Semantic Versioning Specification: https://semver.org/
-
-### SLSA
-- SLSA Specification: https://slsa.dev/spec/
-- SLSA Build Provenance Specification: https://slsa.dev/spec/v1.2/build-provenance
-
 ### W3C
-- W3C Trace Context: https://www.w3.org/TR/trace-context/
 - W3C - Web Content Accessibility Guidelines 2.2: https://www.w3.org/TR/WCAG22/
 - W3C - Accessibility Conformance Testing Rules Format: https://www.w3.org/TR/act-rules-format/
 

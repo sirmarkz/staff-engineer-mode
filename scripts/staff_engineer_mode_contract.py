@@ -149,7 +149,6 @@ PROHIBITED_SPECIALIST_BODY_TERMS: tuple[str, ...] = (
     "EPSS",
     "KEV",
     "SOC 2",
-    "PCI",
 )
 
 BRAND_LINTER_SPECIALIST_VENDOR_NAMES: tuple[str, ...] = (
