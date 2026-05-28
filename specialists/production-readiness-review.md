@@ -38,7 +38,7 @@ Produces a dimensioned launch posture with a readiness matrix, a blocker list, a
 
 - Launch scope, impact dimensions, customer/user impact, production dependencies, and user decision point.
 - Architecture artifact: component diagram or textual component map, request/data flow, upstream and downstream dependencies, and fault-domain boundaries.
-- Operability: who can run the launch, fallback path, diagnostics, incident path, and user decision point.
+- Operability: launch and rollback owner when the path is not fully automated CI/CD with automatic rollback; responder handoff, fallback path, diagnostics, incident path, post-launch watch window, and user decision point.
 - SLOs/error budgets, dashboards, alerts, runbooks, and incident communication path.
 - Availability posture: location independence, partition survivability, static failover capacity, and recovery drill results.
 - Rollout plan, rollback path, canary metrics, migration plan, and feature/config lifecycle.
@@ -60,7 +60,8 @@ Produces a dimensioned launch posture with a readiness matrix, a blocker list, a
 8. **Check resilience and recovery.** Require location or partition independence, static failover capacity, overload behavior, failover targets, recovery drills, and restore test results when relevant.
 9. **Check security and integrity.** Require threat model, access controls, secret handling, build integrity, and unresolved vulnerability posture.
 10. **Check cross-pillar tradeoffs.** Identify reliability, security, cost, operational, and performance decisions that improve one quality while weakening another.
-11. **Summarize advisory posture.** Produce blockers, exceptions, and follow-up routes. The skill identifies objective blockers and readiness gaps; the user decides whether to proceed.
+11. **Check ownership and watch.** For manual or semi-automated launch and rollback paths, name the launch owner and rollback owner; for fully automated CI/CD with automatic rollback, name the automation path instead. Always name responder handoff, post-launch watch window, and success or abort checks.
+12. **Summarize advisory posture.** Produce blockers, exceptions, and follow-up routes. The skill identifies objective blockers and readiness gaps; the user decides whether to proceed.
 
 ## Synthesized Default
 
@@ -102,6 +103,7 @@ Use PRR as a cross-domain readiness decision for launches and major changes. It 
 - PRR readiness matrix by domain and status.
 - Freshness and drift notes for readiness details that can go stale, such as dashboards, runbooks, rollout checks, recovery checks, and load tests.
 - Architecture entry with component diagram or textual map, production dependencies, and fault-domain map.
+- Launch ownership or automation path, plus post-launch verification plan with responder handoff, watch window, and success or abort checks.
 - Availability row covering fault-domain independence, static capacity under loss, recovery mechanism, and drill results.
 - Launch blocker list with required details, file/path or artifact reference, and due date.
 - Exception register with user risk acceptance, expiry, compensating control, and refresh trigger using the shared risk-acceptance lifecycle and compensating-control format.
@@ -113,6 +115,7 @@ Use PRR as a cross-domain readiness decision for launches and major changes. It 
 
 - `impact_check`: classification names which impact dimensions apply (external commitment, customer-criticality, data sensitivity, state durability, blast radius) and which do not, with rationale.
 - `architecture_check`: architecture details include component diagram or textual component map, production dependencies, and fault-domain map for the affected launch path.
+- `ownership_check`: manual or semi-automated paths name launch and rollback owners; fully automated CI/CD with automatic rollback names the automation path; responder handoff, post-launch watch window, and success or abort checks are explicit.
 - `operability_check`: every production component has fallback path, diagnostics, impact context, and user decision point.
 - `runtime_check`: customer-impacting paths have SLOs, health states, telemetry, alerts, runbooks, and incident path.
 - `change_check`: rollout, rollback, canary metrics, compatibility, and cleanup are documented.
@@ -137,4 +140,4 @@ Use PRR as a cross-domain readiness decision for launches and major changes. It 
 | Treating PRR as a mega-skill | Aggregate readiness details and route gaps to specialists. |
 | Counting intentions as facts | Require artifacts, commands, dashboards, runbooks, or dated risk-acceptance records using the shared risk-acceptance lifecycle. |
 | Making all risks equal | Separate blockers from accepted exceptions and follow-ups. |
-| Forgetting responsibility | Every blocker and exception needs supporting details, expiry, and user decision point. |
+| Forgetting responsibility | Name launch/rollback owners when humans run the path; name the automation path when CI/CD and rollback are automatic; every blocker and exception needs supporting details, expiry, and user decision point. |
