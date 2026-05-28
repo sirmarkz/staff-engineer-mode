@@ -286,6 +286,7 @@ def validate_hooks() -> None:
         "before_release",
         "agent-pr-review",
         "release-build-reproducibility",
+        "production-readiness-review",
     ]:
         if term not in agent_event_policy:
             fail(f"hooks/agent-event-policy missing {term}")
@@ -309,6 +310,7 @@ def validate_hooks() -> None:
         "Keep guidance technology-agnostic by default",
         "agent-pr-review",
         "release-build-reproducibility",
+        "production-readiness-review",
     ]:
         if term not in bootstrap_text:
             fail(f"bootstrap-context.md missing {term}")

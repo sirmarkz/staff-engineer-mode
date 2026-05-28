@@ -62,6 +62,7 @@ Produces a dimensioned launch posture with a readiness matrix, a blocker list, a
 10. **Check cross-pillar tradeoffs.** Identify reliability, security, cost, operational, and performance decisions that improve one quality while weakening another.
 11. **Check ownership and watch.** For manual or semi-automated launch and rollback paths, name the launch owner and rollback owner; for fully automated CI/CD with automatic rollback, name the automation path instead. Always name responder handoff, post-launch watch window, and success or abort checks.
 12. **Summarize advisory posture.** Produce blockers, exceptions, and follow-up routes. The skill identifies objective blockers and readiness gaps; the user decides whether to proceed.
+13. **Pair release cuts with build traceability.** For a new release, run `release-build-reproducibility` before the first release command so pinned inputs, artifact identity, promotion, and rollback traceability are reviewed alongside readiness.
 
 ## Synthesized Default
 

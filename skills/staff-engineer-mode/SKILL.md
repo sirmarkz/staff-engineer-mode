@@ -41,6 +41,14 @@ Three rules, all mandatory:
 
 Users are not expected to know specialist names. Classify by artifact, phase, surface, and risk, then quietly select the specialist whose outputs fit the next useful artifact.
 
+## Agent Event Policy
+
+Command attempts are event-policy exceptions to the one-primary default. Before
+creating or amending commits, load `agent-pr-review` for the exact staged diff.
+Before tags, version bumps, hosted release records, packages, artifact
+publication, or promotion, load both `release-build-reproducibility` and
+`production-readiness-review` before the first release command.
+
 ## When To Use
 
 - The request asks for engineering decisions or guidance for design, delivery, operations, reliability, security, architecture, API, data, platform, or client work.

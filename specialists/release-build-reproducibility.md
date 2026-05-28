@@ -59,6 +59,7 @@ Release engineering turns source changes into trustworthy artifacts.
 8. **Keep main recoverable.** Prefer short-lived topic branches, protected main, and release branches with explicit cherry-pick/backport policy so hotfixes do not disappear from the next release.
 9. **Check releases deliberately.** Keep checks fast and signal-rich; quarantine flaky checks, but do not let flakes silently weaken the release signal.
 10. **Record traceability.** Link artifact, source, build logs, checks, release decision, deployment, and rollback target, including rollback to an older known-good artifact when the harmful change is latent rather than the immediately previous release.
+11. **Pair release cuts with readiness.** For a new release, run `production-readiness-review` before the first release command so ownership, rollback, watch, and operator impact are reviewed alongside build reproducibility.
 
 ## Synthesized Default
 

@@ -457,7 +457,7 @@ pretooluse() {
   # Cross-repo gh releases are blocked regardless of local checkout state;
   # handle before requiring a local repo so non-repo directories cannot bypass.
   if [ "$event" = "release_remote" ]; then
-    block_tool "Staff Engineer Mode before_release policy: gh --repo / -R / --hostname / GH_REPO / GH_HOST targets a remote repository or host, not just the local checkout. A local release receipt cannot authorize a cross-repo release. To proceed, remove the remote repo or host selector and run gh release from the target repository's checkout (so the local release-build-reproducibility review and receipt apply), or temporarily disable this hook with explicit user authorization."
+    block_tool "Staff Engineer Mode before_release policy: gh --repo / -R / --hostname / GH_REPO / GH_HOST targets a remote repository or host, not just the local checkout. A local release receipt cannot authorize a cross-repo release. To proceed, remove the remote repo or host selector and run gh release from the target repository's checkout (so the local release-build-reproducibility and production-readiness-review checks plus release receipt apply), or temporarily disable this hook with explicit user authorization."
   fi
 
   repo="$(repo_root "$repo_hint")" || repo="$(repo_root ".")" || exit 0
@@ -482,7 +482,7 @@ pretooluse() {
       local key
       key="$(release_key "$repo")"
       if ! has_receipt "$repo" "release" "$key"; then
-        block_tool "Staff Engineer Mode before_release policy requires release-build-reproducibility before release, tag, version, package, artifact, or promotion commands. Read ${PLUGIN_ROOT}/specialists/release-build-reproducibility.md and check pinned inputs, artifact identity, promotion, and rollback traceability for ${repo}. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --repo ${quoted_repo}. If the user explicitly accepts unresolved gaps, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --repo ${quoted_repo} --override \"<rationale>\". Then retry the release command."
+        block_tool "Staff Engineer Mode before_release policy requires release-build-reproducibility and production-readiness-review before release, tag, version, package, artifact, or promotion commands. Read ${PLUGIN_ROOT}/specialists/release-build-reproducibility.md and check pinned inputs, artifact identity, promotion, and rollback traceability for ${repo}. Read ${PLUGIN_ROOT}/specialists/production-readiness-review.md and check release ownership, rollback, watch, and operator impact for ${repo}. If both reviews are clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --repo ${quoted_repo}. If the user explicitly accepts unresolved gaps, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack release --repo ${quoted_repo} --override \"<rationale>\". Then retry the release command."
       fi
       ;;
   esac

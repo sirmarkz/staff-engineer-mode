@@ -23,13 +23,16 @@ the user supplied them or explicitly asks for tool-specific guidance.
 
 Before creating or amending commits, run `agent-pr-review` on the exact staged
 diff. Before tags, version bumps, hosted release records, packages, artifact publication,
-or promotion, run `release-build-reproducibility`. The Claude Code hook blocks
-those shell actions until the matching local Staff Engineer Mode receipt exists.
+or promotion, run both `release-build-reproducibility` and
+`production-readiness-review`. The Claude Code hook blocks those shell actions
+until the matching local Staff Engineer Mode receipt exists.
 Stage changes in a separate shell action before review; a combined `git add &&
 git commit` command is blocked before staging runs. For commit attempts, the
 successful order is: stage changes, review `git diff --cached` with
 `agent-pr-review`, run the hook's `ack commit --repo <repo>` command to record
-the receipt, then run `git commit`. A review message alone is not a receipt.
+the receipt, then run `git commit`. For release attempts, run both release
+reviews, then run `ack release --repo <repo>` before the first release command.
+A review message alone is not a receipt.
 Review findings guide the user; if the user explicitly accepts unresolved gaps,
 record an override receipt and proceed.
 

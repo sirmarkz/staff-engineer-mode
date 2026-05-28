@@ -152,6 +152,7 @@ class PlatformDocsValidationTests(unittest.TestCase):
                     "Keep guidance technology-agnostic by default",
                     "agent-pr-review",
                     "release-build-reproducibility",
+                    "production-readiness-review",
                     "",
                 ]
             ),
@@ -168,7 +169,10 @@ class PlatformDocsValidationTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 self.validator.validate_hooks()
 
-        self.write("hooks/agent-event-policy", "before_commit before_release agent-pr-review release-build-reproducibility\n")
+        self.write(
+            "hooks/agent-event-policy",
+            "before_commit before_release agent-pr-review release-build-reproducibility production-readiness-review\n",
+        )
         self.write(
             "hooks/hooks.json",
             '{"hooks":{"SessionStart":[],"PreToolUse":[{"matcher":"Bash","hooks":[{"command":"agent-event-policy pretooluse"}]}]}}\n',

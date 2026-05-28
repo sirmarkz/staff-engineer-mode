@@ -75,7 +75,7 @@ Codex does not currently expose a blocking command hook for this pack. The
 policy is therefore router-borne: before creating or amending commits, load
 `agent-pr-review` and review the exact staged diff regardless of change size;
 before tags, version bumps, hosted release records, packages, artifact publication, or promotion, load
-`release-build-reproducibility`.
+both `release-build-reproducibility` and `production-readiness-review`.
 
 Review findings guide the user and agent on gaps to close. If the user
 explicitly accepts unresolved gaps, Codex may proceed with the requested commit

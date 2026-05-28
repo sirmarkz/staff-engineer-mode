@@ -32,7 +32,8 @@ Specialists are reference files, not registered skills. To load a specialist:
   engineering surface.
 - Before creating or amending commits, route to `agent-pr-review` for the exact
   staged diff. Before tags, version bumps, hosted release records, packages, artifact
-  publication, or promotion, route to `release-build-reproducibility`.
+  publication, or promotion, route to both `release-build-reproducibility` and
+  `production-readiness-review`.
 - Review findings guide the user and agent. If the user explicitly accepts
   unresolved gaps, proceed after stating the residual risk.
 - Ask only focused intake questions when confidence is low. Do not expose

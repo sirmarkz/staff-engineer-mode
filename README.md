@@ -38,7 +38,8 @@ router picks one primary specialist by default. See
 - Before creating or amending a commit, the agent should run `agent-pr-review`
   against the exact staged diff regardless of change size.
 - Before tags, version bumps, hosted release records, packages, artifact publication, or
-  promotion, the agent should run `release-build-reproducibility`.
+  promotion, the agent should run both `release-build-reproducibility` and
+  `production-readiness-review`.
 
 Claude Code enforces those triggers with a `PreToolUse` hook and local receipts.
 Other supported tools use router and specialist trigger text where no blocking
@@ -46,8 +47,10 @@ command hook is available. For Claude Code, stage changes separately before
 review because a combined `git add && git commit` command is blocked before
 staging runs. After a clean `agent-pr-review`, run the hook's
 `ack commit --repo <repo>` command before the first `git commit`; the review
-message alone is not the receipt. Reviews guide the agent and user; explicit
-user acceptance can record an override receipt and proceed.
+message alone is not the receipt. After clean release reviews, run
+`ack release --repo <repo>` before the first release command. Reviews guide the
+agent and user; explicit user acceptance can record an override receipt and
+proceed.
 
 ## Installation
 

@@ -43,7 +43,8 @@ bootstrap is loaded automatically and reads routed specialist files from
 The bootstrap also carries the commit and release policy. Before creating or
 amending commits, route to `agent-pr-review` for the exact staged diff. Before
 tags, version bumps, hosted release records, packages, artifact publication, or
-promotion, route to `release-build-reproducibility`.
+promotion, route to both `release-build-reproducibility` and
+`production-readiness-review`.
 If the user explicitly accepts unresolved review gaps, state the residual risk
 and proceed.
 
