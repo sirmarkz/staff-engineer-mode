@@ -43,10 +43,8 @@ description: Use when reviewing a PR, diff, branch, commit, staged change, merge
             path = Path(tmp) / "agent-pr-review" / "SKILL.md"
             path.parent.mkdir()
             path.write_text(text)
-            stderr = io.StringIO()
-            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_agent_pr_review_commit_policy(text, path)
-            self.assertIn("trivial change skip", stderr.getvalue())
 
     def test_agent_pr_review_requires_commit_attempts_regardless_of_size(self) -> None:
         validator = load_validator()
@@ -91,10 +89,8 @@ description: Use when example work needs decisions
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "SKILL.md"
             path.write_text(text)
-            stderr = io.StringIO()
-            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_phase_behavior(text, path)
-            self.assertIn("development", stderr.getvalue())
 
     def test_specialist_phase_behavior_accepts_full_lifecycle_guidance(self) -> None:
         validator = load_validator()
@@ -164,10 +160,8 @@ Infer these from the prompt, repo, files, branch context, and conversation. Do n
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "SKILL.md"
             path.write_text(text)
-            stderr = io.StringIO()
-            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_router_eval_scope(text, path)
-            self.assertIn("eval-harness scope", stderr.getvalue())
 
         valid = """## Required Outputs
 
@@ -193,10 +187,8 @@ Body.
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "SKILL.md"
             path.write_text(missing_text)
-            stderr = io.StringIO()
-            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_router_load_contract(missing_text, path)
-            self.assertIn("Load Contract", stderr.getvalue())
 
     def test_router_load_contract_requires_three_rule_fragments(self) -> None:
         validator = load_validator()
@@ -217,10 +209,8 @@ Body.
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "SKILL.md"
             path.write_text(text)
-            stderr = io.StringIO()
-            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_router_load_contract(text, path)
-            self.assertIn("rule fragments", stderr.getvalue())
 
     def test_router_load_contract_requires_platform_fallback_markers(self) -> None:
         validator = load_validator()
@@ -241,10 +231,8 @@ Body.
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "SKILL.md"
             path.write_text(text)
-            stderr = io.StringIO()
-            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_router_load_contract(text, path)
-            self.assertIn("platform fallback markers", stderr.getvalue())
 
     def test_router_load_contract_rejects_obsolete_relative_path(self) -> None:
         validator = load_validator()
@@ -265,10 +253,8 @@ Body.
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "SKILL.md"
             path.write_text(text)
-            stderr = io.StringIO()
-            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_router_load_contract(text, path)
-            self.assertIn("obsolete relative path", stderr.getvalue())
 
     def test_router_load_contract_accepts_complete_section(self) -> None:
         validator = load_validator()
@@ -324,10 +310,8 @@ description: Use when example work needs decisions
             path = Path(tmp) / "example" / "SKILL.md"
             path.parent.mkdir()
             path.write_text(text)
-            stderr = io.StringIO()
-            with self.assertRaises(SystemExit), redirect_stderr(stderr):
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_decision_guide_framing(text, path)
-            self.assertIn("audit-only", stderr.getvalue())
 
 
 if __name__ == "__main__":

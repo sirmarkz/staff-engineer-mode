@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -173,11 +174,27 @@ def validate_main_fixture(cases: list[dict[str, Any]], path: Path) -> None:
     if secondary_cases < MIN_SECONDARY_CASES:
         fail(f"{path} expected at least {MIN_SECONDARY_CASES} expected_secondary cases, found {secondary_cases}")
 
+    small_commit_keywords = [
+        "small",
+        "tiny",
+        "typo",
+        "mechanical",
+        "minimal",
+        "one-line",
+        "single-line",
+        "single-character",
+        "tweak",
+        "nit",
+        "trivial",
+    ]
+    small_commit_pattern = re.compile(
+        r"\b(?:" + "|".join(re.escape(k) for k in small_commit_keywords) + r")\b"
+    )
     small_commit_cases = [
         index
         for index, case in enumerate(cases, 1)
         if "commit" in str(case["prompt"]).lower()
-        and any(word in str(case["prompt"]).lower() for word in ["small", "tiny", "typo", "mechanical"])
+        and small_commit_pattern.search(str(case["prompt"]).lower())
     ]
     missing_agent_review = [
         index

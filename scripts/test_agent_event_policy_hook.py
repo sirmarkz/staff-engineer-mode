@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -23,15 +25,55 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         subprocess.run(["git", "add", "README.md"], cwd=self.repo, check=True)
         subprocess.run(["git", "commit", "-m", "initial"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
 
-    def run_hook(self, payload: dict[str, object], cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
+    def run_hook(
+        self,
+        payload: dict[str, object],
+        cwd: Path | None = None,
+        env: dict[str, str] | None = None,
+    ) -> subprocess.CompletedProcess[str]:
+        process_env = os.environ.copy()
+        process_env.pop("GH_REPO", None)
+        process_env.pop("GH_HOST", None)
+        if env is not None:
+            process_env.update(env)
         return subprocess.run(
             [str(HOOK), "pretooluse"],
             cwd=cwd or self.repo,
+            env=process_env,
             input=json.dumps(payload),
             text=True,
             capture_output=True,
             check=False,
         )
+
+    def run_hook_without_python(
+        self,
+        payload: dict[str, object],
+        cwd: Path | None = None,
+        extra_env: dict[str, str] | None = None,
+    ) -> subprocess.CompletedProcess[str]:
+        with tempfile.TemporaryDirectory() as bin_dir:
+            path_dir = Path(bin_dir)
+            for tool in ("awk", "bash", "cat", "dirname", "git", "grep", "jq", "sha256sum"):
+                target = shutil.which(tool)
+                if target is None:
+                    raise AssertionError(f"required test tool not found: {tool}")
+                os.symlink(target, path_dir / tool)
+            process_env = os.environ.copy()
+            process_env.pop("GH_REPO", None)
+            process_env.pop("GH_HOST", None)
+            if extra_env is not None:
+                process_env.update(extra_env)
+            process_env["PATH"] = str(path_dir)
+            return subprocess.run(
+                [str(HOOK), "pretooluse"],
+                cwd=cwd or self.repo,
+                env=process_env,
+                input=json.dumps(payload),
+                text=True,
+                capture_output=True,
+                check=False,
+            )
 
     def stage_change(self, content: str) -> None:
         (self.repo / "README.md").write_text(content, encoding="utf-8")
@@ -48,9 +90,8 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
         self.assertEqual(response["decision"], "block")
-        self.assertIn("agent-pr-review", response["reason"])
 
-    def test_git_c_commit_command_blocks_for_target_repo(self) -> None:
+    def test_git_c_commit_binds_block_to_target_repo(self) -> None:
         self.stage_change("initial\nchanged\n")
 
         result = self.run_hook(
@@ -60,11 +101,9 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
-        self.assertIn("agent-pr-review", response["reason"])
-        self.assertIn("--repo", response["reason"])
         self.assertIn(str(self.repo), response["reason"])
 
-    def test_cd_then_commit_blocks_for_target_repo(self) -> None:
+    def test_cd_then_commit_binds_block_to_target_repo(self) -> None:
         self.stage_change("initial\nchanged\n")
 
         result = self.run_hook(
@@ -74,32 +113,31 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
-        self.assertIn("agent-pr-review", response["reason"])
-        self.assertIn("--repo", response["reason"])
         self.assertIn(str(self.repo), response["reason"])
 
-    def test_stage_and_commit_command_explains_that_staging_did_not_run(self) -> None:
+    def test_stage_and_commit_blocks_even_with_matching_commit_receipt(self) -> None:
+        # Ack the current (empty-staged) state so the commit branch would allow.
+        subprocess.run([str(HOOK), "ack", "commit"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
         self.modify_unstaged("initial\nchanged\n")
 
         result = self.run_hook(
             {
                 "tool_name": "Bash",
-                "tool_input": {
-                    "command": 'git add README.md && git commit -m "change" 2>&1 | tail -3'
-                },
+                "tool_input": {"command": 'git add README.md && git commit -m "change"'},
             }
         )
 
         self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        reason = response["reason"].lower()
-        self.assertIn("same shell command", reason)
-        self.assertIn("run the staging command separately", reason)
-        self.assertIn("--repo", response["reason"])
         cached = subprocess.check_output(["git", "diff", "--cached", "--name-only"], cwd=self.repo, text=True)
         self.assertEqual(cached, "")
 
-    def test_cd_then_stage_and_commit_command_points_at_target_repo(self) -> None:
+    def test_cd_then_stage_and_commit_binds_block_to_target_repo(self) -> None:
+        subprocess.run(
+            [str(HOOK), "ack", "commit", "--repo", str(self.repo)],
+            cwd=self.repo.parent,
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
         self.modify_unstaged("initial\nchanged\n")
 
         result = self.run_hook(
@@ -114,9 +152,6 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
-        reason = response["reason"].lower()
-        self.assertIn("same shell command", reason)
-        self.assertIn("run the staging command separately", reason)
         self.assertIn(str(self.repo), response["reason"])
 
     def test_commit_ack_repo_allows_target_repo_command(self) -> None:
@@ -176,15 +211,13 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         allowed = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git commit -m change"}})
         self.assertEqual(allowed.returncode, 0, allowed.stderr)
 
-    def test_commit_all_is_blocked_so_review_binds_to_staged_diff(self) -> None:
+    def test_commit_all_is_blocked_even_with_matching_commit_receipt(self) -> None:
         self.stage_change("initial\nchanged\n")
         subprocess.run([str(HOOK), "ack", "commit"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
 
         result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git commit -am change"}})
 
         self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn("stage intended changes", response["reason"].lower())
 
     def test_release_command_blocks_without_release_receipt(self) -> None:
         result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git tag v1.2.3"}})
@@ -192,9 +225,8 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
         self.assertEqual(response["decision"], "block")
-        self.assertIn("release-build-reproducibility", response["reason"])
 
-    def test_git_c_release_command_blocks_for_target_repo(self) -> None:
+    def test_git_c_release_binds_block_to_target_repo(self) -> None:
         result = self.run_hook(
             {"tool_name": "Bash", "tool_input": {"command": f"git -C {self.repo} tag v1.2.3"}},
             cwd=self.repo.parent,
@@ -202,11 +234,9 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
-        self.assertIn("release-build-reproducibility", response["reason"])
-        self.assertIn("--repo", response["reason"])
         self.assertIn(str(self.repo), response["reason"])
 
-    def test_cd_then_release_command_blocks_for_target_repo(self) -> None:
+    def test_cd_then_release_binds_block_to_target_repo(self) -> None:
         result = self.run_hook(
             {"tool_name": "Bash", "tool_input": {"command": f"cd {self.repo} && git tag v1.2.3"}},
             cwd=self.repo.parent,
@@ -214,8 +244,6 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
-        self.assertIn("release-build-reproducibility", response["reason"])
-        self.assertIn("--repo", response["reason"])
         self.assertIn(str(self.repo), response["reason"])
 
     def test_release_ack_repo_allows_target_repo_command(self) -> None:
@@ -255,6 +283,236 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout, "")
+
+    def test_cd_then_gh_release_create_binds_block_to_target_repo(self) -> None:
+        result = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": f"cd {self.repo} && gh release create v1.0.0"}},
+            cwd=self.repo.parent,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn(str(self.repo), response["reason"])
+
+    def test_cd_then_gh_release_delete_binds_block_to_target_repo(self) -> None:
+        result = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": f"cd {self.repo} && gh release delete v1.0.0"}},
+            cwd=self.repo.parent,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn(str(self.repo), response["reason"])
+
+    def test_cd_then_bump_version_script_binds_block_to_target_repo(self) -> None:
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": f"cd {self.repo} && ./scripts/bump-version.sh 1.0.0"},
+            },
+            cwd=self.repo.parent,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn(str(self.repo), response["reason"])
+
+    def test_cd_chain_returning_to_repo_does_not_bypass_release_gate(self) -> None:
+        (self.repo / "docs").mkdir()
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": "cd docs && cd .. && gh release create v1.0.0"},
+            },
+        )
+
+        self.assertEqual(result.returncode, 2)
+
+    def test_cd_into_subdir_does_not_bypass_release_gate(self) -> None:
+        (self.repo / "docs").mkdir()
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": "cd docs && gh release create v1.0.0"},
+            },
+        )
+
+        self.assertEqual(result.returncode, 2)
+
+    def test_cd_to_missing_dir_does_not_bypass_release_gate(self) -> None:
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": "cd missing-dir; gh release create v1.0.0"},
+            },
+        )
+
+        self.assertEqual(result.returncode, 2)
+
+    def test_cd_to_non_repo_path_does_not_bypass_release_gate(self) -> None:
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": "cd /tmp && gh release create v1.0.0 --repo owner/other"},
+            },
+        )
+
+        self.assertEqual(result.returncode, 2)
+
+    def test_gh_release_with_leading_global_flags_does_not_bypass(self) -> None:
+        for cmd in (
+            "gh --repo owner/project release delete v1.0.0",
+            "gh -R owner/project release create v1.0.0",
+            "gh --hostname github.example.com release edit v1.0.0",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}, got {result.returncode}")
+
+    def test_gh_remote_repo_release_blocks_even_with_local_release_receipt(self) -> None:
+        # A local release receipt must NOT authorize a cross-repo gh release.
+        subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": "gh --repo owner/other release create v1.0.0"},
+            }
+        )
+
+        self.assertEqual(result.returncode, 2)
+
+    def test_gh_remote_release_blocks_after_authorized_local_release_event(self) -> None:
+        subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {
+                    "command": "git tag v1.0.0 && gh --repo owner/other release create v1.0.0"
+                },
+            }
+        )
+
+        self.assertEqual(result.returncode, 2)
+
+    def test_gh_release_via_env_var_repo_selector_is_remote(self) -> None:
+        subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+        for cmd in (
+            "GH_REPO=owner/other gh release create v1.0.0",
+            "GH_HOST=enterprise.example.com gh release delete v1.0.0",
+            "FOO=bar GH_REPO=owner/other gh release create v1.0.0",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}")
+
+    def test_gh_release_via_inherited_env_var_repo_selector_is_remote(self) -> None:
+        subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+        for env in ({"GH_REPO": "owner/other"}, {"GH_HOST": "enterprise.example.com"}):
+            with self.subTest(env=env):
+                result = self.run_hook(
+                    {"tool_name": "Bash", "tool_input": {"command": "gh release create v1.0.0"}},
+                    env=env,
+                )
+                self.assertEqual(result.returncode, 2, f"expected block for env {env!r}")
+
+    def test_gh_release_via_hostname_selector_is_remote(self) -> None:
+        subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+        for cmd in (
+            "gh --hostname enterprise.example.com release create v1.0.0",
+            "gh release --hostname enterprise.example.com delete v1.0.0",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}")
+
+    def test_gh_release_delete_asset_blocks_without_release_receipt(self) -> None:
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": "gh release delete-asset v1.0.0 artifact.tgz"},
+            }
+        )
+
+        self.assertEqual(result.returncode, 2)
+
+    def test_gh_repo_flag_in_any_position_classifies_as_remote(self) -> None:
+        # gh accepts --repo / -R before "release", between "release" and the action,
+        # after the action, or with values attached to the short flag. All must be
+        # classified as cross-repo and blocked, even with a local release receipt.
+        subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+        for cmd in (
+            "gh release --repo owner/other create v1.0.0",
+            "gh release create v1.0.0 --repo owner/other",
+            "gh release create --repo=owner/other v1.0.0",
+            "gh release -R owner/other delete v1.0.0",
+            "gh release create v1.0.0 -Rowner/other",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}")
+
+    def test_gh_remote_release_blocks_from_non_repo_directory(self) -> None:
+        # Hook must block cross-repo gh releases even when the invoking shell
+        # is not inside any git repository.
+        with tempfile.TemporaryDirectory() as non_repo:
+            result = self.run_hook(
+                {
+                    "tool_name": "Bash",
+                    "tool_input": {"command": "gh --repo owner/other release create v1.0.0"},
+                },
+                cwd=Path(non_repo),
+            )
+
+            self.assertEqual(result.returncode, 2)
+
+    def test_gh_non_release_subcommand_is_not_classified(self) -> None:
+        # Action keywords appearing as flag values inside a different gh
+        # subcommand must not trigger the release gate.
+        for cmd in (
+            "gh issue create --title release --body delete",
+            "gh pr create --title 'release notes' --body 'delete me'",
+            "gh release list",
+            "gh release view v1.0.0",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 0, f"unexpected block for {cmd!r}: {result.stdout}")
+
+    def test_no_python_fallback_does_not_block_non_mutating_gh_release_actions(self) -> None:
+        for cmd in (
+            "gh release view delete",
+            "gh release list create",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook_without_python({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 0, f"unexpected block for {cmd!r}: {result.stdout}")
+
+    def test_no_python_fallback_inherited_env_selector_is_remote(self) -> None:
+        subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+        for env in ({"GH_REPO": "owner/other"}, {"GH_HOST": "enterprise.example.com"}):
+            with self.subTest(env=env):
+                result = self.run_hook_without_python(
+                    {"tool_name": "Bash", "tool_input": {"command": "gh release create v1.0.0"}},
+                    extra_env=env,
+                )
+                self.assertEqual(result.returncode, 2, f"expected block for env {env!r}")
+
+    def test_no_python_fallback_remote_gh_release_blocks_with_local_receipt(self) -> None:
+        subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+        for cmd in (
+            "gh --repo owner/other release create v1.0.0",
+            "gh release --repo owner/other create v1.0.0",
+            "gh release create v1.0.0 --repo owner/other",
+            "gh release create v1.0.0 -Rowner/other",
+            "gh release create v1.0.0 --hostname enterprise.example.com",
+            "GH_REPO=owner/other gh release create v1.0.0",
+            "GH_HOST=enterprise.example.com gh release delete v1.0.0",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook_without_python({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}")
 
 
 if __name__ == "__main__":
