@@ -1,5 +1,19 @@
 # Staff Engineer Mode Release Notes
 
+## 1.7.5 - 2026-05-28
+
+Release readiness policy patch.
+
+- Requires both `release-build-reproducibility` and
+  `production-readiness-review` before tags, version bumps, hosted release
+  records, packages, artifact publication, or promotion.
+- Propagates the dual-review release policy through the Claude hook, router
+  guidance, bootstrap context, cross-tool install docs, and platform
+  validation checks.
+- Adds reciprocal release-cut reminders in both release specialists so build
+  traceability and production readiness stay paired before the first release
+  command.
+
 ## 1.7.4 - 2026-05-28
 
 Agent event policy hardening and documentation patch.
