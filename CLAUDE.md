@@ -26,9 +26,12 @@ diff. Before tags, version bumps, hosted release records, packages, artifact pub
 or promotion, run `release-build-reproducibility`. The Claude Code hook blocks
 those shell actions until the matching local Staff Engineer Mode receipt exists.
 Stage changes in a separate shell action before review; a combined `git add &&
-git commit` command is blocked before staging runs. Review findings guide the
-user; if the user explicitly accepts unresolved gaps, record an override receipt
-and proceed.
+git commit` command is blocked before staging runs. For commit attempts, the
+successful order is: stage changes, review `git diff --cached` with
+`agent-pr-review`, run the hook's `ack commit --repo <repo>` command to record
+the receipt, then run `git commit`. A review message alone is not a receipt.
+Review findings guide the user; if the user explicitly accepts unresolved gaps,
+record an override receipt and proceed.
 
 Keep the pack boundary tight: building, shipping, securing, operating, and
 maintaining complex software systems.

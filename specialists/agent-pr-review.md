@@ -123,6 +123,7 @@ Run this table after mapping the diff and before the verdict. These routes are e
 - One-sentence reconstructed intent and one-sentence assessment of whether the diff matches it, anchored to at least one changed file, function, or line when available.
 - Explicit merge verdict: ready to merge, request changes, or block, with reasons tied to observed issues or their absence.
 - Override posture: whether the agent may proceed autonomously, or whether only explicit user acceptance of the listed gaps should proceed.
+- For commit attempts on receipt-enforced hosts: after a ready verdict, record the local commit receipt before running the commit command; if unresolved gaps remain, record an override receipt only after explicit user acceptance.
 - Code-quality dimensions summary covering design, functionality, complexity, tests, naming, comments, and style, each marked issue, OK, or not applicable with brief support or reason.
 - Categorized findings table with category, support (file/line or behavior), recommended next action, and risk level.
 - Blocker list: changes that must not merge as-is, each with file/line support and next action.

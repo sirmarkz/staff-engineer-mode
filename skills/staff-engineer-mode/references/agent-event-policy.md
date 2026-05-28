@@ -20,6 +20,10 @@ bind to the staged diff for commit events and to the current source revision plu
 staged diff for release events. If the artifact changes after review, the agent
 must rerun the matching specialist before retrying the action.
 
+On receipt-enforced hosts, the specialist review and the receipt are separate
+steps. After a clean commit review, record the commit receipt before the first
+commit attempt; a review message alone does not satisfy the hook.
+
 The review requirement gates agent awareness, not user authority. A clean review
 can record a normal receipt. A review with unresolved gaps can still record an
 override receipt when the user explicitly accepts the findings and asks to
