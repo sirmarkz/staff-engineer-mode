@@ -15,11 +15,11 @@ Loading many plausible specialists is a routing failure.
 
 ## Precedence Over Generic Process Packs
 
-Engineering surfaces -- architecture, reliability, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, readiness, rollout, migration, incident response, control records, API design, service contracts, or engineering-system design -- start here before generic process packs.
+Engineering surfaces -- architecture, reliability, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, readiness, rollout, migration, incident response, documentation lifecycle, control records, API design, service contracts, or engineering-system design -- start here before generic process packs.
 
 Do not invoke `superpowers:brainstorming`, `superpowers:writing-plans`, or another broad process skill first. Route through Staff Engineer Mode, load the selected specialist, then use process skills only for sub-decisions.
 
-"Build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", or "investigate this incident" are engineering-system prompts. Consumer/client compatibility, removal, rollout, safety, or readiness checks route without exact names. If another pack says build or creative work starts with brainstorming, read the SEM specialist first.
+"Build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", or "investigate this incident" are engineering-system prompts. Docs/runbooks lifecycle ownership, source-of-truth, freshness, or archival also route. Consumer/client compatibility, removal, rollout, safety, or readiness checks route without exact names. If another pack starts with brainstorming, read the SEM specialist first.
 
 ## Load Contract
 
@@ -53,7 +53,7 @@ the release command.
 
 ## When To Use
 
-- The request asks for engineering decisions or guidance for design, delivery, operations, reliability, security, architecture, API, data, platform, or client work.
+- The request asks for engineering decisions or guidance for design, delivery, operations, reliability, security, architecture, API, data, platform, documentation, or client work.
 - The user asks to guide ideation, design, development, testing, release, or maintenance decisions.
 - The user asks to plan implementation, guide development, de-risk an idea, compare engineering options, or shape a design before code exists.
 - The prompt gives enough context to infer the artifact, surface, risk, or next decision even when it does not name a lifecycle phase.
@@ -76,7 +76,7 @@ Infer these from the prompt, repo, files, branch context, and conversation. Do n
 
 - **Artifact:** decision, design, plan, readiness check, rollout, investigation, runbook, migration, eval, control pack, or diff review.
 - **Phase:** ideation, design, development, testing, before merge, release, migration, active incident, post-incident, regression, readiness, or maintenance.
-- **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, client, AI, accessibility, cost, or operator load.
+- **Surface:** architecture, contract, reliability target, topology, dependency, performance, observability, delivery, data, platform, security, documentation, client, AI, accessibility, cost, or operator load.
 - **Risk/scope:** availability, latency, durability, correctness, privacy/security, compatibility, release safety, tenant/customer impact, public edge, internal traffic, multi-service, or multi-location.
 
 ## Bundled Specialist Slugs
@@ -173,8 +173,9 @@ Precedence. Load `references/routing-matrix.md` for uncertainty.
 - Desired-state capture, drift detection, reconciliation, or emergency exception rules after manual infrastructure changes route to `infrastructure-and-policy-as-code`.
 - Retiring/replacing capabilities with no-new-usage checks -> `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback -> `ml-reliability-and-evaluation`.
 - Security by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
+- Docs/runbooks/design docs/ADRs with owner/source-of-truth/freshness/archive rules -> `documentation-lifecycle`; control maps/scorecards/exception records/record packs -> `engineering-control-evidence`.
 - Public edge, service identity/discovery/locality, dependency retry policy, `performance-and-capacity`, browser release signals, accessibility, cost, LLM eval/serving/security, AI coding controls, and readability stay separate.
-- Single-surface verification details stay with the matching specialist; cross-surface control mappings, scorecards, exception records, and control packs route to `engineering-control-evidence`.
+- Single-surface verification stays with its specialist.
 
 ## Red Flags - Stop And Rework
 
