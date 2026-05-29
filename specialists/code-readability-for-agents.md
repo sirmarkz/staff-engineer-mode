@@ -15,7 +15,7 @@ Indirection that humans tolerate because they remember where things live becomes
 
 ## Overview
 
-Produces a repository legibility map for AI comprehension: a module-boundary map, a list of names that collide or mislead code search, a function-and-file size report against a defined budget, and a set of naming and layout patches that let an agent reach the canonical implementation in one tool call. Refuses to call code "clean" when an agent has to read three files to find where a behavior actually lives.
+Produces a repository legibility map for AI comprehension: a module-boundary map, a list of names that collide or mislead code search, a function-and-file size report against a defined budget, and a set of naming and layout patches that let an agent reach the canonical implementation in one tool call. Refuses to call code "clean" when an agent has to read three files to find where a behavior lives.
 
 **Core principle:** the repository is read by agents at least as often as by humans now. If the agent cannot find the canonical implementation deterministically, the structure is wrong, not the agent.
 
@@ -31,7 +31,7 @@ evaluate this skill pack.
 - A codebase is being prepared for AI-assisted contribution and you want to reduce wrong-file edits and hallucinated helpers.
 - A repo has god files, files that exceed sensible read budgets, or modules whose names do not predict their contents.
 - Code search returns multiple plausible matches for common verbs (`process`, `handle`, `update`, `run`) and the agent guesses wrong.
-- A refactor is being planned and you want module boundaries that future agents can reason about, not only humans.
+- A refactor is being planned and you want module boundaries that future agents and humans can reason about.
 - Onboarding (human or agent) takes longer than the work justifies because canonical implementations are buried under indirection.
 
 ## When Not To Use

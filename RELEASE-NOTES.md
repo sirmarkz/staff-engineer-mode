@@ -231,10 +231,9 @@ Router precedence release.
   process pack can load.
 - Verified live on Claude Code and Codex with five prompts spanning HA
   design, incident response, and production readiness. All five route to
-  the right specialist with zero brainstorming detours. The earlier
-  symptom -- typing "i want to build a highly available system" and
-  getting a `superpowers:brainstorming` intake flow instead of HA
-  guidance -- no longer occurs.
+  the right specialist with zero brainstorming detours. The earlier symptom is
+  fixed: typing "i want to build a highly available system" routes to HA
+  guidance and skips the `superpowers:brainstorming` intake flow.
 - Bumps the router word budget from 1800 to 2000 to accommodate the new
   precedence section.
 
@@ -279,7 +278,7 @@ Engineering-surface cleanup and live-routing hardening release.
 
 - Removes the generic `code-review-and-workflow` specialist. Review-system
   design, reviewer routing, change-size policy, ownership workflow, and DORA
-  process prompts no longer route unless the request names a concrete
+  process prompts route only when the request names a concrete
   engineering surface; the pack now routes to 54 engineering specialists.
 - Keeps the lifecycle-routing model from 1.2.0 focused on engineering decisions
   across ideation, design, development, testing, release, operation, and
@@ -425,7 +424,9 @@ Self-sufficient skill guidance release.
 
 ## 0.6.0 - 2026-05-05
 
-Performance optimizations across the skill catalog.
+External-standards conformance pass across specialist skills: improves 28 files,
+moves Iron Laws to the top, compacts duplicate architecture guidance, and
+replaces hardcoded technology terms with capability language.
 
 ## 0.5.0 - 2026-05-04
 

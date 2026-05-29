@@ -132,7 +132,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 - Latency is reported as average only and the tail is not measured.
 - A retry storm during a partial provider outage doubled or tripled spend and no retry cap or circuit broke the loop.
 - Schema-constrained or tool-call output retries silently until success, with no reattempt cap.
-- Cache "works" but hit rate is unmeasured; cost behavior changes when the prompt template is edited and nobody notices.
+- Cache "works" but hit rate is unmeasured; cost behavior changes when the prompt template is edited and no owner notices.
 - The fallback path is documented but has never been exercised; provider failure produces a real outage.
 - Spend is reported in aggregate only and per-tenant or per-feature cost cannot be sliced.
 - Streaming is used for latency optics but the caller still waits for the full response before rendering.

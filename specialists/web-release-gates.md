@@ -17,7 +17,7 @@ If a release can make the client experience worse without tripping a check, the 
 
 Client-side quality is production reliability for the user's device and network.
 
-**Core principle:** check client-facing releases on field-user experience, journey-level budgets, runtime errors, and accessibility smoke checks, not only build success.
+**Core principle:** check client-facing releases on field-user experience, journey-level budgets, runtime errors, accessibility smoke checks, and build success.
 
 ## When To Use
 
@@ -44,7 +44,7 @@ Client-side quality is production reliability for the user's device and network.
 
 ## Workflow
 
-1. **Pick user journeys and routes.** Check what users actually experience, not only the application shell.
+1. **Pick user journeys and routes.** Check user journeys and the application shell.
 2. **Set budgets.** Define journey-level payload, dependency, critical path, rendering, and interaction budgets.
 3. **Use field and lab signals.** Use lab checks for fast feedback and field data for real user impact.
 4. **Segment enough to see regressions.** Track mobile/desktop, browser, device class, geography/network, and key customer segments where relevant.

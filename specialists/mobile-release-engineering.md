@@ -83,7 +83,7 @@ Use staged mobile rollout with crash-free, hang, startup, and critical-journey b
 
 - Lead with the staged rollout decision, halt criteria, or stability budget requested.
 - Cover crash-free, hangs, startup, critical journey, segmentation, and repair path before optional mobile release topics.
-- Include numeric stability thresholds and measurement windows when recommending rollout checks; clearly label provisional defaults if the user has not supplied project-specific budgets.
+- Include numeric stability thresholds and measurement windows when recommending rollout checks; label provisional defaults if the user has not supplied project-specific budgets.
 - Make recommendations actionable with checks, stop conditions, and forward-fix or kill-switch actions where relevant.
 - Name the details to inspect, such as crash-free sessions/users, OS/device cohorts, sample sizes, app versions, and telemetry readiness; do not state details you have not seen.
 - Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.

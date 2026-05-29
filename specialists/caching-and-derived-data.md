@@ -53,7 +53,7 @@ Caching is a correctness path disguised as a performance optimization.
 4. **Protect downstreams.** Model miss amplification and add coalescing, leases, prewarming, or load shedding.
 5. **Handle invalidation as correctness.** Use explicit invalidation, versioned values, or repair scans when stale writes can occur. For cache-aside writes, define the source-of-truth update and invalidation order.
 6. **Define degradation.** State behavior when cache is cold, unavailable, partitioned, or stale.
-7. **Instrument correctness and load.** Track stale-read rate, invalidation lag, rebuild lag, hit/miss, entry-size rejects, cold-cache state, and downstream saturation. Set hit-rate alerts tight against the normal operating point — at high hit rates, a small absolute drop translates to a multiplicative increase in backing load (a hit rate falling from 95% to 85% triples the miss rate, not doubles it), so alarming on a fixed absolute floor misses the operating-point sensitivity.
+7. **Instrument correctness and load.** Track stale-read rate, invalidation lag, rebuild lag, hit/miss, entry-size rejects, cold-cache state, and downstream saturation. Set hit-rate alerts tight against the normal operating point: at high hit rates, a small absolute drop translates to a multiplicative increase in backing load (a hit rate falling from 95% to 85% triples the miss rate, not doubles it), so alarming on a fixed absolute floor misses the operating-point sensitivity.
 8. **Plan repair.** Include manual and automated invalidation/rebuild with verification.
 
 ## Synthesized Default

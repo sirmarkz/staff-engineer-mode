@@ -34,7 +34,7 @@ Engineering controls are useful only when they are close to the work and produce
 
 - The request is single-launch, single-traffic-shift, or readiness for a launch impact increase; use `production-readiness-review`.
 - A single specialist covers the needed records directly: deployed vulnerability details belong to `vulnerability-management`; build-path provenance belongs to `software-supply-chain-security`; identity, secrets, and access details belong to `identity-and-secrets`; reliability target details belong to `slo-and-error-budgets`; alert and telemetry details belong to `observability-and-alerting`; backup and restore test results belong to `backup-and-recovery`; tenant boundary checks belong to `tenant-isolation`; data lifecycle details belong to `privacy-and-data-lifecycle`; data pipeline details belong to `data-pipeline-reliability`; threat-model details belong to `secure-sdlc-and-threat-modeling`; AI-assisted change verification belongs to `ai-coding-governance`.
-- The user asks for records but actually wants a single-domain answer; use the matching specialist above.
+- The user asks for records but wants a single-domain answer; use the matching specialist above.
 - The request is broad compliance, legal, procurement, vendor risk, auditor-liaison program management, or business program management outside engineering lifecycle and operations.
 
 ## Info To Gather

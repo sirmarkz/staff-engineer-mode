@@ -108,7 +108,7 @@ Use lightweight formal or semi-formal validation for high-stakes stateful behavi
 - `invariant_list`: critical safety and liveness properties are written in plain, testable language.
 - `model_boundary`: actors, state, messages, timing, and failure assumptions are explicit.
 - `unknown_outcome`: timeout and lost-response cases define whether the side effect may have happened and how retry or reconciliation stays safe.
-- `counterexample_search`: validation attempts to find failing traces, not just confirm expected cases.
+- `counterexample_search`: validation attempts to find failing traces and confirm expected cases.
 - `code_mapping`: each modeled transition maps to implementation code, tests, or runtime checks.
 - `recovery_cases`: duplicate, reorder, retry, crash, timeout, and partial-failure cases are covered or explicitly exempted.
 

@@ -50,7 +50,7 @@ Critical data pipelines are production systems whose users notice stale, missing
 3. **Map lineage.** Record source, transform version, schedule/watermark, publish step, and downstream consumers.
 4. **Check publication.** Validate schema, required fields, ranges, referential integrity, duplicates, and business invariants before publish.
 5. **Make replay safe.** Ensure reprocessing is idempotent or explicitly handles duplicates and side effects.
-6. **Alert on symptoms.** Trigger urgent alerts or tickets on freshness, backlog, stalled watermarks, and quality failures, not only job failure.
+6. **Alert on symptoms.** Trigger urgent alerts or tickets on freshness, backlog, stalled watermarks, quality failures, and job failures.
 7. **Create recovery runbooks.** Include backfill, replay, quarantine, correction, republish, and consumer notification.
 8. **Separate ML concerns.** Route model-specific eval, drift, and training/serving skew to ML systems reliability.
 
@@ -73,7 +73,7 @@ Treat critical pipelines like services: SLI/SLO, validation checks, lineage, ide
 
 ## Exceptions
 
-- Exploratory datasets may use lighter checks if clearly labeled non-production.
+- Exploratory datasets may use lighter checks if marked non-production.
 - Some best-effort analytics can use follow-up tickets rather than urgent alerts if consumers accept delay.
 - Streaming pipelines may use watermark/backlog SLIs instead of schedule-based freshness.
 - Irreversible side effects during replay require quarantine and manual confirmation.

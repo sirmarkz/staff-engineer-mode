@@ -107,7 +107,7 @@ Use recent restore tests tied to RTO/RPO as the default. Protect backups and enc
 - `measured_restore`: restore behavior is measured against the stated objective rather than described from intent.
 - `coverage_matrix`: critical data, metadata, schema, config, and keys have backup or rebuild coverage.
 - `isolation_check`: backups and keys are protected from destructive operator, compromised credential, and ransomware scenarios.
-- `validation_queries`: restored data has correctness checks, not just process completion.
+- `validation_queries`: restored data has correctness checks and process completion checks.
 
 ## Red Flags - Stop And Rework
 

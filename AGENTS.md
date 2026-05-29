@@ -64,7 +64,7 @@ maintaining complex software systems.
   synthesized defaults, exceptions, required outputs, checks before moving on, red flags,
   and common mistakes.
 - Normalize competing large-scale engineering practices into one blended default
-  unless the context clearly requires a named exception.
+  unless the context requires a named exception.
 - Do not force users to invoke individual specialists by name. The router must
   choose automatically from user intent, with conservative fallback behavior.
 - Avoid process-only guidance unless it directly supports engineering lifecycle,
@@ -109,7 +109,7 @@ maintaining complex software systems.
 - Keep scripts focused, readable, and repo-relative.
 - Validate inputs and fail with clear errors.
 - Do not log sensitive data.
-- Prefer simple standard-library tooling unless a dependency clearly improves the
+- Prefer simple standard-library tooling unless a dependency improves the
   repository contract.
 
 ## Git And Commit Rules

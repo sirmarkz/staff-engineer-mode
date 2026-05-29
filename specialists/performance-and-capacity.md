@@ -96,7 +96,7 @@ Optimize around tail percentiles, saturation, queue age, and headroom rather tha
 
 ## Required Outputs
 
-Every answer — including narrow regression diagnoses — must state, in this order:
+Every answer, including narrow regression diagnoses, must state, in this order:
 
 1. **Target at user boundary**: numeric latency/throughput target, percentile (p95/p99/p99.9), and the measurement boundary (edge, gateway, service ingress). Mark unknown explicitly.
 2. **Load-test methodology**: name the method (synthetic load, traffic shadow, prod replay), the scenarios (normal/peak/burst/soak), and pass/stop criteria.
@@ -132,4 +132,4 @@ Every answer — including narrow regression diagnoses — must state, in this o
 | Treating CPU as capacity | Include all saturation points: queues, locks, pools, IO, network, and dependencies. |
 | Testing only steady load | Add bursts, soak, failover, cold cache, and dependency-slow scenarios. |
 | Hiding overload in queues | Track age and drain rate; shed work before recovery becomes impossible. |
-| Optimizing p50 | Optimize the percentile users and SLOs actually experience. |
+| Optimizing p50 | Optimize the percentile users and SLOs experience. |

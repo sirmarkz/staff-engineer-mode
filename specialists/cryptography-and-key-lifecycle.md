@@ -11,7 +11,7 @@ description: "Use when certificates, signing keys, secrets, algorithms, or crypt
 EVERY KEY, CERT, AND ALGORITHM HAS AN EXPIRY DATE AND A TESTED REPLACEMENT PATH
 ```
 
-If a certificate, key, algorithm, or trust root cannot be replaced safely on demand, the system is brittle. "Tested" means the replacement path has been exercised at least once outside an emergency, not just documented.
+If a certificate, key, algorithm, or trust root cannot be replaced safely on demand, the system is brittle. "Tested" means the replacement path has been exercised at least once outside an emergency; documentation alone is insufficient.
 
 ## Overview
 
@@ -49,7 +49,7 @@ Cryptography fails operationally when keys, certificates, algorithms, and trust 
 2. **Classify use.** Separate authentication, confidentiality, integrity, signing, verification, and storage use cases.
 3. **Assess agility.** Determine whether each dependency can be renewed, rotated, revoked, or replaced without coordinated outage.
 4. **Check compatibility.** Test old/new material and algorithm combinations with representative clients and workloads.
-5. **Automate renewal carefully.** Use monitored renewal paths with alerting, audit, and failed-renewal response. Trigger renewal well before expiry — for example, at roughly two-thirds of the credential's lifetime — so that a single failed renewal cycle has time to be detected and retried before the credential expires.
+5. **Automate renewal carefully.** Use monitored renewal paths with alerting, audit, and failed-renewal response. Trigger renewal well before expiry, for example at roughly two-thirds of the credential's lifetime, so that a single failed renewal cycle has time to be detected and retried before the credential expires.
 6. **Rotate without coordinated downtime.** Default to a dual-credential overlap sequence: issue the new credential, configure verifiers to accept both old and new, migrate producers and clients to the new credential, verify zero traffic uses the old, then revoke. The verify-zero-old-traffic check is what makes the rotation zero-downtime; rotations that skip it convert routine rotation into an outage.
 7. **Plan transitions.** Define overlap, dual support, rollout order, client migration, and retirement checks for deprecated algorithms or trust roots.
 8. **Prepare emergency response.** Document revocation, compromise response, rollback or roll-forward, and communication path.

@@ -47,7 +47,7 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 
 1. **Map the system.** Identify actors, assets, trust boundaries, data flows, privileged paths, and externally reachable surfaces.
 2. **Classify data and operations.** Mark sensitive data, destructive operations, admin actions, and integrity-critical decisions.
-3. **List abuse cases.** Write what an attacker or malicious/buggy client tries to accomplish, not only what component might fail.
+3. **List abuse cases.** Write what an attacker or malicious/buggy client tries to accomplish and what component might fail.
 4. **Apply a threat frame.** Use spoofing, tampering, repudiation, disclosure, denial, privilege elevation, or equivalent categories to avoid blind spots.
 5. **Map controls.** Assign authentication, authorization, validation, output handling, rate limits, audit, secrets handling, encryption, and isolation controls.
 6. **Constrain outbound requests.** For server-side fetchers, webhooks, callback URLs, or imports, define destination allowlists where feasible, DNS/IP rebinding checks, private and metadata address blocking, redirect policy, egress controls, timeout, size, content-type limits, and audit fields.

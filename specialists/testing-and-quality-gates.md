@@ -107,9 +107,9 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - Distributed-boundary failure matrix for request/reply or workflow edges, covering timeout, unknown result, duplicate, retry, and server-side state safety where relevant.
 - Failure response for each blocking check.
 - Static analysis, security scanning, and dependency check policy.
-- Coverage or mutation policy where it adds useful signal — name the metric, the target, and the meaningful-vs-vanity caveat (changed-code coverage, critical-path coverage).
+- Coverage or mutation policy where it adds useful signal: name the metric, the target, and the meaningful-vs-vanity caveat (changed-code coverage, critical-path coverage).
 - Test data sourcing and privacy/sensitivity policy.
-- Flake management and quarantine policy — state the flake-rate threshold (e.g. >1% rerun rate) and the quarantine timer (e.g. 24-48h to quarantine or downgrade with expiry).
+- Flake management and quarantine policy: state the flake-rate threshold (e.g. >1% rerun rate) and the quarantine timer (e.g. 24-48h to quarantine or downgrade with expiry).
 - Legacy ratchet plan with cadence, target metric, and next reduction step.
 
 ## Checks Before Moving On
@@ -118,7 +118,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - `check_signal`: every blocking check has high signal, and failure response.
 - `flake_policy`: flaky checks have fix, quarantine, downgrade, or expiry decision.
 - `stage_fit`: each check runs at the earliest stage where it can check the intended property.
-- `critical_path_sanity`: critical user paths have sanity checks that validate behavior, not only process health.
+- `critical_path_sanity`: critical user paths have sanity checks that validate behavior and process health.
 - `distributed_failure_matrix`: distributed boundaries cover independent client, network, server, timeout, duplicate, and retry outcomes, or route high-stakes invariants to `state-machine-correctness`.
 - `pre_traffic_health`: new capacity passes startup/readiness checks before accepting real traffic.
 - `promotion_checks`: production-like integration, synthetic, canary, or performance checks stop promotion when critical behavior fails.
@@ -131,7 +131,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - Coverage percentage is treated as quality without behavior/risk mapping.
 - Flaky tests are required but failures are routinely rerun until green.
 - Static analysis results appear after merge with no local fix path or suppression rule.
-- Checks block but nobody can explain what failure means.
+- Checks block but no owner can explain what failure means.
 - Distributed-call tests treat timeout as a simple failed request instead of checking unknown-outcome behavior.
 - High-assurance protocol or concurrency validation is treated as ordinary CI without invariants or counterexamples.
 

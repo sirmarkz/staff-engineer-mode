@@ -19,7 +19,7 @@ If a template creates a service but not an operable service, it is not a golden 
 
 A good platform makes the safe path the easy path. Exception register fields follow the shared risk-register and compensating-control formats.
 
-**Core principle:** encode standards as reusable workflows, templates, scorecards, and self-service capabilities that projects actually use.
+**Core principle:** encode standards as reusable workflows, templates, scorecards, and self-service capabilities that projects use in routine work.
 
 ## When To Use
 
@@ -79,7 +79,7 @@ Build golden paths around capabilities rather than tools: service creation, buil
 ## Exceptions
 
 - Specialized services can deviate when golden-path assumptions do not fit, but the exception must preserve equivalent checks and operations standards.
-- Early platform phases may cover a narrow service type first; state non-goals clearly.
+- Early platform phases may cover a narrow service type first; state non-goals.
 - Strict scorecards should start advisory until platform capabilities make compliance achievable.
 - Existing services may need incremental migration instead of template replacement.
 

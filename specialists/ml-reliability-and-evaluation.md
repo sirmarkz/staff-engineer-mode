@@ -74,7 +74,7 @@ Check ML releases on data validation, eval results, threat-informed failure-mode
 
 ## Exceptions
 
-- Non-production exploration may use lighter checks if isolated and clearly not used for decisions.
+- Non-production exploration may use lighter checks if isolated and marked as not for decisions.
 - Some models lack immediate ground truth; use proxy metrics, delayed labels, human review, or guardrail metrics.
 - High-risk decisions may require human-in-the-loop, additional safety checks, or stricter slice checks.
 - Batch scoring may use pipeline freshness and output validation instead of synchronous serving latency.

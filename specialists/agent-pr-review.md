@@ -29,12 +29,12 @@ files only when the user asks for a separate artifact.
 
 ## When To Use
 
-- The user asks to review a PR, branch, diff, or change set before merging — regardless of who or what produced it.
+- The user asks to review a PR, branch, diff, or change set before merging, regardless of who or what produced it.
 - The agent is about to create or amend a commit and needs review of the exact staged diff before the commit exists, regardless of change size.
 - A coding agent has just finished a multi-file change, refactor, migration, or new feature and the user is deciding whether to merge.
 - The user asks "is this safe to merge," "what would a senior review catch here," "review my last commit," "review this PR," "find risks in this diff," or "did the agent miss anything."
 - A concrete diff passes tests but changed deletion behavior, and the user asks what details are missing before merge.
-- The author's summary may not match what actually changed.
+- The author's summary may not match what changed.
 - The change touches paths the author was not explicitly scoped to and needs an explicit intent check.
 
 ## When Not To Use
@@ -172,7 +172,7 @@ Run this table after mapping the diff and before the verdict. These routes are e
 | Treating green tests as verification | Confirm a test exists that would fail without the change. |
 | Reviewing line-by-line without intent | Group changes by purpose and check each group against stated intent. |
 | Ignoring deletions | Search for remaining callers, imports, references, and tests of removed code. |
-| Accepting plausible APIs at face value | Confirm imports, types, and external calls actually exist in the target environment. |
+| Accepting plausible APIs at face value | Confirm imports, types, and external calls exist in the target environment. |
 | Letting scope creep slide | Name out-of-scope edits and require justification or removal. |
 | Skipping code-quality dimensions | Compactly cover design, functionality, complexity, tests, naming, comments, and style as part of the review artifact. |
 | Doing the specialist's work here | Finish the PR review, then use the sanity-check table for an internal lens or one prioritized follow-up. |

@@ -47,7 +47,7 @@ Accessibility is a release quality property, not a post-launch polish pass.
 1. **Define the target.** State the conformance expectation and critical journeys before evaluating details.
 2. **Map the journey.** Identify every step, control, message, focus transition, and error state a user must complete.
 3. **Check semantics and names.** Ensure controls expose meaningful structure, labels, state, and relationships.
-4. **Verify operation.** Test keyboard-only and assistive-technology paths for completion, not just component snapshots.
+4. **Verify operation.** Test keyboard-only paths, assistive-technology paths, and component snapshots for completion.
 5. **Check perception.** Review contrast, text resizing, motion, timing, media alternatives, and status updates where relevant.
 6. **Combine results.** Use automated checks for broad regressions and manual checks for interaction quality.
 7. **Check release.** Block critical journey failures; track lower-risk defects with severity, expiry, and retest date.
@@ -107,7 +107,7 @@ Check critical journeys with a named conformance target, automated checks, manua
 
 ## Red Flags - Stop And Rework
 
-- Automated checks pass, but nobody tested the critical journey.
+- Automated checks pass, but the critical journey lacks manual test evidence.
 - Focus is trapped, lost, or moves unpredictably.
 - Controls have visible labels but no reliable accessible names.
 - Error messages are visible but not announced or associated with fields.

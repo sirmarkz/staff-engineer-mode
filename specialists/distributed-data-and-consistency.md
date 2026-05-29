@@ -17,7 +17,7 @@ For each read path and each write path, the design must say which consistency gu
 
 Data architecture starts with semantics, not storage brands.
 
-**Core principle:** choose storage, replication, transactions, consistency, and sharding from the correctness guarantees each operation actually needs.
+**Core principle:** choose storage, replication, transactions, consistency, and sharding from the correctness guarantees each operation needs.
 
 ## When To Use
 

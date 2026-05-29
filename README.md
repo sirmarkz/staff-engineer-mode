@@ -2,14 +2,13 @@
 
 [![Release](https://img.shields.io/github/v/release/sirmarkz/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
 
-**Your AI coding agent ships fast. This makes it ship with judgment.**
+**Production-engineering judgment for AI coding agents.**
 
-Public production-engineering practices, packaged as decision guidance for AI
-coding agents. As agents write material amounts of
-production code, the bottleneck is no longer how fast they write; it is whether
-they reason about what happens when the code runs at 3am. Staff Engineer Mode closes that
-gap before an agent ships code without the reliability, security, operability,
-compatibility, and rollout judgment production systems need.
+Staff Engineer Mode packages public production-engineering practices as decision
+guidance for AI coding agents. As agents write material amounts of production
+code, they need to reason about what happens when that code runs at 3am. The
+router and specialist files add reliability, security, operability,
+compatibility, and rollout checks before code ships.
 
 ## Sources
 
@@ -35,10 +34,10 @@ Specialist files live under `specialists/` and load only after routing. The
 router picks one primary specialist by default. See
 [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for examples.
 
-The plugin automatically calls `agent-pr-review` for commits and amends against
-the exact staged diff. It automatically calls `release-build-reproducibility`
-and `production-readiness-review` together for releases, tags, version bumps,
-packages, artifacts, and promotions.
+For commits and amends, the plugin calls `agent-pr-review` against the exact
+staged diff. For releases, tags, version bumps, packages, artifacts, and
+promotions, it calls `release-build-reproducibility` and
+`production-readiness-review` together.
 
 ## Installation
 
@@ -121,7 +120,7 @@ Start a fresh session inside any open repo and ask one of:
 - "For a new inventory dependency call, decide timeout, retry, and fallback."
 - "Review my last commit."
 
-The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps — not vibes.
+The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps.
 
 ## What's Inside
 
@@ -145,7 +144,7 @@ Examples by surface:
 
 ## Contributing
 
-Patches welcome — especially additional practices from authoritative sources: first-party engineering publications, official documentation, standards bodies, peer-reviewed papers, or widely cited practitioner references.
+Patches welcome, especially practices from authoritative sources: first-party engineering publications, official documentation, standards bodies, peer-reviewed papers, or widely cited practitioner references.
 
 New specialist files must be technology-agnostic, cite source-index references, and avoid vendor endorsement. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. The voice is enforced.
 

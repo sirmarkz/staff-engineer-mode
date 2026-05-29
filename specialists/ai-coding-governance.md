@@ -112,7 +112,7 @@ Use repo-local agent instructions, least-privilege tool access, protected-path r
 - The agent rewrites unrelated files without explicit user confirmation.
 - Sensitive logs, secrets, or user data are pasted into prompts unnecessarily.
 - New dependencies appear with no rationale, update path, or removal plan.
-- Verification is described but not actually run.
+- Verification is described but not run.
 
 ## Common Mistakes
 

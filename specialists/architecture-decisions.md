@@ -11,7 +11,7 @@ description: "Use when making system design decisions, ADRs, service/module/work
 NO ARCHITECTURE DECISION WITHOUT FORCES, ALTERNATIVES, AND COST TO CHANGE COURSE
 ```
 
-If the design lacks goals, constraints, alternatives considered, and a clear read on what would make you change course later, do not treat it as decided. For solo work, responsibility can simply name who runs the local checks and keeps the decision current.
+If the design lacks goals, constraints, alternatives considered, and a clear read on what would make you change course later, do not treat it as decided. For solo work, responsibility can name who runs the local checks and keeps the decision current.
 
 ## Overview
 

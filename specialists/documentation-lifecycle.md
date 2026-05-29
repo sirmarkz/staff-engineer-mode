@@ -75,7 +75,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 ## Exceptions
 
 - Short-lived design notes may expire after the decision is recorded elsewhere.
-- Exploratory notes can remain rough if clearly marked as non-authoritative.
+- Exploratory notes can remain rough if marked as non-authoritative.
 - Emergency docs may start minimal but need cleanup immediately after the event.
 
 ## Response Quality Bar
@@ -105,7 +105,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 - `audience_job`: each critical doc names its reader and supported task.
 - `doc_source`: responsibility path and source of truth are explicit.
 - `quadrant_classification`: every doc in the inventory **table carries a visible quadrant label** (tutorial / how-to / reference / explanation); runbooks and decision records tagged separately as operational/architectural. Mixed-quadrant docs are split.
-- `no_duplication_rule`: source-of-truth section states an explicit rule against duplication, not just "remove duplicates."
+- `no_duplication_rule`: source-of-truth section states an explicit rule against duplication, beyond "remove duplicates."
 - `staleness_signal`: freshness policy names both a cadence and the signal that flips a doc to stale.
 - `docs_as_code`: doc changes flow through linked changes AND automated checks (lint, link-check, or CI).
 - `freshness_rule`: change trigger, lifecycle state, and archive rule exist.

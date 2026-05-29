@@ -61,12 +61,12 @@ Produces a parity matrix across local, CI, staging, and production for the dimen
 3. **Define the required-parity dimensions.** Decide which dimensions must match across environments to keep test results meaningful. Dependency versions and configuration shape are usually required; production data values are usually forbidden in non-prod.
 4. **Define the allowed-divergence dimensions.** Decide which dimensions are intentionally different and what the contract is: data scale, secret values, account identifiers, real third-party dependencies versus stand-ins, network egress scope.
 5. **Set the drift budget.** State the acceptable size of divergence per dimension (for example, dependency-version skew within one minor version, configuration drift within a defined allowlist) and the action triggered when the budget is exceeded.
-6. **Detect drift.** For each parity-required dimension, instrument a comparison: hash the dependency lock, snapshot the configuration, compare schema versions, compare clock and locale settings, compare network reachability matrices. Drift detection runs on a defined cadence, not only on incident.
+6. **Detect drift.** For each parity-required dimension, instrument a comparison: hash the dependency lock, snapshot the configuration, compare schema versions, compare clock and locale settings, compare network reachability matrices. Drift detection runs on a defined cadence and after incidents.
 7. **Set action triggers.** When drift exceeds the budget, the action is not "create a generic task." The action is named: block CI promotion, block deploy to the next environment, repair the environment contract, or open an incident-grade follow-up.
 8. **Handle ephemeral and preview environments.** Ephemeral environments are useful only when their parity contract is explicit. State which dimensions they replicate from production and which they intentionally diverge on, so a passing preview means something specific.
 9. **Define preflight parity.** For release preflight stages, state which critical path dimensions must match production closely enough for the result to be trusted.
 10. **Bound third-party dependencies in non-prod.** Decide per dependency whether non-prod uses a stand-in, a sandbox, or the real production endpoint. Each choice has different parity properties; document them.
-11. **Reproduce the failure across environments.** When a "works here, fails there" failure appears, the first action is to reproduce in each relevant environment and identify the dimension responsible. The fix lives in that dimension, not only in the failing environment.
+11. **Reproduce the failure across environments.** When a "works here, fails there" failure appears, the first action is to reproduce in each relevant environment and identify the dimension responsible. Fix that dimension across the parity contract instead of patching the failing environment alone.
 12. **Update the parity contract.** After every drift-related incident, update the matrix, the drift budget, or the detection so the same divergence cannot hide again.
 
 ## Synthesized Default
@@ -139,7 +139,7 @@ Define required parity and allowed divergence per dimension. Detect drift on par
 - A drift detector exists but the action on breach is "send an email."
 - An incident's root cause was an environment divergence and the parity contract was not updated.
 - Time, locale, or clock differences across environments are unmeasured even after a date- or timezone-related bug.
-- Stand-in dependencies in non-prod produce different success contracts than the real dependency in production and nobody has documented the gap.
+- Stand-in dependencies in non-prod produce different success contracts than the real dependency in production, and the docs do not record the gap.
 
 ## Common Mistakes
 

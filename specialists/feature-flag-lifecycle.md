@@ -11,11 +11,11 @@ description: "Use when feature flags need lifecycle decisions: expiry, orphan de
 EVERY LIVE FLAG HAS AN EXPIRY, SAFE FALLBACK, AND REMOVAL PLAN
 ```
 
-A flag without all three is orphan debt. Orphan flags become dead branches, contradictory defaults, and stale kill switches that nobody dares pull during an incident.
+A flag without all three is orphan debt. Orphan flags become dead branches, contradictory defaults, and stale kill switches that teams hesitate to use during an incident.
 
 ## Overview
 
-Produces a flag inventory with category and expiry per flag, an orphan report for flags whose features no longer exist, and a removal plan with rollback for each retiring flag. Refuses to count a feature as shipped while a flag still controls it.
+Produces a flag inventory with category and expiry per flag, an orphan report for flags whose features have been removed, and a removal plan with rollback for each retiring flag. Refuses to count a feature as shipped while a flag still controls it.
 
 **Core principle:** every live flag is unfinished work. After a rollout completes, the flag, its branches, and its config rows are decision debt that compounds until someone explicitly removes them.
 

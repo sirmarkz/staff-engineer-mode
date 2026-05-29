@@ -11,7 +11,7 @@ description: "Use when designing shared schemas, events, datasets, files, stream
 NO SHARED DATA INTERFACE WITHOUT A WRITTEN CONTRACT, COMPATIBILITY RULES, AND CURRENT OR PLANNED CONSUMERS
 ```
 
-A "shared interface" is anything another component reads — a peer service, a downstream job, a different repo, even a future-you script. The contract states field meanings, types, and validity. Compatibility rules state what counts as additive vs breaking. For a new system, name the first expected consumers and the assumptions they depend on; for an existing system, name real consumers or the unknown-consumer risk.
+A "shared interface" is anything another component reads: a peer service, a downstream job, a different repo, even a future-you script. The contract states field meanings, types, and validity. Compatibility rules state what counts as additive vs breaking. For a new system, name the first expected consumers and the assumptions they depend on; for an existing system, name real consumers or the unknown-consumer risk.
 
 > This skill assumes the data crosses a component or repo boundary. If the data model is fully private to one component with no external readers, use `architecture-decisions` instead.
 
@@ -109,7 +109,7 @@ Use maintained, versioned, machine-checkable contracts for shared data boundarie
 ## Red Flags - Stop And Rework
 
 - A field keeps the same name but changes meaning.
-- Producers say "nobody uses this" without usage data.
+- Producers claim "no consumers use this" without usage data.
 - Consumers parse undocumented fields or rely on incidental ordering.
 - Validation checks shape but not required semantics.
 - Deprecated fields have no removal check.

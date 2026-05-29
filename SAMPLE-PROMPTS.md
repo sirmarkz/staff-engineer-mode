@@ -113,7 +113,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `dev-environment-parity`
 
-- "Build a parity matrix across local, CI, staging, and production for this service and find the divergences nobody named."
+- "Build a parity matrix across local, CI, staging, and production for this service and find the divergences the config, docs, or runbooks do not name."
 - "This fix worked locally and failed in CI; trace the environment dimensions that differ and tell me which one hid the bug."
 - "Define a drift budget for these environments with action triggers, allowed divergence, and required parity."
 - "Staging uses seeded tenants while local uses mocks; find which environment gap hid this serialization bug."
@@ -156,7 +156,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `agent-pr-review`
 
 - "Before committing the staged changes, review the exact diff for intent match, behavior verification, and missing edge cases."
-- "Find risks in the diff I'm about to push — silent assumptions, hallucinated APIs, scope creep, deleted-but-used code."
+- "Find risks in the diff I'm about to push: silent assumptions, hallucinated APIs, scope creep, deleted-but-used code."
 - "What did the agent (or I) miss in this branch that we'd be embarrassed to ship?"
 - "The diff passes tests but changed deletion behavior; review what details are missing before merge."
 
@@ -244,7 +244,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `tenant-isolation`
 
 - "Design tenant-isolation checks for a new support search feature that can query customer accounts."
-- "Inspect the multi-tenant quota code and tell me whether one large tenant can hurt everyone else."
+- "Inspect the multi-tenant quota code and tell me whether one large tenant can hurt other tenants."
 - "Use the access logs and tenant-context code path to check whether support search stayed isolated to one tenant."
 - "Support search can query multiple accounts; verify tenant context cannot be dropped on fallback paths."
 

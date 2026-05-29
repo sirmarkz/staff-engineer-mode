@@ -57,7 +57,7 @@ Produces incident roles and severity, a live timeline, a status-update cadence, 
 9. **Checkpoint explicitly.** At every incident-commander or shift change, record state, current hypothesis, customer impact, in-flight actions, user decision point, comms cadence, and next decision point.
 10. **Use the normal hotfix path where possible.** Reduce context switching by keeping artifact, branch, change, and rollout mechanics traceable even under urgency.
 11. **Run security incidents as a protected track.** When confidentiality, integrity, identity, abuse, or data exposure may be involved, preserve logs and artifacts, restrict sensitive details to need-to-know responders, and keep operational facts separate from legal conclusions.
-12. **Stabilize and verify.** Confirm recovery with user-visible metrics, not only internal health.
+12. **Stabilize and verify.** Confirm recovery with user-visible metrics and internal health.
 13. **Write a blameless postmortem.** Explain contributing factors across technical, operational, detection, change, and organizational layers.
 14. **Replace single-root-cause wording with layered factors.** If the user supplies "root cause: X", treat X as one technical trigger, then add control, detection, rollout, responsibility, or organizational defenses that allowed impact; mark inferred factors as candidates to verify.
 15. **Create verified actions.** Every action needs due date, observable completion signal, and classification: prevent, detect, mitigate, or learn.
@@ -107,7 +107,7 @@ Use role-based incident command during response and blameless, contributing-fact
 - Communications cadence and status-update skeleton.
 - User-confirmed strategy-change trigger when mitigation stalls.
 - Checkpoint packet for long incidents or responder changes.
-- Postmortem with layered contributing factors and missed defenses, not only a root-cause statement.
+- Postmortem with layered contributing factors, missed defenses, and root-cause details.
 - Action-item register with due date, observable verification signal, and category.
 - Follow-up engineering checks for the relevant skill surfaces.
 

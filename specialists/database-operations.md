@@ -50,7 +50,7 @@ Database changes are production releases with lock, lag, plan, and data-correcti
 
 1. **Classify the change.** Separate additive schema, index, backfill, dual-write, cutover, cleanup, query-plan, and maintenance work.
 2. **Assess production risk.** Identify locks, lag, write amplification, query-plan shifts, shard/partition effects, cache churn, failover interactions, and whether user-critical paths depend on the datastore behavior during those conditions.
-3. **Use expand/contract in named phases.** Run schema evolution as four sequential phases — Expand (add the new structure, old code ignores it), Migrate (backfill data into the new structure), Transition (new code reads/writes both), Contract (remove the old structure once nothing references it). Each phase except Contract is rollback-safe on its own: a failed Expand drops the new structure, a failed Migrate leaves the old structure authoritative with the new partially populated, a failed Transition reverts code while the old structure still serves; a failed Contract has already validated everything, so investigate before retrying rather than rolling back.
+3. **Use expand/contract in named phases.** Run schema evolution as four sequential phases: Expand (add the new structure, old code ignores it), Migrate (backfill data into the new structure), Transition (new code reads/writes both), Contract (remove the old structure once nothing references it). Each phase except Contract is rollback-safe on its own: a failed Expand drops the new structure, a failed Migrate leaves the old structure authoritative with the new partially populated, a failed Transition reverts code while the old structure still serves; a failed Contract has already validated everything, so investigate before retrying rather than rolling back.
 4. **Throttle and checkpoint.** Run in small batches with pause/abort controls, progress tracking, idempotency, and load-sensitive throttles.
 5. **Validate data.** Use verification queries, invariant checks, counts, sampling, and reconciliation before declaring completion.
 6. **Delay destructive cleanup.** Keep rollback/forward-fix options until telemetry shows the new path is stable.
@@ -126,4 +126,4 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 | Treating migrations as developer chores | Treat them as production releases. |
 | Backfilling too fast | Throttle by user impact, lag, locks, and saturation. |
 | Trusting row counts only | Add invariants, sampling, and reconciliation. |
-| Removing old paths immediately | Delay cleanup until rollback is no longer needed. |
+| Removing old paths immediately | Delay cleanup until rollback is unnecessary. |

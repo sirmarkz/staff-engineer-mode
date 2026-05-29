@@ -121,7 +121,7 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 - Policies block without clear error messages or exception path.
 - Desired state is split across undocumented sources.
 - Secret values appear in desired state, plan output, logs, or change diffs.
-- Rollback assumes state can simply be reverted.
+- Rollback assumes state can be reverted.
 - Emergency changes leave permanent drift.
 
 ## Common Mistakes

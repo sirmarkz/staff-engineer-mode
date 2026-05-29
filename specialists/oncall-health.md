@@ -51,7 +51,7 @@ Repeated pages and manual operations are engineering defects.
 2. **Find top load sources.** Rank by page count, duration, user impact, recurrence, and manual effort.
 3. **Separate symptom from cause.** Keep user-impact pages, but remove duplicate cause alerts unless they drive distinct action.
 4. **Fix runbooks.** Every paging alert needs a reachable, current runbook with impact check, mitigation, fallback, rollback, and verification.
-5. **Eliminate toil.** Automate, self-heal, remove, or redesign repeated manual operations; do not just document them better.
+5. **Eliminate toil.** Automate, self-heal, remove, or redesign repeated manual operations; documentation alone is insufficient.
 6. **Create an engineering backlog.** Give every recurring class a priority, expected page reduction, and verification metric.
 7. **Protect the signal.** Use SLO burn, grouping, dedupe, maintenance windows, and non-paging routing to prevent alert erosion.
 8. **Set a page-rate budget.** State a numeric per-shift or per-week page target and how it will be measured. Compare against current rate.

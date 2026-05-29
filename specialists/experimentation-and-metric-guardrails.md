@@ -11,7 +11,7 @@ description: "Use when designing A/B tests, holdouts, ramps, or readouts needing
 NO EXPERIMENT CALL WITHOUT A HYPOTHESIS, A KNOWN EXPOSED POPULATION, GUARDRAIL METRICS, AND A PRE-COMMITTED READOUT RULE
 ```
 
-The experiment must say what it predicts, record who actually saw the change (not just who was assigned), name the safety/quality metrics that can block a positive primary result, and commit to the decision rule before reading the result. For a small-project or hand-rolled experiment "known exposed population" can be as simple as "logged-in users on build SHA X after timestamp Y" - the invariant is that you can answer who was affected, not that you have an experimentation platform.
+The experiment must say what it predicts, record who saw the change (not just who was assigned), name the safety/quality metrics that can block a positive primary result, and commit to the decision rule before reading the result. For a small-project or hand-rolled experiment "known exposed population" can be as simple as "logged-in users on build SHA X after timestamp Y"; the invariant is that you can answer who was affected, not that you have an experimentation platform.
 
 ## Overview
 
@@ -46,7 +46,7 @@ Experiments are only useful when assignment, exposure, metrics, and decision rul
 
 1. **State the decision.** Define the hypothesis and what action the readout will drive.
 2. **Choose assignment unit.** Pick a stable unit that matches the effect being measured and avoids cross-contamination.
-3. **Define exposure.** Log when the user or entity could actually be affected, not only when assignment occurred.
+3. **Define exposure.** Log when the user or entity could be affected, not only when assignment occurred.
 4. **Predeclare metrics.** Name primary, guardrail, diagnostic, and segment metrics before reading results.
 5. **Check validity.** Test assignment balance, sample-ratio mismatch, missing telemetry, logging defects, and eligibility drift.
 6. **Plan interactions.** Identify overlapping experiments, long-lived holdouts, novelty effects, and downstream metric coupling.

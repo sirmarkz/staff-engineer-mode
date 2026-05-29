@@ -130,5 +130,5 @@ Use hypothesis-driven experiments that begin small, verify user-visible steady s
 | --- | --- |
 | Treating chaos as random failure | Inject a specific fault to test a specific expected behavior. |
 | Starting too large | Check behavior in the smallest useful blast radius first. |
-| Ignoring correctness | Include data correctness, freshness, and side effects, not just uptime. |
+| Ignoring correctness | Include data correctness, freshness, side effects, and uptime. |
 | Ending at the debrief | Convert findings into fixes, tests, and runbook updates. |
