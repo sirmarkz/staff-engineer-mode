@@ -1,33 +1,114 @@
 # Installing Staff Engineer Mode For Codex
 
-Enable Staff Engineer Mode in OpenAI Codex through native skill discovery. The
-native skill tree exposes only the router; specialist guidance stays in the
-repository under `specialists/` and is read only after routing.
+Enable Staff Engineer Mode in OpenAI Codex through the Codex plugin system. The
+plugin exposes one native router skill, keeps routed specialist files under
+`specialists/`, and installs the session and command hooks that carry routing,
+commit, and release policy.
 
 ## Prerequisites
 
 - Git
-- OpenAI Codex CLI or Codex App
+- Codex CLI, or Codex App with plugin support
 
-## Plugin Marketplace
+## Install From A Terminal
 
-In Codex CLI, open the plugin search interface:
+Run these commands in your shell, not inside a Codex chat:
 
-```text
-/plugins
+```bash
+codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref b658229b384d79227f7dd93d59cd3bdad22c75cd
+codex plugin add staff-engineer-mode@staff-engineer-mode
 ```
 
-Search for `staff-engineer-mode`, then select `Install Plugin` when it is available.
+This pins the marketplace checkout to commit
+`b658229b384d79227f7dd93d59cd3bdad22c75cd`; that marketplace entry installs
+plugin artifact commit `c4901a4bb832608fe6d59d9f9d054c705d11cc0f`.
+Do not omit the `--ref` value. Without it, Codex resolves the repository's
+default branch at install time.
 
-In the Codex App, open Plugins in the sidebar, search for `Staff Engineer Mode`, and
+Restart Codex after installation so skills and hooks are loaded.
+
+## Install From Codex App
+
+Open Plugins in the Codex App sidebar, search for `Staff Engineer Mode`, and
 install it from the Coding category when published.
 
-## Manual Installation
+## Verify
+
+From a terminal:
+
+```bash
+codex plugin marketplace list
+codex plugin list --marketplace staff-engineer-mode
+```
+
+Then start a fresh Codex session in a repository and ask:
+
+```text
+Review this service for production readiness.
+```
+
+The session should load the Staff Engineer Mode bootstrap, route the request to
+one primary specialist, and read the selected file from
+`specialists/<slug>.md` before giving engineering guidance.
+
+## How It Works
+
+Codex installs the plugin from the configured marketplace snapshot and loads the
+router skill from `skills/staff-engineer-mode/SKILL.md`. The router is the only
+native skill entrypoint. Specialist guidance remains in repository files:
+
+```text
+<plugin root>/specialists/<slug>.md
+```
+
+Users should not need to name individual specialists. Broad engineering
+requests route through `staff-engineer-mode`, which then reads the selected
+specialist file.
+
+## Hooks And Policy
+
+The plugin includes a `SessionStart` hook that adds `SPECIALIST_ROOT`,
+`EVENT_HOOK`, and the Staff Engineer Mode routing contract to each Codex
+session. It also includes a command policy hook for commit and release events
+when the host runs plugin hooks.
+
+Before creating or amending commits, the agent must stage separately, inspect
+the exact staged diff, read `agent-pr-review`, review the staged change, record
+the commit receipt, and then commit. Before tags, version bumps, hosted release
+records, packages, artifact publication, or promotion, the agent must read and
+apply both `release-build-reproducibility` and `production-readiness-review`,
+record the release receipt, and then run the release command.
+
+## Updating
+
+To move to a newer release:
+
+1. Find the plugin artifact commit for the release.
+2. Find the later marketplace metadata commit whose
+   `.claude-plugin/marketplace.json` points at that artifact commit.
+3. Replace the marketplace ref below with that marketplace metadata commit.
+
+```bash
+codex plugin remove staff-engineer-mode@staff-engineer-mode
+codex plugin marketplace remove staff-engineer-mode
+codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref <marketplace-metadata-commit>
+codex plugin add staff-engineer-mode@staff-engineer-mode
+```
+
+Restart Codex after updating.
+
+## Skills-Only Fallback
+
+Use this only when the Codex plugin system is unavailable. It exposes the router
+skill through native skill discovery, but it does not install plugin metadata or
+hooks.
 
 ### Linux / macOS
 
 ```bash
+mkdir -p ~/.codex
 git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.codex/staff-engineer-mode
+git -C ~/.codex/staff-engineer-mode checkout --detach c4901a4bb832608fe6d59d9f9d054c705d11cc0f
 mkdir -p ~/.agents/skills
 ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode
 ```
@@ -37,100 +118,34 @@ ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode
 Use a junction instead of a symlink:
 
 ```powershell
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex"
 git clone https://github.com/sirmarkz/staff-engineer-mode.git "$env:USERPROFILE\.codex\staff-engineer-mode"
+git -C "$env:USERPROFILE\.codex\staff-engineer-mode" checkout --detach c4901a4bb832608fe6d59d9f9d054c705d11cc0f
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
 cmd /c mklink /J "$env:USERPROFILE\.agents\skills\staff-engineer-mode" "$env:USERPROFILE\.codex\staff-engineer-mode\skills"
 ```
 
-Restart Codex after installation.
-
-## How It Works
-
-Codex scans `~/.agents/skills/` at startup, parses `SKILL.md` frontmatter, and
-loads skills on demand. Staff Engineer Mode is exposed as one router skill:
-
-```text
-~/.agents/skills/staff-engineer-mode/ -> ~/.codex/staff-engineer-mode/skills/
-```
-
-Users should not need to name individual specialists. Broad engineering
-requests route through `staff-engineer-mode`, which then reads the selected
-specialist file from `~/.codex/staff-engineer-mode/specialists/<slug>.md`.
-
-## Specialist Loading
-
-Codex does not currently fire a SessionStart hook for this pack, so no
-`SPECIALIST_ROOT` environment variable is published at session start. The
-**Load Contract** in `skills/staff-engineer-mode/SKILL.md` is the source of
-truth: it tells the model to `Read` from
-`~/.codex/staff-engineer-mode/specialists/<slug>.md` whenever
-`SPECIALIST_ROOT` is unavailable. Never call the Skill tool on a specialist
-slug -- specialists are files, not registered Codex skills, and a `Skill`
-invocation will fail with `Unknown skill`. No per-user wiring is required;
-the contract is router-borne.
-
-## Commit And Release Policy
-
-Codex does not currently expose a blocking command hook for this pack. The
-policy is therefore router-borne: before creating or amending commits, load
-`agent-pr-review` and review the exact staged diff regardless of change size;
-before tags, version bumps, hosted release records, packages, artifact publication, or promotion, load
-both `release-build-reproducibility` and `production-readiness-review`.
-
-Review findings guide the user and agent on gaps to close. If the user
-explicitly accepts unresolved gaps, Codex may proceed with the requested commit
-or release action after stating the residual risk.
-
-## Verify
-
-```bash
-ls -la ~/.agents/skills/staff-engineer-mode
-```
-
-Then ask Codex:
-
-```text
-Review this service for production readiness.
-```
-
-The router should choose `production-readiness-review` as the primary skill, or
-ask one clarifying question if the request lacks a concrete engineering surface.
-
-## When Other Skill Packs Are Installed
-
-Codex native skills do not currently give this pack a session-start bootstrap
-hook. If another installed pack has very broad process skills, it can preempt
-vague prompts such as "troubleshoot a network issue." Add this project
-instruction when you want Staff Engineer Mode to route engineering-system work
-first:
-
-```markdown
-For engineering lifecycle, architecture, reliability, resilience, operations,
-security, delivery, data, platform, client, or cost-aware reliability requests,
-use Staff Engineer Mode before generic debugging or process skills. When the
-request is ambiguous, ask only the intake questions needed to route it; do not
-print specialist names, routing drafts, confidence labels, or candidate lists.
-```
-
-## Updating
-
-```bash
-cd ~/.codex/staff-engineer-mode && git pull
-```
-
-Skills update instantly through the symlink. Restart Codex if metadata does not
-refresh.
+Restart Codex after fallback installation.
 
 ## Uninstalling
 
+Plugin install:
+
 ```bash
-rm ~/.agents/skills/staff-engineer-mode
+codex plugin remove staff-engineer-mode@staff-engineer-mode
+codex plugin marketplace remove staff-engineer-mode
 ```
 
-Windows PowerShell:
+Skills-only fallback:
+
+```bash
+rm ~/.agents/skills/staff-engineer-mode
+rm -rf ~/.codex/staff-engineer-mode
+```
+
+Windows PowerShell fallback:
 
 ```powershell
 Remove-Item "$env:USERPROFILE\.agents\skills\staff-engineer-mode"
+Remove-Item -Recurse -Force "$env:USERPROFILE\.codex\staff-engineer-mode"
 ```
-
-Optionally delete the clone: `rm -rf ~/.codex/staff-engineer-mode`.

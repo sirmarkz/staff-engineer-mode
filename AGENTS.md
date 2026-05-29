@@ -116,6 +116,13 @@ maintaining complex software systems.
 - Versioned metadata may stay at the pre-release placeholder before public
   release. When the user asks to release, use `scripts/bump-version.sh --check`,
   `scripts/bump-version.sh --audit`, then `scripts/bump-version.sh <new-version>`.
+- Release install references are part of the release artifact. Before a release
+  is considered complete, update `.claude-plugin/marketplace.json`
+  `plugins.0.source.sha` to the plugin artifact commit, then update README and
+  install docs so marketplace installers point at the marketplace metadata commit
+  and direct Git installers point at the plugin artifact commit. Do not leave
+  install docs pointing at a tag whose marketplace entry still references the
+  previous release.
 - Plugin manifests and install docs must use HTTPS git URLs for plugin source,
   marketplace add, and install paths. Do not publish SSH `git@github.com` or
   `ssh://` install paths, and do not use Claude marketplace `source: github` or
@@ -125,7 +132,9 @@ maintaining complex software systems.
   last release. Do not list every commit.
 - When completing a user-requested release, do not stop after creating the
   tag. After the tag exists, create the hosted release page for that tag from
-  the release notes summary and verify that the page links to the tag/artifacts.
+  the release notes summary, commit and push the marketplace SHA/docs refresh,
+  and verify that fresh Claude, Codex, OpenCode, and fallback install checks
+  resolve the intended version from clean temporary config/cache directories.
 - Do not add AI assistants, automation, or tools as co-authors or attribution in
   commit messages, file headers, docs, or release notes.
 - Do not commit secrets, local `.env` files, private keys, machine-specific

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -47,6 +48,19 @@ def read_json(path: Path) -> dict:
     if not isinstance(value, dict):
         fail(f"{path.relative_to(ROOT)} must contain a JSON object")
     return value
+
+
+def git_commit(ref: str) -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(ROOT), "rev-parse", f"{ref}^{{commit}}"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return None
+    return result.stdout.strip()
 
 
 def bootstrap_template_text() -> str:
@@ -215,6 +229,9 @@ def validate_claude() -> None:
         sha = source.get("sha")
         if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
             fail(".claude-plugin/marketplace.json plugin entry source must include a 40-character sha")
+        resolved = git_commit(expected_ref)
+        if resolved is not None and sha != resolved:
+            fail(f".claude-plugin/marketplace.json source sha must match {expected_ref} commit {resolved}")
 
 
 def validate_cursor() -> None:
@@ -412,8 +429,10 @@ def validate_docs() -> None:
     readme = (ROOT / "README.md").read_text()
     if "staff-engineer-mode" not in readme:
         fail("README.md must document the router entrypoint")
-    if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git" not in readme:
-        fail("README.md must use the Claude HTTPS git URL marketplace add command")
+    if "claude plugin marketplace add ~/.claude/staff-engineer-mode-marketplace" not in readme:
+        fail("README.md must show the Claude terminal marketplace add command")
+    if "/plugin marketplace add ~/.claude/staff-engineer-mode-marketplace" not in readme:
+        fail("README.md must show the Claude agent-chat marketplace add command")
     if "/plugin marketplace add sirmarkz/staff-engineer-mode" in readme:
         fail("README.md must not use the Claude GitHub owner/repo marketplace add command")
     if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode\n" in readme:
@@ -427,10 +446,14 @@ def validate_docs() -> None:
     if "```bash\ncopilot plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git\ncopilot plugin install staff-engineer-mode@staff-engineer-mode\n```" in readme:
         fail("README.md must show GitHub Copilot CLI install commands in separate copyable blocks")
     codex_install = (ROOT / ".codex" / "INSTALL.md").read_text()
-    if "~/.agents/skills/staff-engineer-mode" not in codex_install:
-        fail(".codex/INSTALL.md must use the native ~/.agents/skills/staff-engineer-mode install path")
-    if 'ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode' not in codex_install:
-        fail(".codex/INSTALL.md must symlink the Staff Engineer Mode skill tree for Codex")
+    if "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref b658229b384d79227f7dd93d59cd3bdad22c75cd" not in codex_install:
+        fail(".codex/INSTALL.md must use the Codex plugin marketplace install path pinned to the marketplace metadata commit")
+    if "codex plugin add staff-engineer-mode@staff-engineer-mode" not in codex_install:
+        fail(".codex/INSTALL.md must install the Staff Engineer Mode Codex plugin")
+    if "Do not omit the `--ref` value" not in codex_install:
+        fail(".codex/INSTALL.md must warn that omitting --ref is nondeterministic")
+    if "Skills-Only Fallback" not in codex_install:
+        fail(".codex/INSTALL.md must label the native skills symlink path as a fallback")
     if "specialists/<slug>.md" not in codex_install:
         fail(".codex/INSTALL.md must document routed specialist files")
 

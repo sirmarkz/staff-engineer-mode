@@ -42,15 +42,30 @@ packages, artifacts, and promotions.
 
 ## Installation
 
+Examples labeled "terminal" are run in your shell. Examples labeled "agent
+chat" are typed inside that tool's interactive agent session.
+
+Where a command includes a commit ref or detached checkout, that pin is
+intentional. Do not remove it: without an explicit ref, the host resolves the
+repository's default branch at install time.
+
 ### Claude Code
 
-Register the marketplace:
+Terminal:
 
-```text
-/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
+```bash
+mkdir -p ~/.claude
+git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.claude/staff-engineer-mode-marketplace
+git -C ~/.claude/staff-engineer-mode-marketplace checkout --detach b658229b384d79227f7dd93d59cd3bdad22c75cd
+claude plugin marketplace add ~/.claude/staff-engineer-mode-marketplace
+claude plugin install staff-engineer-mode@staff-engineer-mode
 ```
 
-Install the plugin:
+Agent chat equivalent after the marketplace directory exists:
+
+```text
+/plugin marketplace add ~/.claude/staff-engineer-mode-marketplace
+```
 
 ```text
 /plugin install staff-engineer-mode@staff-engineer-mode
@@ -58,29 +73,38 @@ Install the plugin:
 
 ### Codex
 
-Works with Codex CLI and Codex App. Tell Codex:
+Terminal:
 
-```text
-Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/main/.codex/INSTALL.md
+```bash
+codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref b658229b384d79227f7dd93d59cd3bdad22c75cd
+codex plugin add staff-engineer-mode@staff-engineer-mode
 ```
 
+Codex App: open Plugins, search for `Staff Engineer Mode`, and install it from
+the Coding category when published.
+
 ### Cursor
+
+Agent chat:
 
 ```text
 /add-plugin staff-engineer-mode
 ```
 
+Cursor does not currently provide a separate terminal plugin installer for this
+pack. Use the agent slash command or install from the Cursor Plugin Marketplace.
+
 ### OpenCode
 
-Works with OpenCode. Tell OpenCode:
+Terminal:
 
-```text
-Fetch and follow instructions from https://raw.githubusercontent.com/sirmarkz/staff-engineer-mode/main/.opencode/INSTALL.md
+```bash
+opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#c4901a4bb832608fe6d59d9f9d054c705d11cc0f'
 ```
 
 ### GitHub Copilot CLI
 
-Register the marketplace:
+Terminal:
 
 ```bash
 copilot plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
@@ -93,6 +117,8 @@ copilot plugin install staff-engineer-mode@staff-engineer-mode
 ```
 
 ### Gemini CLI
+
+Terminal:
 
 ```bash
 gemini extensions install https://github.com/sirmarkz/staff-engineer-mode

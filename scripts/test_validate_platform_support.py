@@ -4,6 +4,7 @@ from __future__ import annotations
 import importlib.util
 import contextlib
 import io
+import json
 import sys
 import tempfile
 import unittest
@@ -37,6 +38,10 @@ class PlatformDocsValidationTests(unittest.TestCase):
                 [
                     "~/.agents/skills/staff-engineer-mode",
                     "ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode",
+                    "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref b658229b384d79227f7dd93d59cd3bdad22c75cd",
+                    "codex plugin add staff-engineer-mode@staff-engineer-mode",
+                    "Do not omit the `--ref` value",
+                    "Skills-Only Fallback",
                     "specialists/<slug>.md",
                     "",
                 ]
@@ -55,8 +60,15 @@ class PlatformDocsValidationTests(unittest.TestCase):
                 [
                     "# Staff Engineer Mode",
                     "",
+                    "```bash",
+                    "git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.claude/staff-engineer-mode-marketplace",
+                    "git -C ~/.claude/staff-engineer-mode-marketplace checkout --detach b658229b384d79227f7dd93d59cd3bdad22c75cd",
+                    "claude plugin marketplace add ~/.claude/staff-engineer-mode-marketplace",
+                    "claude plugin install staff-engineer-mode@staff-engineer-mode",
+                    "```",
+                    "",
                     "```text",
-                    "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git",
+                    "/plugin marketplace add ~/.claude/staff-engineer-mode-marketplace",
                     "```",
                     "",
                     "```text",
@@ -115,6 +127,68 @@ class PlatformDocsValidationTests(unittest.TestCase):
         with contextlib.redirect_stderr(io.StringIO()):
             with self.assertRaises(SystemExit):
                 self.validator.validate_docs()
+
+    def write_minimal_claude_files(self, marketplace_sha: str) -> None:
+        self.write("package.json", '{"name":"staff-engineer-mode","version":"9.9.9"}')
+        self.write(
+            ".claude-plugin/plugin.json",
+            '{"name":"staff-engineer-mode","version":"9.9.9","description":"x","homepage":"https://github.com/sirmarkz/staff-engineer-mode"}',
+        )
+        self.write("skills/staff-engineer-mode/SKILL.md", "---\nname: staff-engineer-mode\n---\n")
+        self.write(
+            "CLAUDE.md",
+            "\n".join(
+                [
+                    "@./skills/staff-engineer-mode/SKILL.md",
+                    "Keep guidance technology-agnostic by default",
+                    "specialists/<specialist-name>.md",
+                    "specialists/agent-pr-review.md",
+                    "specialists/release-build-reproducibility.md",
+                    "specialists/production-readiness-review.md",
+                    "## Bash Preflight",
+                    "Do not combine staging, committing, or",
+                    "Never run `git add && git commit`",
+                    "reading this file, or reading `SKILL.md` is not enough",
+                    "Co-Authored-By",
+                    "",
+                ]
+            ),
+        )
+        self.write(
+            ".claude-plugin/marketplace.json",
+            json.dumps(
+                {
+                    "name": "staff-engineer-mode",
+                    "plugins": [
+                        {
+                            "name": "staff-engineer-mode",
+                            "version": "9.9.9",
+                            "source": {
+                                "source": "url",
+                                "url": "https://github.com/sirmarkz/staff-engineer-mode.git",
+                                "ref": "v9.9.9",
+                                "sha": marketplace_sha,
+                            },
+                        }
+                    ],
+                }
+            ),
+        )
+
+    def test_claude_marketplace_sha_must_match_release_tag_commit(self) -> None:
+        sha = "a" * 40
+        self.write_minimal_claude_files(sha)
+        self.validator.git_commit = lambda ref: sha
+
+        self.validator.validate_claude()
+
+    def test_claude_marketplace_sha_rejects_mismatched_release_tag_commit(self) -> None:
+        self.write_minimal_claude_files("b" * 40)
+        self.validator.git_commit = lambda ref: "a" * 40
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_claude()
 
     def test_plugin_install_paths_accept_https_urls(self) -> None:
         self.write(

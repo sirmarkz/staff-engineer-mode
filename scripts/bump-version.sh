@@ -237,10 +237,18 @@ cmd_bump() {
   cmd_audit
 
   echo
-  echo "Next: commit chore(release): $new_version, tag v$new_version, push,"
-  echo "publish hosted release, then update .claude-plugin/marketplace.json"
-  echo "plugins.0.source.sha to the new tag commit and push a follow-up commit:"
-  echo "  git rev-parse v$new_version^{commit}"
+  echo "Next release sequence:"
+  echo "  1. Commit chore(release): $new_version."
+  echo "  2. Tag v$new_version at that plugin artifact commit."
+  echo "  3. Update .claude-plugin/marketplace.json plugins.0.source.sha"
+  echo "     to the plugin artifact commit:"
+  echo "       git rev-parse v$new_version^{commit}"
+  echo "  4. Update README and install docs:"
+  echo "     - marketplace installers use the marketplace metadata commit"
+  echo "     - direct Git installers use the plugin artifact commit"
+  echo "  5. Commit and push the marketplace/docs refresh."
+  echo "  6. Verify fresh installs from clean config/cache directories."
+  echo "  7. Publish the hosted release."
 }
 
 case "${1:-}" in

@@ -2,20 +2,42 @@
 
 ## Prerequisites
 
-- [OpenCode.ai](https://opencode.ai) installed
+- OpenCode 1.14.50 or newer
+- Git
 
-## Installation
+## Install From A Terminal
 
-Add Staff Engineer Mode to the `plugin` array in `opencode.json`:
+Run this command in your shell from the project that should use the plugin:
+
+```bash
+opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#c4901a4bb832608fe6d59d9f9d054c705d11cc0f'
+```
+
+OpenCode installs the Git package and updates the local project config under
+`.opencode/opencode.json`. Restart OpenCode after installation. The plugin
+registers the router skill and injects the router bootstrap into the first user
+message of each session.
+Do not omit the commit after `#`. Without it, OpenCode resolves the repository's
+default branch at install time.
+
+To install globally, add `--global`:
+
+```bash
+opencode plugin --global 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#c4901a4bb832608fe6d59d9f9d054c705d11cc0f'
+```
+
+## Manual Config Alternative
+
+If you prefer editing config directly, add the pinned plugin package to
+`.opencode/opencode.json`:
 
 ```json
 {
-  "plugin": ["staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git"]
+  "plugin": ["staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#c4901a4bb832608fe6d59d9f9d054c705d11cc0f"]
 }
 ```
 
-Restart OpenCode. The plugin auto-installs, registers the router skill, and
-injects the router bootstrap into the first user message of each session.
+Restart OpenCode after editing config.
 
 ## Verify
 
@@ -29,16 +51,16 @@ The router should choose one primary specialist and at most one secondary.
 
 ## Usage
 
-Use OpenCode's native `skill` tool:
+Normal use should not require the user to name a specialist; the router
+bootstrap is loaded automatically and reads routed specialist files from
+`specialists/`.
+
+If you need to inspect skills manually, use OpenCode's native `skill` tool:
 
 ```text
 use skill tool to list skills
 use skill tool to load staff-engineer-mode
 ```
-
-Normal use should not require the user to name a specialist; the router
-bootstrap is loaded automatically and reads routed specialist files from
-`specialists/`.
 
 The bootstrap also carries the commit and release policy. Before creating or
 amending commits, route to `agent-pr-review` for the exact staged diff. Before
@@ -50,22 +72,21 @@ and proceed.
 
 ## Updating
 
-OpenCode updates Git plugins when it restarts.
+To move to a newer release, replace the commit with the target plugin artifact
+commit for that release and run the install command with `--force`:
 
-To pin a specific version:
-
-```json
-{
-  "plugin": ["staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#vX.Y.Z"]
-}
+```bash
+opencode plugin --force 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#<plugin-artifact-commit>'
 ```
+
+Restart OpenCode after updating.
 
 ## Troubleshooting
 
 ### Plugin not loading
 
 1. Check logs: `opencode run --print-logs "hello" 2>&1 | grep -i staff-engineer-mode`
-2. Verify the plugin line in `opencode.json`
+2. Verify the plugin entry in `.opencode/opencode.json`
 3. Make sure you are running a recent OpenCode version
 
 ### Skills not found
