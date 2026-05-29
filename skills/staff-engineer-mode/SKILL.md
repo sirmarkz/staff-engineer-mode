@@ -166,12 +166,12 @@ Precedence. Load `references/routing-matrix.md` for uncertainty.
 - Retry ownership/boundary routes to `architecture-decisions`; retry/timeout/fallback/overload policy routes to `dependency-resilience`.
 - HA topology/static capacity routes to `high-availability-design`; fault-injection tests route to `resilience-experiments`; reliability policy, telemetry, alerts, restore, overload, and invariants stay separate.
 - Cross-service database/storage correctness routes to `distributed-data-and-consistency`; in-process states/invariants route to `state-machine-correctness`.
-- API compatibility, data contracts, `test-data-engineering`, hygiene, fleet upgrades, event replay/DLQ, cache, and pipeline freshness stay distinct.
+- API compatibility, data contracts, test data, hygiene, fleet upgrades, event replay/DLQ, cache, and pipeline freshness stay distinct; runtime/platform/client version-skew windows or exceptions stay `fleet-upgrades`, despite client/service updates.
 - Corruption/deletion recovery routes to `backup-and-recovery`; schema/index/backfill/destructive datastore execution routes to `database-operations`.
 - Flag owner/expiry/fallback/removal -> `feature-flag-lifecycle`; config mutation/generated ops/bulk scripts/preview/validation/caps/rollback -> `configuration-and-automation-safety`.
 - Tags/versions/packages/artifact identity/promotion -> `release-build-reproducibility`; local/CI/staging/prod divergence -> `dev-environment-parity`; provenance/signing/builder isolation -> `software-supply-chain-security`.
 - Desired-state capture, drift detection, reconciliation, or emergency exception rules after manual infrastructure changes route to `infrastructure-and-policy-as-code`.
-- Deprecation PRs/no-new-usage checks stay with `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback stays with `ml-reliability-and-evaluation`.
+- Retiring/replacing capabilities with no-new-usage checks -> `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback -> `ml-reliability-and-evaluation`.
 - Security by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
 - Public edge, service identity/discovery/locality, dependency retry policy, `performance-and-capacity`, browser release signals, accessibility, cost, LLM eval/serving/security, AI coding controls, and readability stay separate.
 - Single-surface verification details stay with the matching specialist; cross-surface control mappings, scorecards, exception records, and control packs route to `engineering-control-evidence`.

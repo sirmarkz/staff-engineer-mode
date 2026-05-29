@@ -32,6 +32,8 @@ Fleet upgrades are compatibility projects spread across runtimes, control planes
 - The main risk is build artifact reproducibility; use `release-build-reproducibility` instead.
 - The main risk is exposed API compatibility; use `api-design-and-compatibility` instead.
 - The main task is broad service retirement; use `migration-and-deprecation` instead.
+- The only deprecation concern is clients or services moving during a runtime,
+  platform, or fleet upgrade; keep that here as version-skew management.
 
 ## Info To Gather
 

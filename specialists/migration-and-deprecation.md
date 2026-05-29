@@ -32,6 +32,8 @@ Removing or replacing a widely used system is a production change spread across 
 - The work is API versioning for one service contract; use `api-design-and-compatibility` instead unless cross-system migration dominates.
 - The work is database schema/backfill execution; use `database-operations` instead.
 - The work is rollout sequencing for an already built change; use `progressive-delivery` instead.
+- The work is a runtime, platform, client, service, or host upgrade with
+  mixed-version windows or temporary exceptions; use `fleet-upgrades` instead.
 
 ## Info To Gather
 

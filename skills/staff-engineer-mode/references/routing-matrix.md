@@ -57,7 +57,7 @@ Return the canonical `specialists/<slug>.md` slug, not a semantic alias.
 - Normal merge/release checks route to `testing-and-quality-gates`; protocol, state-machine, or concurrency assurance routes to `state-machine-correctness`.
 - Accessibility conformance for user-facing flows routes to `accessibility-gates`; client performance still routes to `web-release-gates` or `mobile-release-engineering`.
 - Broad migrations, legacy retirement, and capability sunset route to `migration-and-deprecation`; routine cleanup routes to `dependency-and-code-hygiene`; new or changed exposed API contracts route to `api-design-and-compatibility`.
-- Fleet upgrades, support windows, and mixed-version rollout route to `fleet-upgrades`; routine package updates stay with `dependency-and-code-hygiene`.
+- Fleet upgrades, support windows, mixed-version rollout, version-skew windows, and temporary upgrade exceptions route to `fleet-upgrades`, even when clients or services must update; routine package updates stay with `dependency-and-code-hygiene`.
 - Supply-chain trust controls route to `software-supply-chain-security`; deployed vulnerability remediation routes to `vulnerability-management`; routine dependency updates route to `dependency-and-code-hygiene`.
 - Pre-deploy abuse-case and control reasoning routes to `secure-sdlc-and-threat-modeling`; already-deployed vulnerable code routes to `vulnerability-management`; trust in the build path routes to `software-supply-chain-security`.
 - Cryptographic agility, certificate expiry, key rotation, and trust-chain lifecycle route to `cryptography-and-key-lifecycle`; runtime access and secrets policy stays with `identity-and-secrets`.
