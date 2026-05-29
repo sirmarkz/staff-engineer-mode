@@ -14,8 +14,8 @@ if str(SCRIPT_DIR) not in sys.path:
 from staff_engineer_mode_contract import ROUTER_EVAL_CHECKS
 
 ROUTER_EVAL_FILES = [
-    ROOT / "skills" / "staff-engineer-mode" / "references" / "router-eval-set.yaml",
-    ROOT / "skills" / "staff-engineer-mode" / "references" / "router-phase-eval-set.yaml",
+    ROOT / "evals" / "router" / "router-eval-set.yaml",
+    ROOT / "evals" / "router" / "router-phase-eval-set.yaml",
 ]
 REQUIRED_KEYS = {"prompt", "expected_primary", "expected_behavior", "category"}
 REQUIRED_CATEGORIES = {"direct", "paraphrase", "mixed_intent", "out_of_scope"}

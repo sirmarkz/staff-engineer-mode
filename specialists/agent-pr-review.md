@@ -21,12 +21,19 @@ The default pre-merge review pass. Applies whether the diff was written by a hum
 
 The review guides the agent and user on gaps to close; it does not remove user authority. If the user explicitly accepts unresolved findings after seeing the review, record the accepted risk and proceed with the requested commit or merge unless another safety rule forbids the action.
 
+Stay in this specialist for concrete diff reviews. Do not read adjacent
+specialists, router eval fixtures, or sample prompt files just because the diff
+deletes, removes, upgrades, or changes behavior. Use the sanity-check table for
+one internal lens or one prioritized follow-up route; read adjacent specialist
+files only when the user asks for a separate artifact.
+
 ## When To Use
 
 - The user asks to review a PR, branch, diff, or change set before merging — regardless of who or what produced it.
 - The agent is about to create or amend a commit and needs review of the exact staged diff before the commit exists, regardless of change size.
 - A coding agent has just finished a multi-file change, refactor, migration, or new feature and the user is deciding whether to merge.
 - The user asks "is this safe to merge," "what would a senior review catch here," "review my last commit," "review this PR," "find risks in this diff," or "did the agent miss anything."
+- A concrete diff passes tests but changed deletion behavior, and the user asks what details are missing before merge.
 - The author's summary may not match what actually changed.
 - The change touches paths the author was not explicitly scoped to and needs an explicit intent check.
 
@@ -37,7 +44,7 @@ The review guides the agent and user on gaps to close; it does not remove user a
 - The request is org-level rules for AI-assisted work, not a single diff; use `ai-coding-governance` instead.
 - The request is review routing, change-size policy, responsibility policy, or workflow metrics rather than a concrete diff; no routed specialist applies unless the prompt names a concrete engineering surface.
 - The request is launch readiness across multiple surfaces with an explicit launch event; use `production-readiness-review` instead.
-- The PR is primarily a deprecation, sunset, or removal-control artifact; use `migration-and-deprecation` instead.
+- The requested artifact is a deprecation, sunset, or no-new-usage/removal-control plan rather than a general diff verdict; use `migration-and-deprecation` instead.
 - The request is static-analysis, warning, dead-code, or maintenance-risk prioritization over changed files; use `dependency-and-code-hygiene` instead.
 - A purely human-authored low-risk correction may use lighter self-review only when no agent is creating or amending a commit; agent commit attempts still use this specialist.
 
@@ -64,7 +71,7 @@ The review guides the agent and user on gaps to close; it does not remove user a
 9. **Check public-surface and contract impact.** Identify breaking changes to APIs, schemas, configs, on-disk formats, events, or shared modules. Confirm consumer impact has been considered.
 10. **Check operational artifacts.** Identify missing rollback path, missing telemetry for new behavior, missing runbook update, missing migration safety, missing SLO/error-budget consideration, missing threat consideration for new trust-boundary changes, and missing docs.
 11. **Classify findings.** For each finding, record category, support (file:line or behavior), recommended next action, and risk level (blocker, must-fix-before-merge, follow-up, or accepted with rationale).
-12. **Run specialist sanity checks.** Use the consolidated table below for extra lenses and follow-ups; do not replace the pre-merge review when a concrete diff is under review.
+12. **Run specialist sanity checks.** Use the consolidated table below for extra lenses and follow-ups without reading adjacent specialist files; do not replace the pre-merge review when a concrete diff is under review.
 13. **Produce the structured artifact.** Output a single review with the categories below, not running prose. The user can use this and can act without re-reading the diff.
 
 ## Synthesized Default

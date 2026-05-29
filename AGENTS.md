@@ -21,6 +21,7 @@ maintaining complex software systems.
 | `specialists/<specialist-name>.md` | Routed specialist reference files loaded only after the router selects one. |
 | `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
 | `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. |
+| `evals/router/` | Router eval fixtures used by validation harnesses; not runtime skill guidance. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
 | `.claude-plugin/`, `.cursor-plugin/`, `.codex-plugin/`, `.codex/`, `.opencode/`, `gemini-extension.json`, `GEMINI.md` | Cross-tool plugin manifests and install docs. |
 
@@ -97,8 +98,10 @@ maintaining complex software systems.
   or citation changes.
 - Run `python3 scripts/validate_platform_support.py` before committing plugin
   manifest, install, README, LICENSE, or cross-tool packaging changes.
-- Router fixtures live with the router skill and should include direct,
-  paraphrased, ambiguous, mixed-intent, and out-of-scope prompts.
+- Router eval fixtures live under `evals/router/`, outside runtime skill paths,
+  and should include direct, paraphrased, ambiguous, mixed-intent, and
+  out-of-scope prompts. Runtime router guidance stays in
+  `skills/staff-engineer-mode/references/routing-matrix.md`.
 
 ## Code Quality
 

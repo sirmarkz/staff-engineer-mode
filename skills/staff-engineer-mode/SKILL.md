@@ -133,7 +133,7 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 Treat "review" as a verb until the artifact proves otherwise.
 
-- Concrete PR, branch, patch, last commit, staged change, commit attempt, or diff review before merge routes to `agent-pr-review`; commit and amend attempts route there regardless of change size.
+- Concrete PR, branch, patch, last commit, staged change, commit attempt, or diff review before merge routes to `agent-pr-review`, including tests-pass or deletion-behavior checks; commit and amend attempts route there regardless of change size.
 - Changed files alone do not make a diff review; route static-analysis or maintenance backlog prioritization to `dependency-and-code-hygiene`.
 - Generic review-system design, reviewer routing, ownership, change size, review latency, or DORA workflow has no routed specialist unless a concrete engineering surface is present.
 - Launch readiness, go/no-go, impact increase, or broad release readiness routes to `production-readiness-review`.

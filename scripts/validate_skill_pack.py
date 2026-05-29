@@ -694,7 +694,7 @@ def main() -> int:
             fail(f"{path} must live at specialists/<specialist-name>.md")
         validate_skill(path)
 
-    router_eval = SKILLS / "staff-engineer-mode" / "references" / "router-eval-set.yaml"
+    router_eval = ROOT / "evals" / "router" / "router-eval-set.yaml"
     routing_matrix = SKILLS / "staff-engineer-mode" / "references" / "routing-matrix.md"
     if not router_eval.exists():
         fail("router eval fixture is missing")

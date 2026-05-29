@@ -540,6 +540,11 @@ cases:
     expected_behavior: "route per-diff agent-output review to agent PR review instead of generic code review workflow"
     category: paraphrase
     expected_checks: [single_primary, intent_inference]
+  - prompt: "The staged diff deletes old account cleanup code and tests pass; review deletion behavior, deleted-but-used callers, and missing edge cases before merge."
+    expected_primary: agent-pr-review
+    expected_behavior: "route concrete tests-pass deletion-behavior diff review to agent PR review"
+    category: paraphrase
+    expected_checks: [single_primary, intent_inference]
   - prompt: "I am about to commit the staged changes; review the exact staged diff first."
     expected_primary: agent-pr-review
     expected_behavior: "route pre-commit staged-diff review to agent PR review"

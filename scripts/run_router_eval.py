@@ -16,7 +16,7 @@ if str(SCRIPT_DIR) not in sys.path:
 
 from staff_engineer_mode_contract import ROUTER_EVAL_CHECKS
 
-ROUTER_EVAL = ROOT / "skills" / "staff-engineer-mode" / "references" / "router-eval-set.yaml"
+ROUTER_EVAL = ROOT / "evals" / "router" / "router-eval-set.yaml"
 SKILLS = ROOT / "skills"
 SPECIALISTS = ROOT / "specialists"
 ROUTING_BLOCK_RE = re.compile(r"```routing\s*(?P<body>.*?)```", re.DOTALL)
