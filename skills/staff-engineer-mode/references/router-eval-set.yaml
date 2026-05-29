@@ -19,9 +19,9 @@ cases:
     expected_behavior: "route endpoint/schema check before merge to API compatibility, not generic PR review"
     category: direct
     expected_checks: [single_primary, intent_inference]
-  - prompt: "Several SDKs and partner clients still read this response field; check compatibility and removal steps before changing it."
+  - prompt: "Several SDKs and partner clients still parse this response field; check compatibility before changing its type or semantics."
     expected_primary: api-design-and-compatibility
-    expected_behavior: "route response field deprecation to exposed API contract migration"
+    expected_behavior: "route parsed response field type and semantics change to exposed API contract compatibility"
     category: direct
     expected_checks: [single_primary, intent_inference]
   - prompt: "We need operation names and request shapes for generated client methods that create, list, batch-get, and cancel jobs without confusing callers."
@@ -49,9 +49,9 @@ cases:
     expected_behavior: "route SLI/SLO proposal to error-budget skill without inventing reliability-target aliases"
     category: direct
     expected_checks: [single_primary, intent_inference]
-  - prompt: "Inspect the alert rules against this service's SLOs and separate urgent alerts from follow-up-only alerts."
+  - prompt: "Inspect this service's SLO burn-rate rules and separate urgent alerts from follow-up-only budget responses."
     expected_primary: slo-and-error-budgets
-    expected_behavior: "route urgent-vs-follow-up rules tied to SLOs to error-budget skill"
+    expected_behavior: "route burn-rate urgent-vs-follow-up budget response rules tied to SLOs to error-budget skill"
     category: direct
     expected_checks: [single_primary, intent_inference]
   - prompt: "Use the service code and recent incidents to draft error-budget release rules."
@@ -67,6 +67,16 @@ cases:
   - prompt: "A location-scoped service must avoid cross-location runtime dependencies, show per-fault-domain health, and keep enough static capacity to survive one location loss."
     expected_primary: high-availability-design
     expected_behavior: "route to fault-domain independence and static failover capacity"
+    category: direct
+    expected_checks: [single_primary, intent_inference]
+  - prompt: "During a zone evacuation, this feature still needs reads and writes; inspect which components share a failover dependency."
+    expected_primary: high-availability-design
+    expected_behavior: "route read/write survivability during fault-domain evacuation to shared failover dependency inspection"
+    category: direct
+    expected_checks: [single_primary, intent_inference]
+  - prompt: "I want to build a highly available API for my system."
+    expected_primary: high-availability-design
+    expected_behavior: "route build phrasing for an HA API to fault-domain topology before generic brainstorming"
     category: direct
     expected_checks: [single_primary, intent_inference]
   - prompt: "The order flow melts whenever the fraud service slows down, and retries seem to make the queue worse."
@@ -137,6 +147,11 @@ cases:
   - prompt: "An operational script will touch an unlaunched production environment, so we need a change record, user confirmation, preview, blast-radius limit, and recovery path."
     expected_primary: configuration-and-automation-safety
     expected_behavior: "route to production automation change controls even before launch"
+    category: direct
+    expected_checks: [single_primary, intent_inference]
+  - prompt: "A script will rewrite tenant limits from a CSV; add preview, validation, per-tenant caps, and rollback."
+    expected_primary: configuration-and-automation-safety
+    expected_behavior: "route bulk tenant-limit input rewrite to configuration automation safety with preview, validation, caps, and rollback"
     category: direct
     expected_checks: [single_primary, intent_inference]
   - prompt: "What should we require before this lands?"

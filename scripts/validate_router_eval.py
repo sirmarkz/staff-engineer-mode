@@ -7,6 +7,12 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from staff_engineer_mode_contract import ROUTER_EVAL_CHECKS
+
 ROUTER_EVAL_FILES = [
     ROOT / "skills" / "staff-engineer-mode" / "references" / "router-eval-set.yaml",
     ROOT / "skills" / "staff-engineer-mode" / "references" / "router-phase-eval-set.yaml",
@@ -15,14 +21,7 @@ REQUIRED_KEYS = {"prompt", "expected_primary", "expected_behavior", "category"}
 REQUIRED_CATEGORIES = {"direct", "paraphrase", "mixed_intent", "out_of_scope"}
 REQUIRED_CHECK_KEY = "expected_checks"
 FORBIDDEN_KEY = "forbidden_in_response"
-ALLOWED_CHECKS = {
-    "single_primary",
-    "secondary_cap",
-    "capability_translation",
-    "scope_check",
-    "ambiguity_check",
-    "intent_inference",
-}
+ALLOWED_CHECKS = set(ROUTER_EVAL_CHECKS)
 MIN_CASES = 35
 MIN_SECONDARY_CASES = 8
 PHASE_EVAL_MIN_CASES = 30

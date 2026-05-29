@@ -38,7 +38,9 @@ Configuration and automation can change production faster than ordinary code pat
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Config or automation surface, consumers, environments, affected production state, and local change path.
-- Schema, allowed values, defaults, invariants, dependency ordering, and unsafe combinations.
+- Runtime config values, input source, schema, allowed values, defaults, invariants, dependency ordering, unsafe values, and unsafe combinations.
+- Bulk input semantics: required columns, row identity, duplicate handling, missing values, current-value preconditions, per-tenant caps, and aggregate blast-radius limits.
+- Temporary overrides with owner, expiry, validation evidence, cleanup action, and rollback target before cleanup automation can apply or remove them.
 - Change path, approval path, user confirmation, preview or dry-run output, execution identity, and change record.
 - Blast radius, rollback or disable path, rate limit, lock, retry, and idempotency behavior.
 - Operational levers: name, expected effect, activation time, prerequisites, last test, and disable or revert path.
@@ -49,14 +51,15 @@ Configuration and automation can change production faster than ordinary code pat
 
 1. **Classify the surface and change class.** Separate static config, dynamic config, generated changes, scheduled automation, and emergency automation; name the change class as low-risk, standard production, or emergency, with a distinct confirmation path for each class.
 2. **Define the contract.** Specify schema, defaults, bounds, invariants, local change path, and incompatible combinations.
-3. **Record production changes.** For production-impacting changes, including pre-launch production, capture user confirmation, confirmation basis, expected blast radius, and recovery path before execution.
-4. **Validate before execution.** Require parse, semantic, dependency, permission, and environment checks before production use.
-5. **Preview the effect.** Show intended creates, updates, deletes, traffic impact, permission changes, and affected systems before apply.
-6. **Bound execution.** Use batches, locks, rate limits, stop criteria, and idempotency for automation that touches shared state.
-7. **Make recovery concrete.** Define rollback, disable, restore, or roll-forward behavior for config, generated changes, and automation side effects.
-8. **Prepare operational levers.** For emergency adjustment or recovery levers, state the effect, prerequisites, activation time, last test, and disable or revert path before relying on them.
-9. **Control drift.** Detect unmanaged overrides and stale settings; decide reconcile, exception, or removal.
-10. **Close the loop.** Record user confirmation, validation output, preview, execution result, and cleanup for temporary settings.
+3. **Inventory override risk before cleanup.** Find runtime config values, unsafe values, temporary overrides, and stale settings; block cleanup automation when any production-impacting entry lacks owner, expiry, validation evidence, cleanup action, and rollback target.
+4. **Record production changes.** For production-impacting changes, including pre-launch production, capture user confirmation, confirmation basis, expected blast radius, and recovery path before execution.
+5. **Validate before execution.** Require parse, semantic, dependency, permission, and environment checks before production use; for tabular bulk inputs, reject unknown columns, duplicate targets, missing required values, unsafe deltas, and changes above per-tenant caps.
+6. **Preview the effect.** Show intended creates, updates, deletes, traffic impact, permission changes, affected systems, unchanged rows, skipped rows, and per-tenant cap violations before apply.
+7. **Bound execution.** Use batches, locks, rate limits, stop criteria, per-target caps, and idempotency for automation that touches shared state.
+8. **Make recovery concrete.** Define rollback, disable, restore, or roll-forward behavior for config, generated changes, and automation side effects; capture previous values in a replayable rollback artifact before mutating state.
+9. **Prepare operational levers.** For emergency adjustment or recovery levers, state the effect, prerequisites, activation time, last test, and disable or revert path before relying on them.
+10. **Control drift.** Detect unmanaged overrides and stale settings; decide reconcile, exception, or removal.
+11. **Close the loop.** Record user confirmation, validation output, preview, execution result, and cleanup for temporary settings.
 
 ## Synthesized Default
 
@@ -98,6 +101,8 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 - Change class and confirmation path: low-risk, standard production, or emergency, with required checks and decision rationale.
 - Production change record with user confirmation, expected effect, blast radius, and recovery results where the change can affect production state.
 - Contract: schema, defaults, invariants, unsafe combinations, allowed overrides, and local change path.
+- Bulk input contract: required fields, row identity, duplicate behavior, current-value preconditions, per-tenant caps, skipped-row handling, and aggregate limits.
+- Runtime config and temporary override inventory with owner, expiry, validation evidence, cleanup action, rollback target, and unsafe values called out.
 - Validation and preview check list.
 - Blast-radius and execution-control plan.
 - Recovery plan for rollback, disable, restore, or roll-forward.

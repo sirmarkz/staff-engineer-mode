@@ -43,6 +43,32 @@ MANIFEST_DESCRIPTION_FIELDS: dict[str, str] = {
     ".claude-plugin/marketplace.json:plugins.0.description": CLAUDE_PLUGIN_DESCRIPTION,
 }
 
+ROUTER_EVAL_CHECKS: tuple[str, ...] = (
+    "single_primary",
+    "secondary_cap",
+    "capability_translation",
+    "scope_check",
+    "ambiguity_check",
+    "intent_inference",
+    "no_skill_invoke",
+    "read_load",
+)
+
+ROUTER_ROUTING_CHECKS: tuple[str, ...] = (
+    "single_primary",
+    "secondary_cap",
+    "capability_translation",
+    "scope_check",
+    "ambiguity_check",
+)
+
+ROUTER_SAMPLE_PROMPT_CHECKS: tuple[str, ...] = (
+    "single_primary",
+    "intent_inference",
+    "no_skill_invoke",
+    "read_load",
+)
+
 PROHIBITED_SPECIALIST_BODY_TERMS: tuple[str, ...] = (
     "Amazon",
     "AWS",

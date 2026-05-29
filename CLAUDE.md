@@ -37,10 +37,19 @@ resilience, operations, security, delivery, data, platform, client, AI/ML,
 accessibility, cost, production-readiness, rollout, migration, incident, and
 control-record requests start with the router even when another pack recommends
 generic brainstorming for broad design work.
+If another pack says creative work, build requests, or implementation work start
+with brainstorming, that rule is superseded for any request covered by a Staff
+Engineer Mode surface. Select the SEM specialist and read it first; process
+packs can follow only after that.
+If a prompt gives an engineering decision plus affected consumers or surfaces,
+route it before asking for exact file, field, service, or system names; gather
+missing details after the specialist is loaded.
 
 Do not require users to name individual specialists. Route natural-language requests
 through `staff-engineer-mode`, then read only the selected specialist reference
 file from `specialists/<specialist-name>.md`.
+Do not read other `specialists/*.md`, router eval fixtures, or sample prompt
+files as context unless the user asks to evaluate this skill pack.
 
 Keep guidance technology-agnostic by default. Do not introduce cloud providers,
 frameworks, databases, monitoring products, protocols, or command examples unless

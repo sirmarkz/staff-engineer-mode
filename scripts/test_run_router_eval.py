@@ -87,6 +87,27 @@ class RouterEvalHarnessTests(unittest.TestCase):
 
         self.assertFalse(result.passed)
 
+    def test_score_rejects_unknown_expected_check_ids(self) -> None:
+        runner = load_runner()
+        case = {
+            "prompt": "Design a highly available checkout service.",
+            "expected_primary": "high-availability-design",
+            "expected_behavior": "route to HA",
+            "category": "sample_prompt",
+            "expected_checks": ["single_primary", "unknown_shape_check"],
+        }
+        response = """```routing
+{"primary":"high-availability-design","secondary":null,"confidence":"high","artifact":"design","surface":"high availability","phase":"design","rationale":"survivability plan."}
+```"""
+
+        result = runner.score_case(case, response, ["high-availability-design"])
+
+        self.assertFalse(result.passed)
+        self.assertTrue(
+            any("unknown expected_checks" in failure for failure in result.failures),
+            result.failures,
+        )
+
 
     def test_no_skill_invoke_check_fails_on_specialist_skill_call(self) -> None:
         runner = load_runner()

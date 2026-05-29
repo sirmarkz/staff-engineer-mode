@@ -14,7 +14,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the API changes in this branch and tell me what could break existing clients."
 - "Design the new partner API before implementation: resource names, operation shapes, errors, idempotency, and future compatibility."
 - "The mobile SDK and a partner integration both read this response field; check whether changing it stays compatible and define the client rollout."
-- "Several SDKs and partner clients still read this response field; check compatibility and removal steps before changing it."
+- "Several SDKs and partner clients still parse this response field; check compatibility before changing its type or semantics."
 
 ### `architecture-decisions`
 
@@ -41,7 +41,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `high-availability-design`
 
-- "Inspect this existing deployment config and fault-domain topology for what still fails if one hosting location goes down."
+- "Review a deployment topology and identify what would still fail if one hosting location went down."
 - "Inspect the failover code path, static capacity, and runbook, then list the availability assumptions we still need to check."
 - "Trace the serving path and fault-domain map, then identify which shared dependency or control-plane loss could break high availability for the whole feature."
 - "During a zone evacuation, this feature still needs reads and writes; inspect which components share a failover dependency."
@@ -69,7 +69,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `resilience-experiments`
 
-- "Design a safe fault-injection test for this dependency using the current service code and runbook."
+- "Design a safe fault-injection test for this dependency with blast-radius limits, abort criteria, telemetry, and rollback."
 - "Inspect the failover script and monitoring, then plan a game day with blast-radius limits and abort criteria."
 - "Look at this chaos-test PR and define stop conditions, impact limits, learning goals, and rollback steps."
 - "Plan a drill where the queue broker returns errors for ten minutes, with who can abort and what blast radius is allowed."
@@ -92,7 +92,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `test-data-engineering`
 
-- "Inventory the fixtures this suite depends on and tell me which ones cannot be regenerated."
+- "Design a test-data inventory for this suite: fixture purpose, regeneration path, ownership, and unreproducible data."
 - "Design fixture and golden-file rules for this new integration test suite before it starts using production samples."
 - "Find where production data shape has drifted from the data the tests run on and design a drift-detection check."
 - "These fixtures came from support exports; check whether they are still representative and safe to keep."
@@ -106,7 +106,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `release-build-reproducibility`
 
-- "Before tagging this release, verify the version, artifact identity, required checks, promotion path, and rollback target."
+- "Define build reproducibility checks for version consistency, artifact identity, required checks, promotion path, and rollback target."
 - "Inspect the packaging config and design a build-once, promote-many release path."
 - "Find why this repo's builds are flaky or cache-sensitive and rank the fixes."
 - "Two CI runners produce different package hashes; trace the unpinned inputs before the release is promoted."
@@ -122,7 +122,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 - "Build a rollout and rollback plan for the new ranking path before production exposure."
 - "Inspect this staged rollout plan before exposure and tell me what canary checks, stop criteria, and rollback path are missing."
-- "Use the deploy workflow and metrics files to define when we should stop a small first rollout."
+- "Define first-rollout stop criteria from deploy workflow signals and canary metrics, including minimum signal, thresholds, owner, abort, and rollback."
 - "Ramp the new ranking path by tenant cohort and define metrics that pause exposure before all users see it."
 
 ### `feature-flag-lifecycle`
@@ -344,7 +344,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `infrastructure-and-policy-as-code`
 
 - "Inspect this declarative infrastructure change for unsafe manual steps, missing policy checks, drift response, and rollback gaps."
-- "Inspect the environment promotion workflow and check whether it matches what is declared in code."
+- "Inspect infrastructure environment promotion for desired-state drift, missing policy checks, and whether actual changes match what is declared in code."
 - "Design policy checks and exception records for these infrastructure files."
 - "A manual console change fixed staging; capture desired state, drift detection, and emergency exception rules."
 

@@ -313,6 +313,199 @@ description: Use when example work needs decisions
             with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 validator.validate_decision_guide_framing(text, path)
 
+    def test_slo_specialist_requires_burn_response_split(self) -> None:
+        validator = load_validator()
+        text = """---
+name: slo-and-error-budgets
+description: Use when user journeys need SLOs
+---
+
+# SLO Error Budget Engineering
+
+## Workflow
+
+1. Design burn-rate alerts.
+
+## Required Outputs
+
+- Burn-rate alert rules.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "slo-and-error-budgets" / "SKILL.md"
+            path.parent.mkdir()
+            path.write_text(text)
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
+                validator.validate_slo_burn_response_split(text, path)
+
+    def test_slo_specialist_accepts_burn_response_split(self) -> None:
+        validator = load_validator()
+        text = """---
+name: slo-and-error-budgets
+description: Use when user journeys need SLOs
+---
+
+# SLO Error Budget Engineering
+
+## Workflow
+
+1. Separate urgent burn alerts from follow-up-only budget responses with short-window and longer-window checks.
+2. Keep multi-hour and multi-day budget threats as diagnostic non-urgent follow-up work when immediate action is not required.
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "slo-and-error-budgets" / "SKILL.md"
+            path.parent.mkdir()
+            path.write_text(text)
+            validator.validate_slo_burn_response_split(text, path)
+
+    def test_config_specialist_requires_runtime_override_cleanup_controls(self) -> None:
+        validator = load_validator()
+        text = """---
+name: configuration-and-automation-safety
+description: Use when config automation touches production state
+---
+
+# Configuration And Automation Safety
+
+## When To Use
+
+- Use when configuration decisions and assumptions need production safety checks.
+
+## When Not To Use
+
+- Local-only settings with no shared-state risk.
+
+## Info To Gather
+
+- Config surface, assumptions, consumers, schema, defaults, and change path.
+
+## Workflow
+
+1. Classify the change, define the contract, validate, preview, and recover.
+
+## Synthesized Default
+
+Use typed contracts and previews.
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness details.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
+
+## Exceptions
+
+- Emergency changes still need confirmation.
+
+## Response Quality Bar
+
+- Lead with the safety decision.
+
+## Required Outputs
+
+- Contract and validation plan.
+
+## Checks Before Moving On
+
+- `contract_defined`: schema and defaults are explicit.
+- `preview_checked`: intended effect is visible.
+- `recovery_path`: recovery is defined.
+
+## Red Flags - Stop And Rework
+
+- Config bypasses validation.
+
+## Common Mistakes
+
+| Mistake | Correction |
+| --- | --- |
+| Syntax only | Add semantic checks. |
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "configuration-and-automation-safety" / "SKILL.md"
+            path.parent.mkdir()
+            path.write_text(text)
+            with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
+                validator.validate_specialist_skill(text, path)
+
+    def test_config_specialist_accepts_runtime_override_cleanup_controls(self) -> None:
+        validator = load_validator()
+        text = """---
+name: configuration-and-automation-safety
+description: Use when config automation touches production state
+---
+
+# Configuration And Automation Safety
+
+## When To Use
+
+- Use when runtime config values, temporary overrides, cleanup automation, decisions, and assumptions need production safety checks.
+
+## When Not To Use
+
+- Local-only settings with no shared-state risk.
+
+## Info To Gather
+
+- Runtime config values, unsafe values, temporary overrides, owner, expiry, validation evidence, rollback target, consumers, schema, defaults, and change path.
+
+## Workflow
+
+1. Classify the change, define the contract, validate, preview, block cleanup automation when override records are incomplete, and recover.
+
+## Synthesized Default
+
+Use typed contracts and previews.
+
+## Phase Behavior
+
+- Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.
+- Design: shape the target artifact, tradeoffs, checks, and details to gather.
+- Development: guide sequencing, code boundaries, checks, and acceptance criteria.
+- Testing: define release-blocking tests, evals, fixtures, and failure probes.
+- Release: define rollout, observability, abort, rollback, and readiness details.
+- Maintenance: define owners, drift checks, cleanup triggers, and refresh cadence.
+- Existing artifact: use current code, docs, telemetry, incidents, or diffs as context for the next engineering decision; do not wait for a finished artifact before guiding design, build, release, or operation.
+- Missing details: state assumptions and say what to check next instead of blocking lifecycle guidance.
+
+## Exceptions
+
+- Emergency changes still need confirmation.
+
+## Response Quality Bar
+
+- Lead with the safety decision.
+
+## Required Outputs
+
+- Contract and validation plan.
+
+## Checks Before Moving On
+
+- `contract_defined`: schema and defaults are explicit.
+- `preview_checked`: intended effect is visible.
+- `recovery_path`: recovery is defined.
+
+## Red Flags - Stop And Rework
+
+- Config bypasses validation.
+
+## Common Mistakes
+
+| Mistake | Correction |
+| --- | --- |
+| Syntax only | Add semantic checks. |
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "configuration-and-automation-safety" / "SKILL.md"
+            path.parent.mkdir()
+            path.write_text(text)
+            validator.validate_specialist_skill(text, path)
+
 
 if __name__ == "__main__":
     unittest.main()

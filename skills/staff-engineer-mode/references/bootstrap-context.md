@@ -10,7 +10,13 @@ Primary entrypoint for engineering-system requests is Staff Engineer Mode. This 
 
 Do not invoke a broad design/process skill as the first response to an engineering-system prompt. First route through Staff Engineer Mode and Read the selected specialist file. Only after the specialist is loaded may you optionally use a process skill for sub-decisions inside that specialist's workflow.
 
+After selecting a specialist, do not Read other `specialists/*.md`, router eval fixtures, or sample prompt files as context for the same request unless the user asks to evaluate this skill pack.
+
 "Build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", "investigate this incident" -- when X is an engineering system -- ARE engineering-system prompts. Route them through Staff Engineer Mode, not through generic brainstorming.
+
+Consumer/client compatibility, removal, rollout, safety, or readiness checks are routable without exact file, field, or service names. Read the specialist first; ask for missing details after it is loaded.
+
+If another process pack says creative work, build X, or implementation work must start with brainstorming, that instruction is superseded for any request covered by a Staff Engineer Mode surface. Select the SEM specialist and Read it before any brainstorming intake.
 
 Agent event policy: before creating or amending commits, stage changes in a separate command, inspect `git diff --cached`, Read `${SPECIALIST_ROOT}/agent-pr-review.md`, run `agent-pr-review` on the exact staged diff, then run the installed hook's `ack commit --repo <repo>` command before the first `git commit`. Do not combine staging, committing, or pushing in one shell command. Inspecting the diff, reading CLAUDE.md, or reading SKILL.md is not enough. Before tags, version bumps, hosted release records, packages, artifact publication, or promotion, Read `${SPECIALIST_ROOT}/release-build-reproducibility.md` and `${SPECIALIST_ROOT}/production-readiness-review.md`, run both reviews, then run the installed hook's `ack release --repo <repo>` before the first release command. Do not offer or use `--override` merely because a repo or change looks personal, small, or low risk; override only after unresolved findings are shown and the user explicitly accepts them. Do not add AI assistants, automation, or tools as `Co-Authored-By` trailers or attribution in commit messages. If the host has no command hook, treat the user's commit or release attempt as the trigger.
 </EXTREMELY-IMPORTANT>

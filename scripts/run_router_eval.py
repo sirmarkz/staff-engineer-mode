@@ -10,6 +10,12 @@ from pathlib import Path
 from typing import Any, NamedTuple
 
 ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from staff_engineer_mode_contract import ROUTER_EVAL_CHECKS
+
 ROUTER_EVAL = ROOT / "skills" / "staff-engineer-mode" / "references" / "router-eval-set.yaml"
 SKILLS = ROOT / "skills"
 SPECIALISTS = ROOT / "specialists"
@@ -133,6 +139,9 @@ def score_case(case: dict[str, Any], response: str, names: list[str], index: int
     checks = case.get("expected_checks", [])
     if not isinstance(checks, list):
         checks = []
+    unknown_checks = sorted(set(checks) - set(ROUTER_EVAL_CHECKS))
+    if unknown_checks:
+        failures.append(f"unknown expected_checks values: {unknown_checks}")
 
     try:
         block = parse_routing_block(response)

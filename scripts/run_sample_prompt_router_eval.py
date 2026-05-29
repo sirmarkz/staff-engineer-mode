@@ -10,6 +10,12 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from staff_engineer_mode_contract import ROUTER_SAMPLE_PROMPT_CHECKS
+
 ROUTER_EVAL_PATH = ROOT / "scripts" / "run_router_eval.py"
 SPEC = importlib.util.spec_from_file_location("run_router_eval", ROUTER_EVAL_PATH)
 assert SPEC is not None
@@ -176,12 +182,7 @@ def parse_sample_prompts(path: Path = SAMPLE_PROMPTS) -> list[dict[str, Any]]:
                     "expected_primary": current,
                     "expected_behavior": "route sample prompt to its grouped specialist",
                     "category": "sample_prompt",
-                    "expected_checks": [
-                        "single_primary",
-                        "intent_inference",
-                        "no_skill_invoke",
-                        "read_load",
-                    ],
+                    "expected_checks": list(ROUTER_SAMPLE_PROMPT_CHECKS),
                 }
             )
 

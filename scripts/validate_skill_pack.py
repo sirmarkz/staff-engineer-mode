@@ -10,7 +10,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from staff_engineer_mode_contract import PROHIBITED_SPECIALIST_BODY_TERMS
+from staff_engineer_mode_contract import PROHIBITED_SPECIALIST_BODY_TERMS, ROUTER_ROUTING_CHECKS
 
 SKILLS = ROOT / "skills"
 SPECIALISTS = ROOT / "specialists"
@@ -20,7 +20,7 @@ SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
 CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
 CODEX_MAX_SKILL_NAME_LENGTH = 64
 MAX_SKILL_LINES = 300
-MAX_DESCRIPTION_CHARS = 120
+MAX_DESCRIPTION_CHARS = 180
 SAMPLE_PROMPTS_PER_SPECIALIST = 4
 ROUTER_MAX_WORDS = 2000
 ROUTER_TIEBREAKER_MAX_WORDS = 260
@@ -35,13 +35,6 @@ PROCESS_PAGE_ALLOWED_SPECIALISTS = {
     "oncall-health",
     "platform-golden-paths",
     "production-readiness-review",
-}
-ROUTER_ROUTING_CHECKS = {
-    "single_primary",
-    "secondary_cap",
-    "capability_translation",
-    "scope_check",
-    "ambiguity_check",
 }
 ROUTING_MATRIX_REQUIRED_BOUNDARIES = {
     "active incident precedence": [
@@ -226,6 +219,27 @@ AGENT_PR_REVIEW_COMMIT_SKIP_PATTERNS = [
     "trivial change",
     "human author can self-review",
     "without a structured pass",
+]
+
+SLO_BURN_RESPONSE_TERMS = [
+    "urgent burn alerts",
+    "follow-up-only budget responses",
+    "short-window",
+    "longer-window",
+    "multi-hour",
+    "multi-day",
+    "diagnostic non-urgent",
+]
+
+CONFIG_RUNTIME_OVERRIDE_TERMS = [
+    "runtime config values",
+    "unsafe values",
+    "temporary overrides",
+    "owner",
+    "expiry",
+    "validation evidence",
+    "cleanup automation",
+    "rollback target",
 ]
 
 SPECIALIST_DESCRIPTION_REVIEW_EXCEPTIONS = {
@@ -416,6 +430,24 @@ def validate_agent_pr_review_commit_policy(text: str, path: Path) -> None:
             )
 
 
+def validate_slo_burn_response_split(text: str, path: Path) -> None:
+    if skill_name_for_path(path) != "slo-and-error-budgets":
+        return
+    lowered = text.lower()
+    missing = [term for term in SLO_BURN_RESPONSE_TERMS if term not in lowered]
+    if missing:
+        fail(f"{path} SLO burn-response policy missing terms: {', '.join(missing)}")
+
+
+def validate_config_runtime_override_controls(text: str, path: Path) -> None:
+    if skill_name_for_path(path) != "configuration-and-automation-safety":
+        return
+    lowered = text.lower()
+    missing = [term for term in CONFIG_RUNTIME_OVERRIDE_TERMS if term not in lowered]
+    if missing:
+        fail(f"{path} runtime override cleanup controls missing terms: {', '.join(missing)}")
+
+
 def validate_specialist_skill(text: str, path: Path) -> None:
     slug = skill_name_for_path(path)
     description = parse_frontmatter(text, path)["description"].lower()
@@ -432,6 +464,8 @@ def validate_specialist_skill(text: str, path: Path) -> None:
     validate_phase_behavior(text, path)
     validate_decision_guide_framing(text, path)
     validate_agent_pr_review_commit_policy(text, path)
+    validate_slo_burn_response_split(text, path)
+    validate_config_runtime_override_controls(text, path)
     checks = check_ids(text, path, "## Checks Before Moving On")
     if len(checks) < 3:
         fail(f"{path} needs at least three checks under ## Checks Before Moving On")
@@ -455,7 +489,7 @@ def validate_router_skill(text: str, path: Path) -> None:
     if word_count > ROUTER_MAX_WORDS:
         fail(f"{path} is {word_count} words; compact router skills must stay under {ROUTER_MAX_WORDS}")
     routing_check_ids = set(check_ids(text, path, "## Checks Before Moving On"))
-    missing = ROUTER_ROUTING_CHECKS - routing_check_ids
+    missing = set(ROUTER_ROUTING_CHECKS) - routing_check_ids
     if missing:
         fail(f"{path} missing router checks: {', '.join(sorted(missing))}")
     routing_check_bodies = check_bodies(text, path, "## Checks Before Moving On")

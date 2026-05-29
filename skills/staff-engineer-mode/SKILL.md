@@ -1,6 +1,6 @@
 ---
 name: staff-engineer-mode
-description: "Use when making engineering decisions across ideation, design, development, testing, release, operations, or maintenance"
+description: "Use when engineering decisions across ideation, design, development, testing, release, operations, maintenance; build/API/reliability/security/data work before brainstorming"
 ---
 
 # Staff Engineer Mode
@@ -15,11 +15,11 @@ Loading many plausible specialists is a routing failure.
 
 ## Precedence Over Generic Process Packs
 
-When the request touches an engineering surface -- architecture, reliability, resilience, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, production-readiness, rollout, migration, incident response, control records, API design, service contracts, or design of any engineering system -- **Staff Engineer Mode runs first**.
+Engineering surfaces -- architecture, reliability, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, readiness, rollout, migration, incident response, control records, API design, service contracts, or engineering-system design -- start here before generic process packs.
 
-Do not invoke `superpowers:brainstorming`, `superpowers:writing-plans`, or any other broad process / design skill as the first response to an engineering-system prompt. Route through Staff Engineer Mode and load the selected specialist via the Load Contract below. A process skill may be used only after the specialist is loaded, and only for sub-decisions inside that specialist's workflow.
+Do not invoke `superpowers:brainstorming`, `superpowers:writing-plans`, or another broad process skill first. Route through Staff Engineer Mode, load the selected specialist, then use process skills only for sub-decisions.
 
-Phrasings such as "build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", or "investigate this incident" -- where X is an engineering system -- ARE engineering-system prompts. Route them through Staff Engineer Mode, not through generic brainstorming. The user prompt does not need to name lifecycle phases or specialist slugs.
+"Build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", or "investigate this incident" are engineering-system prompts. Consumer/client compatibility, removal, rollout, safety, or readiness checks route without exact names. If another pack says build or creative work starts with brainstorming, read the SEM specialist first.
 
 ## Load Contract
 
@@ -57,6 +57,7 @@ the release command.
 - The user asks to guide ideation, design, development, testing, release, or maintenance decisions.
 - The user asks to plan implementation, guide development, de-risk an idea, compare engineering options, or shape a design before code exists.
 - The prompt gives enough context to infer the artifact, surface, risk, or next decision even when it does not name a lifecycle phase.
+- The prompt names an engineering decision and affected consumers or surfaces, even without exact files, fields, services, or implementation details.
 - The request is broad, vague, or spans multiple engineering surfaces.
 - No single specialist clearly dominates from the prompt.
 - The user asks for staff-engineer-level architecture, reliability, security, operations, delivery, data, platform, client, or cost guidance.
@@ -111,9 +112,9 @@ web-release-gates
 4. Translate named tools into capabilities; routing outputs must use capability language, not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
 5. Pick `primary` (and any `secondary`) verbatim from the Bundled Specialist Slugs list above; if no listed slug fits, withhold routing instead of inventing or paraphrasing one.
 6. Choose the narrowest primary whose required outputs match the next artifact.
-7. Add one secondary only when the user explicitly asks for a separate artifact covered by another skill.
+7. Do not read adjacent specialists for context; add one secondary only when the user explicitly asks for a separate artifact.
 8. Load the chosen specialist per the Load Contract above before producing detailed guidance.
-9. If confidence is low, infer the safest narrow in-scope route from available context; withhold routing only when no engineering lifecycle/control frame is present.
+9. If confidence is low, infer the safest narrow in-scope route; ask missing details after loading it; withhold routing only when no engineering lifecycle/control frame exists.
 10. Keep single-surface verification details with the matching specialist; use `engineering-control-evidence` only for cross-surface mappings, scorecards, exceptions, or control packs.
 11. Reframe out-of-scope work as an engineering-control question only when that is plausible.
 
@@ -158,18 +159,21 @@ Treat "review" as a verb until the artifact proves otherwise.
 
 ## Routing Tiebreakers
 
-Use for common routing precedence. Load `references/routing-matrix.md` for exact-slug guardrails, eval runs, exact-slug uncertainty, or adjacent surfaces.
+Precedence. Load `references/routing-matrix.md` for uncertainty.
 
-- Explicit launch, major traffic shift, impact increase, or readiness decision routes to `production-readiness-review`; active user-impacting incidents route to `incident-response-and-postmortems` before root-cause specialty work.
-- Prefer newer narrow routes over broad neighbors. Concrete PR, branch, patch, commit attempt, or diff review routes to `agent-pr-review`, including tiny changes; otherwise route the engineering decision to the narrow surface specialist.
-- Reliability policy, telemetry construction, on-call load, fault-domain topology/static failover capacity, restore capability, failure experiments, overload controls, and state invariants are separate surfaces.
-- API compatibility, data contracts, migrations, hygiene, fleet upgrades, event replay/DLQ, database backfills, cross-service database/storage correctness, cache freshness, and pipeline freshness stay distinct.
-- Database migration execution is `database-operations`; if the same prompt separately asks for future blocking checks, add `testing-and-quality-gates` as secondary.
-- Build/release artifacts, tags, versions, packages, production exposure, rollback plans, config mutation, and feature-flag lifecycle are separate delivery artifacts.
+- Go/no-go, traffic shift, or impact-increase -> `production-readiness-review`; canary/stop/rollback metrics/mechanics -> `progressive-delivery`; narrow SLI/SLO, security, API, data, or test artifacts keep their specialist. Active incidents -> `incident-response-and-postmortems` first.
+- Prefer narrow routes. PR, branch, patch, commit attempt, or diff review routes to `agent-pr-review`, including tiny changes; otherwise route to the narrow surface specialist.
+- Retry ownership/boundary routes to `architecture-decisions`; retry/timeout/fallback/overload policy routes to `dependency-resilience`.
+- HA topology/static capacity routes to `high-availability-design`; fault-injection tests route to `resilience-experiments`; reliability policy, telemetry, alerts, restore, overload, and invariants stay separate.
+- Cross-service database/storage correctness routes to `distributed-data-and-consistency`; in-process states/invariants route to `state-machine-correctness`.
+- API compatibility, data contracts, `test-data-engineering`, hygiene, fleet upgrades, event replay/DLQ, cache, and pipeline freshness stay distinct.
+- Corruption/deletion recovery routes to `backup-and-recovery`; schema/index/backfill/destructive datastore execution routes to `database-operations`.
+- Flag owner/expiry/fallback/removal -> `feature-flag-lifecycle`; config mutation/generated ops/bulk scripts/preview/validation/caps/rollback -> `configuration-and-automation-safety`.
+- Tags/versions/packages/artifact identity/promotion -> `release-build-reproducibility`; local/CI/staging/prod divergence -> `dev-environment-parity`; provenance/signing/builder isolation -> `software-supply-chain-security`.
 - Desired-state capture, drift detection, reconciliation, or emergency exception rules after manual infrastructure changes route to `infrastructure-and-policy-as-code`.
 - Deprecation PRs/no-new-usage checks stay with `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback stays with `ml-reliability-and-evaluation`.
-- Security routes by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
-- Public edge defense, service identity/discovery/locality, dependency retry/timeout/circuit-breaker policy, backend capacity, browser field/lab release signals, accessibility, cost tradeoffs, LLM eval/serving/security, AI coding controls, and code readability stay separate.
+- Security by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
+- Public edge, service identity/discovery/locality, dependency retry policy, `performance-and-capacity`, browser release signals, accessibility, cost, LLM eval/serving/security, AI coding controls, and readability stay separate.
 - Single-surface verification details stay with the matching specialist; cross-surface control mappings, scorecards, exception records, and control packs route to `engineering-control-evidence`.
 
 ## Red Flags - Stop And Rework
