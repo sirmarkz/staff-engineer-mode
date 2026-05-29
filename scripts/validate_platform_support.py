@@ -183,24 +183,14 @@ def validate_claude() -> None:
     if not claude.exists():
         fail("missing CLAUDE.md")
     claude_text = claude.read_text()
+    if "@AGENTS.md" not in claude_text:
+        fail("CLAUDE.md must reference AGENTS.md as the repository rules source")
     if "@./skills/staff-engineer-mode/SKILL.md" not in claude_text:
         fail("CLAUDE.md must name the flat router entrypoint")
-    if "Keep guidance technology-agnostic by default" not in claude_text:
-        fail("CLAUDE.md must require technology-agnostic guidance by default")
-    if "specialists/<specialist-name>.md" not in claude_text:
-        fail("CLAUDE.md must document routed specialist reference files")
-    for term in [
-        "specialists/agent-pr-review.md",
-        "specialists/release-build-reproducibility.md",
-        "specialists/production-readiness-review.md",
-        "## Bash Preflight",
-        "Do not combine staging, committing, or",
-        "Never run `git add && git commit`",
-        "reading this file, or reading `SKILL.md` is not enough",
-        "Co-Authored-By",
-    ]:
-        if term not in claude_text:
-            fail(f"CLAUDE.md missing agent event policy term {term!r}")
+    if len([line for line in claude_text.splitlines() if line.strip()]) > 4:
+        fail("CLAUDE.md must stay a thin pointer to AGENTS.md and the router skill")
+    if "## Bash Preflight" in claude_text or "specialists/<specialist-name>.md" in claude_text:
+        fail("CLAUDE.md must not duplicate repository or router policy")
     marketplace = ROOT / ".claude-plugin" / "marketplace.json"
     value = read_json(marketplace)
     if value.get("name") != NAME:
@@ -258,14 +248,16 @@ def validate_gemini() -> None:
     if not gemini.exists():
         fail("missing GEMINI.md")
     text = gemini.read_text()
-    if "staff-engineer-mode" not in text:
+    if "@AGENTS.md" not in text:
+        fail("GEMINI.md must reference AGENTS.md as the repository rules source")
+    if "@./skills/staff-engineer-mode/SKILL.md" not in text:
         fail("GEMINI.md must name the router entrypoint")
     if "skills/routing/staff-engineer-mode" in text:
         fail("GEMINI.md must not reference the old nested router path")
-    if "Keep guidance technology-agnostic by default" not in text:
-        fail("GEMINI.md must require technology-agnostic guidance by default")
-    if "specialists/<specialist-name>.md" not in text:
-        fail("GEMINI.md must document routed specialist reference files")
+    if len([line for line in text.splitlines() if line.strip()]) > 4:
+        fail("GEMINI.md must stay a thin pointer to AGENTS.md and the router skill")
+    if "specialists/<specialist-name>.md" in text or "## Routing Discipline" in text:
+        fail("GEMINI.md must not duplicate repository or router policy")
 
 
 def validate_opencode() -> None:

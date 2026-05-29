@@ -219,17 +219,10 @@ class PlatformDocsValidationTests(unittest.TestCase):
             "CLAUDE.md",
             "\n".join(
                 [
+                    "# Staff Engineer Mode",
+                    "",
+                    "@AGENTS.md",
                     "@./skills/staff-engineer-mode/SKILL.md",
-                    "Keep guidance technology-agnostic by default",
-                    "specialists/<specialist-name>.md",
-                    "specialists/agent-pr-review.md",
-                    "specialists/release-build-reproducibility.md",
-                    "specialists/production-readiness-review.md",
-                    "## Bash Preflight",
-                    "Do not combine staging, committing, or",
-                    "Never run `git add && git commit`",
-                    "reading this file, or reading `SKILL.md` is not enough",
-                    "Co-Authored-By",
                     "",
                 ]
             ),

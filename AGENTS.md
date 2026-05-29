@@ -51,6 +51,9 @@ maintaining complex software systems.
   router instruction, not by plugin registry auto-discovery. Preserve thematic
   grouping through names, router language, and shared references rather than
   nested directories.
+- Keep root tool context files thin. `CLAUDE.md` and `GEMINI.md` should
+  reference this file and `skills/staff-engineer-mode/SKILL.md`, not duplicate
+  routing, specialist-loading, or event-policy rules.
 - Keep specialist files technology-agnostic unless the file is explicitly for a
   technology-bound surface such as frontend, mobile, ML, or LLM applications.
   Write guidance in terms of capabilities, contracts, failure modes, checks,

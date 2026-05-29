@@ -1,6 +1,6 @@
 ---
 name: staff-engineer-mode
-description: "Use when engineering decisions across ideation, design, development, testing, release, operations, maintenance; build/API/reliability/security/data work before brainstorming"
+description: "Use when engineering decisions in ideation, design, development, testing, release, operations, maintenance; build/API/reliability/security/data before generic process skills"
 ---
 
 # Staff Engineer Mode
