@@ -8,29 +8,21 @@ commit, and release policy.
 ## Prerequisites
 
 - Git
-- Codex CLI, or Codex App with plugin support
+- Codex CLI
 
 ## Install From A Terminal
 
 Run these commands in your shell, not inside a Codex chat:
 
 ```bash
-codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref b658229b384d79227f7dd93d59cd3bdad22c75cd
+codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 codex plugin add staff-engineer-mode@staff-engineer-mode
 ```
 
-This pins the marketplace checkout to commit
-`b658229b384d79227f7dd93d59cd3bdad22c75cd`; that marketplace entry installs
-plugin artifact commit `c4901a4bb832608fe6d59d9f9d054c705d11cc0f`.
-Do not omit the `--ref` value. Without it, Codex resolves the repository's
-default branch at install time.
+Codex clones the marketplace automatically and installs the plugin selected by
+the marketplace manifest.
 
 Restart Codex after installation so skills and hooks are loaded.
-
-## Install From Codex App
-
-Open Plugins in the Codex App sidebar, search for `Staff Engineer Mode`, and
-install it from the Coding category when published.
 
 ## Verify
 
@@ -81,17 +73,12 @@ record the release receipt, and then run the release command.
 
 ## Updating
 
-To move to a newer release:
-
-1. Find the plugin artifact commit for the release.
-2. Find the later marketplace metadata commit whose
-   `.claude-plugin/marketplace.json` points at that artifact commit.
-3. Replace the marketplace ref below with that marketplace metadata commit.
+To refresh to the latest marketplace metadata:
 
 ```bash
 codex plugin remove staff-engineer-mode@staff-engineer-mode
 codex plugin marketplace remove staff-engineer-mode
-codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref <marketplace-metadata-commit>
+codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 codex plugin add staff-engineer-mode@staff-engineer-mode
 ```
 
@@ -108,7 +95,6 @@ hooks.
 ```bash
 mkdir -p ~/.codex
 git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.codex/staff-engineer-mode
-git -C ~/.codex/staff-engineer-mode checkout --detach c4901a4bb832608fe6d59d9f9d054c705d11cc0f
 mkdir -p ~/.agents/skills
 ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode
 ```
@@ -120,7 +106,6 @@ Use a junction instead of a symlink:
 ```powershell
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex"
 git clone https://github.com/sirmarkz/staff-engineer-mode.git "$env:USERPROFILE\.codex\staff-engineer-mode"
-git -C "$env:USERPROFILE\.codex\staff-engineer-mode" checkout --detach c4901a4bb832608fe6d59d9f9d054c705d11cc0f
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
 cmd /c mklink /J "$env:USERPROFILE\.agents\skills\staff-engineer-mode" "$env:USERPROFILE\.codex\staff-engineer-mode\skills"
 ```

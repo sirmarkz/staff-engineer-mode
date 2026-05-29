@@ -10,30 +10,28 @@
 Run this command in your shell from the project that should use the plugin:
 
 ```bash
-opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#c4901a4bb832608fe6d59d9f9d054c705d11cc0f'
+opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git'
 ```
 
 OpenCode installs the Git package and updates the local project config under
 `.opencode/opencode.json`. Restart OpenCode after installation. The plugin
 registers the router skill and injects the router bootstrap into the first user
 message of each session.
-Do not omit the commit after `#`. Without it, OpenCode resolves the repository's
-default branch at install time.
 
 To install globally, add `--global`:
 
 ```bash
-opencode plugin --global 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#c4901a4bb832608fe6d59d9f9d054c705d11cc0f'
+opencode plugin --global 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git'
 ```
 
 ## Manual Config Alternative
 
-If you prefer editing config directly, add the pinned plugin package to
+If you prefer editing config directly, add the plugin package to
 `.opencode/opencode.json`:
 
 ```json
 {
-  "plugin": ["staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#c4901a4bb832608fe6d59d9f9d054c705d11cc0f"]
+  "plugin": ["staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git"]
 }
 ```
 
@@ -72,11 +70,10 @@ and proceed.
 
 ## Updating
 
-To move to a newer release, replace the commit with the target plugin artifact
-commit for that release and run the install command with `--force`:
+To refresh the Git plugin, run the install command with `--force`:
 
 ```bash
-opencode plugin --force 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#<plugin-artifact-commit>'
+opencode plugin --force 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git'
 ```
 
 Restart OpenCode after updating.

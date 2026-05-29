@@ -118,11 +118,10 @@ maintaining complex software systems.
   `scripts/bump-version.sh --audit`, then `scripts/bump-version.sh <new-version>`.
 - Release install references are part of the release artifact. Before a release
   is considered complete, update `.claude-plugin/marketplace.json`
-  `plugins.0.source.sha` to the plugin artifact commit, then update README and
-  install docs so marketplace installers point at the marketplace metadata commit
-  and direct Git installers point at the plugin artifact commit. Do not leave
-  install docs pointing at a tag whose marketplace entry still references the
-  previous release.
+  `plugins.0.source.sha` to the plugin artifact commit and keep README/install
+  docs on the normal marketplace or Git URL install paths. Claude's marketplace
+  entry must pin the plugin artifact with matching `ref` and `sha`. Do not leave
+  marketplace metadata pointing at the previous release.
 - Plugin manifests and install docs must use HTTPS git URLs for plugin source,
   marketplace add, and install paths. Do not publish SSH `git@github.com` or
   `ssh://` install paths, and do not use Claude marketplace `source: github` or

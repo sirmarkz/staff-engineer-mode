@@ -45,26 +45,19 @@ packages, artifacts, and promotions.
 Examples labeled "terminal" are run in your shell. Examples labeled "agent
 chat" are typed inside that tool's interactive agent session.
 
-Where a command includes a commit ref or detached checkout, that pin is
-intentional. Do not remove it: without an explicit ref, the host resolves the
-repository's default branch at install time.
-
 ### Claude Code
 
 Terminal:
 
 ```bash
-mkdir -p ~/.claude
-git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.claude/staff-engineer-mode-marketplace
-git -C ~/.claude/staff-engineer-mode-marketplace checkout --detach b658229b384d79227f7dd93d59cd3bdad22c75cd
-claude plugin marketplace add ~/.claude/staff-engineer-mode-marketplace
+claude plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 claude plugin install staff-engineer-mode@staff-engineer-mode
 ```
 
-Agent chat equivalent after the marketplace directory exists:
+Agent chat:
 
 ```text
-/plugin marketplace add ~/.claude/staff-engineer-mode-marketplace
+/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 ```
 
 ```text
@@ -76,30 +69,26 @@ Agent chat equivalent after the marketplace directory exists:
 Terminal:
 
 ```bash
-codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref b658229b384d79227f7dd93d59cd3bdad22c75cd
+codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 codex plugin add staff-engineer-mode@staff-engineer-mode
 ```
 
-Codex App: open Plugins, search for `Staff Engineer Mode`, and install it from
-the Coding category when published.
-
 ### Cursor
 
-Agent chat:
+Terminal:
 
-```text
-/add-plugin staff-engineer-mode
+```bash
+git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.cursor/staff-engineer-mode-src
+mkdir -p ~/.cursor/plugins
+ln -s ~/.cursor/staff-engineer-mode-src ~/.cursor/plugins/staff-engineer-mode
 ```
-
-Cursor does not currently provide a separate terminal plugin installer for this
-pack. Use the agent slash command or install from the Cursor Plugin Marketplace.
 
 ### OpenCode
 
 Terminal:
 
 ```bash
-opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#c4901a4bb832608fe6d59d9f9d054c705d11cc0f'
+opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git'
 ```
 
 ### GitHub Copilot CLI

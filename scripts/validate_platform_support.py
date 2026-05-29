@@ -429,10 +429,12 @@ def validate_docs() -> None:
     readme = (ROOT / "README.md").read_text()
     if "staff-engineer-mode" not in readme:
         fail("README.md must document the router entrypoint")
-    if "claude plugin marketplace add ~/.claude/staff-engineer-mode-marketplace" not in readme:
+    if "claude plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git" not in readme:
         fail("README.md must show the Claude terminal marketplace add command")
-    if "/plugin marketplace add ~/.claude/staff-engineer-mode-marketplace" not in readme:
+    if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git" not in readme:
         fail("README.md must show the Claude agent-chat marketplace add command")
+    if "staff-engineer-mode-marketplace" in readme:
+        fail("README.md must not require a manual Claude marketplace checkout for normal installs")
     if "/plugin marketplace add sirmarkz/staff-engineer-mode" in readme:
         fail("README.md must not use the Claude GitHub owner/repo marketplace add command")
     if "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode\n" in readme:
@@ -445,17 +447,30 @@ def validate_docs() -> None:
         fail("README.md must show Claude install commands in separate copyable blocks")
     if "```bash\ncopilot plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git\ncopilot plugin install staff-engineer-mode@staff-engineer-mode\n```" in readme:
         fail("README.md must show GitHub Copilot CLI install commands in separate copyable blocks")
+    if "git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.cursor/staff-engineer-mode-src" not in readme:
+        fail("README.md must show the Cursor local terminal install path")
+    if "/add-plugin staff-engineer-mode" in readme:
+        fail("README.md must not use Cursor /add-plugin before marketplace publication")
+    cursor_install = (ROOT / ".cursor-plugin" / "INSTALL.md").read_text()
+    for text, label in [(readme, "README.md"), (cursor_install, ".cursor-plugin/INSTALL.md")]:
+        if "Cursor Plugin Marketplace" in text:
+            fail(f"{label} must not claim Staff Engineer Mode is available in the Cursor Plugin Marketplace")
     codex_install = (ROOT / ".codex" / "INSTALL.md").read_text()
-    if "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref b658229b384d79227f7dd93d59cd3bdad22c75cd" not in codex_install:
-        fail(".codex/INSTALL.md must use the Codex plugin marketplace install path pinned to the marketplace metadata commit")
+    if "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git" not in codex_install:
+        fail(".codex/INSTALL.md must use the Codex plugin marketplace install path")
     if "codex plugin add staff-engineer-mode@staff-engineer-mode" not in codex_install:
         fail(".codex/INSTALL.md must install the Staff Engineer Mode Codex plugin")
-    if "Do not omit the `--ref` value" not in codex_install:
-        fail(".codex/INSTALL.md must warn that omitting --ref is nondeterministic")
+    if "--ref" in codex_install:
+        fail(".codex/INSTALL.md must not require a Codex marketplace --ref for normal installs")
     if "Skills-Only Fallback" not in codex_install:
         fail(".codex/INSTALL.md must label the native skills symlink path as a fallback")
     if "specialists/<slug>.md" not in codex_install:
         fail(".codex/INSTALL.md must document routed specialist files")
+    opencode_install = (ROOT / ".opencode" / "INSTALL.md").read_text()
+    if "opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git'" not in opencode_install:
+        fail(".opencode/INSTALL.md must use the normal OpenCode Git plugin install path")
+    if "staff-engineer-mode.git#" in opencode_install:
+        fail(".opencode/INSTALL.md must not pin OpenCode installs with #commit")
 
 
 def main() -> int:
@@ -470,7 +485,7 @@ def main() -> int:
     validate_version_metadata()
     validate_ci_workflow()
     validate_docs()
-    print("platform support validation passed: Claude Code, Codex CLI, Codex App, Cursor, OpenCode, GitHub Copilot CLI, Gemini CLI")
+    print("platform support validation passed: Claude Code, Codex CLI, Cursor, OpenCode, GitHub Copilot CLI, Gemini CLI")
     return 0
 
 

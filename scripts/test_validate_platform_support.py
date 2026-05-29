@@ -32,28 +32,40 @@ class PlatformDocsValidationTests(unittest.TestCase):
         self.validator = load_validator()
         self.validator.ROOT = self.root
         self.write("LICENSE", "MIT License\n\nProject Notice\n")
+        self.write_valid_install_docs()
+
+    def write_valid_install_docs(self) -> None:
         self.write(
             ".codex/INSTALL.md",
             "\n".join(
                 [
                     "~/.agents/skills/staff-engineer-mode",
                     "ln -s ~/.codex/staff-engineer-mode/skills ~/.agents/skills/staff-engineer-mode",
-                    "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref b658229b384d79227f7dd93d59cd3bdad22c75cd",
+                    "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git",
                     "codex plugin add staff-engineer-mode@staff-engineer-mode",
-                    "Do not omit the `--ref` value",
                     "Skills-Only Fallback",
                     "specialists/<slug>.md",
                     "",
                 ]
             ),
         )
+        self.write(
+            ".opencode/INSTALL.md",
+            "\n".join(
+                [
+                    "opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git'",
+                    "",
+                ]
+            ),
+        )
+        self.write(".cursor-plugin/INSTALL.md", "Cursor local installation\n")
 
     def write(self, relative: str, content: str) -> None:
         path = self.root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
 
-    def test_readme_accepts_https_git_marketplace_add(self) -> None:
+    def write_valid_readme(self) -> None:
         self.write(
             "README.md",
             "\n".join(
@@ -61,18 +73,30 @@ class PlatformDocsValidationTests(unittest.TestCase):
                     "# Staff Engineer Mode",
                     "",
                     "```bash",
-                    "git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.claude/staff-engineer-mode-marketplace",
-                    "git -C ~/.claude/staff-engineer-mode-marketplace checkout --detach b658229b384d79227f7dd93d59cd3bdad22c75cd",
-                    "claude plugin marketplace add ~/.claude/staff-engineer-mode-marketplace",
+                    "claude plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git",
                     "claude plugin install staff-engineer-mode@staff-engineer-mode",
                     "```",
                     "",
                     "```text",
-                    "/plugin marketplace add ~/.claude/staff-engineer-mode-marketplace",
+                    "/plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git",
                     "```",
                     "",
                     "```text",
                     "/plugin install staff-engineer-mode@staff-engineer-mode",
+                    "```",
+                    "",
+                    "```bash",
+                    "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git",
+                    "```",
+                    "",
+                    "```bash",
+                    "opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git'",
+                    "```",
+                    "",
+                    "```bash",
+                    "git clone https://github.com/sirmarkz/staff-engineer-mode.git ~/.cursor/staff-engineer-mode-src",
+                    "mkdir -p ~/.cursor/plugins",
+                    "ln -s ~/.cursor/staff-engineer-mode-src ~/.cursor/plugins/staff-engineer-mode",
                     "```",
                     "",
                     "```bash",
@@ -87,7 +111,63 @@ class PlatformDocsValidationTests(unittest.TestCase):
             ),
         )
 
+    def test_readme_accepts_https_git_marketplace_add(self) -> None:
+        self.write_valid_readme()
+
         self.validator.validate_docs()
+
+    def test_docs_reject_removed_install_paths(self) -> None:
+        cases = [
+            (
+                "manual Claude marketplace checkout",
+                lambda: self.write(
+                    "README.md",
+                    (self.root / "README.md").read_text() + "staff-engineer-mode-marketplace\n",
+                ),
+            ),
+            (
+                "Cursor marketplace slash command in README",
+                lambda: self.write(
+                    "README.md",
+                    (self.root / "README.md").read_text() + "/add-plugin staff-engineer-mode\n",
+                ),
+            ),
+            (
+                "Cursor marketplace claim",
+                lambda: self.write(
+                    ".cursor-plugin/INSTALL.md",
+                    (self.root / ".cursor-plugin" / "INSTALL.md").read_text() + "Cursor Plugin Marketplace\n",
+                ),
+            ),
+            (
+                "Codex marketplace ref pin",
+                lambda: self.write(
+                    ".codex/INSTALL.md",
+                    (self.root / ".codex" / "INSTALL.md").read_text().replace(
+                        "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git",
+                        "codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git --ref abc",
+                        1,
+                    ),
+                ),
+            ),
+            (
+                "OpenCode commit pin",
+                lambda: self.write(
+                    ".opencode/INSTALL.md",
+                    (self.root / ".opencode" / "INSTALL.md").read_text()
+                    + "opencode plugin 'staff-engineer-mode@git+https://github.com/sirmarkz/staff-engineer-mode.git#abc'\n",
+                ),
+            ),
+        ]
+
+        for name, mutate in cases:
+            with self.subTest(name=name):
+                self.write_valid_readme()
+                self.write_valid_install_docs()
+                mutate()
+                with contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit):
+                        self.validator.validate_docs()
 
     def test_readme_rejects_claude_github_shorthand_marketplace_add(self) -> None:
         self.write(
