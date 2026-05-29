@@ -2,7 +2,21 @@
 
 ## Change
 
+## Change Class And Confirmation
+
+| Class | Required Checks | Confirmation Path | Decision Rationale |
+| --- | --- | --- | --- |
+
 ## Responsibility Path
+
+## Production Change Record
+
+| Field | Value |
+| --- | --- |
+| User confirmation |  |
+| Expected effect |  |
+| Blast radius |  |
+| Recovery result |  |
 
 ## Contract
 
@@ -21,6 +35,9 @@
 
 ## Validation
 
+| Check | Scope | Expected Result | Blocks Apply? | Evidence |
+| --- | --- | --- | --- | --- |
+
 ## Preview
 
 | Target | Current Value | Proposed Value | Delta | Cap Result | Apply Action | Rollback Value |
@@ -32,6 +49,25 @@
 
 ## Blast Radius
 
+| Target Group | Count | User/System Impact | Per-Target Cap | Abort Signal |
+| --- | --- | --- | --- | --- |
+
 ## Recovery
 
+| Failure Mode | Rollback Target | Recovery Action | Owner | Verification |
+| --- | --- | --- | --- | --- |
+
+## Operational Levers
+
+| Lever | Expected Effect | Activation Time | Prerequisites | Last Test | Disable/Revert Path |
+| --- | --- | --- | --- | --- | --- |
+
 ## Drift And Exceptions
+
+| Exception | Owner | Reason | Expiry | Reconciliation Path |
+| --- | --- | --- | --- | --- |
+
+## Approval, Execution, And Cleanup
+
+| Step | Owner | Evidence | Done? |
+| --- | --- | --- | --- |

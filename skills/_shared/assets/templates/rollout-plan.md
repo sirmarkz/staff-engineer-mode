@@ -22,6 +22,16 @@
 - Small first rollout:
 - Next exposure step:
 
+## Compatibility Plan
+
+| Surface | Old/New Compatibility | Skew Risk | Verification |
+| --- | --- | --- | --- |
+
+## Feature Flag Or Config Lifecycle
+
+| Temporary Control | Expiry | Removal Condition | Owner |
+| --- | --- | --- | --- |
+
 ## Canary Metrics
 
 Pull metric names, thresholds, baseline windows, observation windows, and
@@ -129,3 +139,11 @@ declaration for the next stage is recorded.
 - Re-enable criteria:
 
 ## Cleanup
+
+| Cleanup Item | Owner | Trigger | Verification | Due |
+| --- | --- | --- | --- | --- |
+
+## Launch Watch
+
+| Watch Signal | Source | Threshold | Owner | Action |
+| --- | --- | --- | --- | --- |
