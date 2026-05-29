@@ -161,9 +161,9 @@ Treat "review" as a verb until the artifact proves otherwise.
 
 Precedence. Load `references/routing-matrix.md` for uncertainty.
 
-- Go/no-go, traffic shift, or impact-increase -> `production-readiness-review`; canary/stop/rollback metrics/mechanics -> `progressive-delivery`; narrow SLI/SLO, security, API, data, or test artifacts keep their specialist. Active incidents -> `incident-response-and-postmortems` first.
+- Go/no-go/traffic shift/impact increase -> `production-readiness-review`; canary/stop/rollback metrics -> `progressive-delivery`; narrow SLI/SLO/security/API/data/test artifacts keep their specialist; active incidents -> `incident-response-and-postmortems`.
 - Prefer narrow routes. PR, branch, patch, commit attempt, or diff review routes to `agent-pr-review`, including tiny changes; otherwise route to the narrow surface specialist.
-- Retry ownership/boundary routes to `architecture-decisions`; retry/timeout/fallback/overload policy routes to `dependency-resilience`.
+- Service/module responsibility boundaries -> `architecture-decisions`; AI-agent repo legibility/names/canonical paths/one-tool-call findability -> `code-readability-for-agents`; retry/timeout/fallback/overload -> `dependency-resilience`.
 - HA topology/static capacity routes to `high-availability-design`; fault-injection tests route to `resilience-experiments`; reliability policy, telemetry, alerts, restore, overload, and invariants stay separate.
 - Cross-service database/storage correctness routes to `distributed-data-and-consistency`; in-process states/invariants route to `state-machine-correctness`.
 - API compatibility, data contracts, test data, hygiene, fleet upgrades, event replay/DLQ, cache, and pipeline freshness stay distinct; runtime/platform/client version-skew windows or exceptions stay `fleet-upgrades`, despite client/service updates.
