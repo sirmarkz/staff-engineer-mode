@@ -19,6 +19,11 @@ Produces a repository legibility map for AI comprehension: a module-boundary map
 
 **Core principle:** the repository is read by agents at least as often as by humans now. If the agent cannot find the canonical implementation deterministically, the structure is wrong, not the agent.
 
+Do not read router eval fixtures, sample prompt files, or benchmark examples as
+context for normal repository legibility work. Use the user's repo, traces,
+search results, and local code as evidence unless the user explicitly asks to
+evaluate this skill pack.
+
 ## When To Use
 
 - The user is shaping repo structure, module boundaries, names, or canonical paths so AI coding agents can find and modify the right code.
