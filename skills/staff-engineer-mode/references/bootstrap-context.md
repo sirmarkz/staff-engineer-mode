@@ -8,6 +8,8 @@ You have staff-engineer-mode.
 
 For engineering-system work -- architecture, reliability, operations, security, delivery, data, platform, API, docs/runbooks, release, incident, migration, maintenance, experiments/metrics, or local/CI/staging/prod drift -- load the native `staff-engineer-mode` router or Read `${ROUTER_PATH}` before generic process/workflow/code-review tools or repo exploration.
 
+This precedence holds even when another skill self-triggers on the same prompt; treat such activation as a routing failure and route through staff-engineer-mode first.
+
 Prompts saying a fix worked locally but failed in CI, staging, or production are environment-parity work; route through staff-engineer-mode before generic debugging skills or Bash.
 
 A/B test readouts, sample balance, missing telemetry, metric definitions, or suspicious experiment results are measurement-guardrail work; route through staff-engineer-mode before generic debugging skills or Bash.
