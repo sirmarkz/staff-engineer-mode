@@ -146,7 +146,6 @@ Treat "review" as a verb until the artifact proves otherwise.
 
 - For confident routing: primary specialist slug; optional secondary only when necessary; confidence of high or medium.
 - Inferred intent: requested artifact, dominant surface, work phase, and one-sentence rationale.
-- For explicit eval-harness runs only: include fenced `routing` only for confident in-scope routing; never emit a routing block for low-confidence, ambiguous, or out-of-scope prompts. JSON fields: `primary`, `secondary`, `confidence`, `artifact`, `surface`, `phase`, `rationale`; text fields must not repeat tool, vendor, framework, protocol, database, or command names from the prompt.
 - For low-confidence routing: infer a best-effort route when in scope; otherwise withhold routing without intake questions, candidate lists, confidence labels, routing drafts, or specialist names.
 - Out-of-scope reframe when applicable, without specialist names or candidate routes.
 
@@ -154,7 +153,7 @@ Treat "review" as a verb until the artifact proves otherwise.
 
 - `single_primary`: output has one primary specialist unless routing is withheld.
 - `secondary_cap`: output has no more than one secondary specialist.
-- `capability_translation`: tool, vendor, or framework names are translated into capability language before routing and not repeated in routing block fields.
+- `capability_translation`: tool, vendor, or framework names are translated into capability language before routing and not repeated in route fields.
 - `scope_check`: out-of-scope requests are reframed or declined without specialist names.
 - `ambiguity_check`: ambiguous prompts infer from available context when possible; withheld routes expose no specialist names, candidate routes, confidence labels, drafts, or intake questions.
 - `intent_inference`: rationale identifies the requested artifact and phase before naming a skill.
@@ -169,20 +168,20 @@ Load `references/routing-matrix.md` for uncertainty.
 - HA topology/static capacity -> `high-availability-design`; fault-injection -> `resilience-experiments`; telemetry/alert design -> `observability-and-alerting`; recurring alerts, manual runbook toil, suppression/noise -> `oncall-health`; reliability policy, restore, overload, and invariants stay separate.
 - Cross-service database/storage correctness routes to `distributed-data-and-consistency`; in-process states/invariants route to `state-machine-correctness`.
 - Keep API compatibility, data contracts, fixtures/goldens/prod samples, hygiene, fleet, events, cache, and pipeline distinct. Fixtures/goldens/prod samples -> `test-data-engineering`; stream/batch/event replay with freshness, validation, reporting trust, no-double-count recovery -> `data-pipeline-reliability`; producer/consumer schema -> `data-contracts`; runtime/client version-skew -> `fleet-upgrades`.
-- Corruption/deletion recovery routes to `backup-and-recovery`; schema/index/backfill/destructive datastore execution routes to `database-operations`.
+- Corruption/deletion recovery routes to `backup-and-recovery`; query-plan, schema-migration, and database-caused endpoint regressions route to `database-operations`; generic latency/headroom routes to `performance-and-capacity`.
 - Flag owner/expiry/fallback/removal -> `feature-flag-lifecycle`; config mutation/generated ops/bulk scripts/preview/validation/caps/rollback -> `configuration-and-automation-safety`.
 - Tags/versions/packages/artifact identity/promotion -> `release-build-reproducibility`; local/CI/staging/prod drift -> `dev-environment-parity`; provenance/signing/builder isolation -> `software-supply-chain-security`.
 - Desired-state capture, drift detection, reconciliation, emergency infra exceptions -> `infrastructure-and-policy-as-code`.
 - Retiring/replacing with no-new-usage checks -> `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback -> `ml-reliability-and-evaluation`.
 - Security by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, LLM app risk.
 - Docs/runbooks/ADRs owner/source-of-truth/freshness/archive -> `documentation-lifecycle`; AI agent repo rules/protected paths/generated-code acceptance -> `ai-coding-governance`; control maps/scorecards/exceptions -> `engineering-control-evidence`.
-- Public edge, service identity/locality, dependency retry, browser release, accessibility, readability, LLM eval/serving/security stay separate; capacity/latency no spend -> `performance-and-capacity`; capacity/headroom benefit versus cost/savings -> `cost-aware-reliability`.
+- Public edge, service identity/locality, dependency retry, browser release, accessibility, readability, LLM eval/serving/security stay separate; capacity/headroom benefit versus cost/savings -> `cost-aware-reliability`.
 
 ## Red Flags - Stop And Rework
 
 - More than two specialists are selected automatically.
 - The router chooses from a phrase match without identifying artifact and phase.
-- A tool or vendor name drives routing without capability translation, or appears in routing block text.
+- A tool or vendor name drives routing without capability translation, or appears in route text.
 - `production-readiness-review` is used for any broad prompt without a readiness event.
 - Compliance, staffing, compensation, procurement, or marketing work is routed as engineering work.
 - A low-confidence or out-of-scope answer names candidate specialists, prints a routing draft, or exposes the internal shortlist.

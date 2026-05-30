@@ -163,13 +163,10 @@ ROUTER_DESCRIPTION_TERMS = [
     "maintenance",
 ]
 
-ROUTER_EVAL_SCOPE_TERMS = [
+ROUTER_RUNTIME_BANNED_EVAL_TERMS = [
     "eval-harness",
-    "confident in-scope routing",
-    "never emit a routing block",
-    "low-confidence",
-    "ambiguous",
-    "out-of-scope",
+    "fenced routing",
+    "routing block",
 ]
 
 ROUTER_LOAD_CONTRACT_RULE_TERMS = [
@@ -386,11 +383,11 @@ def validate_router_load_contract(text: str, path: Path) -> None:
             )
 
 
-def validate_router_eval_scope(text: str, path: Path) -> None:
+def validate_router_runtime_scope(text: str, path: Path) -> None:
     lowered = text.lower()
-    missing = [term for term in ROUTER_EVAL_SCOPE_TERMS if term not in lowered]
-    if missing:
-        fail(f"{path} missing eval-harness scope terms: {', '.join(missing)}")
+    present = [term for term in ROUTER_RUNTIME_BANNED_EVAL_TERMS if term in lowered]
+    if present:
+        fail(f"{path} contains eval-harness-only runtime terms: {', '.join(present)}")
 
 
 def validate_decision_guide_framing(text: str, path: Path) -> None:
@@ -483,7 +480,7 @@ def validate_router_skill(text: str, path: Path) -> None:
     validate_router_phase_triggers(text, path)
     validate_router_context_applicability(text, path)
     validate_router_inference_first(text, path)
-    validate_router_eval_scope(text, path)
+    validate_router_runtime_scope(text, path)
     validate_router_load_contract(text, path)
     word_count = len(re.findall(r"\S+", text))
     if word_count > ROUTER_MAX_WORDS:

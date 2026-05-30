@@ -29,8 +29,7 @@ specialist.
 
 Supported tools should list only the native `staff-engineer-mode` router.
 Specialist files live under `specialists/` and load only after routing. The
-router picks one primary specialist by default. See
-[SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for examples.
+router picks one primary specialist by default.
 
 For commits and amends, Staff Engineer Mode requires `agent-pr-review` against
 the exact staged diff. For releases, tags, version bumps, packages, artifacts,

@@ -151,7 +151,7 @@ Infer these from the prompt, repo, files, branch context, and conversation. Do n
             path.write_text(text)
             validator.validate_router_inference_first(text, path)
 
-    def test_router_requires_eval_harness_scope_boundary(self) -> None:
+    def test_router_rejects_eval_harness_schema_in_runtime_skill(self) -> None:
         validator = load_validator()
         text = """## Required Outputs
 
@@ -161,16 +161,17 @@ Infer these from the prompt, repo, files, branch context, and conversation. Do n
             path = Path(tmp) / "SKILL.md"
             path.write_text(text)
             with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
-                validator.validate_router_eval_scope(text, path)
+                validator.validate_router_runtime_scope(text, path)
 
         valid = """## Required Outputs
 
-- For explicit eval-harness runs only: include a fenced routing block only for confident in-scope routing; never emit a routing block for low-confidence, ambiguous, or out-of-scope prompts.
+- For confident routing: primary specialist slug; optional secondary only when necessary.
+- For low-confidence routing: infer a best-effort route when in scope; otherwise withhold routing without intake questions.
 """
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "SKILL.md"
             path.write_text(valid)
-            validator.validate_router_eval_scope(valid, path)
+            validator.validate_router_runtime_scope(valid, path)
 
     def test_router_load_contract_requires_section_after_iron_law(self) -> None:
         validator = load_validator()
