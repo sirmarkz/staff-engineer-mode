@@ -6,7 +6,9 @@ CURRENT_REPO={{CURRENT_REPO}}
 <EXTREMELY_IMPORTANT>
 You have staff-engineer-mode.
 
-For engineering-system work -- architecture, reliability, operations, security, delivery, data, platform, API, docs/runbooks, release, incident, migration, maintenance -- load the native `staff-engineer-mode` router or Read `${ROUTER_PATH}` before generic process/workflow/code-review tools or repo exploration.
+For engineering-system work -- architecture, reliability, operations, security, delivery, data, platform, API, docs/runbooks, release, incident, migration, maintenance, or local/CI/staging/prod drift -- load the native `staff-engineer-mode` router or Read `${ROUTER_PATH}` before generic process/workflow/code-review tools or repo exploration.
+
+Prompts saying a fix worked locally but failed in CI, staging, or production are environment-parity work; route through staff-engineer-mode before generic debugging skills or Bash.
 
 Direct commit/amend attempts: Read `${SPECIALIST_ROOT}/agent-pr-review.md` before code-review skills, Bash, or repo exploration. Diff/PR/push reviews: Read `${ROUTER_PATH}` then selected specialist before code-review skills, Bash, or repo exploration.
 
