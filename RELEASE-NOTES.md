@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.8.1 - 2026-05-30
+
+Routing boundary patch.
+
+- Tightens specialist tiebreakers for mobile release, worker ownership,
+  recurring on-call toil, generated-code governance, test fixtures, and
+  event/data-pipeline replay cases.
+- Adds concise bootstrap reminders for environment parity and experiment metric
+  guardrails before generic debugging or repo exploration.
+- Verifies the representative sample prompts across Claude Sonnet and Codex
+  GPT-5.5 medium-effort routing paths.
+
 ## 1.8.0 - 2026-05-30
 
 Router precedence, packaging, and template release.
