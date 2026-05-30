@@ -1,6 +1,6 @@
 ---
 name: staff-engineer-mode
-description: "Use when engineering decisions in ideation, design, development, testing, release, operations, maintenance; build/API/reliability/security/data before generic process skills"
+description: "Use when engineering decisions span ideation, design, development, testing, release, operations, maintenance, docs/runbooks; API/reliability/security/data before process skills"
 ---
 
 # Staff Engineer Mode
@@ -11,15 +11,15 @@ description: "Use when engineering decisions in ideation, design, development, t
 ONE PRIMARY SPECIALIST BY DEFAULT; INFER ROUTING CONTEXT BEFORE WITHHOLDING
 ```
 
-Loading many plausible specialists is a routing failure.
+Loading many specialists is a routing failure.
 
 ## Precedence Over Generic Process Packs
 
 Engineering surfaces -- architecture, reliability, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, readiness, rollout, migration, incident response, documentation lifecycle, control records, API design, service contracts, or engineering-system design -- start here before generic process packs.
 
-Do not invoke `superpowers:brainstorming`, `superpowers:writing-plans`, or another broad process skill first. Route through Staff Engineer Mode, load the selected specialist, then use process skills only for sub-decisions.
+Do not invoke `superpowers:brainstorming`, `superpowers:writing-plans`, another broad process skill, or host orchestration first. Route through SEM, load specialist, then use other tools only for sub-decisions.
 
-"Build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", or "investigate this incident" are engineering-system prompts. Docs/runbooks lifecycle ownership, source-of-truth, freshness, or archival also route. Consumer/client compatibility, removal, rollout, safety, or readiness checks route without exact names. If another pack starts with brainstorming, read the SEM specialist first.
+"Build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", or "investigate this incident" are engineering-system prompts. Docs/runbooks lifecycle ownership, source-of-truth, freshness, or archival route. Workflow/process/plan are artifacts, not bypasses. Consumer/client compatibility, removal, rollout, safety, or readiness checks route without exact names. If another pack starts with brainstorming, read the SEM specialist first.
 
 ## Load Contract
 
@@ -33,7 +33,7 @@ To load a specialist, **Read** the file at `<specialist-root>/<slug>.md`. Resolv
 
 Three rules, all mandatory:
 
-- **Use the Read tool. Do not use the Skill tool.** Specialists are not registered skills on any supported platform. `Skill staff-engineer-mode:<slug>` returns `Unknown skill` and is a routing failure.
+- **Use the Read tool. Do not use the Skill tool.** Specialists are not registered skills. `Skill staff-engineer-mode:<slug>` returns `Unknown skill` and is a routing failure.
 - **Complete the Read before producing engineering guidance for routed work.** Do not answer routed engineering prompts from priors.
 - **A confidently-routed answer without a matching Read in the same turn is a routing failure even when the slug is correct.**
 
@@ -124,7 +124,7 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 ## Exceptions
 
-- For explicit launch/readiness decisions or broad release readiness checks, use `production-readiness-review` as primary.
+- For explicit go/no-go, launch-blocker, or broad readiness checks, use `production-readiness-review` as primary.
 - For active incidents, use `incident-response-and-postmortems` first even if root cause appears to belong elsewhere.
 - For vague prompts such as "make this better" or "troubleshoot a network issue", infer from repo and conversation context before withholding routing.
 - For out-of-scope business or ceremony prompts, do not select a skill unless context already supplies an engineering lifecycle/control framing.
@@ -133,12 +133,12 @@ Select one primary when the prompt has enough context. Recommend at most one sec
 
 Treat "review" as a verb until the artifact proves otherwise.
 
-- Concrete PR, branch, patch, last commit, staged change, commit attempt, or diff review before merge routes to `agent-pr-review`, including tests-pass or deletion-behavior checks; commit and amend attempts route there regardless of change size.
+- Commit/amend attempts always route to `agent-pr-review`; general PR, branch, patch, last commit, staged change, or diff review before merge routes there, including tests-pass or deletion-behavior checks.
 - Changed files alone do not make a diff review; route static-analysis or maintenance backlog prioritization to `dependency-and-code-hygiene`.
 - Generic review-system design, reviewer routing, ownership, change size, review latency, or DORA workflow has no routed specialist unless a concrete engineering surface is present.
 - Launch readiness, go/no-go, impact increase, or broad release readiness routes to `production-readiness-review`.
 - Design review, architecture review, security review, API review, data review, rollout review, or test review without a concrete diff routes by the engineering surface, not by the word "review".
-- A surface-specific change before merge still routes to the narrow surface specialist when the requested artifact is compatibility, deprecation, migration, safety, rollout, security, accessibility, data, or test results rather than a general diff verdict.
+- A surface-specific PR/diff/change before merge routes to the narrow specialist when the requested artifact is compatibility, deprecation, migration, safety, rollout, security, accessibility, data, or test results rather than a general diff verdict.
 
 ## Required Outputs
 
@@ -150,7 +150,7 @@ Treat "review" as a verb until the artifact proves otherwise.
 
 ## Checks Before Moving On
 
-- `single_primary`: output has exactly one primary specialist unless routing is withheld.
+- `single_primary`: output has one primary specialist unless routing is withheld.
 - `secondary_cap`: output has no more than one secondary specialist.
 - `capability_translation`: tool, vendor, or framework names are translated into capability language before routing and not repeated in routing block fields.
 - `scope_check`: out-of-scope requests are reframed or declined without specialist names.
@@ -159,12 +159,12 @@ Treat "review" as a verb until the artifact proves otherwise.
 
 ## Routing Tiebreakers
 
-Precedence. Load `references/routing-matrix.md` for uncertainty.
+Load `references/routing-matrix.md` for uncertainty.
 
-- Go/no-go/traffic shift/impact increase -> `production-readiness-review`; canary/stop/rollback metrics -> `progressive-delivery`; narrow SLI/SLO/security/API/data/test artifacts keep their specialist; active incidents -> `incident-response-and-postmortems`.
-- Prefer narrow routes. PR, branch, patch, commit attempt, or diff review routes to `agent-pr-review`, including tiny changes; otherwise route to the narrow surface specialist.
+- Go/no-go/traffic shift/impact increase -> `production-readiness-review`; mobile OS/crash-free staged rollout -> `mobile-release-engineering`; canary/stop/rollback metrics -> `progressive-delivery`; narrow SLI/SLO/security/API/data/test/observability artifacts keep their specialist; incidents -> `incident-response-and-postmortems`.
+- Prefer narrow routes. Commit attempts or general PR/branch/patch/diff reviews -> `agent-pr-review`; surface-specific PRs route narrow.
 - Service/module responsibility boundaries -> `architecture-decisions`; AI-agent repo legibility/names/canonical paths/one-tool-call findability -> `code-readability-for-agents`; retry/timeout/fallback/overload -> `dependency-resilience`.
-- HA topology/static capacity routes to `high-availability-design`; fault-injection tests route to `resilience-experiments`; reliability policy, telemetry, alerts, restore, overload, and invariants stay separate.
+- HA topology/static capacity -> `high-availability-design`; fault-injection -> `resilience-experiments`; telemetry/alert design -> `observability-and-alerting`; alert suppression/noise -> `oncall-health`; reliability policy, restore, overload, and invariants stay separate.
 - Cross-service database/storage correctness routes to `distributed-data-and-consistency`; in-process states/invariants route to `state-machine-correctness`.
 - API compatibility, data contracts, test data, hygiene, fleet upgrades, event replay/DLQ, cache, and pipeline freshness stay distinct; runtime/platform/client version-skew windows or exceptions stay `fleet-upgrades`, despite client/service updates.
 - Corruption/deletion recovery routes to `backup-and-recovery`; schema/index/backfill/destructive datastore execution routes to `database-operations`.
@@ -174,7 +174,7 @@ Precedence. Load `references/routing-matrix.md` for uncertainty.
 - Retiring/replacing capabilities with no-new-usage checks -> `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback -> `ml-reliability-and-evaluation`.
 - Security by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
 - Docs/runbooks/design docs/ADRs with owner/source-of-truth/freshness/archive rules -> `documentation-lifecycle`; control maps/scorecards/exception records/record packs -> `engineering-control-evidence`.
-- Public edge, service identity/discovery/locality, dependency retry policy, `performance-and-capacity`, browser release signals, accessibility, cost, LLM eval/serving/security, AI coding controls, and readability stay separate.
+- Public edge, service identity/locality, dependency retry, browser release, accessibility, AI coding, readability, and LLM eval/serving/security stay separate; capacity/latency no cost -> `performance-and-capacity`; cost+reliability/headroom tradeoff -> `cost-aware-reliability`.
 - Single-surface verification stays with its specialist.
 
 ## Red Flags - Stop And Rework

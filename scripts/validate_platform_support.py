@@ -322,6 +322,7 @@ def validate_hooks() -> None:
         "staff-engineer-mode",
         "skills/staff-engineer-mode/SKILL.md",
         "specialists",
+        "ROUTER_PATH",
         "EVENT_HOOK",
         "CURRENT_REPO",
     ]:
@@ -329,20 +330,22 @@ def validate_hooks() -> None:
             fail(f"hooks/session-start missing {term}")
     for term in [
         "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
+        "ROUTER_PATH={{ROUTER_PATH}}",
         "EVENT_HOOK={{EVENT_HOOK}}",
         "CURRENT_REPO={{CURRENT_REPO}}",
-        "Read ${SPECIALIST_ROOT}/<slug>.md",
+        "load the native `staff-engineer-mode` router",
+        "Read `${ROUTER_PATH}`",
+        "Router load alone is not enough",
+        "Read `${SPECIALIST_ROOT}/<slug>.md`",
+        "before any repo file",
+        "Do not parallel-load router and repo files",
+        "never call `Skill staff-engineer-mode:<slug>`",
+        "Read `${SPECIALIST_ROOT}/agent-pr-review.md` before code-review",
         "Keep guidance technology-agnostic by default",
         "agent-pr-review",
         "release-build-reproducibility",
         "production-readiness-review",
-        "Bash preflight",
-        "Receipt `--repo` means the local checkout root",
-        "Do not combine staging, committing, or pushing",
-        "Never run bare `ack`",
-        "Never run `git add && git commit`",
-        "reading CLAUDE.md, or reading SKILL.md is not enough",
-        "Co-Authored-By",
+        "Do not combine stage/commit/push",
     ]:
         if term not in bootstrap_text:
             fail(f"bootstrap-context.md missing {term}")

@@ -9,19 +9,10 @@ ROUTER_PATH="${PLUGIN_ROOT}/skills/staff-engineer-mode/SKILL.md"
 BOOTSTRAP_TEMPLATE_PATH="${PLUGIN_ROOT}/skills/staff-engineer-mode/references/bootstrap-context.md"
 EVENT_HOOK_PATH="${PLUGIN_ROOT}/hooks/agent-event-policy"
 
-if [ -r "$ROUTER_PATH" ]; then
-  router_raw="$(cat "$ROUTER_PATH")"
-else
-  router_raw="Error reading staff-engineer-mode skill from ${ROUTER_PATH}"
+if [ ! -r "$ROUTER_PATH" ]; then
+  printf 'staff-engineer-mode: missing router skill at %s\n' "$ROUTER_PATH" >&2
+  exit 1
 fi
-
-strip_frontmatter() {
-  awk '
-    NR == 1 && $0 == "---" { in_frontmatter = 1; next }
-    in_frontmatter && $0 == "---" { in_frontmatter = 0; next }
-    !in_frontmatter { print }
-  '
-}
 
 if [ ! -r "$BOOTSTRAP_TEMPLATE_PATH" ]; then
   printf 'staff-engineer-mode: missing bootstrap template at %s\n' "$BOOTSTRAP_TEMPLATE_PATH" >&2
@@ -40,13 +31,12 @@ escape_for_json() {
   printf '%s' "$s"
 }
 
-router_content="$(printf '%s\n' "$router_raw" | strip_frontmatter)"
 specialist_root="${PLUGIN_ROOT}/specialists"
 current_repo="$(git -C "$PWD" rev-parse --show-toplevel 2>/dev/null || true)"
 session_context="${bootstrap_template//\{\{SPECIALIST_ROOT\}\}/$specialist_root}"
+session_context="${session_context//\{\{ROUTER_PATH\}\}/${ROUTER_PATH}}"
 session_context="${session_context//\{\{EVENT_HOOK\}\}/${EVENT_HOOK_PATH}}"
 session_context="${session_context//\{\{CURRENT_REPO\}\}/${current_repo}}"
-session_context="${session_context//\{\{ROUTER_CONTENT\}\}/${router_content}}"
 session_context="${session_context//\{\{TOOL_MAPPING\}\}/}"
 session_context="$(escape_for_json "$session_context")"
 

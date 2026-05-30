@@ -15,7 +15,6 @@ const specialistsDir = path.resolve(__dirname, "..", "..", "specialists");
 const routerPath = path.join(skillsDir, "staff-engineer-mode", "SKILL.md");
 const bootstrapTemplatePath = path.join(skillsDir, "staff-engineer-mode", "references", "bootstrap-context.md");
 
-const stripFrontmatter = (content) => content.replace(/^---\n[\s\S]*?\n---\n/, "");
 const renderTemplate = (template, values) =>
   Object.entries(values).reduce(
     (rendered, [key, value]) => rendered.replaceAll(`{{${key}}}`, value),
@@ -28,7 +27,6 @@ const getBootstrapContent = () => {
   }
 
   const bootstrapTemplate = fs.readFileSync(bootstrapTemplatePath, "utf8");
-  const routerContent = stripFrontmatter(fs.readFileSync(routerPath, "utf8"));
   const toolMapping = `**Tool Mapping for OpenCode:**
 When Staff Engineer Mode skills reference tools you do not have, substitute OpenCode equivalents:
 - \`Skill\` tool -> OpenCode's native \`skill\` tool
@@ -39,7 +37,9 @@ Use OpenCode's native \`skill\` tool only for the router. After routing, read th
 
   return renderTemplate(bootstrapTemplate, {
     SPECIALIST_ROOT: specialistsDir,
-    ROUTER_CONTENT: routerContent,
+    ROUTER_PATH: routerPath,
+    EVENT_HOOK: path.resolve(__dirname, "..", "..", "hooks", "agent-event-policy"),
+    CURRENT_REPO: "",
     TOOL_MAPPING: toolMapping,
   });
 };

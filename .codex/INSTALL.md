@@ -60,9 +60,9 @@ specialist file.
 ## Hooks And Policy
 
 The plugin includes a `SessionStart` hook that adds `SPECIALIST_ROOT`,
-`EVENT_HOOK`, and the Staff Engineer Mode routing contract to each Codex
-session. It also includes a command policy hook for commit and release events
-when the host runs plugin hooks.
+`ROUTER_PATH`, `EVENT_HOOK`, `CURRENT_REPO`, and the Staff Engineer Mode routing
+contract to each Codex session. It also includes a command policy hook for
+commit and release events when the host runs plugin hooks.
 
 Before creating or amending commits, the agent must stage separately, inspect
 the exact staged diff, read `agent-pr-review`, review the staged change, record

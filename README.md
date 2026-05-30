@@ -1,7 +1,5 @@
 # Staff Engineer Mode
 
-[![Release](https://img.shields.io/github/v/release/sirmarkz/staff-engineer-mode?label=release)](./RELEASE-NOTES.md)
-
 **Production-engineering judgment for AI coding agents.**
 
 Staff Engineer Mode packages public production-engineering practices as decision

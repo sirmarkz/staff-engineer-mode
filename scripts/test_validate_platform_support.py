@@ -295,27 +295,29 @@ class PlatformDocsValidationTests(unittest.TestCase):
             "\n".join(
                 [
                     "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
+                    "ROUTER_PATH={{ROUTER_PATH}}",
                     "EVENT_HOOK={{EVENT_HOOK}}",
                     "CURRENT_REPO={{CURRENT_REPO}}",
-                    "Read ${SPECIALIST_ROOT}/<slug>.md",
+                    "load the native `staff-engineer-mode` router",
+                    "Read `${ROUTER_PATH}`",
+                    "Router load alone is not enough",
+                    "Read `${SPECIALIST_ROOT}/<slug>.md`",
+                    "before any repo file",
+                    "Do not parallel-load router and repo files",
+                    "never call `Skill staff-engineer-mode:<slug>`",
+                    "Read `${SPECIALIST_ROOT}/agent-pr-review.md` before code-review",
                     "Keep guidance technology-agnostic by default",
                     "agent-pr-review",
                     "release-build-reproducibility",
                     "production-readiness-review",
-                    "Bash preflight",
-                    "Receipt `--repo` means the local checkout root",
-                    "Do not combine staging, committing, or pushing",
-                    "Never run bare `ack`",
-                    "Never run `git add && git commit`",
-                    "reading CLAUDE.md, or reading SKILL.md is not enough",
-                    "Co-Authored-By",
+                    "Do not combine stage/commit/push",
                     "",
                 ]
             ),
         )
         self.write(
             "hooks/session-start",
-            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists EVENT_HOOK CURRENT_REPO\n",
+            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists ROUTER_PATH EVENT_HOOK CURRENT_REPO\n",
         )
         self.write("hooks/run-hook.cmd", "exec bash hook\n")
         self.write("hooks/hooks-cursor.json", "{}\n")

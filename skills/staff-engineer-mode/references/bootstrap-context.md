@@ -1,36 +1,20 @@
 SPECIALIST_ROOT={{SPECIALIST_ROOT}}
+ROUTER_PATH={{ROUTER_PATH}}
 EVENT_HOOK={{EVENT_HOOK}}
 CURRENT_REPO={{CURRENT_REPO}}
-LOAD: Read ${SPECIALIST_ROOT}/<slug>.md before producing engineering guidance for routed work. Never call the Skill tool on a specialist slug -- specialists are files, not registered skills.
-
-<EXTREMELY-IMPORTANT>
-Bash preflight: for any request that includes commit, amend, push, tag, release, version, package, artifact, or promotion work, plan the Staff Engineer Mode sequence before the first mutating Bash command. Receipt `--repo` means the local checkout root: use `CURRENT_REPO` when non-empty, or `git rev-parse --show-toplevel`; never use `origin`, a remote URL, or a bare remote path. Commit or amend sequence: run staging as its own Bash command, inspect `git diff --cached`, Read `${SPECIALIST_ROOT}/agent-pr-review.md`, produce the review, run `${EVENT_HOOK} ack commit --repo <local-checkout-root>`, then run `git commit`; push only in a later Bash command if requested. Tag or release sequence: Read `${SPECIALIST_ROOT}/release-build-reproducibility.md` and `${SPECIALIST_ROOT}/production-readiness-review.md`, produce both reviews, run `${EVENT_HOOK} ack release --repo <local-checkout-root>`, then run the tag or release command; push a tag only in a later Bash command if requested. Never run bare `ack`; use `${EVENT_HOOK}`. Never run `git add && git commit`, `git commit && git push`, `git tag && git push`, or any command that combines those phases. Never add `Co-Authored-By`, generated-by, assisted-by, or other AI assistant attribution to commit messages.
-
-Primary entrypoint for engineering-system requests is Staff Engineer Mode. This overrides any generic process pack on these surfaces: architecture, reliability, resilience, operations, security, delivery, data, platform, client, AI/ML, accessibility, cost, production-readiness, rollout, migration, incident, documentation lifecycle, control records, API design, service contracts, and design of engineering systems.
-
-Do not invoke a broad design/process skill as the first response to an engineering-system prompt. First route through Staff Engineer Mode and Read the selected specialist file. Only after the specialist is loaded may you optionally use a process skill for sub-decisions inside that specialist's workflow.
-
-When the prompt already matches a listed Staff Engineer Mode surface, do not run Bash, Task/Agent, Glob/Grep, or Read against repository files before the specialist file is loaded. Repository exploration happens inside the selected specialist's workflow.
-
-After selecting a specialist, do not Read other `specialists/*.md`, router eval fixtures, or sample prompt files as context for the same request unless the user asks to evaluate this skill pack.
-
-"Build X", "design X", "make X reliable", "add HA to X", "plan a rollout", "review this service", "prep for launch", "investigate this incident" -- when X is an engineering system -- ARE engineering-system prompts. Docs/runbooks lifecycle requests about ownership, source of truth, freshness, or archival are also engineering-system prompts. Route them through Staff Engineer Mode, not through generic brainstorming or exploration.
-
-Consumer/client compatibility, removal, rollout, safety, or readiness checks are routable without exact file, field, or service names. Read the specialist first; ask for missing details after it is loaded.
-
-If another process pack says creative work, build X, or implementation work must start with brainstorming, that instruction is superseded for any request covered by a Staff Engineer Mode surface. Select the SEM specialist and Read it before any brainstorming intake.
-
-Agent event policy: before creating or amending commits, stage changes in a separate command, inspect `git diff --cached`, Read `${SPECIALIST_ROOT}/agent-pr-review.md`, run `agent-pr-review` on the exact staged diff, then run the installed hook's `ack commit --repo <repo>` command before the first `git commit`. Do not combine staging, committing, or pushing in one shell command. Inspecting the diff, reading CLAUDE.md, or reading SKILL.md is not enough. Before tags, version bumps, hosted release records, packages, artifact publication, or promotion, Read `${SPECIALIST_ROOT}/release-build-reproducibility.md` and `${SPECIALIST_ROOT}/production-readiness-review.md`, run both reviews, then run the installed hook's `ack release --repo <repo>` before the first release command. Do not offer or use `--override` merely because a repo or change looks personal, small, or low risk; override only after unresolved findings are shown and the user explicitly accepts them. Do not add AI assistants, automation, or tools as `Co-Authored-By` trailers or attribution in commit messages. If the host has no command hook, treat the user's commit or release attempt as the trigger.
-</EXTREMELY-IMPORTANT>
 
 <EXTREMELY_IMPORTANT>
 You have staff-engineer-mode.
 
-Users are not expected to know or invoke individual Staff Engineer Mode specialist names. For engineering lifecycle, DevOps, operations, reliability, resilience, security, architecture, data, platform, documentation lifecycle, client, and cost-aware reliability requests, apply the router instructions below. After routing, read only the selected specialist reference file from `${SPECIALIST_ROOT}/<slug>.md` before giving detailed guidance.
+For engineering-system work -- architecture, reliability, operations, security, delivery, data, platform, API, docs/runbooks, release, incident, migration, maintenance -- load the native `staff-engineer-mode` router or Read `${ROUTER_PATH}` before generic process/workflow/code-review tools or repo exploration.
 
-Keep guidance technology-agnostic by default. Do not introduce cloud providers, frameworks, databases, monitoring products, protocols, or command examples unless the user supplied them or explicitly asks for tool-specific guidance.
+Direct commit/amend attempts: Read `${SPECIALIST_ROOT}/agent-pr-review.md` before code-review skills, Bash, or repo exploration. Diff/PR/push reviews: Read `${ROUTER_PATH}` then selected specialist before code-review skills, Bash, or repo exploration.
 
-{{ROUTER_CONTENT}}
+Router load alone is not enough: select one exact slug from the router's Bundled Specialist Slugs, then Read `${SPECIALIST_ROOT}/<slug>.md` before any repo file, repo command, or guidance. Do not parallel-load router and repo files. Never read shortened specialist aliases or `${SPECIALIST_ROOT}/router.md`; the router is `${ROUTER_PATH}`. Specialists are files; never call `Skill staff-engineer-mode:<slug>`.
+
+Keep guidance technology-agnostic by default unless the user supplies or requests specific tools.
+
+For commits/releases, Read `agent-pr-review` for staged diffs or `release-build-reproducibility` plus `production-readiness-review` for releases, then `${EVENT_HOOK} ack ...` when hooks are available. Do not combine stage/commit/push or tag/push phases.
 
 {{TOOL_MAPPING}}
 </EXTREMELY_IMPORTANT>
