@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.8.0 - 2026-05-30
+
+Router precedence, packaging, and template release.
+
+- Hardens router precedence so engineering prompts route through Staff
+  Engineer Mode before generic process guidance, and documentation lifecycle
+  prompts select the docs specialist before repo exploration.
+- Restores the shared specialist templates and moves router eval fixtures out
+  of runtime skill paths, keeping runtime guidance focused on routing behavior.
+- Simplifies cross-tool install and bootstrap guidance, with tighter validation
+  for concise specialist loading in Claude, Codex, OpenCode, and related docs.
+
 ## 1.7.6 - 2026-05-28
 
 Claude event-policy flow hardening.
