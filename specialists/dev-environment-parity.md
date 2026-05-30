@@ -17,7 +17,7 @@ A change that passes locally but fails in CI, passes in CI but fails in staging,
 
 Produces a parity matrix across local, CI, staging, and production for the dimensions that decide whether a fix carries: dependency versions, configuration, data shape, time and clock behavior, network policy, and secret handling. Produces a drift-detection plan, a defined drift budget with action triggers, and a required-parity-versus-allowed-divergence taxonomy. Refuses to call a change shipped when it works only in the environment it was written in.
 
-**Core principle:** environments are a contract. Allowed divergence is named, bounded, and monitored; unnamed divergence is the bug that hides until the worst possible moment.
+**Core principle:** environments are a contract. Allowed divergence is named, bounded, and monitored; unnamed divergence is the defect you don't catch until production breaks.
 
 ## When To Use
 

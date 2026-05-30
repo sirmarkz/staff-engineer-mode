@@ -15,7 +15,7 @@ If writers, invalidators, readers, and downstream systems are not modeled, the c
 
 ## Overview
 
-Caching is a correctness path disguised as a performance optimization.
+Caching is a correctness path, not only a performance optimization.
 
 **Core principle:** every cache or derived view needs explicit freshness, invalidation, stampede protection, failure behavior, and observability.
 

@@ -11,7 +11,7 @@ description: "Use when pages, suppression rules, toil, runbook gaps, or recurrin
 NO RECURRING PAGE OR MANUAL RUNBOOK STEP WITHOUT A FIX PATH AND ELIMINATION PLAN
 ```
 
-If the same alert or manual operation keeps recurring, the system is asking for engineering work.
+If the same alert or manual operation keeps recurring, it needs engineering work, not another manual fix.
 
 ## Overview
 
