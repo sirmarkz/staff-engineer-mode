@@ -161,20 +161,20 @@ Treat "review" as a verb until the artifact proves otherwise.
 
 Load `references/routing-matrix.md` for uncertainty.
 
-- Go/no-go/traffic shift/impact increase -> `production-readiness-review`; mobile OS/crash-free rollout -> `mobile-release-engineering`; canary/rollback metrics -> `progressive-delivery`; narrow artifacts keep their specialist; incidents -> `incident-response-and-postmortems`.
+- Go/no-go/traffic shift -> `production-readiness-review`; mobile/app startup/crash/hang/offline release -> `mobile-release-engineering`; canary/rollback metrics -> `progressive-delivery`; narrow artifacts keep specialist; incidents -> `incident-response-and-postmortems`.
 - Prefer narrow routes. Commit attempts or general PR/branch/patch/diff reviews -> `agent-pr-review`; surface-specific PRs route narrow.
-- Service/module responsibility boundaries -> `architecture-decisions`; AI-agent repo legibility/names/canonical paths/one-tool-call findability -> `code-readability-for-agents`; retry/timeout/fallback/overload -> `dependency-resilience`.
-- HA topology/static capacity -> `high-availability-design`; fault-injection -> `resilience-experiments`; telemetry/alert design -> `observability-and-alerting`; alert suppression/noise -> `oncall-health`; reliability policy, restore, overload, and invariants stay separate.
+- Service/worker ownership, even with retries -> `architecture-decisions`; AI-agent repo legibility/names/canonical paths -> `code-readability-for-agents`; retry/timeout/fallback/overload -> `dependency-resilience`.
+- HA topology/static capacity -> `high-availability-design`; fault-injection -> `resilience-experiments`; telemetry/alert design -> `observability-and-alerting`; recurring alerts, manual runbook toil, suppression/noise -> `oncall-health`; reliability policy, restore, overload, and invariants stay separate.
 - Cross-service database/storage correctness routes to `distributed-data-and-consistency`; in-process states/invariants route to `state-machine-correctness`.
-- Keep API compatibility, data contracts, test data, hygiene, fleet, event replay/DLQ, cache, and pipeline distinct. Stream/batch quality, freshness, lineage, downstream reporting trust -> `data-pipeline-reliability`; producer/consumer schema compatibility -> `data-contracts`; runtime/client version-skew -> `fleet-upgrades`.
+- Keep API compatibility, data contracts, fixtures/goldens/prod samples, hygiene, fleet, events, cache, and pipeline distinct. Fixtures/goldens/prod samples -> `test-data-engineering`; stream/batch/event replay with freshness, validation, reporting trust, no-double-count recovery -> `data-pipeline-reliability`; producer/consumer schema -> `data-contracts`; runtime/client version-skew -> `fleet-upgrades`.
 - Corruption/deletion recovery routes to `backup-and-recovery`; schema/index/backfill/destructive datastore execution routes to `database-operations`.
 - Flag owner/expiry/fallback/removal -> `feature-flag-lifecycle`; config mutation/generated ops/bulk scripts/preview/validation/caps/rollback -> `configuration-and-automation-safety`.
-- Tags/versions/packages/artifact identity/promotion -> `release-build-reproducibility`; local/CI/staging/prod divergence -> `dev-environment-parity`; provenance/signing/builder isolation -> `software-supply-chain-security`.
-- Desired-state capture, drift detection, reconciliation, or emergency exception rules after manual infrastructure changes route to `infrastructure-and-policy-as-code`.
-- Retiring/replacing capabilities with no-new-usage checks -> `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback -> `ml-reliability-and-evaluation`.
-- Security by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, or LLM app risk.
-- Docs/runbooks/design docs/ADRs with owner/source-of-truth/freshness/archive rules -> `documentation-lifecycle`; control maps/scorecards/exception records/record packs -> `engineering-control-evidence`.
-- Public edge, service identity/locality, dependency retry, browser release, accessibility, AI coding, readability, and LLM eval/serving/security stay separate; capacity/latency without spend -> `performance-and-capacity`; capacity/headroom reliability benefit versus cost/savings -> `cost-aware-reliability`.
+- Tags/versions/packages/artifact identity/promotion -> `release-build-reproducibility`; local/CI/staging/prod drift -> `dev-environment-parity`; provenance/signing/builder isolation -> `software-supply-chain-security`.
+- Desired-state capture, drift detection, reconciliation, emergency infra exceptions -> `infrastructure-and-policy-as-code`.
+- Retiring/replacing with no-new-usage checks -> `migration-and-deprecation`; ML promotion/eval/skew/drift/rollback -> `ml-reliability-and-evaluation`.
+- Security by artifact: threat model, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, LLM app risk.
+- Docs/runbooks/ADRs owner/source-of-truth/freshness/archive -> `documentation-lifecycle`; AI agent repo rules/protected paths/generated-code acceptance -> `ai-coding-governance`; control maps/scorecards/exceptions -> `engineering-control-evidence`.
+- Public edge, service identity/locality, dependency retry, browser release, accessibility, readability, LLM eval/serving/security stay separate; capacity/latency no spend -> `performance-and-capacity`; capacity/headroom benefit versus cost/savings -> `cost-aware-reliability`.
 
 ## Red Flags - Stop And Rework
 
