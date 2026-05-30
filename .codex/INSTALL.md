@@ -73,16 +73,6 @@ records, packages, artifact publication, or promotion, the agent must read and
 apply both `release-build-reproducibility` and `production-readiness-review`,
 record the release receipt, and then run the release command.
 
-When testing event-policy changes, use the shared live probe harness from the
-repository root:
-
-```bash
-python3 scripts/run_live_hook_probes.py --host all --event all --probe all
-```
-
-By default the harness runs Claude Opus 4.8 and Codex `gpt-5.5`, both at
-medium and xhigh effort.
-
 ## Updating
 
 To refresh to the latest marketplace metadata:

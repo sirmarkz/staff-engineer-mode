@@ -37,17 +37,17 @@ class ReleaseLiveChecksTests(unittest.TestCase):
 
         self.assertEqual([name for name, _, _ in calls], [
             "live hook probes",
-            "Codex gpt-5.5 xhigh random router eval",
-            "Claude claude-opus-4-8 xhigh random router eval",
+            "Codex gpt-5.5 high random router eval",
+            "Claude claude-opus-4-8 high random router eval",
         ])
         for _, command, _ in calls:
             self.assertNotIn("--warn-only", command)
         self.assertIn("--random-specialists", calls[1][1])
-        self.assertIn("10", calls[1][1])
-        self.assertEqual(calls[1][2], {"CODEX_MODEL": "gpt-5.5", "CODEX_EFFORT": "xhigh"})
+        self.assertIn("5", calls[1][1])
+        self.assertEqual(calls[1][2], {"CODEX_MODEL": "gpt-5.5", "CODEX_EFFORT": "high"})
         self.assertEqual(
             calls[2][2],
-            {"CLAUDE_MODEL": "claude-opus-4-8", "CLAUDE_EFFORT": "xhigh"},
+            {"CLAUDE_MODEL": "claude-opus-4-8", "CLAUDE_EFFORT": "high"},
         )
 
     def test_main_aborts_on_first_failing_step(self) -> None:

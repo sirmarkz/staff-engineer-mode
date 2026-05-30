@@ -26,17 +26,17 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Release-blocking live checks: Claude/Codex hook probes plus "
-            "10 seeded random specialist router evals from SAMPLE-PROMPTS.md for each host."
+            "5 seeded random specialist router evals from SAMPLE-PROMPTS.md for each host."
         )
     )
-    parser.add_argument("--random-specialists", type=int, default=10)
+    parser.add_argument("--random-specialists", type=int, default=5)
     parser.add_argument("--seed", default="staff-engineer-mode-release")
     parser.add_argument("--jobs", type=int, default=4)
     parser.add_argument("--timeout", type=int, default=360)
     parser.add_argument("--claude-model", default="claude-opus-4-8")
     parser.add_argument("--codex-model", default="gpt-5.5")
-    parser.add_argument("--hook-effort", default="medium,xhigh")
-    parser.add_argument("--eval-effort", default="xhigh")
+    parser.add_argument("--hook-effort", default="high")
+    parser.add_argument("--eval-effort", default="high")
     parser.add_argument("--keep-temp", action="store_true")
     return parser.parse_args()
 

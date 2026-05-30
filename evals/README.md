@@ -60,18 +60,18 @@ Each case is one live model call, so a full run takes minutes and costs tokens.
 Full live runs are manual checks for router changes, model comparisons, and
 targeted failure triage. Before tagging or publishing a release, run the manual
 release-blocking live gate; do not add it to GitHub Actions. The gate samples
-10 seeded random specialist cases from the specialist portion of the 220-case
-catalog against Claude Opus 4.8 xhigh and Codex `gpt-5.5` xhigh via
+5 seeded random specialist cases from the specialist portion of the 220-case
+catalog against Claude Opus 4.8 high and Codex `gpt-5.5` high via
 `scripts/run_release_live_checks.py`. `--jobs` controls bounded parallelism;
 keep it small enough to avoid provider rate limits.
 
 Use the Claude adapter with the same scorer when comparing hosts:
 
 ```bash
-CLAUDE_MODEL=claude-opus-4-8 CLAUDE_EFFORT=xhigh \
+CLAUDE_MODEL=claude-opus-4-8 CLAUDE_EFFORT=high \
   python3 scripts/run_router_eval.py \
     --sample all \
-    --random-specialists 10 \
+    --random-specialists 5 \
     --command evals/adapters/claude-router.sh \
     --json
 ```

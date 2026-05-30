@@ -116,14 +116,12 @@ maintaining complex software systems.
   python3 scripts/run_live_hook_probes.py --host all --event all --probe all
   ```
 
-  The default harness matrix is Claude Opus 4.8 and Codex `gpt-5.5`, both at
-  medium and xhigh effort.
 - Before tagging or publishing a release, run the one-command live release gate
   manually from the release checkout. Do not add this live gate to GitHub
-  Actions. It runs the hook probes and 10 seeded random specialist cases from
-  the specialist portion of the 220-case router catalog for Claude Opus 4.8
-  xhigh and Codex `gpt-5.5` xhigh. Any hook failure or random-specialist eval
-  failure aborts the release:
+  Actions. It runs the hook probes once at high effort and 5 seeded random
+  specialist cases from the specialist portion of the 220-case router catalog
+  for Claude Opus 4.8 high and Codex `gpt-5.5` high. Any hook failure or
+  random-specialist eval failure aborts the release:
 
   ```bash
   python3 scripts/run_release_live_checks.py

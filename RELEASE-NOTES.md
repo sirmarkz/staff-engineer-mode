@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.9.0 - 2026-05-30
+
+Hook and live-eval release gate.
+
+- Adds scriptable Claude and Codex commit/release hook probes that fail on
+  hook errors, command retries, combined receipt/action commands, and missing
+  block or allow side effects.
+- Makes `SAMPLE-PROMPTS.md` the canonical 220-case router eval catalog and
+  removes the duplicate YAML router fixtures.
+- Adds the manual release gate that runs hook probes plus 5 seeded random
+  specialist evals before tagging or publishing a release.
+
 ## 1.8.2 - 2026-05-30
 
 Bootstrap routing precedence patch.

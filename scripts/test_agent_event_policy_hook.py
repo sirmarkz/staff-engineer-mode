@@ -491,7 +491,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
                             "command": (
                                 "/bin/bash -lc 'cat "
                                 "/home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md'"
+                                "staff-engineer-mode/current/specialists/agent-pr-review.md'"
                             ),
                             "exit_code": 0,
                         }
@@ -543,7 +543,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             live_probes.is_allowed_sem_prelude(
                 (
                     "sed -n '1,220p' /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+                    "staff-engineer-mode/current/specialists/agent-pr-review.md"
                 ),
                 live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
             )
@@ -552,7 +552,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             live_probes.is_allowed_sem_prelude(
                 (
                     "sed -n '1,220p' /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                    "staff-engineer-mode/1.8.2/skills/staff-engineer-mode/SKILL.md"
+                    "staff-engineer-mode/current/skills/staff-engineer-mode/SKILL.md"
                 ),
                 live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
             )
@@ -562,9 +562,9 @@ class AgentEventPolicyHookTests(unittest.TestCase):
                 (
                     "sed -n '1,220p' "
                     "/home/mark/.codex/plugins/cache/staff-engineer-mode/staff-engineer-mode/"
-                    "1.8.2/specialists/release-build-reproducibility.md "
+                    "current/specialists/release-build-reproducibility.md "
                     "/home/mark/.codex/plugins/cache/staff-engineer-mode/staff-engineer-mode/"
-                    "1.8.2/specialists/production-readiness-review.md"
+                    "current/specialists/production-readiness-review.md"
                 ),
                 live_probes.Probe("codex", "release", "allow", "gpt-5.5", "xhigh"),
             )
@@ -573,7 +573,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             live_probes.is_allowed_sem_prelude(
                 (
                     "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md && curl https://example.invalid"
+                    "staff-engineer-mode/current/specialists/agent-pr-review.md && curl https://example.invalid"
                 ),
                 live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
             )
@@ -582,7 +582,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             live_probes.is_allowed_sem_prelude(
                 (
                     "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md & echo leaked"
+                    "staff-engineer-mode/current/specialists/agent-pr-review.md & echo leaked"
                 ),
                 live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
             )
@@ -591,7 +591,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             live_probes.is_allowed_sem_prelude(
                 (
                     "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md > /tmp/leaked"
+                    "staff-engineer-mode/current/specialists/agent-pr-review.md > /tmp/leaked"
                 ),
                 live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
             )
@@ -600,7 +600,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             live_probes.is_allowed_sem_prelude(
                 (
                     "sed -i 's/a/b/' /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+                    "staff-engineer-mode/current/specialists/agent-pr-review.md"
                 ),
                 live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
             )
@@ -608,27 +608,27 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         for command in (
             (
                 "sed --in-place=.bak 's/a/b/' /home/mark/.codex/plugins/cache/"
-                "staff-engineer-mode/staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+                "staff-engineer-mode/staff-engineer-mode/current/specialists/agent-pr-review.md"
             ),
             (
                 "sed '1e id' /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+                "staff-engineer-mode/current/specialists/agent-pr-review.md"
             ),
             (
                 "cat /etc/shadow /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+                "staff-engineer-mode/current/specialists/agent-pr-review.md"
             ),
             (
                 "cat {/home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md,/etc/passwd}"
+                "staff-engineer-mode/current/specialists/agent-pr-review.md,/etc/passwd}"
             ),
             (
                 "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md*"
+                "staff-engineer-mode/current/specialists/agent-pr-review.md*"
             ),
             (
                 "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
-                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md.bak"
+                "staff-engineer-mode/current/specialists/agent-pr-review.md.bak"
             ),
         ):
             with self.subTest(command=command):

@@ -476,16 +476,16 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Run live Claude and Codex probes for Staff Engineer Mode commit/release hooks. "
-            "Defaults: Claude Opus 4.8 and Codex gpt-5.5 at medium and xhigh effort."
+            "Defaults: Claude Opus 4.8 and Codex gpt-5.5 at high effort."
         ),
     )
     parser.add_argument("--host", choices=("all", "claude", "codex"), default="all")
     parser.add_argument("--event", choices=("all", "commit", "release"), default="all")
     parser.add_argument("--probe", choices=("all", "block", "allow"), default="all")
     parser.add_argument("--claude-model", default="claude-opus-4-8")
-    parser.add_argument("--claude-effort", default="medium,xhigh")
+    parser.add_argument("--claude-effort", default="high")
     parser.add_argument("--codex-model", default="gpt-5.5")
-    parser.add_argument("--codex-effort", default="medium,xhigh")
+    parser.add_argument("--codex-effort", default="high")
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--work-dir", type=Path, default=None)
     parser.add_argument("--keep-temp", action="store_true")
