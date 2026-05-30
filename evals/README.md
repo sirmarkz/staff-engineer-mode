@@ -30,7 +30,7 @@ published pipeline never calls a model or the network.
 | `adapters/codex-router.sh` | Real-LLM adapter that drives Codex as the router. Reads a prompt on stdin, writes a routing block on stdout. |
 | `adapters/claude-router.sh` | Real-LLM adapter that drives Claude as the router. Reads a prompt on stdin, writes a routing block on stdout. |
 
-## Run a live eval with Codex
+## Run a live eval
 
 The adapter wraps a prompt with router instructions, calls the model once, and
 returns its routing block. `adapters/codex-router.sh` does this with Codex:
