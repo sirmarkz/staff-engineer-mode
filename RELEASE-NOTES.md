@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.8.2 - 2026-05-30
+
+Bootstrap routing precedence patch.
+
+- Routes engineering-system prompts through Staff Engineer Mode before
+  `AskUserQuestion`, clarifying chat replies, generic tool calls, or repo
+  exploration.
+- Folds environment-parity and measurement-guardrail reminders into the
+  bootstrap surface list while keeping the startup context compact.
+- Tightens the bootstrap line 9 wording so Claude and Codex receive the same
+  first-action rule without a run-on directive.
+
 ## 1.8.1 - 2026-05-30
 
 Routing boundary patch.
