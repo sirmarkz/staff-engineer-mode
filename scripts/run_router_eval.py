@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
+import random
 import re
 import subprocess
 import sys
@@ -14,9 +16,9 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from staff_engineer_mode_contract import ROUTER_EVAL_CHECKS
+from staff_engineer_mode_contract import ROUTER_EVAL_CHECKS, ROUTER_SAMPLE_PROMPT_CHECKS
 
-ROUTER_EVAL = ROOT / "evals" / "router" / "router-eval-set.yaml"
+SAMPLE_PROMPTS = ROOT / "SAMPLE-PROMPTS.md"
 SKILLS = ROOT / "skills"
 SPECIALISTS = ROOT / "specialists"
 ROUTING_BLOCK_RE = re.compile(r"```routing\s*(?P<body>.*?)```", re.DOTALL)
@@ -28,6 +30,113 @@ TOOL_BAIT_TERMS = [
     "datadog",
     "graphql",
     "istio",
+]
+SPECIALIST_HEADING_RE = re.compile(r"^### `(?P<slug>[^`]+)`$")
+PROMPT_RE = re.compile(r'^- "(?P<prompt>.+)"$')
+PHASE_DIVERSITY_EXCEPTIONS = {
+    "agent-pr-review",
+    "incident-response-and-postmortems",
+    "production-readiness-review",
+    "vulnerability-management",
+}
+PHASE_HINTS = {
+    "ideation": ["idea", "ideating", "decide", "choose", "propose", "recommend", "draft"],
+    "design": [
+        "design",
+        "shape",
+        "define",
+        "tradeoff",
+        "boundary",
+        "target",
+        "requirements",
+        "policy",
+        "names",
+        "template",
+        "scorecard",
+        "tenant",
+        "topology",
+        "workflow",
+        "producer",
+        "consumer",
+        "migration",
+    ],
+    "development": ["development", "implement", "code", "repo", "branch", "changed files", "code path", "inspect", "ci"],
+    "testing": [
+        "test",
+        "tests",
+        "eval",
+        "fixture",
+        "failure",
+        "prove",
+        "verify",
+        "coverage",
+        "regression",
+        "correctness",
+        "safe",
+        "runtime errors",
+        "latency budgets",
+        "threat-model",
+        "cannot reach",
+        "narrow down",
+    ],
+    "release": [
+        "release",
+        "rollout",
+        "launch",
+        "ship",
+        "rollback",
+        "go/no-go",
+        "merge",
+        "approve",
+        "promoted",
+        "transition",
+        "degradation",
+        "outage",
+        "migration",
+        "pr ",
+    ],
+    "maintenance": [
+        "maintenance",
+        "cleanup",
+        "drift",
+        "owner",
+        "expiry",
+        "refresh",
+        "stale",
+        "inventory",
+        "remove",
+        "retirement",
+        "rotation",
+        "freshness",
+        "runbook",
+    ],
+}
+CONTEXT_ONLY_HINTS = [
+    "timeout",
+    "duplicate work",
+    "old branches",
+    "lose work",
+    "suspicious spikes",
+    "protect origin",
+]
+EXPLICIT_PHASE_WORDS = [
+    "ideation",
+    "ideating",
+    "idea",
+    "design",
+    "development",
+    "develop",
+    "implementation",
+    "implement",
+    "testing",
+    "test",
+    "release",
+    "rollout",
+    "launch",
+    "maintenance",
+    "maintain",
+    "review",
+    "audit",
 ]
 
 
@@ -91,6 +200,139 @@ def parse_cases(text: str) -> list[dict[str, Any]]:
 
 def specialist_names() -> list[str]:
     return sorted(path.stem for path in SPECIALISTS.glob("*.md"))
+
+
+def parse_sample_prompts(path: Path = SAMPLE_PROMPTS) -> list[dict[str, Any]]:
+    known = set(specialist_names())
+    seen_headings: set[str] = set()
+    counts: dict[str, int] = {}
+    phase_counts = {phase: 0 for phase in PHASE_HINTS}
+    phase_by_slug: dict[str, set[str]] = {}
+    context_only_count = 0
+    cases: list[dict[str, Any]] = []
+    current: str | None = None
+
+    for line_number, line in enumerate(path.read_text().splitlines(), 1):
+        heading = SPECIALIST_HEADING_RE.match(line)
+        if heading:
+            current = heading.group("slug")
+            seen_headings.add(current)
+            counts.setdefault(current, 0)
+            if current not in known | {"none"}:
+                fail(f"{path}:{line_number} unknown specialist heading {current!r}")
+            continue
+
+        prompt_match = PROMPT_RE.match(line)
+        if prompt_match:
+            if current is None:
+                fail(f"{path}:{line_number} prompt appears before a specialist heading")
+            prompt = prompt_match.group("prompt")
+            counts[current] = counts.get(current, 0) + 1
+            prompt_lower = prompt.lower()
+            prompt_phases = {
+                phase for phase, hints in PHASE_HINTS.items() if any(hint in prompt_lower for hint in hints)
+            }
+            for phase in prompt_phases:
+                phase_counts[phase] += 1
+                phase_by_slug.setdefault(current, set()).add(phase)
+            if (
+                not any(word in prompt_lower for word in EXPLICIT_PHASE_WORDS)
+                and any(hint in prompt_lower for hint in CONTEXT_ONLY_HINTS)
+            ):
+                context_only_count += 1
+            if current == "none":
+                cases.append(
+                    {
+                        "prompt": prompt,
+                        "expected_primary": "none",
+                        "expected_behavior": "withhold routing for out-of-scope prompt without naming specialists",
+                        "category": "out_of_scope",
+                        "expected_checks": ["scope_check"],
+                        "forbidden_in_response": ["all_specialist_names"],
+                    }
+                )
+            else:
+                cases.append(
+                    {
+                        "prompt": prompt,
+                        "expected_primary": current,
+                        "expected_behavior": "route sample prompt to its grouped specialist",
+                        "category": "sample_prompt",
+                        "expected_checks": list(ROUTER_SAMPLE_PROMPT_CHECKS),
+                    }
+                )
+
+    missing = sorted(known - seen_headings)
+    if missing:
+        fail(f"{path} missing specialist headings: {', '.join(missing)}")
+    if "none" not in seen_headings:
+        fail(f"{path} missing out-of-scope heading: none")
+
+    bad_counts = {slug: count for slug, count in counts.items() if count != 4}
+    if bad_counts:
+        details = ", ".join(f"{slug}={count}" for slug, count in sorted(bad_counts.items()))
+        fail(f"{path} must have exactly four prompts per specialist: {details}")
+
+    if not cases:
+        fail(f"{path} produced no sample prompt cases")
+
+    missing_phases = [phase for phase, count in phase_counts.items() if count == 0]
+    if missing_phases:
+        fail(f"{path} sample prompts do not cover lifecycle phases: {', '.join(missing_phases)}")
+
+    if context_only_count < 4:
+        fail(f"{path} needs at least four context-only prompts without explicit lifecycle phase words")
+
+    low_diversity = []
+    for slug in sorted(known - PHASE_DIVERSITY_EXCEPTIONS):
+        phases = phase_by_slug.get(slug, set())
+        if len(phases) < 3:
+            low_diversity.append(f"{slug}={','.join(sorted(phases)) or 'none'}")
+    if low_diversity:
+        fail(
+            f"{path} sample prompts need at least three lifecycle phases per non-exception specialist: "
+            + "; ".join(low_diversity)
+        )
+
+    return cases
+
+
+def select_sample_cases(cases: list[dict[str, Any]], sample: str) -> list[dict[str, Any]]:
+    if sample == "all":
+        return cases
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for case in cases:
+        grouped.setdefault(str(case["expected_primary"]), []).append(case)
+    selected: list[dict[str, Any]] = []
+    for offset, primary in enumerate(sorted(grouped)):
+        prompts = grouped[primary]
+        selected.append(prompts[offset % len(prompts)])
+    return selected
+
+
+def filter_cases_by_category(cases: list[dict[str, Any]], category: str | None) -> list[dict[str, Any]]:
+    if category is None:
+        return cases
+    selected = [case for case in cases if case.get("category") == category]
+    if not selected:
+        fail(f"no cases found for category {category!r}")
+    return selected
+
+
+def random_specialist_cases(cases: list[dict[str, Any]], count: int, seed: str) -> list[dict[str, Any]]:
+    if count < 1:
+        fail("--random-specialists must be at least 1")
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for case in cases:
+        primary = str(case["expected_primary"])
+        if primary == "none":
+            continue
+        grouped.setdefault(primary, []).append(case)
+    if count > len(grouped):
+        fail(f"--random-specialists {count} exceeds available specialists ({len(grouped)})")
+    rng = random.Random(seed)
+    selected_primaries = rng.sample(sorted(grouped), count)
+    return [rng.choice(grouped[primary]) for primary in selected_primaries]
 
 
 def case_id(index: int, case: dict[str, Any]) -> str:
@@ -298,6 +540,50 @@ def summarize(results: list[CaseResult]) -> dict[str, Any]:
     }
 
 
+def score_cases(
+    cases: list[dict[str, Any]],
+    names: list[str],
+    responses_dir: Path | None = None,
+    command: str | None = None,
+    jobs: int = 1,
+) -> list[CaseResult]:
+    if jobs < 1:
+        fail("--jobs must be at least 1")
+
+    def run_one(index: int, case: dict[str, Any]) -> CaseResult:
+        result_id = case_id(index, case)
+        try:
+            response = (
+                read_response(responses_dir, result_id)
+                if responses_dir is not None
+                else command_response(str(command), str(case["prompt"]))
+            )
+        except RuntimeError as exc:
+            return CaseResult(
+                case_id=result_id,
+                category=str(case["category"]),
+                expected_primary=str(case["expected_primary"]),
+                actual_primary=None,
+                passed=False,
+                failures=[str(exc)],
+            )
+        return score_case(case, response, names, index)
+
+    if jobs == 1 or len(cases) <= 1:
+        return [run_one(index, case) for index, case in enumerate(cases, 1)]
+
+    results: list[CaseResult | None] = [None] * len(cases)
+    with ThreadPoolExecutor(max_workers=jobs) as executor:
+        future_to_index = {
+            executor.submit(run_one, index, case): index
+            for index, case in enumerate(cases, 1)
+        }
+        for future in as_completed(future_to_index):
+            index = future_to_index[future]
+            results[index - 1] = future.result()
+    return [result for result in results if result is not None]
+
+
 def print_summary(summary: dict[str, Any]) -> None:
     print(f"router eval: {summary['passed']}/{summary['total']} cases passed")
     for category, counts in sorted(summary["categories"].items()):
@@ -312,21 +598,52 @@ def print_summary(summary: dict[str, Any]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Score saved or command-generated Staff Engineer Mode routing eval responses."
+        description="Score SAMPLE-PROMPTS.md or custom Staff Engineer Mode routing eval responses."
     )
-    parser.add_argument("--eval-file", default=str(ROUTER_EVAL), help="router eval YAML fixture")
+    parser.add_argument("--eval-file", help="optional router eval YAML fixture")
     parser.add_argument("--responses-dir", help="directory containing <case-id>.txt responses")
     parser.add_argument("--command", help="command that reads a prompt on stdin and writes a response")
+    parser.add_argument("--sample", choices=["one-per-specialist", "all"], default="one-per-specialist")
+    parser.add_argument("--category", choices=["sample_prompt", "out_of_scope"], help="score only one case category")
     parser.add_argument("--list-cases", action="store_true", help="print stable case IDs and prompts")
     parser.add_argument("--limit", type=int, help="score only the first N cases")
+    parser.add_argument("--random", type=int, help="score N randomly selected cases after category filtering")
+    parser.add_argument(
+        "--random-specialists",
+        type=int,
+        help="score one randomly selected prompt from N randomly selected specialist groups",
+    )
+    parser.add_argument(
+        "--seed",
+        default="staff-engineer-mode-release",
+        help="seed for --random and --random-specialists selection",
+    )
+    parser.add_argument("--jobs", type=int, default=1, help="number of cases to score concurrently")
     parser.add_argument("--json", action="store_true", help="emit machine-readable summary")
     parser.add_argument("--warn-only", action="store_true", help="return zero even when cases fail")
     args = parser.parse_args()
 
-    eval_path = Path(args.eval_file)
-    cases = parse_cases(eval_path.read_text())
+    if args.eval_file:
+        eval_path = Path(args.eval_file)
+        cases = parse_cases(eval_path.read_text())
+    else:
+        cases = select_sample_cases(parse_sample_prompts(), args.sample)
+    cases = filter_cases_by_category(cases, args.category)
+    if args.random is not None and args.random_specialists is not None:
+        fail("provide at most one of --random or --random-specialists")
+    if args.limit is not None and (args.random is not None or args.random_specialists is not None):
+        fail("--limit cannot be combined with --random or --random-specialists")
     if args.limit is not None:
         cases = cases[: args.limit]
+    if args.random is not None:
+        if args.random < 1:
+            fail("--random must be at least 1")
+        if args.random > len(cases):
+            fail(f"--random {args.random} exceeds available cases ({len(cases)})")
+        rng = random.Random(args.seed)
+        cases = rng.sample(cases, args.random)
+    if args.random_specialists is not None:
+        cases = random_specialist_cases(cases, args.random_specialists, args.seed)
 
     if args.list_cases:
         print_case_list(cases)
@@ -336,29 +653,8 @@ def main() -> int:
         fail("provide exactly one of --responses-dir or --command")
 
     names = specialist_names()
-    results: list[CaseResult] = []
     responses_dir = Path(args.responses_dir) if args.responses_dir else None
-    for index, case in enumerate(cases, 1):
-        result_id = case_id(index, case)
-        try:
-            response = (
-                read_response(responses_dir, result_id)
-                if responses_dir is not None
-                else command_response(str(args.command), str(case["prompt"]))
-            )
-        except RuntimeError as exc:
-            results.append(
-                CaseResult(
-                    case_id=result_id,
-                    category=str(case["category"]),
-                    expected_primary=str(case["expected_primary"]),
-                    actual_primary=None,
-                    passed=False,
-                    failures=[str(exc)],
-                )
-            )
-            continue
-        results.append(score_case(case, response, names, index))
+    results = score_cases(cases, names, responses_dir=responses_dir, command=args.command, jobs=args.jobs)
 
     summary = summarize(results)
     if args.json:

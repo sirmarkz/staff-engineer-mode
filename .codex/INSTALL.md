@@ -1,9 +1,10 @@
 # Installing Staff Engineer Mode For Codex
 
 Enable Staff Engineer Mode in OpenAI Codex through the Codex plugin system. The
-plugin exposes one native router skill, keeps routed specialist files under
-`specialists/`, and installs the session and command hooks that carry routing,
-commit, and release policy.
+plugin exposes one native router skill and keeps routed specialist files under
+`specialists/`. Event-policy guidance travels through the router and specialist
+files; the receipt command also protects itself when Codex does not run
+plugin-local command hooks.
 
 ## Prerequisites
 
@@ -22,7 +23,7 @@ codex plugin add staff-engineer-mode@staff-engineer-mode
 Codex clones the marketplace automatically and installs the plugin selected by
 the marketplace manifest.
 
-Restart Codex after installation so skills and hooks are loaded.
+Restart Codex after installation so skills are loaded.
 
 ## Verify
 
@@ -57,12 +58,13 @@ Users should not need to name individual specialists. Broad engineering
 requests route through `staff-engineer-mode`, which then reads the selected
 specialist file.
 
-## Hooks And Policy
+## Event Policy
 
-The plugin includes a `SessionStart` hook that adds `SPECIALIST_ROOT`,
-`ROUTER_PATH`, `EVENT_HOOK`, `CURRENT_REPO`, and the Staff Engineer Mode routing
-contract to each Codex session. It also includes a command policy hook for
-commit and release events when the host runs plugin hooks.
+Codex plugin installs expose the router skill. Some Codex builds do not load
+plugin-local lifecycle hooks during `codex exec`, so do not rely on plugin
+installation alone as the command-interception layer. The router still requires
+the same commit and release flow, and `hooks/agent-event-policy ack ...`
+refuses combined shell commands such as `ack && git commit` or `ack && git tag`.
 
 Before creating or amending commits, the agent must stage separately, inspect
 the exact staged diff, read `agent-pr-review`, review the staged change, record
@@ -70,6 +72,16 @@ the commit receipt, and then commit. Before tags, version bumps, hosted release
 records, packages, artifact publication, or promotion, the agent must read and
 apply both `release-build-reproducibility` and `production-readiness-review`,
 record the release receipt, and then run the release command.
+
+When testing event-policy changes, use the shared live probe harness from the
+repository root:
+
+```bash
+python3 scripts/run_live_hook_probes.py --host all --event all --probe all
+```
+
+By default the harness runs Claude Opus 4.8 and Codex `gpt-5.5`, both at
+medium and xhigh effort.
 
 ## Updating
 

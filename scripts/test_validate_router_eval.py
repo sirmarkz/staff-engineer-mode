@@ -23,6 +23,13 @@ def load_module(path: Path, name: str):
 
 
 class RouterEvalDataContractTests(unittest.TestCase):
+    def test_validator_accepts_canonical_sample_prompt_catalog(self) -> None:
+        validator = load_module(VALIDATOR_PATH, "validate_router_eval")
+
+        count = validator.validate_sample_prompt_catalog()
+
+        self.assertEqual(count, 220)
+
     def test_validator_accepts_sample_prompt_check_shape(self) -> None:
         validator = load_module(VALIDATOR_PATH, "validate_router_eval")
         sample_runner = load_module(SAMPLE_RUNNER_PATH, "run_sample_prompt_router_eval")

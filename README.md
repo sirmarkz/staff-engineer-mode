@@ -32,10 +32,12 @@ Specialist files live under `specialists/` and load only after routing. The
 router picks one primary specialist by default. See
 [SAMPLE-PROMPTS.md](SAMPLE-PROMPTS.md) for examples.
 
-For commits and amends, the plugin calls `agent-pr-review` against the exact
-staged diff. For releases, tags, version bumps, packages, artifacts, and
-promotions, it calls `release-build-reproducibility` and
-`production-readiness-review` together.
+For commits and amends, Staff Engineer Mode requires `agent-pr-review` against
+the exact staged diff. For releases, tags, version bumps, packages, artifacts,
+and promotions, it requires `release-build-reproducibility` and
+`production-readiness-review` together. Hosts with command hooks enforce this
+before protected commands; the receipt command also refuses combined shell
+commands on hosts that do not run plugin-local command hooks.
 
 ## Installation
 

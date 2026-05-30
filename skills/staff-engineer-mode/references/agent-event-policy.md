@@ -22,10 +22,17 @@ bind to the staged diff for commit events and to the current source revision plu
 staged diff for release events. If the artifact changes after review, the agent
 must rerun the matching event review before retrying the action.
 
-On receipt-enforced hosts, the specialist review and the receipt are separate
-steps. After a clean commit review, record the commit receipt before the first
-commit attempt. After clean release reviews, record the release receipt before
-the first release command; a review message alone does not satisfy the hook.
+On receipt-enforced hosts, the specialist review, receipt, and protected command
+are separate steps and separate shell commands. After a clean commit review,
+record the commit receipt as its own shell command before the first commit
+attempt. After clean release reviews, record the release receipt as its own
+shell command before the first release command; a review message alone does not
+satisfy the hook. Do not combine the receipt command with the commit, tag,
+release, push, or promotion command. The command hook checks the whole shell
+command before any subcommand runs, so a combined `ack && git commit` or
+`ack && git tag` command cannot create the receipt in time. The receipt command
+also refuses combined shell commands on hosts that do not invoke command hooks,
+so the same standalone command rule applies everywhere.
 Reading only router or host bootstrap files does not satisfy a specialist
 review; the agent must read the matching specialist files. Do not add AI
 assistant co-author or attribution trailers to commit messages.

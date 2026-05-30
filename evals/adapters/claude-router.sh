@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Real-LLM adapter for the Staff Engineer Mode router eval harness.
-# Reads ONE eval prompt on stdin, asks Codex to act as the SEM router in
-# eval-harness mode, and writes the model's response (with its ```routing
-# block) to stdout. Used as:  run_router_eval.py --command evals/adapters/codex-router.sh
+# Reads ONE eval prompt on stdin, asks Claude to act as the SEM router in
+# eval-harness mode, and writes the model's response to stdout.
 set -euo pipefail
+
 prompt="$(cat)"
-model="${CODEX_MODEL:-gpt-5.5}"
-effort="${CODEX_EFFORT:-medium}"
+model="${CLAUDE_MODEL:-claude-opus-4-8}"
+effort="${CLAUDE_EFFORT:-medium}"
 instructions="You are the Staff Engineer Mode router in eval-harness mode.
 Load the staff-engineer-mode router, classify the prompt below, and output ONLY
 a fenced \`\`\`routing block of JSON with fields: primary, secondary, confidence,
@@ -16,10 +16,10 @@ low-confidence, output no routing block.
 
 PROMPT:
 ${prompt}"
-codex exec \
+
+claude -p "${instructions}" \
   --model "${model}" \
-  --config "model_reasoning_effort='${effort}'" \
-  --skip-git-repo-check \
-  --color never \
-  "${instructions}" \
+  --effort "${effort}" \
+  --output-format text \
+  --no-session-persistence \
   2>/dev/null

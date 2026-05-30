@@ -66,7 +66,6 @@ ROUTER_SAMPLE_PROMPT_CHECKS: tuple[str, ...] = (
     "single_primary",
     "intent_inference",
     "no_skill_invoke",
-    "read_load",
 )
 
 PROHIBITED_SPECIALIST_BODY_TERMS: tuple[str, ...] = (

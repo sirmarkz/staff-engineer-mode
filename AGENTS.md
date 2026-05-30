@@ -21,7 +21,7 @@ maintaining complex software systems.
 | `specialists/<specialist-name>.md` | Routed specialist reference files loaded only after the router selects one. |
 | `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
 | `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. |
-| `evals/router/` | Router eval fixtures used by validation harnesses; not runtime skill guidance. |
+| `evals/` | Router eval adapter docs. `SAMPLE-PROMPTS.md` is the canonical eval catalog; neither path is runtime skill guidance. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
 | `.claude-plugin/`, `.cursor-plugin/`, `.codex-plugin/`, `.codex/`, `.opencode/`, `gemini-extension.json`, `GEMINI.md` | Cross-tool plugin manifests and install docs. |
 
@@ -98,10 +98,36 @@ maintaining complex software systems.
   or citation changes.
 - Run `python3 scripts/validate_platform_support.py` before committing plugin
   manifest, install, README, LICENSE, or cross-tool packaging changes.
-- Router eval fixtures live under `evals/router/`, outside runtime skill paths,
-  and should include direct, paraphrased, ambiguous, mixed-intent, and
-  out-of-scope prompts. Runtime router guidance stays in
-  `skills/staff-engineer-mode/references/routing-matrix.md`.
+- Router eval cases come from `SAMPLE-PROMPTS.md`, outside runtime skill paths.
+  Keep prompts representative across direct, paraphrased, ambiguous,
+  mixed-intent, out-of-scope, and lifecycle-phase routing behavior. Runtime
+  router guidance stays in `skills/staff-engineer-mode/references/routing-matrix.md`.
+- Do not make live model evals a default CI or routine merge gate. Run them
+  manually only when a change needs model-backed evidence, the user explicitly
+  asks for them, or the release gate below applies.
+- Any change to `hooks/`, hook manifests, event-policy guidance, or specialists
+  that control commit/release behavior must clear live Claude and Codex hook
+  probes before release. Test commit and release block paths plus
+  standalone-receipt allow paths in both hosts, and confirm the model completes
+  each probe without command retry loops or hook errors. Run the probes through
+  the shared harness so every agent uses the same setup and prompts:
+
+  ```bash
+  python3 scripts/run_live_hook_probes.py --host all --event all --probe all
+  ```
+
+  The default harness matrix is Claude Opus 4.8 and Codex `gpt-5.5`, both at
+  medium and xhigh effort.
+- Before tagging or publishing a release, run the one-command live release gate
+  manually from the release checkout. Do not add this live gate to GitHub
+  Actions. It runs the hook probes and 10 seeded random specialist cases from
+  the specialist portion of the 220-case router catalog for Claude Opus 4.8
+  xhigh and Codex `gpt-5.5` xhigh. Any hook failure or random-specialist eval
+  failure aborts the release:
+
+  ```bash
+  python3 scripts/run_release_live_checks.py
+  ```
 
 ## Code Quality
 

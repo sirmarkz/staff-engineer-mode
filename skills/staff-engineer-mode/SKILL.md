@@ -46,10 +46,12 @@ Classify by artifact, phase, surface, and risk; users need not know specialist n
 
 Command attempts are event-policy exceptions. Before commits/amends, stage
 separately, inspect staged diff, read `agent-pr-review`, review, record the
-receipt, then commit. Do not combine stage/commit/push or add AI attribution.
+receipt in its own shell command, then commit in a separate shell command. Do
+not combine stage/ack/commit/push or add AI attribution.
 Before tags, versions, hosted releases, packages, artifacts, or promotions, read
 `release-build-reproducibility` and `production-readiness-review`, review,
-record the receipt, then run the release command.
+record the receipt in its own shell command, then run the release command in a
+separate shell command.
 
 ## When To Use
 

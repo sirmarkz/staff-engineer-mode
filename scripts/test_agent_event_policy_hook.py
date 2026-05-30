@@ -3,14 +3,28 @@ from __future__ import annotations
 
 import json
 import os
+import importlib.util
+import shlex
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 HOOK = ROOT / "hooks" / "agent-event-policy"
+LIVE_PROBES = ROOT / "scripts" / "run_live_hook_probes.py"
+
+
+def load_live_probes():
+    spec = importlib.util.spec_from_file_location("run_live_hook_probes", LIVE_PROBES)
+    if spec is None or spec.loader is None:
+        raise AssertionError("could not load run_live_hook_probes.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 class AgentEventPolicyHookTests(unittest.TestCase):
@@ -82,6 +96,21 @@ class AgentEventPolicyHookTests(unittest.TestCase):
     def modify_unstaged(self, content: str) -> None:
         (self.repo / "README.md").write_text(content, encoding="utf-8")
 
+    def commit_count(self) -> int:
+        return int(
+            subprocess.check_output(
+                ["git", "rev-list", "--count", "HEAD"],
+                cwd=self.repo,
+                text=True,
+            ).strip()
+        )
+
+    def receipt_files(self, event: str) -> list[Path]:
+        receipt_dir = self.repo / ".git" / "staff-engineer-mode" / "agent-event-receipts" / event
+        if not receipt_dir.exists():
+            return []
+        return list(receipt_dir.glob("*.json"))
+
     def test_commit_command_blocks_without_review_receipt(self) -> None:
         self.stage_change("initial\nchanged\n")
 
@@ -90,6 +119,702 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
         self.assertEqual(response["decision"], "block")
+
+    def test_ack_and_commit_same_shell_command_explains_separate_invocation(self) -> None:
+        self.stage_change("initial\nchanged\n")
+
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {
+                    "command": f'{HOOK} ack commit --repo {self.repo} && git commit -m "change"'
+                },
+            }
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn("own shell command", response["reason"])
+        self.assertIn("Do not combine the ack command with the commit command", response["reason"])
+
+    def test_ack_and_commit_same_shell_command_fails_without_host_hook(self) -> None:
+        self.stage_change("initial\nchanged\n")
+
+        result = subprocess.run(
+            [
+                "bash",
+                "-lc",
+                (
+                    f"cd {shlex.quote(str(self.repo))} && "
+                    f"{shlex.quote(str(HOOK))} ack commit --repo {shlex.quote(str(self.repo))} && "
+                    'git commit -m "change"'
+                ),
+            ],
+            cwd=self.repo.parent,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        output = result.stdout + result.stderr
+        self.assertIn("own shell command", output)
+        self.assertIn("Do not combine the ack command with the commit command", output)
+        self.assertEqual(self.commit_count(), 1)
+        self.assertEqual(self.receipt_files("commit"), [])
+
+    def test_standalone_ack_then_commit_succeeds_without_host_hook(self) -> None:
+        self.stage_change("initial\nchanged\n")
+
+        ack = subprocess.run(
+            [
+                "bash",
+                "-lc",
+                (
+                    f"cd {shlex.quote(str(self.repo))} && "
+                    f"{shlex.quote(str(HOOK))} ack commit --repo {shlex.quote(str(self.repo))}"
+                ),
+            ],
+            cwd=self.repo.parent,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(ack.returncode, 0, ack.stderr)
+        self.assertGreater(len(self.receipt_files("commit")), 0)
+
+        commit = subprocess.run(
+            ["bash", "-lc", f"cd {shlex.quote(str(self.repo))} && git commit -m change"],
+            cwd=self.repo.parent,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+        self.assertEqual(self.commit_count(), 2)
+
+    def test_live_probe_rejects_retry_after_block_even_when_later_commit_succeeds(self) -> None:
+        live_probes = load_live_probes()
+        self.stage_change("initial\nchanged\n")
+        commands = [
+            f'{HOOK} ack commit --repo {self.repo} && git commit -m "change"',
+            f"{HOOK} ack commit --repo {self.repo}",
+            'git commit -m "change"',
+        ]
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_use",
+                                    "id": "toolu_1",
+                                    "name": "Bash",
+                                    "input": {"command": commands[0]},
+                                }
+                            ]
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_result",
+                                    "tool_use_id": "toolu_1",
+                                    "is_error": True,
+                                    "content": "Do not combine the ack command with the commit command",
+                                }
+                            ]
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_use",
+                                    "id": "toolu_2",
+                                    "name": "Bash",
+                                    "input": {"command": commands[1]},
+                                }
+                            ]
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_use",
+                                    "id": "toolu_3",
+                                    "name": "Bash",
+                                    "input": {"command": commands[2]},
+                                }
+                            ]
+                        }
+                    }
+                ),
+            ]
+        )
+        ack = subprocess.run(
+            [str(HOOK), "ack", "commit", "--repo", str(self.repo)],
+            cwd=self.repo,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(ack.returncode, 0, ack.stderr)
+        commit = subprocess.run(
+            ["git", "commit", "-m", "change"],
+            cwd=self.repo,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("claude", "commit", "block", "claude-opus-4-8", "xhigh"),
+            self.repo,
+            log,
+            [commands[0]],
+        )
+
+        self.assertFalse(ok)
+        self.assertIn("retry after failed or blocked attempt", details)
+
+    def test_live_probe_accepts_clean_block_transcript(self) -> None:
+        live_probes = load_live_probes()
+        command = f'{HOOK} ack commit --repo {self.repo} && git commit -m "change"'
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_use",
+                                    "id": "toolu_1",
+                                    "name": "Bash",
+                                    "input": {"command": command},
+                                }
+                            ]
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_result",
+                                    "tool_use_id": "toolu_1",
+                                    "is_error": True,
+                                    "content": "Do not combine the ack command with the commit command",
+                                }
+                            ]
+                        }
+                    }
+                ),
+            ]
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("claude", "commit", "block", "claude-opus-4-8", "xhigh"),
+            self.repo,
+            log,
+            [command],
+        )
+
+        self.assertTrue(ok, details)
+
+    def test_live_probe_accepts_clean_allow_transcript(self) -> None:
+        live_probes = load_live_probes()
+        self.stage_change("initial\nchanged\n")
+        commands = [
+            f"{HOOK} ack commit --repo {self.repo}",
+            'git commit -m "change"',
+        ]
+        ack = subprocess.run(
+            [str(HOOK), "ack", "commit", "--repo", str(self.repo)],
+            cwd=self.repo,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(ack.returncode, 0, ack.stderr)
+        commit = subprocess.run(
+            ["git", "commit", "-m", "change"],
+            cwd=self.repo,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+        log = "\n".join(
+            json.dumps(
+                {
+                    "message": {
+                        "content": [
+                            {
+                                "type": "tool_use",
+                                "id": f"toolu_{index}",
+                                "name": "Bash",
+                                "input": {"command": command},
+                            }
+                        ]
+                    }
+                }
+            )
+            for index, command in enumerate(commands, 1)
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("claude", "commit", "allow", "claude-opus-4-8", "xhigh"),
+            self.repo,
+            log,
+            commands,
+        )
+
+        self.assertTrue(ok, details)
+
+    def test_live_probe_parses_codex_command_failures_and_retries(self) -> None:
+        live_probes = load_live_probes()
+        commands = [
+            f"{HOOK} ack release --repo {self.repo} && git tag v1.2.3",
+            f"{HOOK} ack release --repo {self.repo}",
+        ]
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "item": {
+                            "id": "exec_1",
+                            "type": "command_execution",
+                            "command": commands[0],
+                            "exit_code": 2,
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "item": {
+                            "id": "exec_2",
+                            "type": "command_execution",
+                            "command": commands[1],
+                            "exit_code": 0,
+                        }
+                    }
+                ),
+            ]
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("codex", "release", "block", "gpt-5.5", "xhigh"),
+            self.repo,
+            log,
+            [commands[0]],
+        )
+
+        self.assertFalse(ok)
+        self.assertIn("retry after failed or blocked attempt", details)
+
+    def test_live_probe_rejects_block_probe_that_writes_receipt(self) -> None:
+        live_probes = load_live_probes()
+        self.stage_change("initial\nchanged\n")
+        receipt_dir = self.repo / ".git" / "staff-engineer-mode" / "agent-event-receipts" / "commit"
+        receipt_dir.mkdir(parents=True)
+        (receipt_dir / "leaked.json").write_text("{}", encoding="utf-8")
+        command = f'{HOOK} ack commit --repo {self.repo} && git commit -m "change"'
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_use",
+                                    "id": "toolu_1",
+                                    "name": "Bash",
+                                    "input": {"command": command},
+                                }
+                            ]
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_result",
+                                    "tool_use_id": "toolu_1",
+                                    "is_error": True,
+                                    "content": "Do not combine the ack command with the commit command",
+                                }
+                            ]
+                        }
+                    }
+                ),
+            ]
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("claude", "commit", "block", "claude-opus-4-8", "xhigh"),
+            self.repo,
+            log,
+            [command],
+        )
+
+        self.assertFalse(ok)
+        self.assertIn("wrote a receipt", details)
+
+    def test_live_probe_allows_sem_read_preludes_before_protected_commands(self) -> None:
+        live_probes = load_live_probes()
+        self.stage_change("initial\nchanged\n")
+        commands = [
+            f"{HOOK} ack commit --repo {self.repo}",
+            'git commit -m "change"',
+        ]
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "item": {
+                            "id": "exec_1",
+                            "type": "command_execution",
+                            "command": (
+                                "/bin/bash -lc 'cat "
+                                "/home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md'"
+                            ),
+                            "exit_code": 0,
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "item": {
+                            "id": "exec_2",
+                            "type": "command_execution",
+                            "command": f"/bin/bash -lc '{commands[0]}'",
+                            "exit_code": 0,
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "item": {
+                            "id": "exec_3",
+                            "type": "command_execution",
+                            "command": f"/bin/bash -lc '{commands[1]}'",
+                            "exit_code": 0,
+                        }
+                    }
+                ),
+            ]
+        )
+        subprocess.run(
+            [str(HOOK), "ack", "commit", "--repo", str(self.repo)],
+            cwd=self.repo,
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        subprocess.run(["git", "commit", "-m", "change"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+            self.repo,
+            log,
+            commands,
+        )
+
+        self.assertTrue(ok, details)
+
+    def test_live_probe_rejects_compound_or_trailing_junk_commands(self) -> None:
+        live_probes = load_live_probes()
+
+        self.assertTrue(
+            live_probes.is_allowed_sem_prelude(
+                (
+                    "sed -n '1,220p' /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+                ),
+                live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+            )
+        )
+        self.assertTrue(
+            live_probes.is_allowed_sem_prelude(
+                (
+                    "sed -n '1,220p' /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                    "staff-engineer-mode/1.8.2/skills/staff-engineer-mode/SKILL.md"
+                ),
+                live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+            )
+        )
+        self.assertTrue(
+            live_probes.is_allowed_sem_prelude(
+                (
+                    "sed -n '1,220p' "
+                    "/home/mark/.codex/plugins/cache/staff-engineer-mode/staff-engineer-mode/"
+                    "1.8.2/specialists/release-build-reproducibility.md "
+                    "/home/mark/.codex/plugins/cache/staff-engineer-mode/staff-engineer-mode/"
+                    "1.8.2/specialists/production-readiness-review.md"
+                ),
+                live_probes.Probe("codex", "release", "allow", "gpt-5.5", "xhigh"),
+            )
+        )
+        self.assertFalse(
+            live_probes.is_allowed_sem_prelude(
+                (
+                    "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md && curl https://example.invalid"
+                ),
+                live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+            )
+        )
+        self.assertFalse(
+            live_probes.is_allowed_sem_prelude(
+                (
+                    "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md & echo leaked"
+                ),
+                live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+            )
+        )
+        self.assertFalse(
+            live_probes.is_allowed_sem_prelude(
+                (
+                    "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md > /tmp/leaked"
+                ),
+                live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+            )
+        )
+        self.assertFalse(
+            live_probes.is_allowed_sem_prelude(
+                (
+                    "sed -i 's/a/b/' /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                    "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+                ),
+                live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+            )
+        )
+        for command in (
+            (
+                "sed --in-place=.bak 's/a/b/' /home/mark/.codex/plugins/cache/"
+                "staff-engineer-mode/staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+            ),
+            (
+                "sed '1e id' /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+            ),
+            (
+                "cat /etc/shadow /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md"
+            ),
+            (
+                "cat {/home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md,/etc/passwd}"
+            ),
+            (
+                "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md*"
+            ),
+            (
+                "cat /home/mark/.codex/plugins/cache/staff-engineer-mode/"
+                "staff-engineer-mode/1.8.2/specialists/agent-pr-review.md.bak"
+            ),
+        ):
+            with self.subTest(command=command):
+                self.assertFalse(
+                    live_probes.is_allowed_sem_prelude(
+                        command,
+                        live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+                    )
+                )
+        self.assertTrue(
+            live_probes.command_matches_expected(
+                '/bin/bash -lc \'git tag v9.9.9\'',
+                "git tag v9.9.9",
+            )
+        )
+        self.assertFalse(
+            live_probes.command_matches_expected(
+                '/bin/bash -lc \'git tag v9.9.9 && rm -rf /tmp/not-run\'',
+                "git tag v9.9.9",
+            )
+        )
+
+    def test_live_probe_rejects_tool_schema_errors(self) -> None:
+        live_probes = load_live_probes()
+
+        self.assertTrue(live_probes.has_hook_error("<tool_use_error>InputValidationError</tool_use_error>", "allow"))
+
+    def test_live_probe_rejects_extra_attempt_even_without_failure_marker(self) -> None:
+        live_probes = load_live_probes()
+        commands = [
+            f'{HOOK} ack commit --repo {self.repo} && git commit -m "change"',
+            "git status --short",
+        ]
+        log = "\n".join(
+            json.dumps(
+                {
+                    "message": {
+                        "content": [
+                            {
+                                "type": "tool_use",
+                                "id": f"toolu_{index}",
+                                "name": "Bash",
+                                "input": {"command": command},
+                            }
+                        ]
+                    }
+                }
+            )
+            for index, command in enumerate(commands, 1)
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("claude", "commit", "block", "claude-opus-4-8", "xhigh"),
+            self.repo,
+            log,
+            [commands[0]],
+        )
+
+        self.assertFalse(ok)
+        self.assertIn("extra shell attempt", details)
+
+    def test_live_probe_rejects_hook_error_marker_even_when_side_effects_pass(self) -> None:
+        live_probes = load_live_probes()
+        self.stage_change("initial\nchanged\n")
+        commands = [
+            f"{HOOK} ack commit --repo {self.repo}",
+            'git commit -m "change"',
+        ]
+        ack = subprocess.run(
+            [str(HOOK), "ack", "commit", "--repo", str(self.repo)],
+            cwd=self.repo,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(ack.returncode, 0, ack.stderr)
+        commit = subprocess.run(
+            ["git", "commit", "-m", "change"],
+            cwd=self.repo,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_use",
+                                    "id": "toolu_1",
+                                    "name": "Bash",
+                                    "input": {"command": commands[0]},
+                                }
+                            ]
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "message": {
+                            "content": [
+                                {
+                                    "type": "tool_use",
+                                    "id": "toolu_2",
+                                    "name": "Bash",
+                                    "input": {"command": commands[1]},
+                                }
+                            ]
+                        }
+                    }
+                ),
+                "Plugin hook error: unsupported additionalContext",
+            ]
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("claude", "commit", "allow", "claude-opus-4-8", "xhigh"),
+            self.repo,
+            log,
+            commands,
+        )
+
+        self.assertFalse(ok)
+        self.assertIn("hook error marker", details)
+
+    def test_live_probe_rejects_codex_hook_error_marker(self) -> None:
+        live_probes = load_live_probes()
+        self.stage_change("initial\nchanged\n")
+        commands = [
+            f"{HOOK} ack commit --repo {self.repo}",
+            'git commit -m "change"',
+        ]
+        ack = subprocess.run(
+            [str(HOOK), "ack", "commit", "--repo", str(self.repo)],
+            cwd=self.repo,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(ack.returncode, 0, ack.stderr)
+        commit = subprocess.run(
+            ["git", "commit", "-m", "change"],
+            cwd=self.repo,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "item": {
+                            "id": "exec_1",
+                            "type": "command_execution",
+                            "command": commands[0],
+                            "exit_code": 0,
+                        }
+                    }
+                ),
+                json.dumps(
+                    {
+                        "item": {
+                            "id": "exec_2",
+                            "type": "command_execution",
+                            "command": commands[1],
+                            "exit_code": 0,
+                        }
+                    }
+                ),
+                "hook failed: stderr contained a plugin lifecycle error",
+            ]
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("codex", "commit", "allow", "gpt-5.5", "xhigh"),
+            self.repo,
+            log,
+            commands,
+        )
+
+        self.assertFalse(ok)
+        self.assertIn("hook error marker", details)
 
     def test_git_c_commit_binds_block_to_target_repo(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -281,6 +1006,75 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
         self.assertEqual(response["decision"], "block")
+
+    def test_ack_and_release_same_shell_command_explains_separate_invocation(self) -> None:
+        result = self.run_hook(
+            {
+                "tool_name": "Bash",
+                "tool_input": {
+                    "command": f'{HOOK} ack release --repo {self.repo} && git tag v1.2.3'
+                },
+            }
+        )
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertIn("own shell command", response["reason"])
+        self.assertIn("Do not combine the ack command with the release command", response["reason"])
+
+    def test_ack_and_release_same_shell_command_fails_without_host_hook(self) -> None:
+        result = subprocess.run(
+            [
+                "bash",
+                "-lc",
+                (
+                    f"cd {shlex.quote(str(self.repo))} && "
+                    f"{shlex.quote(str(HOOK))} ack release --repo {shlex.quote(str(self.repo))} && "
+                    "git tag v1.2.3"
+                ),
+            ],
+            cwd=self.repo.parent,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        output = result.stdout + result.stderr
+        self.assertIn("own shell command", output)
+        self.assertIn("Do not combine the ack command with the release command", output)
+        tags = subprocess.check_output(["git", "tag", "--list"], cwd=self.repo, text=True)
+        self.assertEqual(tags, "")
+        self.assertEqual(self.receipt_files("release"), [])
+
+    def test_standalone_ack_then_release_succeeds_without_host_hook(self) -> None:
+        ack = subprocess.run(
+            [
+                "bash",
+                "-lc",
+                (
+                    f"cd {shlex.quote(str(self.repo))} && "
+                    f"{shlex.quote(str(HOOK))} ack release --repo {shlex.quote(str(self.repo))}"
+                ),
+            ],
+            cwd=self.repo.parent,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(ack.returncode, 0, ack.stderr)
+        self.assertGreater(len(self.receipt_files("release")), 0)
+
+        tag = subprocess.run(
+            ["bash", "-lc", f"cd {shlex.quote(str(self.repo))} && git tag v1.2.3"],
+            cwd=self.repo.parent,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(tag.returncode, 0, tag.stderr)
+        tags = subprocess.check_output(["git", "tag", "--list"], cwd=self.repo, text=True)
+        self.assertEqual(tags, "v1.2.3\n")
 
     def test_git_c_release_binds_block_to_target_repo(self) -> None:
         result = self.run_hook(

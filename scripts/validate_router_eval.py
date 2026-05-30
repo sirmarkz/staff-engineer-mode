@@ -12,11 +12,9 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from staff_engineer_mode_contract import ROUTER_EVAL_CHECKS
+import run_router_eval
 
-ROUTER_EVAL_FILES = [
-    ROOT / "evals" / "router" / "router-eval-set.yaml",
-    ROOT / "evals" / "router" / "router-phase-eval-set.yaml",
-]
+SAMPLE_PROMPTS = ROOT / "SAMPLE-PROMPTS.md"
 REQUIRED_KEYS = {"prompt", "expected_primary", "expected_behavior", "category"}
 REQUIRED_CATEGORIES = {"direct", "paraphrase", "mixed_intent", "out_of_scope"}
 REQUIRED_CHECK_KEY = "expected_checks"
@@ -244,21 +242,26 @@ def validate_phase_fixture(cases: list[dict[str, Any]], path: Path) -> None:
         fail(f"{path} must include an out_of_scope case")
 
 
-def main() -> int:
-    total_cases = 0
-    for router_eval in ROUTER_EVAL_FILES:
-        if not router_eval.exists():
-            fail(f"missing router eval fixture {router_eval.relative_to(ROOT)}")
-        cases = parse_cases(router_eval.read_text())
-        if router_eval.name == "router-eval-set.yaml":
-            validate_main_fixture(cases, router_eval)
-        elif router_eval.name == "router-phase-eval-set.yaml":
-            validate_phase_fixture(cases, router_eval)
-        else:
-            fail(f"unknown router eval fixture {router_eval}")
-        total_cases += len(cases)
+def validate_sample_prompt_catalog(path: Path = SAMPLE_PROMPTS) -> int:
+    if not path.exists():
+        fail(f"missing canonical router eval catalog {path.relative_to(ROOT)}")
+    cases = run_router_eval.parse_sample_prompts(path)
+    categories, primaries, _secondary_cases = validate_common_cases(cases, path)
+    expected_primaries = (skill_names() - {"staff-engineer-mode"}) | {"none"}
+    missing = expected_primaries - primaries
+    extra = primaries - expected_primaries
+    if missing:
+        fail(f"{path} missing eval cases for specialists: {', '.join(sorted(missing))}")
+    if extra:
+        fail(f"{path} has eval cases for unknown specialists: {', '.join(sorted(extra))}")
+    if categories != {"sample_prompt", "out_of_scope"}:
+        fail(f"{path} expected sample_prompt and out_of_scope cases, found {sorted(categories)}")
+    return len(cases)
 
-    print(f"router eval fixture validation passed: {len(ROUTER_EVAL_FILES)} files, {total_cases} cases")
+
+def main() -> int:
+    total_cases = validate_sample_prompt_catalog()
+    print(f"router eval catalog validation passed: SAMPLE-PROMPTS.md, {total_cases} cases")
     return 0
 
 

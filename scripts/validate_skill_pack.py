@@ -641,12 +641,15 @@ def validate_sample_prompts(skill_files: list[Path]) -> None:
         sections[current] = count
 
     section_names = set(sections)
+    allowed_sections = specialist_names | {"none"}
     missing = specialist_names - section_names
-    extra = section_names - specialist_names
+    extra = section_names - allowed_sections
     if missing:
         fail(f"SAMPLE-PROMPTS.md missing specialists: {', '.join(sorted(missing))}")
     if extra:
         fail(f"SAMPLE-PROMPTS.md has unknown specialist sections: {', '.join(sorted(extra))}")
+    if "none" not in section_names:
+        fail("SAMPLE-PROMPTS.md missing out-of-scope section: none")
 
     wrong_counts = {
         name: prompt_count
@@ -694,10 +697,7 @@ def main() -> int:
             fail(f"{path} must live at specialists/<specialist-name>.md")
         validate_skill(path)
 
-    router_eval = ROOT / "evals" / "router" / "router-eval-set.yaml"
     routing_matrix = SKILLS / "staff-engineer-mode" / "references" / "routing-matrix.md"
-    if not router_eval.exists():
-        fail("router eval fixture is missing")
     if not routing_matrix.exists():
         fail("router routing matrix is missing")
     validate_router_boundary_split(router_file.read_text(), routing_matrix.read_text(), router_file, routing_matrix)

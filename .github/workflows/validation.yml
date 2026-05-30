@@ -33,15 +33,21 @@ jobs:
             scripts/validate_router_eval.py \
             scripts/validate_platform_support.py \
             scripts/run_router_eval.py \
+            scripts/run_live_hook_probes.py \
+            scripts/run_release_live_checks.py \
             scripts/test_run_router_eval.py \
+            scripts/test_run_release_live_checks.py \
             scripts/test_agent_event_policy_hook.py \
             scripts/test_validate_platform_support.py
           bash -n hooks/agent-event-policy
+          bash -n evals/adapters/codex-router.sh
+          bash -n evals/adapters/claude-router.sh
           bash -n scripts/bump-version.sh
 
       - name: Test router eval harness
         run: |
           python3 -m unittest scripts/test_run_router_eval.py
+          python3 -m unittest scripts/test_run_release_live_checks.py
           python3 -m unittest scripts/test_agent_event_policy_hook.py
           python3 -m unittest scripts/test_validate_platform_support.py
 

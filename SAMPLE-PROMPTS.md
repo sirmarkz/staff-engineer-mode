@@ -374,7 +374,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Plan staged rollout, halt criteria, and forward-fix options for this new mobile release."
 - "Inspect startup, crash, hang, and offline telemetry before approving this app release."
 - "Use the release notes and changed files to choose rollback or forward-fix options for this app-store bug."
-- "Crash-free users dip only on older OS versions after staged rollout; decide pause, forward fix, or rollback."
+- "Crash-free users dip only on older OS versions after the mobile app staged rollout; decide pause, forward fix, or rollback."
 
 ### `web-release-gates`
 
@@ -396,3 +396,12 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "The A/B test result looks suspicious; inspect sample balance, missing telemetry, and metric definitions."
 - "Decide whether this experiment ramp should continue using assignment balance, exposure logging, metric validity checks, and guardrail metrics."
 - "The ramp looks positive but guardrail logging changed halfway through; decide whether the readout is trustworthy."
+
+## Out Of Scope
+
+### `none`
+
+- "Write a marketing launch plan for the new checkout feature."
+- "How much should we pay engineers for being on call?"
+- "Rewrite this landing page headline to sound warmer."
+- "Pick a company offsite venue and catering plan."
