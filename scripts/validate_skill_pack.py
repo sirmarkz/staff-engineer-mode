@@ -178,7 +178,8 @@ ROUTER_LOAD_CONTRACT_RULE_TERMS = [
 
 ROUTER_LOAD_CONTRACT_PLATFORM_TERMS = [
     "SPECIALIST_ROOT=",
-    "Codex:",
+    "Codex plugin",
+    "Codex skills-only fallback",
     "Gemini:",
 ]
 

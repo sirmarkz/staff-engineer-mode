@@ -267,7 +267,7 @@ Stay narrow.
 
 ## Load Contract
 
-Resolve via SPECIALIST_ROOT= when present. Otherwise: Codex: ~/.codex/.../specialists. Gemini: relative to GEMINI.md.
+Resolve via SPECIALIST_ROOT= when present. Otherwise: Codex plugin: plugin checkout specialists; Codex skills-only fallback: ~/.codex/.../specialists. Gemini: relative to GEMINI.md.
 
 - Use the Read tool. Do not use the Skill tool.
 - Complete the Read before producing engineering guidance for routed work.

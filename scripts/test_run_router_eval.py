@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -71,6 +72,17 @@ class RouterEvalHarnessTests(unittest.TestCase):
             runner.random_specialist_cases(cases, 0, "release-seed")
         with self.assertRaises(SystemExit):
             runner.random_specialist_cases(cases, len(runner.specialist_names()) + 1, "release-seed")
+
+    def test_command_response_reports_stdout_when_command_fails_without_stderr(self) -> None:
+        runner = load_runner()
+
+        with patch.object(
+            runner.subprocess,
+            "run",
+            return_value=subprocess.CompletedProcess("adapter", 1, "stdout-failure-token\n", ""),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "stdout-failure-token"):
+                runner.command_response("adapter", "prompt")
 
     def test_main_rejects_limit_with_random_selection(self) -> None:
         runner = load_runner()

@@ -3,7 +3,11 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+case "$0" in
+  */*) script_dir_arg="${0%/*}" ;;
+  *) script_dir_arg="." ;;
+esac
+SCRIPT_DIR="$((cd "$script_dir_arg" 2>/dev/null && pwd) || printf '%s\n' "$script_dir_arg")"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 RECEIPT_DIR="staff-engineer-mode/agent-event-receipts"
 
@@ -44,9 +48,10 @@ record_probe_block() {
 
 block_tool() {
   local reason="$1"
-  local escaped_reason
-  record_probe_block "$reason"
-  escaped_reason="$(json_escape "$reason")"
+  local display_reason escaped_reason
+  display_reason="${reason} If this policy was triggered accidentally, stop, explain the blocked command, and ask the user to confirm the intended action before retrying."
+  record_probe_block "$display_reason"
+  escaped_reason="$(json_escape "$display_reason")"
   printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "PreToolUse",\n    "permissionDecision": "deny",\n    "permissionDecisionReason": %s\n  },\n  "systemMessage": %s\n}\n' "$escaped_reason" "$escaped_reason"
   exit 0
 }
@@ -58,9 +63,13 @@ hash_stdin() {
     shasum -a 256 | awk '{ print $1 }'
   elif command -v openssl >/dev/null 2>&1; then
     openssl dgst -sha256 | awk '{ print $NF }'
+  elif command -v git >/dev/null 2>&1; then
+    git hash-object --stdin
+  elif command -v cksum >/dev/null 2>&1; then
+    cksum | awk '{ print $1 "-" $2 }'
   else
-    printf 'staff-engineer-mode: sha256 tool not found\n' >&2
-    exit 1
+    cat >/dev/null || true
+    printf 'hash-unavailable\n'
   fi
 }
 
@@ -98,6 +107,48 @@ PY
 
   if command -v jq >/dev/null 2>&1; then
     printf '%s' "$hook_input" | jq -r '(.tool_input.command // .tool_input.cmd // .input.command // .command // "")'
+    return
+  fi
+
+  if command -v awk >/dev/null 2>&1; then
+    printf '%s' "$hook_input" | awk '
+      {
+        text = text $0 "\n"
+      }
+      END {
+        if (!match(text, /"(command|cmd)"[[:space:]]*:[[:space:]]*"/)) {
+          exit
+        }
+        start = RSTART + RLENGTH
+        out = ""
+        escaped = 0
+        for (i = start; i <= length(text); i++) {
+          char = substr(text, i, 1)
+          if (escaped) {
+            if (char == "n") {
+              out = out "\n"
+            } else if (char == "r") {
+              out = out "\r"
+            } else if (char == "t") {
+              out = out "\t"
+            } else {
+              out = out char
+            }
+            escaped = 0
+            continue
+          }
+          if (char == "\\") {
+            escaped = 1
+            continue
+          }
+          if (char == "\"") {
+            print out
+            exit
+          }
+          out = out char
+        }
+      }
+    '
   fi
 }
 
@@ -106,6 +157,11 @@ command_has_ai_commit_attribution() {
   local attribution_marker='(co-authored-by|generated-by|assisted-by|written-by|created-by):'
   local ai_identity='(noreply@anthropic[.]com|noreply@openai[.]com|anthropic|openai|codex|chatgpt|copilot|gemini|ai[ -]?assistant|claude[[:space:]_-]+(sonnet|opus|code))'
   printf '%s\n' "$command_text" | grep -Eiq "${attribution_marker}.*${ai_identity}"
+}
+
+command_stages_before_commit() {
+  local command_text="$1"
+  printf '%s\n' "$command_text" | grep -Eq '(^|[[:space:];|&])git[[:space:]][^;|&]*add([[:space:]]|$).*(^|[[:space:];|&])git[[:space:]][^;|&]*commit([[:space:]]|$)'
 }
 
 classify_command() {
@@ -118,6 +174,10 @@ classify_command() {
   local gh_remote_selector_before_action="(^|[[:space:];|&])gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)+${gh_action}([[:space:]]|[;|&]|$)"
   local gh_remote_selector_after_action="(^|[[:space:];|&])gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]][^;|&]*)?${gh_selector_flag}([[:space:]]|[;|&]|$)"
   local gh_remote_mutating_release="${gh_remote_selector_before_release}|${gh_remote_selector_before_action}|${gh_remote_selector_after_action}"
+  local version_tag_ref='v?[0-9]+([.][0-9]+){1,3}([-+][A-Za-z0-9_.-]+)?'
+  local git_command_prefix='(^|[[:space:];|&])git[[:space:]][^;|&]*'
+  local git_tag_command="${git_command_prefix}tag([[:space:]]|$)"
+  local git_push_tag_command="${git_command_prefix}push([^;|&]*[[:space:]])(--tags|--follow-tags|${version_tag_ref})([[:space:];|&]|$)"
   local gh_inherited_selector=false
   if [ -n "${GH_REPO:-}" ] || [ -n "${GH_HOST:-}" ]; then
     gh_inherited_selector=true
@@ -297,11 +357,6 @@ for index, token in enumerate(tokens):
         if subcommand == "add":
             staged_repos.add(cwd)
         if subcommand == "commit":
-            if cwd in staged_repos:
-                emit("stage_and_commit", cwd)
-            for arg in rest:
-                if arg == "-a" or (arg.startswith("-") and not arg.startswith("--") and "a" in arg[1:]):
-                    emit("commit_all", cwd)
             emit("commit", cwd)
         if subcommand == "tag":
             creates_tag = any(not arg.startswith("-") and is_version_tag(arg) for arg in rest)
@@ -309,7 +364,7 @@ for index, token in enumerate(tokens):
             if creates_tag or annotated_tag:
                 emit("release", cwd)
         if subcommand == "push":
-            if "--tags" in rest or any(is_version_tag(arg) for arg in rest):
+            if any(arg in {"--tags", "--follow-tags"} for arg in rest) or any(is_version_tag(arg) for arg in rest):
                 emit("release", cwd)
 
     if token == "gh":
@@ -318,9 +373,6 @@ for index, token in enumerate(tokens):
             emit("release_remote", shell_cwd)
         if event == "release":
             emit("release", shell_cwd)
-
-    if token.endswith("bump-version.sh"):
-        emit("release", shell_cwd)
 PY
     return
   fi
@@ -330,10 +382,10 @@ PY
       || printf '%s\n' "$command_text" | grep -Eq "${gh_env_selector}|${gh_remote_mutating_release}"; }; then
     printf 'release_remote\t.\n'
   elif printf '%s\n' "$command_text" | grep -Eq '(^|[[:space:];|&])git[[:space:]].*add([[:space:]]|$).*(^|[[:space:];|&])git[[:space:]].*commit([[:space:]]|$)'; then
-    printf 'stage_and_commit\t.\n'
+    printf 'commit\t.\n'
   elif printf '%s\n' "$command_text" | grep -Eq '(^|[[:space:];|&])git[[:space:]].*commit([[:space:]]|$)'; then
     printf 'commit\t.\n'
-  elif printf '%s\n' "$command_text" | grep -Eq '(^|[[:space:];|&])git[[:space:]].*(tag|push)([[:space:]]|$)'; then
+  elif printf '%s\n' "$command_text" | grep -Eq "$git_tag_command|$git_push_tag_command"; then
     printf 'release\t.\n'
   # gh release detection (degraded path, python3 unavailable): require release
   # to be the gh subcommand, optionally preceded by recognized global flags so
@@ -342,6 +394,17 @@ PY
   elif printf '%s\n' "$command_text" | grep -Eq "$gh_mutating_release"; then
     printf 'release\t.\n'
   fi
+}
+
+protected_command_summary() {
+  cat <<'EOF'
+Staff Engineer Mode PreToolUse protected commands:
+- commit: git commit
+- release: git tag
+- release: git push tags
+- release: gh release create|edit|upload|delete|delete-asset ... for the current checkout
+- release_remote: gh release create|edit|upload|delete|delete-asset ... with --repo, -R, --hostname, GH_REPO, or GH_HOST
+EOF
 }
 
 repo_root() {
@@ -409,47 +472,6 @@ has_receipt() {
   test -f "$(receipt_path "$repo" "$event" "$key")"
 }
 
-parent_command_text() {
-  local parent_pid="${PPID:-}"
-  if [ -n "$parent_pid" ] && [ -r "/proc/${parent_pid}/cmdline" ]; then
-    tr '\0' ' ' < "/proc/${parent_pid}/cmdline"
-    return
-  fi
-
-  if [ -n "$parent_pid" ] && command -v ps >/dev/null 2>&1; then
-    ps -o command= -p "$parent_pid" 2>/dev/null || true
-  fi
-}
-
-command_mentions_ack_event() {
-  local command_text="$1"
-  local event="$2"
-  printf '%s\n' "$command_text" | grep -Eq "(^|[[:space:];|&])ack[[:space:]]+${event}([[:space:]]|$)"
-}
-
-assert_ack_is_standalone() {
-  local event="$1"
-  local command_text classification protected_event
-  command_text="$(parent_command_text)"
-  [ -n "$command_text" ] || return 0
-  command_mentions_ack_event "$command_text" "$event" || return 0
-
-  classification="$(classify_command "$command_text")"
-  [ -n "$classification" ] || return 0
-  protected_event="${classification%%	*}"
-
-  case "$event:$protected_event" in
-    commit:commit|commit:commit_all|commit:stage_and_commit)
-      printf 'Staff Engineer Mode ack commit must run as its own shell command. Do not combine the ack command with the commit command; run the receipt command first, then retry the commit in a separate shell command.\n' >&2
-      exit 2
-      ;;
-    release:release|release:release_remote)
-      printf 'Staff Engineer Mode ack release must run as its own shell command. Do not combine the ack command with the release command; run the receipt command first, then retry the release, tag, push, or promotion command in a separate shell command.\n' >&2
-      exit 2
-      ;;
-  esac
-}
-
 ack_event() {
   local event="${1:-}"
   shift || true
@@ -497,11 +519,9 @@ ack_event() {
 
   case "$event" in
     commit)
-      assert_ack_is_standalone "commit"
       write_receipt "commit" "$repo" "$(commit_key "$repo")" "$override" "$rationale"
       ;;
     release)
-      assert_ack_is_standalone "release"
       write_receipt "release" "$repo" "$(release_key "$repo")" "$override" "$rationale"
       ;;
     *)
@@ -541,20 +561,17 @@ pretooluse() {
   fi
 
   case "$event" in
-    stage_and_commit)
-      block_tool "Staff Engineer Mode before_commit policy blocked a command that stages and commits in the same shell command. The staging command in that same shell command has not run yet, so the staged diff may be empty. Run the staging command separately; read ${PLUGIN_ROOT}/specialists/agent-pr-review.md; review git diff --cached for ${repo}; show the structured agent-pr-review artifact to the user; run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} as its own shell command; then retry only the commit command in a separate shell command. Do not combine staging, ack, commit, or push in one shell command.${attribution_instruction} If the user explicitly accepts unresolved gaps after review, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\" as its own shell command."
-      ;;
-    commit_all)
-      block_tool "Staff Engineer Mode before_commit policy requires review of the exact staged diff. Stage intended changes first, run agent-pr-review on that staged diff, show the structured review artifact to the user, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} as its own shell command, then retry the commit without commit -a in a separate shell command."
-      ;;
     commit)
       if [ "$has_ai_attribution" = true ]; then
         block_tool "Staff Engineer Mode before_commit policy blocks AI assistant co-author or attribution trailers in commit messages. Remove the AI co-author or attribution, then retry through the normal user-visible agent-pr-review and ack commit flow for ${repo}."
       fi
+      if command_stages_before_commit "$command_text"; then
+        block_tool "Staff Engineer Mode before_commit policy requires agent-pr-review before running git commit. Stage intended files explicitly in a separate shell command, read ${PLUGIN_ROOT}/specialists/agent-pr-review.md, and review the exact staged diff for ${repo}; inspecting git diff --cached or reading CLAUDE.md / SKILL.md alone is not enough. Show the structured review artifact to the user before any receipt. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} as its own shell command. Do not combine staging, ack, or git commit in one shell command; the PreToolUse hook checks the whole shell command before any subcommand can run. If the user explicitly accepts unresolved gaps after they are shown, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\" as its own shell command. Then retry git commit in a separate shell command."
+      fi
       local key
       key="$(commit_key "$repo")"
       if ! has_receipt "$repo" "commit" "$key"; then
-        block_tool "Staff Engineer Mode before_commit policy requires agent-pr-review before creating or amending a commit. Read ${PLUGIN_ROOT}/specialists/agent-pr-review.md and review the staged diff for ${repo}; inspecting git diff --cached or reading CLAUDE.md / SKILL.md alone is not enough. Show the structured review artifact to the user before any receipt. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} as its own shell command. Do not combine the ack command with the commit command; the PreToolUse hook checks the whole shell command before either subcommand can run. If the user explicitly accepts unresolved gaps after they are shown, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\" as its own shell command. Then retry the commit in a separate shell command."
+        block_tool "Staff Engineer Mode before_commit policy requires agent-pr-review before running git commit. Stage intended files explicitly, read ${PLUGIN_ROOT}/specialists/agent-pr-review.md, and review the exact staged diff for ${repo}; inspecting git diff --cached or reading CLAUDE.md / SKILL.md alone is not enough. Show the structured review artifact to the user before any receipt. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} as its own shell command. Do not combine the ack command with the commit command; the PreToolUse hook checks the whole shell command before either subcommand can run. If the user explicitly accepts unresolved gaps after they are shown, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\" as its own shell command. Then retry git commit in a separate shell command."
       fi
       ;;
     release)
@@ -568,13 +585,20 @@ pretooluse() {
 }
 
 case "${1:-pretooluse}" in
-  pretooluse) pretooluse ;;
+  list-protected)
+    protected_command_summary
+    ;;
+  pretooluse)
+    set +e +u +o pipefail
+    pretooluse 2>/dev/null || true
+    exit 0
+    ;;
   ack)
     shift
     ack_event "$@"
     ;;
   *)
-    printf 'usage: %s pretooluse|ack commit|ack release\n' "$0" >&2
+    printf 'usage: %s pretooluse|list-protected|ack commit|ack release\n' "$0" >&2
     exit 1
     ;;
 esac

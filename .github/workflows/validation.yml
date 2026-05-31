@@ -38,8 +38,11 @@ jobs:
             scripts/test_run_router_eval.py \
             scripts/test_run_release_live_checks.py \
             scripts/test_agent_event_policy_hook.py \
+            scripts/test_session_start_hook.py \
             scripts/test_validate_platform_support.py
           bash -n hooks/agent-event-policy
+          bash -n hooks/session-start
+          bash -n hooks/run-hook.cmd
           bash -n evals/adapters/codex-router.sh
           bash -n evals/adapters/claude-router.sh
           bash -n scripts/bump-version.sh
@@ -49,6 +52,7 @@ jobs:
           python3 -m unittest scripts/test_run_router_eval.py
           python3 -m unittest scripts/test_run_release_live_checks.py
           python3 -m unittest scripts/test_agent_event_policy_hook.py
+          python3 -m unittest scripts/test_session_start_hook.py
           python3 -m unittest scripts/test_validate_platform_support.py
 
       - name: Validate version metadata

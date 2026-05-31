@@ -27,7 +27,8 @@ To load a specialist, **Read** `<specialist-root>/<slug>.md`. Resolve `<speciali
 
 1. If `SPECIALIST_ROOT=` appears in session context (Claude Code, Cursor, OpenCode), use it.
 2. Otherwise use the platform default:
-   - Codex: `~/.codex/staff-engineer-mode/specialists`
+   - Codex plugin: the `specialists` directory beside the loaded plugin checkout.
+   - Codex skills-only fallback: `~/.codex/staff-engineer-mode/specialists`
    - Gemini: the `specialists` directory next to the loaded `GEMINI.md`
    - Any other host: the `specialists/` directory at the router skill's install root.
 

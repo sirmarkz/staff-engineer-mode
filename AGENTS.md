@@ -91,8 +91,11 @@ maintaining complex software systems.
 
 - Validation protects supported skill contracts, routing behavior, references,
   source-index citations, templates, and artifact shape.
-- Avoid tests that only pin incidental wording, heading prose, or implementation
-  churn with no supported contract.
+- Avoid tests that only pin incidental wording, heading prose, bootstrap prose, or
+  implementation churn with no supported contract. For hooks and bootstrap
+  context, prefer behavioral checks such as clean exit, no stderr, valid
+  structured output, routing surface, and protected-command effects over exact
+  literal text assertions.
 - Run repo-local validation scripts before committing skill changes.
 - Run `python3 scripts/validate_source_quality.py` before committing source-index
   or citation changes.

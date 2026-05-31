@@ -4,12 +4,15 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import queue
 import re
 import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -53,6 +56,12 @@ class CommandAttempt:
     failed: bool = False
     blocked: bool = False
     exit_code: int | None = None
+
+
+@dataclass
+class CodexProbeEnvironment:
+    env: dict[str, str]
+    root: Path
 
 
 def run(
@@ -146,7 +155,9 @@ def prompt_for(commands: list[str], probe: Probe, repo: Path) -> str:
         "Use the shell/Bash tool only. You may read only the Staff Engineer Mode router or "
         "specialist files required by active instructions before the requested shell commands. "
         "Do not inspect repo files. Do not run setup commands. "
-        "Do not retry, repair, or run fallback commands.\n"
+        "Do not retry, repair, or run fallback commands. "
+        "Run one shell tool call at a time, wait for its result before starting the next, "
+        "and never issue duplicate or parallel shell tool calls.\n"
         f"{probe_instruction}"
         f"Run exactly this {plural}, in order"
         f"{' as separate shell tool calls' if len(commands) > 1 else ''}:\n"
@@ -299,9 +310,60 @@ def is_allowed_path_arg(arg: str, allowed_paths: list[str]) -> bool:
     return any(arg == path or arg.endswith(f"/{path}") for path in allowed_paths)
 
 
+def split_shell_prelude(command: str) -> list[str]:
+    return [part.strip() for part in re.split(r"\s*(?:&&|;)\s*", command) if part.strip()]
+
+
+def strip_safe_redirects(argv: list[str]) -> list[str] | None:
+    stripped: list[str] = []
+    for arg in argv:
+        if ">" in arg or "<" in arg:
+            if arg != "2>&1":
+                return None
+            continue
+        stripped.append(arg)
+    return stripped
+
+
+def is_allowed_ls_option(arg: str) -> bool:
+    return bool(re.fullmatch(r"-[adhl]+", arg))
+
+
+def is_allowed_sem_file_read(argv: list[str], allowed_paths: list[str]) -> bool:
+    if not argv:
+        return False
+    tool = Path(argv[0]).name
+    if tool == "echo":
+        return len(argv) == 1 or (len(argv) == 2 and argv[1] == "---")
+    if tool == "cat":
+        return len(argv) >= 2 and all(is_allowed_path_arg(arg, allowed_paths) for arg in argv[1:])
+    if tool == "sed":
+        return (
+            len(argv) >= 4
+            and argv[1] == "-n"
+            and re.fullmatch(r"\d+(?:,\d+)?p", argv[2]) is not None
+            and all(is_allowed_path_arg(arg, allowed_paths) for arg in argv[3:])
+        )
+    if tool == "wc":
+        return (
+            len(argv) >= 3
+            and argv[1] == "-l"
+            and all(is_allowed_path_arg(arg, allowed_paths) for arg in argv[2:])
+        )
+    if tool == "ls":
+        options = [arg for arg in argv[1:] if arg.startswith("-")]
+        paths = [arg for arg in argv[1:] if not arg.startswith("-")]
+        return (
+            bool(paths)
+            and all(is_allowed_ls_option(arg) for arg in options)
+            and all(is_allowed_path_arg(arg, allowed_paths) for arg in paths)
+        )
+    return False
+
+
 def is_allowed_sem_prelude(command: str, probe: Probe) -> bool:
     command = unwrap_shell_command(command)
-    if any(marker in command for marker in (";", "|", "`", "$", ">", "<", "\n", "{", "}", "*", "?", "~", "[", "]")):
+    if any(marker in command for marker in ("|", "`", "$", "<", "\n", "{", "}", "*", "?", "~", "[", "]")):
         return False
     if probe.event == "commit":
         allowed_paths = [
@@ -314,25 +376,16 @@ def is_allowed_sem_prelude(command: str, probe: Probe) -> bool:
             "specialists/release-build-reproducibility.md",
             "specialists/production-readiness-review.md",
         ]
-    parts = [part.strip() for part in command.split("&&")]
+    parts = split_shell_prelude(command)
     if not parts:
         return False
     for part in parts:
-        if "&" in part:
-            return False
         try:
             argv = shlex.split(part)
         except ValueError:
             return False
-        if not argv or Path(argv[0]).name not in {"cat", "sed"}:
-            return False
-        if Path(argv[0]).name == "cat":
-            if len(argv) < 2 or not all(is_allowed_path_arg(arg, allowed_paths) for arg in argv[1:]):
-                return False
-            continue
-        if len(argv) < 4 or argv[1] != "-n" or not re.fullmatch(r"\d+(?:,\d+)?p", argv[2]):
-            return False
-        if not all(is_allowed_path_arg(arg, allowed_paths) for arg in argv[3:]):
+        argv = strip_safe_redirects(argv)
+        if argv is None or not is_allowed_sem_file_read(argv, allowed_paths):
             return False
     return True
 
@@ -506,10 +559,10 @@ def marker_denial_log(repo: Path) -> str:
     return json.dumps({"sem_hook_probe_denials": denials})
 
 
-def codex_env(repo: Path | None = None) -> dict[str, str]:
-    existing = os.environ.get("RUST_LOG", "")
+def codex_env(repo: Path | None = None, base: dict[str, str] | None = None) -> dict[str, str]:
+    env = dict(base or {})
+    existing = env.get("RUST_LOG", os.environ.get("RUST_LOG", ""))
     router_filter = "codex_core::tools::router=off"
-    env: dict[str, str] = {}
     if "codex_core::tools::router" in existing:
         env["RUST_LOG"] = existing
     elif existing:
@@ -521,30 +574,291 @@ def codex_env(repo: Path | None = None) -> dict[str, str]:
     return env
 
 
-def run_codex(probe: Probe, repo: Path, prompt: str, args: argparse.Namespace) -> subprocess.CompletedProcess[str]:
-    hook_command = f"{shlex.quote(str(HOOK))} pretooluse"
+def write_codex_local_marketplace(marketplace_root: Path) -> None:
+    plugin_root = marketplace_root / "plugins" / "staff-engineer-mode"
+    manifest_path = marketplace_root / ".agents" / "plugins" / "marketplace.json"
+    plugin_root.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    if plugin_root.exists() or plugin_root.is_symlink():
+        if plugin_root.is_symlink() or plugin_root.is_file():
+            plugin_root.unlink()
+        else:
+            shutil.rmtree(plugin_root)
+    try:
+        os.symlink(ROOT, plugin_root, target_is_directory=True)
+    except OSError:
+        shutil.copytree(
+            ROOT,
+            plugin_root,
+            ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache", ".mypy_cache"),
+        )
+
+    manifest = {
+        "name": "staff-engineer-mode",
+        "plugins": [
+            {
+                "name": "staff-engineer-mode",
+                "description": "Staff Engineer Mode local live probe plugin",
+                "version": "0.0.0-local-probe",
+                "source": {"source": "local", "path": "./plugins/staff-engineer-mode"},
+                "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+                "category": "Coding",
+            }
+        ],
+    }
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+
+def source_codex_home() -> Path:
+    configured = os.environ.get("CODEX_HOME")
+    if configured:
+        return Path(configured).expanduser()
+    return Path.home() / ".codex"
+
+
+def codex_probe_root(work_root: Path) -> Path:
+    parent = source_codex_home() / ".tmp"
+    try:
+        parent.mkdir(parents=True, exist_ok=True)
+        return Path(tempfile.mkdtemp(prefix="sem-live-hook-probes-codex.", dir=parent))
+    except OSError:
+        return Path(tempfile.mkdtemp(prefix="codex-home.", dir=work_root))
+
+
+def app_server_request(
+    method: str,
+    params: dict[str, object],
+    *,
+    cwd: Path,
+    env: dict[str, str],
+    timeout: int,
+) -> dict[str, object]:
+    process_env = os.environ.copy()
+    process_env.update(env)
+    process = subprocess.Popen(
+        ["codex", "app-server", "--stdio"],
+        cwd=cwd,
+        env=process_env,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    assert process.stdin is not None
+    assert process.stdout is not None
+    assert process.stderr is not None
+    lines: queue.Queue[tuple[str, str]] = queue.Queue()
+
+    def read_stream(name: str, stream: Any) -> None:
+        for line in stream:
+            lines.put((name, line))
+
+    stdout_thread = threading.Thread(target=read_stream, args=("stdout", process.stdout), daemon=True)
+    stderr_thread = threading.Thread(target=read_stream, args=("stderr", process.stderr), daemon=True)
+    stdout_thread.start()
+    stderr_thread.start()
+
+    request_id = f"request-{time.monotonic_ns()}"
+    init_id = f"init-{time.monotonic_ns()}"
+    stderr_lines: list[str] = []
+    stdout_lines: list[str] = []
+
+    def send(message: dict[str, object]) -> None:
+        process.stdin.write(json.dumps(message) + "\n")
+        process.stdin.flush()
+
+    send(
+        {
+            "id": init_id,
+            "method": "initialize",
+            "params": {
+                "clientInfo": {"name": "sem-live-hook-probes", "title": "SEM Live Hook Probes", "version": "0"},
+                "capabilities": {
+                    "experimentalApi": True,
+                    "requestAttestation": False,
+                    "optOutNotificationMethods": [],
+                },
+            },
+        }
+    )
+
+    sent_request = False
+    deadline = time.monotonic() + timeout
+    try:
+        while time.monotonic() < deadline:
+            try:
+                stream_name, line = lines.get(timeout=0.1)
+            except queue.Empty:
+                if process.poll() is not None:
+                    break
+                continue
+            if stream_name == "stderr":
+                stderr_lines.append(line)
+                continue
+            stdout_lines.append(line)
+            try:
+                message = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if message.get("id") == init_id:
+                send({"method": "initialized"})
+                send({"id": request_id, "method": method, "params": params})
+                sent_request = True
+                continue
+            if message.get("id") != request_id:
+                continue
+            if "error" in message:
+                raise RuntimeError(f"codex app-server {method} failed: {message['error']}")
+            result = message.get("result")
+            if isinstance(result, dict):
+                return result
+            raise RuntimeError(f"codex app-server {method} returned invalid result")
+        detail = "".join(stderr_lines[-5:] + stdout_lines[-5:])
+        state = "before request" if not sent_request else "waiting for response"
+        raise RuntimeError(f"timed out {state} from codex app-server {method}: {detail}")
+    finally:
+        try:
+            process.stdin.close()
+        except OSError:
+            pass
+        if process.poll() is None:
+            process.terminate()
+            try:
+                process.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=2)
+
+
+def codex_plugin_hooks(env: dict[str, str], *, cwd: Path, timeout: int) -> list[dict[str, object]]:
+    result = app_server_request("hooks/list", {"cwds": [str(cwd)]}, cwd=cwd, env=env, timeout=timeout)
+    hooks: list[dict[str, object]] = []
+    for entry in result.get("data", []):
+        if not isinstance(entry, dict):
+            continue
+        for hook in entry.get("hooks", []):
+            if isinstance(hook, dict):
+                hooks.append(hook)
+    return hooks
+
+
+def append_codex_hook_trust(config_path: Path, hooks: list[dict[str, object]]) -> list[str]:
+    trusted_keys: list[str] = []
+    lines = ["", "[hooks.state]"]
+    existing = config_path.read_text(encoding="utf-8") if config_path.exists() else ""
+    if "[hooks.state]" in existing:
+        lines = [""]
+    for hook in hooks:
+        key = hook.get("key")
+        current_hash = hook.get("currentHash")
+        if (
+            hook.get("source") != "plugin"
+            or hook.get("pluginId") != "staff-engineer-mode@staff-engineer-mode"
+            or not isinstance(key, str)
+            or not isinstance(current_hash, str)
+            or not current_hash.startswith("sha256:")
+        ):
+            continue
+        section = f"[hooks.state.{json.dumps(key)}]"
+        if section in existing:
+            continue
+        lines.extend([section, f"trusted_hash = {json.dumps(current_hash)}", ""])
+        trusted_keys.append(key)
+    if trusted_keys:
+        with config_path.open("a", encoding="utf-8") as handle:
+            handle.write("\n".join(lines).rstrip() + "\n")
+    return trusted_keys
+
+
+def checked_run(
+    command: list[str],
+    *,
+    cwd: Path,
+    env: dict[str, str],
+    timeout: int,
+    label: str,
+) -> subprocess.CompletedProcess[str]:
+    completed = run(command, cwd=cwd, env=env, timeout=timeout)
+    if completed.returncode != 0:
+        detail = completed.stderr.strip() or completed.stdout.strip() or f"exit {completed.returncode}"
+        raise RuntimeError(f"{label} failed: {detail}")
+    return completed
+
+
+def prepare_codex_probe_environment(work_root: Path, *, timeout: int) -> CodexProbeEnvironment:
+    root = codex_probe_root(work_root)
+    user_home = root / "home"
+    codex_home = user_home / ".codex"
+    marketplace_root = root / "marketplace"
+    codex_home.mkdir(parents=True, exist_ok=True)
+    auth = source_codex_home() / "auth.json"
+    if auth.exists():
+        shutil.copy2(auth, codex_home / "auth.json")
+    fallback_install = codex_home / "staff-engineer-mode"
+    try:
+        os.symlink(ROOT, fallback_install, target_is_directory=True)
+    except OSError:
+        if not fallback_install.exists():
+            shutil.copytree(
+                ROOT,
+                fallback_install,
+                ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache", ".mypy_cache"),
+            )
+
+    write_codex_local_marketplace(marketplace_root)
+    env = {"HOME": str(user_home), "CODEX_HOME": str(codex_home)}
+    checked_run(
+        ["codex", "plugin", "marketplace", "add", str(marketplace_root)],
+        cwd=ROOT,
+        env=env,
+        timeout=timeout,
+        label="codex local marketplace setup",
+    )
+    checked_run(
+        ["codex", "plugin", "add", "staff-engineer-mode@staff-engineer-mode"],
+        cwd=ROOT,
+        env=env,
+        timeout=timeout,
+        label="codex local plugin install",
+    )
+    hooks = codex_plugin_hooks(env, cwd=ROOT, timeout=timeout)
+    trusted = append_codex_hook_trust(codex_home / "config.toml", hooks)
+    if not any("pre_tool_use" in key for key in trusted):
+        raise RuntimeError("codex local plugin install did not expose a trusted PreToolUse hook")
+    return CodexProbeEnvironment(env=env, root=root)
+
+
+def run_codex(
+    probe: Probe,
+    repo: Path,
+    prompt: str,
+    args: argparse.Namespace,
+    codex_base_env: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess[str]:
     command = [
         "codex",
         "exec",
         "--json",
         "--dangerously-bypass-approvals-and-sandbox",
-        "--dangerously-bypass-hook-trust",
         "--enable",
         "hooks",
         "-C",
         str(repo),
-        "--config",
-        f'hooks.PreToolUse=[{{matcher="^Bash$",hooks=[{{type="command",command={json.dumps(hook_command)}}}]}}]',
     ]
     if probe.model:
         command.extend(["--model", probe.model])
     if probe.effort:
         command.extend(["--config", f"model_reasoning_effort={probe.effort!r}"])
     command.append(prompt)
-    return run(command, cwd=repo, env=codex_env(repo), timeout=args.timeout)
+    return run(command, cwd=repo, env=codex_env(repo, codex_base_env), timeout=args.timeout)
 
 
-def run_probe(probe: Probe, args: argparse.Namespace, work_root: Path) -> ProbeResult:
+def run_probe(
+    probe: Probe,
+    args: argparse.Namespace,
+    work_root: Path,
+    codex_base_env: dict[str, str] | None = None,
+) -> ProbeResult:
     probe_root = work_root / probe.name.replace(":", "-").replace(".", "_")
     probe_root.mkdir(parents=True, exist_ok=True)
     repo = make_repo(probe_root, probe.event)
@@ -554,7 +868,7 @@ def run_probe(probe: Probe, args: argparse.Namespace, work_root: Path) -> ProbeR
     if probe.host == "claude":
         completed = run_claude(probe, repo, prompt, args)
     else:
-        completed = run_codex(probe, repo, prompt, args)
+        completed = run_codex(probe, repo, prompt, args, codex_base_env)
 
     log_path = probe_root / f"{probe.host}.log"
     text = completed.stdout + completed.stderr
@@ -630,14 +944,33 @@ def main() -> int:
                     for probe in expand(args.probe, ("block", "allow")):
                         probes.append(Probe(host, event, probe, model, effort))
 
+    codex_probe_env: CodexProbeEnvironment | None = None
+    if any(probe.host == "codex" for probe in probes):
+        codex_probe_env = prepare_codex_probe_environment(work_root, timeout=args.timeout)
+
     print(f"live hook probe work dir: {work_root}")
-    results = [run_probe(probe, args, work_root) for probe in probes]
+    results = [
+        run_probe(
+            probe,
+            args,
+            work_root,
+            codex_probe_env.env if codex_probe_env is not None and probe.host == "codex" else None,
+        )
+        for probe in probes
+    ]
 
     failed = False
     for result in results:
         status = "PASS" if result.ok else "FAIL"
         print(f"{status} {result.probe.name}: {result.details} (log: {result.log_path})")
         failed = failed or not result.ok
+
+    keep_artifacts = args.keep_temp or failed
+    if codex_probe_env is not None:
+        if keep_artifacts:
+            print(f"kept codex probe home: {codex_probe_env.root}")
+        else:
+            shutil.rmtree(codex_probe_env.root, ignore_errors=True)
 
     if remove_work_root and (args.keep_temp or failed):
         print(f"kept probe work dir: {work_root}")

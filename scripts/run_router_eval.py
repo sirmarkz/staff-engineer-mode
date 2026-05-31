@@ -506,7 +506,8 @@ def command_response(command: str, prompt: str) -> str:
         check=False,
     )
     if completed.returncode != 0:
-        raise RuntimeError(completed.stderr.strip() or f"command exited {completed.returncode}")
+        detail = completed.stderr.strip() or completed.stdout.strip() or f"command exited {completed.returncode}"
+        raise RuntimeError(detail)
     return completed.stdout
 
 

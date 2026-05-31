@@ -47,6 +47,10 @@ def main() -> int:
         "platform support validation",
         ["python3", "scripts/validate_platform_support.py"],
     )
+    run_step(
+        "event policy regression tests",
+        ["python3", "scripts/test_agent_event_policy_hook.py"],
+    )
     hook_command = [
         "python3",
         "scripts/run_live_hook_probes.py",

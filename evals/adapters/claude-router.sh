@@ -21,5 +21,4 @@ claude -p "${instructions}" \
   --model "${model}" \
   --effort "${effort}" \
   --output-format text \
-  --no-session-persistence \
-  2>/dev/null
+  --no-session-persistence

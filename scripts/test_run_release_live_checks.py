@@ -37,6 +37,7 @@ class ReleaseLiveChecksTests(unittest.TestCase):
 
         self.assertEqual([name for name, _, _ in calls], [
             "platform support validation",
+            "event policy regression tests",
             "live hook probes",
             "Codex gpt-5.5 high random router eval",
             "Claude claude-opus-4-8 high random router eval",
@@ -45,11 +46,13 @@ class ReleaseLiveChecksTests(unittest.TestCase):
             self.assertNotIn("--warn-only", command)
         self.assertNotIn("--timeout", calls[1][1])
         self.assertIn("scripts/validate_platform_support.py", calls[0][1])
-        self.assertIn("--random-specialists", calls[2][1])
-        self.assertIn("5", calls[2][1])
-        self.assertEqual(calls[2][2], {"CODEX_MODEL": "gpt-5.5", "CODEX_EFFORT": "high"})
+        self.assertIn("scripts/test_agent_event_policy_hook.py", calls[1][1])
+        self.assertNotIn("--timeout", calls[2][1])
+        self.assertIn("--random-specialists", calls[3][1])
+        self.assertIn("5", calls[3][1])
+        self.assertEqual(calls[3][2], {"CODEX_MODEL": "gpt-5.5", "CODEX_EFFORT": "high"})
         self.assertEqual(
-            calls[3][2],
+            calls[4][2],
             {"CLAUDE_MODEL": "claude-opus-4-8", "CLAUDE_EFFORT": "high"},
         )
 
@@ -87,8 +90,8 @@ class ReleaseLiveChecksTests(unittest.TestCase):
         ), patch.object(runner, "run_step", fake_run_step):
             self.assertEqual(runner.main(), 0)
 
-        self.assertIn("--timeout", calls[1][1])
-        self.assertIn("15", calls[1][1])
+        self.assertIn("--timeout", calls[2][1])
+        self.assertIn("15", calls[2][1])
 
 
 if __name__ == "__main__":

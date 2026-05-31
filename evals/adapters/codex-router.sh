@@ -21,5 +21,4 @@ codex exec \
   --config "model_reasoning_effort='${effort}'" \
   --skip-git-repo-check \
   --color never \
-  "${instructions}" \
-  2>/dev/null
+  "${instructions}"

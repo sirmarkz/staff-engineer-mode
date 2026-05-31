@@ -3,8 +3,8 @@
 Enable Staff Engineer Mode in OpenAI Codex through the Codex plugin system. The
 plugin exposes one native router skill and keeps routed specialist files under
 `specialists/`. Event-policy guidance travels through the router and specialist
-files; the receipt command also protects itself when Codex does not run
-plugin-local command hooks.
+files; bundled hooks provide the command-interception layer when Codex loads
+plugin lifecycle hooks.
 
 ## Prerequisites
 
@@ -60,11 +60,11 @@ specialist file.
 
 ## Event Policy
 
-Codex plugin installs expose the router skill. Some Codex builds do not load
-plugin-local lifecycle hooks during `codex exec`, so do not rely on plugin
-installation alone as the command-interception layer. The router still requires
-the same commit and release flow, and `hooks/agent-event-policy ack ...`
-refuses combined shell commands such as `ack && git commit` or `ack && git tag`.
+Codex plugin installs expose the router skill and bundled hook configuration.
+The router still carries the same commit and release flow for Codex builds or
+surfaces where lifecycle hooks are unavailable. The host PreToolUse hook is the
+command-interception layer; `hooks/agent-event-policy ack ...` records receipts
+and does not self-fail when command hooks are bypassed.
 
 Before creating or amending commits, the agent must stage separately, inspect
 the exact staged diff, read `agent-pr-review`, review the staged change, record

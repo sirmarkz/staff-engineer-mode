@@ -3,23 +3,15 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+case "$0" in
+  */*) script_dir_arg="${0%/*}" ;;
+  *) script_dir_arg="." ;;
+esac
+SCRIPT_DIR="$((cd "$script_dir_arg" 2>/dev/null && pwd) || printf '%s\n' "$script_dir_arg")"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 ROUTER_PATH="${PLUGIN_ROOT}/skills/staff-engineer-mode/SKILL.md"
 BOOTSTRAP_TEMPLATE_PATH="${PLUGIN_ROOT}/skills/staff-engineer-mode/references/bootstrap-context.md"
 EVENT_HOOK_PATH="${PLUGIN_ROOT}/hooks/agent-event-policy"
-
-if [ ! -r "$ROUTER_PATH" ]; then
-  printf 'staff-engineer-mode: missing router skill at %s\n' "$ROUTER_PATH" >&2
-  exit 1
-fi
-
-if [ ! -r "$BOOTSTRAP_TEMPLATE_PATH" ]; then
-  printf 'staff-engineer-mode: missing bootstrap template at %s\n' "$BOOTSTRAP_TEMPLATE_PATH" >&2
-  exit 1
-fi
-
-bootstrap_template="$(cat "$BOOTSTRAP_TEMPLATE_PATH")"
 
 escape_for_json() {
   local s="$1"
@@ -31,6 +23,49 @@ escape_for_json() {
   printf '%s' "$s"
 }
 
+emit_context() {
+  local session_context="$1"
+  session_context="$(escape_for_json "$session_context")"
+
+  if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+    printf '{\n  "additional_context": "%s"\n}\n' "$session_context"
+  elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
+    printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context"
+  else
+    printf '{\n  "additionalContext": "%s"\n}\n' "$session_context"
+  fi
+}
+
+fallback_context() {
+  printf '%s\n' \
+"staff-engineer-mode bootstrap context unavailable." \
+"PLUGIN_ROOT=${PLUGIN_ROOT}" \
+"ROUTER_PATH=${ROUTER_PATH}" \
+"SPECIALIST_ROOT=${PLUGIN_ROOT}/specialists" \
+"EVENT_HOOK=${EVENT_HOOK_PATH}" \
+"" \
+"The Staff Engineer Mode plugin install appears incomplete. Do not fail this hook. If engineering-system work starts, explain that the router or specialist files are unavailable and ask the user to reinstall or repair the plugin before relying on Staff Engineer Mode guidance."
+}
+
+read_file() {
+  local path="$1"
+  local line
+  while IFS= read -r line || [ -n "$line" ]; do
+    printf '%s\n' "$line"
+  done < "$path"
+}
+
+if [ ! -r "$ROUTER_PATH" ] || [ ! -r "$BOOTSTRAP_TEMPLATE_PATH" ]; then
+  emit_context "$(fallback_context)"
+  exit 0
+fi
+
+bootstrap_template="$(read_file "$BOOTSTRAP_TEMPLATE_PATH" 2>/dev/null || true)"
+if [ -z "$bootstrap_template" ]; then
+  emit_context "$(fallback_context)"
+  exit 0
+fi
+
 specialist_root="${PLUGIN_ROOT}/specialists"
 current_repo="$(git -C "$PWD" rev-parse --show-toplevel 2>/dev/null || true)"
 session_context="${bootstrap_template//\{\{SPECIALIST_ROOT\}\}/$specialist_root}"
@@ -38,14 +73,6 @@ session_context="${session_context//\{\{ROUTER_PATH\}\}/${ROUTER_PATH}}"
 session_context="${session_context//\{\{EVENT_HOOK\}\}/${EVENT_HOOK_PATH}}"
 session_context="${session_context//\{\{CURRENT_REPO\}\}/${current_repo}}"
 session_context="${session_context//\{\{TOOL_MAPPING\}\}/}"
-session_context="$(escape_for_json "$session_context")"
-
-if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
-  printf '{\n  "additional_context": "%s"\n}\n' "$session_context"
-elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
-  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context"
-else
-  printf '{\n  "additionalContext": "%s"\n}\n' "$session_context"
-fi
+emit_context "$session_context"
 
 exit 0
