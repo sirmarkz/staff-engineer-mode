@@ -61,6 +61,40 @@ class SessionStartHookTests(unittest.TestCase):
         self.assertIsInstance(output["additionalContext"], str)
         self.assertGreater(len(output["additionalContext"]), 0)
 
+    def test_session_start_missing_template_reports_routed_file_availability(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            plugin_root = Path(tmp)
+            hooks_dir = plugin_root / "hooks"
+            router_dir = plugin_root / "skills" / "staff-engineer-mode"
+            specialists_dir = plugin_root / "specialists"
+            hooks_dir.mkdir()
+            router_dir.mkdir(parents=True)
+            specialists_dir.mkdir()
+            script = hooks_dir / "session-start"
+            router_path = router_dir / "SKILL.md"
+            shutil.copy2(SESSION_START, script)
+            router_path.write_text("# Router\n", encoding="utf-8")
+
+            result = self.run_session_start(script, cwd=plugin_root)
+
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.stderr, "")
+        output = json.loads(result.stdout)
+        context = output["additionalContext"]
+        fields = {
+            key: value
+            for key, value in (
+                line.split("=", 1)
+                for line in context.splitlines()
+                if "=" in line
+            )
+        }
+        self.assertEqual(fields["ROUTER_PATH"], str(router_path))
+        self.assertEqual(fields["SPECIALIST_ROOT"], str(specialists_dir))
+        self.assertEqual(fields["ROUTER_STATUS"], "readable")
+        self.assertEqual(fields["SPECIALIST_STATUS"], "readable")
+        self.assertEqual(fields["BOOTSTRAP_STATUS"], "missing-or-unreadable")
+
     def test_run_hook_missing_script_exits_cleanly(self) -> None:
         result = subprocess.run(
             ["bash", str(RUN_HOOK), "does-not-exist"],

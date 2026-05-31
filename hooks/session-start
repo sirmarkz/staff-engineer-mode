@@ -36,15 +36,54 @@ emit_context() {
   fi
 }
 
+path_status() {
+  local kind="$1"
+  local path="$2"
+
+  if [ "$kind" = "dir" ]; then
+    if [ -d "$path" ] && [ -r "$path" ]; then
+      printf 'readable'
+    else
+      printf 'missing-or-unreadable'
+    fi
+    return 0
+  fi
+
+  if [ -f "$path" ] && [ -r "$path" ]; then
+    printf 'readable'
+  else
+    printf 'missing-or-unreadable'
+  fi
+}
+
 fallback_context() {
-  printf '%s\n' \
-"staff-engineer-mode bootstrap context unavailable." \
-"PLUGIN_ROOT=${PLUGIN_ROOT}" \
-"ROUTER_PATH=${ROUTER_PATH}" \
-"SPECIALIST_ROOT=${PLUGIN_ROOT}/specialists" \
-"EVENT_HOOK=${EVENT_HOOK_PATH}" \
-"" \
-"The Staff Engineer Mode plugin install appears incomplete. Do not fail this hook. If engineering-system work starts, explain that the router or specialist files are unavailable and ask the user to reinstall or repair the plugin before relying on Staff Engineer Mode guidance."
+  local specialist_root="${PLUGIN_ROOT}/specialists"
+  local router_status
+  local bootstrap_status
+  local specialist_status
+  local event_hook_status
+
+  router_status="$(path_status file "$ROUTER_PATH")"
+  bootstrap_status="$(path_status file "$BOOTSTRAP_TEMPLATE_PATH")"
+  specialist_status="$(path_status dir "$specialist_root")"
+  event_hook_status="$(path_status file "$EVENT_HOOK_PATH")"
+
+  printf '%s\n' 'staff-engineer-mode bootstrap context unavailable.'
+  printf 'PLUGIN_ROOT=%s\n' "$PLUGIN_ROOT"
+  printf 'ROUTER_PATH=%s\n' "$ROUTER_PATH"
+  printf 'SPECIALIST_ROOT=%s\n' "$specialist_root"
+  printf 'EVENT_HOOK=%s\n' "$EVENT_HOOK_PATH"
+  printf 'ROUTER_STATUS=%s\n' "$router_status"
+  printf 'BOOTSTRAP_STATUS=%s\n' "$bootstrap_status"
+  printf 'SPECIALIST_STATUS=%s\n' "$specialist_status"
+  printf 'EVENT_HOOK_STATUS=%s\n' "$event_hook_status"
+  printf '\n'
+
+  if [ "$router_status" = "readable" ] && [ "$specialist_status" = "readable" ]; then
+    printf '%s\n' 'Do not fail this hook. Staff Engineer Mode routing files are readable; use ROUTER_PATH and SPECIALIST_ROOT if engineering-system work starts, but tell the user bootstrap context could not be loaded.'
+  else
+    printf '%s\n' 'Do not fail this hook. Staff Engineer Mode routing files are not fully readable; tell the user the plugin install is incomplete and ask them to repair or reinstall it before relying on Staff Engineer Mode guidance.'
+  fi
 }
 
 read_file() {
