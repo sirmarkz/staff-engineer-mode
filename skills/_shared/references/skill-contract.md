@@ -30,6 +30,12 @@ by default: do not introduce provider, product, framework, database, protocol,
 or command names unless the user supplied them or explicitly requested
 tool-specific guidance.
 
+Every specialist must produce a user-visible structured artifact from its
+Required Outputs. If a matching template exists under
+`skills/_shared/assets/templates/`, the specialist must instruct agents to
+render that template's headings or tables, or the same shape, in the reply. The
+template, checklist, or review must not remain private reasoning.
+
 Every specialist must state lifecycle behavior:
 
 - Ideation: identify risks, defaults, unknowns, options, and the next decision before code exists.

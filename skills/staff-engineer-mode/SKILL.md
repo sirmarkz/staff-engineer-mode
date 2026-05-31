@@ -42,16 +42,25 @@ Three rules, all mandatory:
 
 Classify by artifact, phase, surface, and risk; users need not know specialist names.
 
+## Specialist Output Contract
+
+After loading any specialist, produce a user-visible structured artifact from
+that specialist's Required Outputs. If a matching template exists under
+`skills/_shared/assets/templates/`, render its headings or tables in the reply
+or use the same shape. Do not treat the template, checklist, or review as
+private reasoning only.
+
 ## Agent Event Policy
 
 Command attempts are event-policy exceptions. Before commits/amends, stage
-separately, inspect staged diff, read `agent-pr-review`, review, record the
-receipt in its own shell command, then commit in a separate shell command. Do
-not combine stage/ack/commit/push or add AI attribution.
+separately, inspect staged diff, read `agent-pr-review`, show the structured
+review artifact to the user, record the receipt in its own shell command, then
+commit in a separate shell command. Do not combine stage/ack/commit/push or add
+AI attribution.
 Before tags, versions, hosted releases, packages, artifacts, or promotions, read
-`release-build-reproducibility` and `production-readiness-review`, review,
-record the receipt in its own shell command, then run the release command in a
-separate shell command.
+`release-build-reproducibility` and `production-readiness-review`, show the
+structured review artifacts to the user, record the receipt in its own shell
+command, then run the release command in a separate shell command.
 
 ## When To Use
 
