@@ -176,9 +176,24 @@ def codex_pretooluse_block_command(line: str) -> str | None:
     return command.strip() or None
 
 
+def codex_agent_message_block_command(text: str) -> str | None:
+    lowered = text.lower()
+    if "blocked" not in lowered or "command" not in lowered:
+        return None
+    match = re.search(r"```(?:bash|sh)?\s*\n(?P<command>.*?)\n```", text, re.DOTALL)
+    if match is None:
+        return None
+    for line in match.group("command").splitlines():
+        command = line.strip()
+        if command:
+            return command
+    return None
+
+
 def command_attempts_from_log(text: str) -> list[CommandAttempt]:
     by_item_id: dict[str, CommandAttempt] = {}
     order: list[str] = []
+    has_sem_marker = '"sem_hook_probe_denials"' in text
 
     def ensure_attempt(item_id: str, command: str) -> CommandAttempt:
         if item_id not in by_item_id:
@@ -222,7 +237,7 @@ def command_attempts_from_log(text: str) -> list[CommandAttempt]:
                     tool_use_id = content.get("tool_use_id")
                     if isinstance(tool_use_id, str) and content.get("is_error") is True:
                         mark_failed(tool_use_id, blocked=True)
-            for denial in value.get("permission_denials", []):
+            for denial in [*value.get("permission_denials", []), *value.get("sem_hook_probe_denials", [])]:
                 if not isinstance(denial, dict):
                     continue
                 tool_input = denial.get("tool_input")
@@ -232,6 +247,12 @@ def command_attempts_from_log(text: str) -> list[CommandAttempt]:
                     mark_failed(denial["tool_use_id"], blocked=True)
             item = value.get("item")
             if isinstance(item, dict) and isinstance(item.get("id"), str):
+                if not has_sem_marker and item.get("type") == "agent_message" and isinstance(item.get("text"), str):
+                    blocked_command = codex_agent_message_block_command(item["text"])
+                    if blocked_command is not None:
+                        ensure_attempt(item["id"], blocked_command)
+                        mark_failed(item["id"], blocked=True)
+                        continue
                 item_commands: list[str] = []
                 collect_commands(item, item_commands)
                 if item_commands:
@@ -327,6 +348,7 @@ def protected_attempts(probe: Probe, attempts: list[CommandAttempt]) -> list[Com
 
 def has_hook_error(text: str, probe: str) -> bool:
     markers = (
+        "ERROR codex_core::tools::router",
         "Plugin hook error",
         "hook failed",
         "unsupported additionalContext",
@@ -339,6 +361,21 @@ def has_hook_error(text: str, probe: str) -> bool:
     if probe == "allow" and "Staff Engineer Mode before_" in text:
         return True
     return False
+
+
+def has_expected_block_reason(text: str, event: str) -> bool:
+    exact = f"Do not combine the ack command with the {event} command"
+    if exact in text:
+        return True
+    lowered = text.lower()
+    return (
+        "hook" in lowered
+        and "block" in lowered
+        and "ack" in lowered
+        and event in lowered
+        and "combined" in lowered
+        and "separate shell command" in lowered
+    )
 
 
 def verify_result(probe: Probe, repo: Path, text: str, expected_commands: list[str]) -> tuple[bool, str]:
@@ -376,12 +413,13 @@ def verify_result(probe: Probe, repo: Path, text: str, expected_commands: list[s
     if has_hook_error(text, probe.probe):
         return False, "log contains hook error marker"
 
-    expected_phrase = f"Do not combine the ack command with the {probe.event} command"
     if probe.probe == "block":
         if not relevant_attempts or not relevant_attempts[0].failed:
             return False, "block probe did not produce a failed or blocked command attempt"
-        if expected_phrase not in text:
-            return False, f"missing expected block phrase: {expected_phrase}"
+        if not relevant_attempts[0].blocked:
+            return False, "block probe reached shell instead of a host hook denial"
+        if not has_expected_block_reason(text, probe.event):
+            return False, f"missing expected block reason for {probe.event}"
         if receipt_files(repo, probe.event):
             return False, "block probe wrote a receipt"
     else:
@@ -437,22 +475,73 @@ def run_claude(probe: Probe, repo: Path, prompt: str, args: argparse.Namespace) 
     )
 
 
+def hook_probe_marker(repo: Path) -> Path:
+    return repo / ".git" / "staff-engineer-mode" / "live-hook-probe-blocks.jsonl"
+
+
+def marker_denial_log(repo: Path) -> str:
+    marker = hook_probe_marker(repo)
+    if not marker.exists():
+        return ""
+    denials: list[dict[str, object]] = []
+    for index, line in enumerate(marker.read_text(encoding="utf-8").splitlines(), start=1):
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(entry, dict):
+            continue
+        command = entry.get("command")
+        reason = entry.get("reason")
+        if isinstance(command, str) and isinstance(reason, str):
+            denials.append(
+                {
+                    "tool_use_id": f"sem_hook_probe_{index}",
+                    "tool_input": {"command": command},
+                    "reason": reason,
+                }
+            )
+    if not denials:
+        return ""
+    return json.dumps({"sem_hook_probe_denials": denials})
+
+
+def codex_env(repo: Path | None = None) -> dict[str, str]:
+    existing = os.environ.get("RUST_LOG", "")
+    router_filter = "codex_core::tools::router=off"
+    env: dict[str, str] = {}
+    if "codex_core::tools::router" in existing:
+        env["RUST_LOG"] = existing
+    elif existing:
+        env["RUST_LOG"] = f"{existing},{router_filter}"
+    else:
+        env["RUST_LOG"] = router_filter
+    if repo is not None:
+        env["SEM_HOOK_PROBE_MARKER"] = str(hook_probe_marker(repo))
+    return env
+
+
 def run_codex(probe: Probe, repo: Path, prompt: str, args: argparse.Namespace) -> subprocess.CompletedProcess[str]:
+    hook_command = f"{shlex.quote(str(HOOK))} pretooluse"
     command = [
         "codex",
         "exec",
         "--json",
         "--dangerously-bypass-approvals-and-sandbox",
         "--dangerously-bypass-hook-trust",
+        "--enable",
+        "hooks",
         "-C",
         str(repo),
+        "--config",
+        f'hooks.PreToolUse=[{{matcher="^Bash$",hooks=[{{type="command",command={json.dumps(hook_command)}}}]}}]',
     ]
     if probe.model:
         command.extend(["--model", probe.model])
     if probe.effort:
         command.extend(["--config", f"model_reasoning_effort={probe.effort!r}"])
     command.append(prompt)
-    return run(command, cwd=repo, timeout=args.timeout)
+    return run(command, cwd=repo, env=codex_env(repo), timeout=args.timeout)
 
 
 def run_probe(probe: Probe, args: argparse.Namespace, work_root: Path) -> ProbeResult:
@@ -469,6 +558,9 @@ def run_probe(probe: Probe, args: argparse.Namespace, work_root: Path) -> ProbeR
 
     log_path = probe_root / f"{probe.host}.log"
     text = completed.stdout + completed.stderr
+    marker_log = marker_denial_log(repo)
+    if marker_log:
+        text = f"{text}\n{marker_log}\n"
     log_path.write_text(text, encoding="utf-8")
     if completed.returncode not in {0, 1}:
         return ProbeResult(probe, False, f"host exited {completed.returncode}", log_path)

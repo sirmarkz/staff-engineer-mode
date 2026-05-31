@@ -29,11 +29,26 @@ shell_quote() {
   printf '%q' "$1"
 }
 
+record_probe_block() {
+  local reason="$1"
+  [ -n "${SEM_HOOK_PROBE_MARKER:-}" ] || return 0
+  local marker_dir escaped_command escaped_reason
+  marker_dir="$(dirname "$SEM_HOOK_PROBE_MARKER")" || return 0
+  mkdir -p "$marker_dir" 2>/dev/null || return 0
+  escaped_command="$(json_escape "${command_text:-}")"
+  escaped_reason="$(json_escape "$reason")"
+  printf '{"event":"pretooluse_block","command":%s,"reason":%s}\n' \
+    "$escaped_command" \
+    "$escaped_reason" >> "$SEM_HOOK_PROBE_MARKER" 2>/dev/null || true
+}
+
 block_tool() {
   local reason="$1"
-  printf '%s\n' "$reason" >&2
-  printf '{\n  "decision": "block",\n  "reason": %s\n}\n' "$(json_escape "$reason")"
-  exit 2
+  local escaped_reason
+  record_probe_block "$reason"
+  escaped_reason="$(json_escape "$reason")"
+  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "PreToolUse",\n    "permissionDecision": "deny",\n    "permissionDecisionReason": %s\n  },\n  "systemMessage": %s\n}\n' "$escaped_reason" "$escaped_reason"
+  exit 0
 }
 
 hash_stdin() {

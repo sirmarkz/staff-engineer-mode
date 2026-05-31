@@ -11,6 +11,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 HOOK = ROOT / "hooks" / "agent-event-policy"
@@ -111,24 +112,55 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             return []
         return list(receipt_dir.glob("*.json"))
 
+    def assert_pretooluse_denies(
+        self,
+        result: subprocess.CompletedProcess[str],
+        *expected_phrases: str,
+    ) -> dict[str, object]:
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, "")
+        response = json.loads(result.stdout)
+        hook_output = response.get("hookSpecificOutput")
+        self.assertIsInstance(hook_output, dict)
+        assert isinstance(hook_output, dict)
+        self.assertEqual(hook_output.get("hookEventName"), "PreToolUse")
+        self.assertEqual(hook_output.get("permissionDecision"), "deny")
+        self.assertIsInstance(response.get("systemMessage"), str)
+        self.assertEqual(hook_output.get("permissionDecisionReason"), response["systemMessage"])
+        for phrase in expected_phrases:
+            self.assertIn(phrase, response["systemMessage"])
+        return response
+
     def test_commit_command_blocks_without_review_receipt(self) -> None:
         self.stage_change("initial\nchanged\n")
 
         result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git commit -m change"}})
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertEqual(response["decision"], "block")
+        self.assert_pretooluse_denies(result, "before_commit policy requires agent-pr-review")
 
-    def test_block_response_writes_reason_to_stderr_for_host_lifecycle_errors(self) -> None:
+    def test_block_response_uses_structured_deny_without_hook_failure(self) -> None:
         self.stage_change("initial\nchanged\n")
 
         result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git commit -m change"}})
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertEqual(response["decision"], "block")
-        self.assertIn(response["reason"], result.stderr)
+        response = self.assert_pretooluse_denies(result, "before_commit policy requires agent-pr-review")
+        self.assertNotIn("decision", response)
+        self.assertNotIn("reason", response)
+
+    def test_block_response_writes_probe_marker_when_requested(self) -> None:
+        marker = self.repo / "probe-marker.jsonl"
+
+        result = self.run_hook(
+            {"tool_name": "Bash", "tool_input": {"command": "git tag v1.2.3"}},
+            env={"SEM_HOOK_PROBE_MARKER": str(marker)},
+        )
+
+        self.assert_pretooluse_denies(result, "before_release policy requires")
+        entries = [json.loads(line) for line in marker.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]["event"], "pretooluse_block")
+        self.assertEqual(entries[0]["command"], "git tag v1.2.3")
+        self.assertIn("before_release policy requires", entries[0]["reason"])
 
     def test_ack_and_commit_same_shell_command_explains_separate_invocation(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -142,10 +174,11 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             }
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn("own shell command", response["reason"])
-        self.assertIn("Do not combine the ack command with the commit command", response["reason"])
+        self.assert_pretooluse_denies(
+            result,
+            "own shell command",
+            "Do not combine the ack command with the commit command",
+        )
 
     def test_ack_and_commit_same_shell_command_fails_without_host_hook(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -343,7 +376,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertTrue(ok, details)
 
-    def test_live_probe_accepts_codex_pretooluse_block_error_line(self) -> None:
+    def test_live_probe_rejects_codex_pretooluse_router_error_line(self) -> None:
         live_probes = load_live_probes()
         command = f"{HOOK} ack release --repo {self.repo} && git tag v9.9.9"
         log = (
@@ -360,7 +393,105 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             [command],
         )
 
+        self.assertFalse(ok)
+        self.assertIn("hook error marker", details)
+
+    def test_live_probe_accepts_clean_codex_permission_denial_transcript(self) -> None:
+        live_probes = load_live_probes()
+        command = f"{HOOK} ack release --repo {self.repo} && git tag v9.9.9"
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "permission_denials": [
+                            {
+                                "tool_use_id": "exec_1",
+                                "tool_input": {"command": command},
+                                "reason": "Do not combine the ack command with the release command",
+                            }
+                        ]
+                    }
+                ),
+                "Do not combine the ack command with the release command",
+            ]
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("codex", "release", "block", "gpt-5.5", "xhigh"),
+            self.repo,
+            log,
+            [command],
+        )
+
         self.assertTrue(ok, details)
+
+    def test_live_probe_accepts_sem_hook_probe_marker_transcript(self) -> None:
+        live_probes = load_live_probes()
+        command = f"{HOOK} ack release --repo {self.repo} && git tag v9.9.9"
+        log = json.dumps(
+            {
+                "sem_hook_probe_denials": [
+                    {
+                        "tool_use_id": "sem_hook_probe_1",
+                        "tool_input": {"command": command},
+                        "reason": "Do not combine the ack command with the release command",
+                    }
+                ]
+            }
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("codex", "release", "block", "gpt-5.5", "xhigh"),
+            self.repo,
+            log,
+            [command],
+        )
+
+        self.assertTrue(ok, details)
+
+    def test_live_probe_accepts_codex_agent_message_block_transcript(self) -> None:
+        live_probes = load_live_probes()
+        command = f"{HOOK} ack release --repo {self.repo} && git tag v9.9.9"
+        log = json.dumps(
+            {
+                "type": "item.completed",
+                "item": {
+                    "id": "item_1",
+                    "type": "agent_message",
+                    "text": "\n".join(
+                        [
+                            "The requested command was blocked by the Staff Engineer Mode PreToolUse hook.",
+                            "",
+                            "Blocked command:",
+                            "",
+                            "```bash",
+                            command,
+                            "```",
+                            "",
+                            "The hook blocked it because the ack and release/tag command were combined.",
+                            "Policy requires the release ack and tag creation to be separate shell commands.",
+                        ]
+                    ),
+                },
+            }
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("codex", "release", "block", "gpt-5.5", "xhigh"),
+            self.repo,
+            log,
+            [command],
+        )
+
+        self.assertTrue(ok, details)
+
+    def test_codex_env_suppresses_router_deny_log_without_overwriting_other_logs(self) -> None:
+        live_probes = load_live_probes()
+
+        with patch.dict(os.environ, {"RUST_LOG": "info"}, clear=True):
+            env = live_probes.codex_env()
+
+        self.assertEqual(env["RUST_LOG"], "info,codex_core::tools::router=off")
 
     def test_live_probe_accepts_clean_allow_transcript(self) -> None:
         live_probes = load_live_probes()
@@ -452,6 +583,35 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertFalse(ok)
         self.assertIn("retry after failed or blocked attempt", details)
+
+    def test_live_probe_rejects_shell_exit_as_block_without_host_hook_denial(self) -> None:
+        live_probes = load_live_probes()
+        command = f"{HOOK} ack release --repo {self.repo} && git tag v9.9.9"
+        log = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "item": {
+                            "id": "exec_1",
+                            "type": "command_execution",
+                            "command": command,
+                            "exit_code": 2,
+                        }
+                    }
+                ),
+                "Do not combine the ack command with the release command",
+            ]
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("codex", "release", "block", "gpt-5.5", "xhigh"),
+            self.repo,
+            log,
+            [command],
+        )
+
+        self.assertFalse(ok)
+        self.assertIn("reached shell instead of a host hook denial", details)
 
     def test_live_probe_rejects_block_probe_that_writes_receipt(self) -> None:
         live_probes = load_live_probes()
@@ -865,9 +1025,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             cwd=self.repo.parent,
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn(str(self.repo), response["reason"])
+        self.assert_pretooluse_denies(result, str(self.repo))
 
     def test_cd_then_commit_binds_block_to_target_repo(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -877,9 +1035,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             cwd=self.repo.parent,
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn(str(self.repo), response["reason"])
+        self.assert_pretooluse_denies(result, str(self.repo))
 
     def test_stage_and_commit_blocks_even_with_matching_commit_receipt(self) -> None:
         # Ack the current (empty-staged) state so the commit branch would allow.
@@ -893,7 +1049,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             }
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
         cached = subprocess.check_output(["git", "diff", "--cached", "--name-only"], cwd=self.repo, text=True)
         self.assertEqual(cached, "")
 
@@ -916,9 +1072,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             cwd=self.repo.parent,
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn(str(self.repo), response["reason"])
+        self.assert_pretooluse_denies(result, str(self.repo))
 
     def test_commit_ack_repo_allows_target_repo_command(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -955,7 +1109,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.stage_change("initial\nchanged again\n")
         blocked = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git commit -m change"}})
-        self.assertEqual(blocked.returncode, 2)
+        self.assert_pretooluse_denies(blocked)
 
     def test_commit_override_receipt_allows_user_accepted_gaps(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -983,7 +1137,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git commit -am change"}})
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_commit_with_ai_coauthor_is_blocked_even_with_matching_receipt(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -1001,9 +1155,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             }
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertEqual(response["decision"], "block")
+        self.assert_pretooluse_denies(result, "blocks AI assistant co-author")
 
     def test_commit_with_human_named_claude_coauthor_is_allowed_with_matching_receipt(self) -> None:
         self.stage_change("initial\nchanged\n")
@@ -1039,22 +1191,17 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             }
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_release_command_blocks_without_release_receipt(self) -> None:
         result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git tag v1.2.3"}})
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertEqual(response["decision"], "block")
+        self.assert_pretooluse_denies(result, "before_release policy requires")
 
-    def test_release_block_response_writes_reason_to_stderr_for_host_lifecycle_errors(self) -> None:
+    def test_release_block_response_uses_structured_deny_without_hook_failure(self) -> None:
         result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git tag v1.2.3"}})
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertEqual(response["decision"], "block")
-        self.assertIn(response["reason"], result.stderr)
+        self.assert_pretooluse_denies(result, "before_release policy requires")
 
     def test_ack_and_release_same_shell_command_explains_separate_invocation(self) -> None:
         result = self.run_hook(
@@ -1066,10 +1213,11 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             }
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn("own shell command", response["reason"])
-        self.assertIn("Do not combine the ack command with the release command", response["reason"])
+        self.assert_pretooluse_denies(
+            result,
+            "own shell command",
+            "Do not combine the ack command with the release command",
+        )
 
     def test_ack_and_release_same_shell_command_fails_without_host_hook(self) -> None:
         result = subprocess.run(
@@ -1131,9 +1279,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             cwd=self.repo.parent,
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn(str(self.repo), response["reason"])
+        self.assert_pretooluse_denies(result, str(self.repo))
 
     def test_cd_then_release_binds_block_to_target_repo(self) -> None:
         result = self.run_hook(
@@ -1141,9 +1287,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             cwd=self.repo.parent,
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn(str(self.repo), response["reason"])
+        self.assert_pretooluse_denies(result, str(self.repo))
 
     def test_release_ack_repo_allows_target_repo_command(self) -> None:
         ack = subprocess.run(
@@ -1189,9 +1333,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             cwd=self.repo.parent,
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn(str(self.repo), response["reason"])
+        self.assert_pretooluse_denies(result, str(self.repo))
 
     def test_cd_then_gh_release_delete_binds_block_to_target_repo(self) -> None:
         result = self.run_hook(
@@ -1199,9 +1341,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             cwd=self.repo.parent,
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn(str(self.repo), response["reason"])
+        self.assert_pretooluse_denies(result, str(self.repo))
 
     def test_cd_then_bump_version_script_binds_block_to_target_repo(self) -> None:
         result = self.run_hook(
@@ -1212,9 +1352,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             cwd=self.repo.parent,
         )
 
-        self.assertEqual(result.returncode, 2)
-        response = json.loads(result.stdout)
-        self.assertIn(str(self.repo), response["reason"])
+        self.assert_pretooluse_denies(result, str(self.repo))
 
     def test_cd_chain_returning_to_repo_does_not_bypass_release_gate(self) -> None:
         (self.repo / "docs").mkdir()
@@ -1225,7 +1363,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_cd_into_subdir_does_not_bypass_release_gate(self) -> None:
         (self.repo / "docs").mkdir()
@@ -1236,7 +1374,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_cd_to_missing_dir_does_not_bypass_release_gate(self) -> None:
         result = self.run_hook(
@@ -1246,7 +1384,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_cd_to_non_repo_path_does_not_bypass_release_gate(self) -> None:
         result = self.run_hook(
@@ -1256,7 +1394,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             },
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_gh_release_with_leading_global_flags_does_not_bypass(self) -> None:
         for cmd in (
@@ -1266,7 +1404,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         ):
             with self.subTest(cmd=cmd):
                 result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
-                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}, got {result.returncode}")
+                self.assert_pretooluse_denies(result)
 
     def test_gh_remote_repo_release_blocks_even_with_local_release_receipt(self) -> None:
         # A local release receipt must NOT authorize a cross-repo gh release.
@@ -1279,7 +1417,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             }
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_gh_remote_release_blocks_after_authorized_local_release_event(self) -> None:
         subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
@@ -1293,7 +1431,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             }
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_gh_release_via_env_var_repo_selector_is_remote(self) -> None:
         subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
@@ -1304,7 +1442,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         ):
             with self.subTest(cmd=cmd):
                 result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
-                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}")
+                self.assert_pretooluse_denies(result)
 
     def test_gh_release_via_inherited_env_var_repo_selector_is_remote(self) -> None:
         subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
@@ -1314,7 +1452,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
                     {"tool_name": "Bash", "tool_input": {"command": "gh release create v1.0.0"}},
                     env=env,
                 )
-                self.assertEqual(result.returncode, 2, f"expected block for env {env!r}")
+                self.assert_pretooluse_denies(result)
 
     def test_gh_release_via_hostname_selector_is_remote(self) -> None:
         subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
@@ -1324,7 +1462,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         ):
             with self.subTest(cmd=cmd):
                 result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
-                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}")
+                self.assert_pretooluse_denies(result)
 
     def test_gh_release_delete_asset_blocks_without_release_receipt(self) -> None:
         result = self.run_hook(
@@ -1334,7 +1472,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             }
         )
 
-        self.assertEqual(result.returncode, 2)
+        self.assert_pretooluse_denies(result)
 
     def test_gh_repo_flag_in_any_position_classifies_as_remote(self) -> None:
         # gh accepts --repo / -R before "release", between "release" and the action,
@@ -1350,7 +1488,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         ):
             with self.subTest(cmd=cmd):
                 result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
-                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}")
+                self.assert_pretooluse_denies(result)
 
     def test_gh_remote_release_blocks_from_non_repo_directory(self) -> None:
         # Hook must block cross-repo gh releases even when the invoking shell
@@ -1364,7 +1502,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
                 cwd=Path(non_repo),
             )
 
-            self.assertEqual(result.returncode, 2)
+            self.assert_pretooluse_denies(result)
 
     def test_gh_non_release_subcommand_is_not_classified(self) -> None:
         # Action keywords appearing as flag values inside a different gh
@@ -1396,7 +1534,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
                     {"tool_name": "Bash", "tool_input": {"command": "gh release create v1.0.0"}},
                     extra_env=env,
                 )
-                self.assertEqual(result.returncode, 2, f"expected block for env {env!r}")
+                self.assert_pretooluse_denies(result)
 
     def test_no_python_fallback_remote_gh_release_blocks_with_local_receipt(self) -> None:
         subprocess.run([str(HOOK), "ack", "release"], cwd=self.repo, check=True, stdout=subprocess.DEVNULL)
@@ -1411,7 +1549,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         ):
             with self.subTest(cmd=cmd):
                 result = self.run_hook_without_python({"tool_name": "Bash", "tool_input": {"command": cmd}})
-                self.assertEqual(result.returncode, 2, f"expected block for {cmd!r}")
+                self.assert_pretooluse_denies(result)
 
 
 if __name__ == "__main__":
