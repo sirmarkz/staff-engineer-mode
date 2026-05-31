@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.9.2 - 2026-05-31
+
+Hook failure hardening release.
+
+- Hardens the shared hook wrapper, session startup hook, and event-policy hook
+  so missing helper scripts, stripped shell environments, and incomplete plugin
+  installs exit cleanly instead of surfacing host hook errors.
+- Narrows commit and release interception to explicit protected commands while
+  keeping accidental-trigger denials instructive for agents.
+- Adds broader hook regression and live-probe coverage across Claude and Codex,
+  including commit/release block and receipt-allow paths.
+
 ## 1.9.1 - 2026-05-31
 
 Codex hook root compatibility patch.
