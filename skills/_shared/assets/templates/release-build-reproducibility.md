@@ -50,7 +50,7 @@
 | Promotion | Artifact | Target | Rollback Target | Latent-Harm Selection Rule |
 | --- | --- | --- | --- | --- |
 
-## Clean Consumer Install Verification
+## Clean Install Verification
 
 | Install Path | Clean Environment | Expected Version Or Revision | Verification Evidence | Failure Response |
 | --- | --- | --- | --- | --- |
