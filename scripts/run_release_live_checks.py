@@ -32,7 +32,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--random-specialists", type=int, default=5)
     parser.add_argument("--seed", default="staff-engineer-mode-release")
     parser.add_argument("--jobs", type=int, default=4)
-    parser.add_argument("--timeout", type=int, default=360)
+    parser.add_argument("--timeout", type=int, default=None)
     parser.add_argument("--claude-model", default="claude-opus-4-8")
     parser.add_argument("--codex-model", default="gpt-5.5")
     parser.add_argument("--hook-effort", default="high")
@@ -64,9 +64,9 @@ def main() -> int:
         args.codex_model,
         "--codex-effort",
         args.hook_effort,
-        "--timeout",
-        str(args.timeout),
     ]
+    if args.timeout is not None:
+        hook_command.extend(["--timeout", str(args.timeout)])
     if args.keep_temp:
         hook_command.append("--keep-temp")
     run_step("live hook probes", hook_command)

@@ -43,6 +43,7 @@ class ReleaseLiveChecksTests(unittest.TestCase):
         ])
         for _, command, _ in calls:
             self.assertNotIn("--warn-only", command)
+        self.assertNotIn("--timeout", calls[1][1])
         self.assertIn("scripts/validate_platform_support.py", calls[0][1])
         self.assertIn("--random-specialists", calls[2][1])
         self.assertIn("5", calls[2][1])
@@ -71,6 +72,23 @@ class ReleaseLiveChecksTests(unittest.TestCase):
         self.assertEqual(raised.exception.code, 7)
         self.assertEqual(len(calls), 1)
         self.assertEqual(calls[0][0], "platform support validation")
+
+    def test_explicit_timeout_is_forwarded_to_hook_probe(self) -> None:
+        runner = load_runner()
+        calls = []
+
+        def fake_run_step(name, command, env=None):
+            calls.append((name, command, env))
+
+        with patch.object(
+            sys,
+            "argv",
+            ["run_release_live_checks.py", "--timeout", "15"],
+        ), patch.object(runner, "run_step", fake_run_step):
+            self.assertEqual(runner.main(), 0)
+
+        self.assertIn("--timeout", calls[1][1])
+        self.assertIn("15", calls[1][1])
 
 
 if __name__ == "__main__":
