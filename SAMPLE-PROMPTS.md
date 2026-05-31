@@ -51,7 +51,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Before adding this new downstream call, define timeout, retry, duplicate-work, and overload behavior."
 - "Trace this existing queue consumer and tell me how it behaves when the dependency gets slow."
 - "Inspect this downstream payment dependency call and find where retries could double-charge or duplicate work."
-- "This new inventory call sits in checkout; decide timeout, retry, and fallback behavior when inventory stalls."
+- "A checkout worker has retries, a queue, and a fallback; verify overload behavior when its dependency stalls."
 
 ### `performance-and-capacity`
 
@@ -121,7 +121,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 ### `progressive-delivery`
 
 - "Build a rollout and rollback plan for the new ranking path before production exposure."
-- "Inspect this staged rollout plan before exposure and tell me what canary checks, stop criteria, and rollback path are missing."
+- "This rollout plan has canary metrics but no rollback target; review the stop criteria before exposure."
 - "Define first-rollout stop criteria from deploy workflow signals and canary metrics, including minimum signal, thresholds, owner, abort, and rollback."
 - "Ramp the new ranking path by tenant cohort and define metrics that pause exposure before all users see it."
 
@@ -136,7 +136,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 - "Build a production-readiness decision for the new service in this repo before launch."
 - "Before this migration moves traffic tomorrow, inspect code, deploy config, dashboards, and runbooks for launch blockers."
-- "Inspect the code, deploy config, dashboards, and runbooks, then say what launch details are missing."
+- "Review this production-readiness packet and identify stale launch evidence before the go/no-go call."
 - "Before the new importer becomes high impact, collect blockers across code, deploy, telemetry, and support docs."
 
 ### `migration-and-deprecation`
@@ -169,7 +169,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 
 ### `documentation-lifecycle`
 
-- "Map these runbooks and design docs for owner, source of truth, freshness, and archive rules."
+- "Map these runbooks and dashboard definitions for owner, source of truth, freshness, and staleness."
 - "Inspect the docs touched by this release and identify stale or missing operational guidance."
 - "Turn this undocumented maintenance workflow into a lifecycle-managed runbook with source of truth, owner, freshness rule, and change triggers."
 - "The failover runbook points to old dashboards; set owner, expiry, and freshness trigger so it stays current."

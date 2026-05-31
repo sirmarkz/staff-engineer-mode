@@ -138,11 +138,13 @@ Weak Iron Laws are slogans:
 
 ## Documentation Rules
 
-README, release notes, manifests, install docs, sample prompts, and source
-references should match the router and specialist files.
+README, release notes, manifests, install docs, shared templates, sample
+prompts, and source references should match the router and specialist files.
 
 - Update docs when setup, CLI behavior, manifests, public paths, examples, or
   skill contracts change.
+- Review `skills/_shared/assets/templates/README.md` before changing required
+  outputs. Update the owning template and index when artifact fields change.
 - Verify command examples before presenting them as working.
 - Keep public copy plain and technically accurate.
 - Do not use source-owner names as hero copy or credibility decoration.

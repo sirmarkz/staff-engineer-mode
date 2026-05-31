@@ -20,7 +20,7 @@ maintaining complex software systems.
 | `skills/staff-engineer-mode/SKILL.md` | The only native skill entrypoint exposed to plugin discovery. |
 | `specialists/<specialist-name>.md` | Routed specialist reference files loaded only after the router selects one. |
 | `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
-| `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. |
+| `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. Template ownership is listed in `skills/_shared/assets/templates/README.md`. |
 | `evals/` | Router eval adapter docs. `SAMPLE-PROMPTS.md` is the canonical eval catalog; neither path is runtime skill guidance. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
 | `.claude-plugin/`, `.cursor-plugin/`, `.codex-plugin/`, `.codex/`, `.opencode/`, `gemini-extension.json`, `GEMINI.md` | Cross-tool plugin manifests and install docs. |
@@ -84,8 +84,8 @@ maintaining complex software systems.
   practitioner references that originated the named pattern. Do not cite
   encyclopedias, Q&A/forum threads, scraped mirrors, SEO summaries, anonymous
   content farms, or unofficial copies when a primary source exists.
-- Update references, templates, router fixtures, and validation scripts when
-  skill contracts or routing behavior changes.
+- Update references, templates, template ownership, router fixtures, and
+  matching validation scripts when skill contracts or routing behavior changes.
 
 ## Tests And Validation
 
@@ -186,7 +186,7 @@ maintaining complex software systems.
 ## Bar A Change Must Clear
 
 1. Repo-local validation scripts pass.
-2. Skills, source-index citations, templates, and router fixtures are internally consistent.
+2. Skills, source-index citations, templates, template ownership, and router fixtures are internally consistent.
 3. Cross-tool manifests still support Claude Code, Codex, Cursor, OpenCode, and
    Gemini CLI when packaging artifacts change.
 4. Relevant docs, references, templates, and router fixtures are updated.
