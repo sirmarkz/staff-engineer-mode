@@ -93,6 +93,7 @@ Treat deprecation as an engineered migration, not an announcement. Use centraliz
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Deprecation decision record with replacement, reason, and end state.
 - Usage inventory with static and runtime checks.
 - Dependent classification and migration batches.

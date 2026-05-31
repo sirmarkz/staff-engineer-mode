@@ -92,6 +92,7 @@ Use layered edge protection: origin isolation, traffic steering, caching where c
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Edge architecture and origin-protection map.
 - Denial-of-service, abuse, and rate-limit policy: include a per-route or per-route-class rate-limit table where every row names the identity key, window, threshold, and breach action (429/deny/challenge); each bot control names its mechanism AND false-positive handling; origin-shielding lists a mechanism AND a verification step; load-shedding states criteria AND which traffic is preserved by priority.
 - Origin bypass remediation plan.

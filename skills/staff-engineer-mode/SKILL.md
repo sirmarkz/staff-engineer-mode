@@ -44,11 +44,10 @@ Classify by artifact, phase, surface, and risk; users need not know specialist n
 
 ## Specialist Output Contract
 
-After loading any specialist, produce a user-visible structured artifact from
-that specialist's Required Outputs. If a matching template exists under
-`skills/_shared/assets/templates/`, render its headings or tables in the reply
-or use the same shape. Do not treat the template, checklist, or review as
-private reasoning only.
+After loading a specialist, show a structured artifact from its Required
+Outputs. If a matching template exists under `skills/_shared/assets/templates/`,
+render its headings or tables in the reply, or use the same shape. Keep
+templates, checklists, and reviews user-visible.
 
 ## Agent Event Policy
 

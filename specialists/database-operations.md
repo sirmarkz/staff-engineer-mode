@@ -93,6 +93,7 @@ Use compatible expand/contract migrations, throttled idempotent backfills, expli
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Database change plan with phases, confirmation points, and rollback checks.
 - Lock, lag, write-amplification, and query-plan risk assessment.
 - Critical-path database risk table covering failover, connection limits, query tail latency, restore readiness, and write behavior.

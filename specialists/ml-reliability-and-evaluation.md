@@ -92,6 +92,7 @@ Check ML releases on data validation, eval results, threat-informed failure-mode
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - ML production readiness checklist.
 - Data and feature validation plan.
 - Training-serving skew review.

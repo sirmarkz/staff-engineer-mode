@@ -92,6 +92,7 @@ Use explicit TTLs, version-aware invalidation, request coalescing, downstream pr
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Cache or derived-data decision record.
 - Key, writer, invalidator, reader, and responsibility map.
 - Freshness, TTL, invalidation, and versioning policy.

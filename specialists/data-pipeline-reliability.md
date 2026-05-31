@@ -90,6 +90,7 @@ Treat critical pipelines like services: SLI/SLO, validation checks, lineage, ide
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Pipeline SLI/SLO table.
 - Dataset responsibility and lineage map.
 - Validation and publish-check plan.

@@ -90,6 +90,7 @@ Use recent restore tests tied to RTO/RPO as the default. Protect backups and enc
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - DR strategy decision record.
 - RTO/RPO table by journey and data set.
 - Essential-data coverage table showing source of truth, restore type, validation, and measured result.

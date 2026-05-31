@@ -84,6 +84,8 @@ mark them as shared use in this index.
 
 - Update this index when a template is added, renamed, removed, or reassigned.
 - Update the owning template when a specialist changes required output fields.
+- Keep each owning specialist's Required Outputs aligned with the template
+  output shape.
 - Keep shared templates capability-based. Do not add vendor-specific defaults.
 - Keep template prose concise enough that agents can copy the structure without
   treating it as generated specialist guidance.

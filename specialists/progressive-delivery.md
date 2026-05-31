@@ -104,6 +104,7 @@ Use build-once promotion, progressive exposure, predeclared health and canary me
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Rollout plan with stages, blast radius, responsible change path, and schedule.
 - Preflight and first-slice checks for the changed path, with the rollout unit and stop signal for each step.
 - Canary metric set with thresholds, baseline window, observation window, minimum signal, and expected behavior.

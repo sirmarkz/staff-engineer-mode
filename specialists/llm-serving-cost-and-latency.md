@@ -105,6 +105,7 @@ Set per-route token and latency budgets before launch. Choose the smallest accep
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Per-route budget table with input-token cap, output-token cap, hard cap action, p50/p95/p99 latency target, and time-to-first-token target where streaming.
 - Model-class matrix per route with primary, fallback, and cascade conditions.
 - Cache strategy spec covering prompt-prefix, embedding, full-response, and semantic caches with scope, TTL, invalidation, and observed or target hit rate per layer.

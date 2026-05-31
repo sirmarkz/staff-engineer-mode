@@ -99,6 +99,7 @@ Use SLO/user-journey symptoms, layered health models, golden signals, fault-doma
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Telemetry requirements mapped to user journeys and dependencies.
 - Dashboard specification for impact, scope, dependencies, saturation, and recent changes.
 - Metric definition table covering unit, source, labels, threshold/window, owner path, and missing-signal behavior.

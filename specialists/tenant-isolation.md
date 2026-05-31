@@ -96,6 +96,7 @@ Make tenant context mandatory and enforce it at multiple layers: application, da
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Tenant isolation model and rationale.
 - Tenant context propagation map.
 - Data partitioning and isolation-group decision when applicable.

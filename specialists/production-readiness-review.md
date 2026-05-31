@@ -102,8 +102,8 @@ Use PRR as a cross-domain readiness decision for launches and major changes. It 
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - PRR readiness matrix by domain and status.
-- User-visible structured artifact using the shared PRR template headings/tables or the same shape; do not substitute a private checklist or prose-only summary.
 - Freshness and drift notes for readiness details that can go stale, such as dashboards, runbooks, rollout checks, recovery checks, and load tests.
 - Architecture entry with component diagram or textual map, production dependencies, and fault-domain map.
 - Launch ownership or automation path, plus post-launch verification plan with responder handoff, watch window, and success or abort checks.

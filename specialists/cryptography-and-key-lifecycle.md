@@ -90,6 +90,7 @@ Use a cryptographic inventory, expiry monitoring, tested rotation, dual-support 
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Cryptographic dependency inventory.
 - Consumer, expiry, and renewal map.
 - Rotation and renewal plan.

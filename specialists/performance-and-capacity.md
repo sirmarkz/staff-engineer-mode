@@ -96,6 +96,7 @@ Optimize around tail percentiles, saturation, queue age, and headroom rather tha
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 Every answer, including narrow regression diagnoses, must state, in this order:
 
 1. **Target at user boundary**: numeric latency/throughput target, percentile (p95/p99/p99.9), and the measurement boundary (edge, gateway, service ingress). Mark unknown explicitly.

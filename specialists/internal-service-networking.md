@@ -96,6 +96,7 @@ Do not add service mesh by default. Adopt a mesh or equivalent platform traffic 
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Internal traffic and dependency map.
 - Mesh/no-mesh decision record with alternatives.
 - Routing, locality, failover, and traffic-splitting policy.

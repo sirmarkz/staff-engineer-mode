@@ -94,6 +94,7 @@ Use lightweight formal or semi-formal validation for high-stakes stateful behavi
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Correctness property list with safety and liveness split.
 - Unknown-outcome semantics for timeout, lost response, retry, and reconciliation cases.
 - State-machine or protocol model boundary.

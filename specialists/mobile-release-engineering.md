@@ -92,6 +92,7 @@ Use staged mobile rollout with crash-free, hang, startup, and critical-journey b
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Mobile release train and staged rollout plan.
 - Crash-free users/sessions, hang/ANR, startup, and critical-journey budgets with numeric thresholds and measurement windows.
 - Device/OS/app-version segmentation plan.

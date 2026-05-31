@@ -91,6 +91,7 @@ Use zero-trust access with explicit identity, least privilege, workload identity
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Identity and access model.
 - Human/service permission table with least-privilege decisions.
 - Secret and key inventory with storage, rotation, expiry, and consumers.

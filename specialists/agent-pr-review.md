@@ -127,8 +127,8 @@ Run this table after mapping the diff and before the verdict. These routes are e
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Review anchors: at least two changed `file:line` citations from the diff, unless the diff itself has fewer than two changed lines.
-- User-visible structured artifact using the shared template headings/tables or the same shape; do not substitute a private checklist or prose-only summary.
 - One-sentence reconstructed intent and one-sentence assessment of whether the diff matches it, anchored to at least one changed file, function, or line when available.
 - Explicit merge verdict: ready to merge, request changes, or block, with reasons tied to observed issues or their absence.
 - Override posture: whether the agent may proceed autonomously, or whether only explicit user acceptance of the listed gaps should proceed.

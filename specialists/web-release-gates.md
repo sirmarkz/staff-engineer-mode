@@ -90,6 +90,7 @@ Use user-centric journey-level budgets, field monitoring, lab checks, runtime-er
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Client runtime SLI/SLO table by journey, screen, or route.
 - Performance budget for payload, dependency, critical path, rendering, and interaction costs.
 - Field and lab measurement plan.

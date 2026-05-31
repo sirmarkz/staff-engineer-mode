@@ -96,6 +96,7 @@ Use a support-window inventory, explicit version-skew policy, compatibility matr
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Fleet inventory with version, criticality, support status, and local ownership info when available.
 - Baseline drift table showing current baseline, target baseline, available fixes not yet adopted, and exception expiry.
 - Version-skew and compatibility matrix.

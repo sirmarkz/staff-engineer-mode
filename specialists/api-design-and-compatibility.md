@@ -100,6 +100,7 @@ Design APIs around domain contracts and generated-client ergonomics, not interna
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - API contract decision with planned or existing consumers, compatibility class, and risks.
 - Consumer discovery or impact plan: intended consumer classes for new APIs, known-consumer signals for existing APIs.
 - Operation/resource naming decision and generated-client ergonomics notes.

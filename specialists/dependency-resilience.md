@@ -99,6 +99,7 @@ Use bounded timeouts/retries with jitter, idempotent APIs, adaptive retry budget
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Dependency matrix with operation, protocol, criticality, and failure behavior.
 - Caller-side dependency signals and startup/scale behavior for unavailable runtime dependencies.
 - Timeout/deadline budget table for caller and each dependency.

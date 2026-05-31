@@ -90,6 +90,7 @@ Use a lightweight documentation lifecycle: classify by user job, assign define s
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Documentation inventory **table with explicit columns**: `Doc | Diátaxis quadrant (tutorial / how-to / reference / explanation) | Responsibility path | Source of truth | Last verified | Verification cadence | Staleness signal`. Runbooks and decision records tagged separately as operational/architectural.
 - Source-of-truth map that **states the no-duplication rule explicitly** (e.g., "one canonical location per system; duplicates are marked non-authoritative or deleted").
 - Freshness rule naming **both verification cadence AND staleness signal** (e.g., "verify every 90 days; mark `stale` if last-verified > cadence or if linked alert/code changed without doc update").

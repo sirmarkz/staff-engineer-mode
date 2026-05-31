@@ -93,6 +93,7 @@ Use fault-domain independence, static stability, and explicit fault-domain isola
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Fault-domain inventory and serving-path map.
 - Survivability statement using "survive loss of X while continuing Y".
 - Capacity and quota model under normal, peak, and failed-domain conditions.

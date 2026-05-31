@@ -99,6 +99,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Test strategy by risk area and lifecycle stage.
 - Check matrix: pre-merge, pre-release, launch, and advisory checks.
 - Critical-path sanity and pre-traffic health checks with expected behavior and stop condition.

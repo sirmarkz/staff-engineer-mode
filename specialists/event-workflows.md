@@ -93,6 +93,7 @@ Use at-least-once delivery with idempotent consumers as the default mental model
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Event/workflow contract and schema compatibility policy.
 - Producer/consumer responsibility matrix.
 - Idempotency and duplicate-handling plan.

@@ -97,6 +97,7 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Configuration or automation safety decision.
 - Change class and confirmation path: low-risk, standard production, or emergency, with required checks and decision rationale.
 - Production change record with user confirmation, expected effect, blast radius, and recovery results where the change can affect production state.

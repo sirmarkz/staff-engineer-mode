@@ -96,6 +96,7 @@ Use accepted source, controlled production pipelines, isolated builds, provenanc
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Source-to-deploy supply-chain map.
 - Control matrix for source, build, artifact, registry, deployment, and automation.
 - Provenance and artifact integrity plan with minimum fields: artifact identity, source revision, accepted change, builder identity, dependency inputs, build time, confirmation path, and verification location.

@@ -95,6 +95,7 @@ Optimize unit cost with allocation, anomaly detection, right-sizing, and capacit
 
 ## Required Outputs
 
+- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Unit-cost model and allocation plan.
 - Cost driver analysis.
 - Data-transfer, telemetry, and cross-location cost assessment where applicable.
