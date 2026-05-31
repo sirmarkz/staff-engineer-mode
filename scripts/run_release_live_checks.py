@@ -43,6 +43,10 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    run_step(
+        "platform support validation",
+        ["python3", "scripts/validate_platform_support.py"],
+    )
     hook_command = [
         "python3",
         "scripts/run_live_hook_probes.py",

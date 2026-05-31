@@ -36,17 +36,19 @@ class ReleaseLiveChecksTests(unittest.TestCase):
             self.assertEqual(runner.main(), 0)
 
         self.assertEqual([name for name, _, _ in calls], [
+            "platform support validation",
             "live hook probes",
             "Codex gpt-5.5 high random router eval",
             "Claude claude-opus-4-8 high random router eval",
         ])
         for _, command, _ in calls:
             self.assertNotIn("--warn-only", command)
-        self.assertIn("--random-specialists", calls[1][1])
-        self.assertIn("5", calls[1][1])
-        self.assertEqual(calls[1][2], {"CODEX_MODEL": "gpt-5.5", "CODEX_EFFORT": "high"})
+        self.assertIn("scripts/validate_platform_support.py", calls[0][1])
+        self.assertIn("--random-specialists", calls[2][1])
+        self.assertIn("5", calls[2][1])
+        self.assertEqual(calls[2][2], {"CODEX_MODEL": "gpt-5.5", "CODEX_EFFORT": "high"})
         self.assertEqual(
-            calls[2][2],
+            calls[3][2],
             {"CLAUDE_MODEL": "claude-opus-4-8", "CLAUDE_EFFORT": "high"},
         )
 
@@ -68,7 +70,7 @@ class ReleaseLiveChecksTests(unittest.TestCase):
 
         self.assertEqual(raised.exception.code, 7)
         self.assertEqual(len(calls), 1)
-        self.assertEqual(calls[0][0], "live hook probes")
+        self.assertEqual(calls[0][0], "platform support validation")
 
 
 if __name__ == "__main__":

@@ -333,7 +333,131 @@ class PlatformDocsValidationTests(unittest.TestCase):
         )
         self.write(
             "hooks/hooks.json",
-            '{"hooks":{"SessionStart":[],"PreToolUse":[{"matcher":"Bash","hooks":[{"command":"agent-event-policy pretooluse"}]}]}}\n',
+            json.dumps(
+                {
+                    "hooks": {
+                        "SessionStart": [
+                            {
+                                "hooks": [
+                                    {
+                                        "command": '"${PLUGIN_ROOT:-${CLAUDE_PLUGIN_ROOT}}/hooks/run-hook.cmd" session-start',
+                                    }
+                                ]
+                            }
+                        ],
+                        "PreToolUse": [
+                            {
+                                "matcher": "Bash",
+                                "hooks": [
+                                    {
+                                        "command": '"${PLUGIN_ROOT:-${CLAUDE_PLUGIN_ROOT}}/hooks/run-hook.cmd" agent-event-policy pretooluse',
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                }
+            ),
+        )
+
+        self.validator.validate_hooks()
+
+    def test_hooks_require_codex_plugin_root_fallback(self) -> None:
+        self.write(
+            "skills/staff-engineer-mode/references/bootstrap-context.md",
+            "\n".join(
+                [
+                    "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
+                    "ROUTER_PATH={{ROUTER_PATH}}",
+                    "EVENT_HOOK={{EVENT_HOOK}}",
+                    "CURRENT_REPO={{CURRENT_REPO}}",
+                    "load the native `staff-engineer-mode` router",
+                    "Read `${ROUTER_PATH}`",
+                    "Router load alone is not enough",
+                    "Read `${SPECIALIST_ROOT}/<slug>.md`",
+                    "before any repo file",
+                    "Do not parallel-load router and repo files",
+                    "never call `Skill staff-engineer-mode:<slug>`",
+                    "Read `${SPECIALIST_ROOT}/agent-pr-review.md` before code-review",
+                    "Keep guidance technology-agnostic by default",
+                    "agent-pr-review",
+                    "release-build-reproducibility",
+                    "production-readiness-review",
+                    "Do not combine stage/commit/push",
+                    "",
+                ]
+            ),
+        )
+        self.write(
+            "hooks/session-start",
+            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists ROUTER_PATH EVENT_HOOK CURRENT_REPO\n",
+        )
+        self.write("hooks/run-hook.cmd", "exec bash hook\n")
+        self.write("hooks/hooks-cursor.json", "{}\n")
+        self.write(
+            "hooks/agent-event-policy",
+            "before_commit before_release agent-pr-review release-build-reproducibility production-readiness-review\n",
+        )
+        self.write(
+            "hooks/hooks.json",
+            json.dumps(
+                {
+                    "hooks": {
+                        "SessionStart": [
+                            {
+                                "hooks": [
+                                    {
+                                        "command": '"${CLAUDE_PLUGIN_ROOT}/hooks/run-hook.cmd" session-start',
+                                    }
+                                ]
+                            }
+                        ],
+                        "PreToolUse": [
+                            {
+                                "matcher": "Bash",
+                                "hooks": [
+                                    {
+                                        "command": '"${CLAUDE_PLUGIN_ROOT}/hooks/run-hook.cmd" agent-event-policy pretooluse',
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                }
+            ),
+        )
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_hooks()
+
+        self.write(
+            "hooks/hooks.json",
+            json.dumps(
+                {
+                    "hooks": {
+                        "SessionStart": [
+                            {
+                                "hooks": [
+                                    {
+                                        "command": '"${PLUGIN_ROOT:-${CLAUDE_PLUGIN_ROOT}}/hooks/run-hook.cmd" session-start',
+                                    }
+                                ]
+                            }
+                        ],
+                        "PreToolUse": [
+                            {
+                                "matcher": "Bash",
+                                "hooks": [
+                                    {
+                                        "command": '"${PLUGIN_ROOT:-${CLAUDE_PLUGIN_ROOT}}/hooks/run-hook.cmd" agent-event-policy pretooluse',
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                }
+            ),
         )
 
         self.validator.validate_hooks()

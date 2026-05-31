@@ -1,5 +1,16 @@
 # Staff Engineer Mode Release Notes
 
+## 1.9.1 - 2026-05-31
+
+Codex hook root compatibility patch.
+
+- Makes the shared hook manifest resolve through `PLUGIN_ROOT` with
+  `CLAUDE_PLUGIN_ROOT` fallback so Codex plugin hooks do not expand to
+  `/hooks/run-hook.cmd` when the Claude-specific root is unset.
+- Adds platform validation coverage that rejects Claude-only hook root wiring.
+- Verifies the hook command path under both Claude-style and Codex-style root
+  environments while keeping OpenCode on its independent plugin module path.
+
 ## 1.9.0 - 2026-05-30
 
 Hook and live-eval release gate.

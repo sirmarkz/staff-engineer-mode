@@ -293,7 +293,8 @@ def validate_hooks() -> None:
     ]:
         if not (ROOT / relative).exists():
             fail(f"missing {relative}")
-    hooks_config = (ROOT / "hooks" / "hooks.json").read_text()
+    hooks_path = ROOT / "hooks" / "hooks.json"
+    hooks_config = hooks_path.read_text()
     for term in [
         '"PreToolUse"',
         '"Bash"',
@@ -301,6 +302,30 @@ def validate_hooks() -> None:
     ]:
         if term not in hooks_config:
             fail(f"hooks/hooks.json missing {term}")
+    hooks_value = read_json(hooks_path)
+    hook_commands = []
+    hook_events = hooks_value.get("hooks")
+    if not isinstance(hook_events, dict):
+        fail("hooks/hooks.json hooks must be an object")
+    for event_entries in hook_events.values():
+        if not isinstance(event_entries, list):
+            fail("hooks/hooks.json hook event entries must be lists")
+        for event_entry in event_entries:
+            if not isinstance(event_entry, dict):
+                fail("hooks/hooks.json hook event entries must be objects")
+            commands = event_entry.get("hooks")
+            if not isinstance(commands, list):
+                fail("hooks/hooks.json hook entries must contain hooks lists")
+            for hook in commands:
+                if not isinstance(hook, dict) or not isinstance(hook.get("command"), str):
+                    fail("hooks/hooks.json command hooks must include command strings")
+                hook_commands.append(hook["command"])
+    run_hook_commands = [command for command in hook_commands if "hooks/run-hook.cmd" in command]
+    if not run_hook_commands:
+        fail("hooks/hooks.json must invoke hooks/run-hook.cmd")
+    for command in run_hook_commands:
+        if "${PLUGIN_ROOT:-${CLAUDE_PLUGIN_ROOT}}" not in command:
+            fail("hooks/hooks.json run-hook commands must support PLUGIN_ROOT with CLAUDE_PLUGIN_ROOT fallback")
     agent_event_policy = (ROOT / "hooks" / "agent-event-policy").read_text()
     for term in [
         "before_commit",
