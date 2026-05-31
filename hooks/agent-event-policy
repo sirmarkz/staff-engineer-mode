@@ -175,8 +175,13 @@ classify_command() {
   local gh_remote_selector_after_action="(^|[[:space:];|&])gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]][^;|&]*)?${gh_selector_flag}([[:space:]]|[;|&]|$)"
   local gh_remote_mutating_release="${gh_remote_selector_before_release}|${gh_remote_selector_before_action}|${gh_remote_selector_after_action}"
   local version_tag_ref='v?[0-9]+([.][0-9]+){1,3}([-+][A-Za-z0-9_.-]+)?'
-  local git_command_prefix='(^|[[:space:];|&])git[[:space:]][^;|&]*'
-  local git_tag_command="${git_command_prefix}tag([[:space:]]|$)"
+  local tag_name='[A-Za-z0-9][A-Za-z0-9_.-]*'
+  local git_global_option='(-C([^[:space:];|&]+|[[:space:]]+[^[:space:];|&]+)|-c[[:space:]]+[^[:space:];|&]+|--git-dir([[:space:]]+|=)[^[:space:];|&]+|--work-tree([[:space:]]+|=)[^[:space:];|&]+|--namespace([[:space:]]+|=)[^[:space:];|&]+)'
+  local git_command_prefix="(^|[[:space:];|&])git[[:space:]]+(${git_global_option}[[:space:]]+)*"
+  local git_add_command="${git_command_prefix}add([[:space:];|&]|$)"
+  local git_commit_command="${git_command_prefix}commit([[:space:];|&]|$)"
+  local git_tag_mutating_flag='(-[A-Za-z]*[asufdmF][A-Za-z]*|--(annotate|sign|local-user|force|delete|message|file|cleanup|edit)([=[:space:];|&]|$))'
+  local git_tag_command="${git_command_prefix}tag[[:space:]]+(${git_tag_mutating_flag}|${tag_name})([[:space:];|&]|$)"
   local git_push_tag_command="${git_command_prefix}push([^;|&]*[[:space:]])(--tags|--follow-tags|${version_tag_ref})([[:space:];|&]|$)"
   local gh_inherited_selector=false
   if [ -n "${GH_REPO:-}" ] || [ -n "${GH_HOST:-}" ]; then
@@ -212,6 +217,14 @@ env_assignment = re.compile(r"^([A-Z_][A-Z0-9_]*)=")
 mutating_gh_release_actions = {"create", "edit", "upload", "delete", "delete-asset"}
 shell_separators = {";", "&&", "||", "|", "|&", "&"}
 selector_names = {"GH_REPO", "GH_HOST"}
+
+def command_args(start):
+    args = []
+    for token in tokens[start:]:
+        if token in shell_separators:
+            break
+        args.append(token)
+    return args
 
 def assignment_parts(token):
     match = env_assignment.match(token)
@@ -312,6 +325,63 @@ def gh_release_event(index):
         return "release_remote"
     return "release"
 
+def git_tag_is_mutation(args):
+    if not args:
+        return False
+    mutating_long = {
+        "--annotate",
+        "--cleanup",
+        "--delete",
+        "--edit",
+        "--file",
+        "--force",
+        "--local-user",
+        "--message",
+        "--sign",
+    }
+    mutating_short = set("asufdmF")
+    inspection_long = {
+        "--contains",
+        "--format",
+        "--ignore-case",
+        "--list",
+        "--merged",
+        "--no-contains",
+        "--no-merged",
+        "--points-at",
+        "--sort",
+        "--verify",
+    }
+    inspection_short = set("lvn")
+    inspection_mode = False
+    literal_args = False
+
+    for arg in args:
+        if not literal_args and arg == "--":
+            literal_args = True
+            continue
+
+        if not literal_args and arg.startswith("--"):
+            option_name = arg.split("=", 1)[0]
+            if option_name in mutating_long:
+                return True
+            if option_name in inspection_long:
+                inspection_mode = True
+            continue
+
+        if not literal_args and arg.startswith("-"):
+            flags = arg[1:]
+            if any(flag in mutating_short for flag in flags):
+                return True
+            if any(flag in inspection_short for flag in flags):
+                inspection_mode = True
+            continue
+
+        if not inspection_mode:
+            return True
+
+    return False
+
 for index, token in enumerate(tokens):
     if token == "gh" and gh_release_event(index) == "release_remote":
         emit("release_remote")
@@ -353,15 +423,13 @@ for index, token in enumerate(tokens):
             continue
 
         subcommand = tokens[cursor]
-        rest = tokens[cursor + 1:]
+        rest = command_args(cursor + 1)
         if subcommand == "add":
             staged_repos.add(cwd)
         if subcommand == "commit":
             emit("commit", cwd)
         if subcommand == "tag":
-            creates_tag = any(not arg.startswith("-") and is_version_tag(arg) for arg in rest)
-            annotated_tag = any(arg in {"-a", "-s", "-u"} for arg in rest)
-            if creates_tag or annotated_tag:
+            if git_tag_is_mutation(rest):
                 emit("release", cwd)
         if subcommand == "push":
             if any(arg in {"--tags", "--follow-tags"} for arg in rest) or any(is_version_tag(arg) for arg in rest):
@@ -381,9 +449,9 @@ PY
     && { [ "$gh_inherited_selector" = true ] \
       || printf '%s\n' "$command_text" | grep -Eq "${gh_env_selector}|${gh_remote_mutating_release}"; }; then
     printf 'release_remote\t.\n'
-  elif printf '%s\n' "$command_text" | grep -Eq '(^|[[:space:];|&])git[[:space:]].*add([[:space:]]|$).*(^|[[:space:];|&])git[[:space:]].*commit([[:space:]]|$)'; then
+  elif printf '%s\n' "$command_text" | grep -Eq "$git_add_command.*$git_commit_command"; then
     printf 'commit\t.\n'
-  elif printf '%s\n' "$command_text" | grep -Eq '(^|[[:space:];|&])git[[:space:]].*commit([[:space:]]|$)'; then
+  elif printf '%s\n' "$command_text" | grep -Eq "$git_commit_command"; then
     printf 'commit\t.\n'
   elif printf '%s\n' "$command_text" | grep -Eq "$git_tag_command|$git_push_tag_command"; then
     printf 'release\t.\n'
@@ -400,7 +468,7 @@ protected_command_summary() {
   cat <<'EOF'
 Staff Engineer Mode PreToolUse protected commands:
 - commit: git commit
-- release: git tag
+- release: git tag mutation
 - release: git push tags
 - release: gh release create|edit|upload|delete|delete-asset ... for the current checkout
 - release_remote: gh release create|edit|upload|delete|delete-asset ... with --repo, -R, --hostname, GH_REPO, or GH_HOST

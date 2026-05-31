@@ -1360,6 +1360,32 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assert_pretooluse_denies(result, "before_release policy requires")
 
+    def test_git_tag_inspection_does_not_trigger_release_gate(self) -> None:
+        for cmd in (
+            "git tag",
+            "git tag --list",
+            "git tag --list v1.2.3",
+            "git tag -l 'v*'",
+            "git tag --points-at HEAD",
+            "git tag -v v1.2.3",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 0, f"unexpected block for {cmd!r}: {result.stdout}")
+                self.assertEqual(result.stdout, "")
+
+    def test_git_commit_inspection_does_not_trigger_commit_gate(self) -> None:
+        for cmd in (
+            "git log --oneline",
+            "git log --grep commit",
+            "git show --stat HEAD",
+            "git rev-list --count HEAD",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 0, f"unexpected block for {cmd!r}: {result.stdout}")
+                self.assertEqual(result.stdout, "")
+
     def test_git_push_branch_does_not_trigger_release_gate(self) -> None:
         for cmd in (
             "git push origin main",
@@ -1749,6 +1775,30 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         for cmd in (
             "gh release view delete",
             "gh release list create",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook_without_python({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 0, f"unexpected block for {cmd!r}: {result.stdout}")
+
+    def test_no_python_fallback_allows_git_tag_inspection(self) -> None:
+        for cmd in (
+            "git tag",
+            "git tag --list",
+            "git tag --list v1.2.3",
+            "git tag -l 'v*'",
+            "git tag --points-at HEAD",
+            "git tag -v v1.2.3",
+        ):
+            with self.subTest(cmd=cmd):
+                result = self.run_hook_without_python({"tool_name": "Bash", "tool_input": {"command": cmd}})
+                self.assertEqual(result.returncode, 0, f"unexpected block for {cmd!r}: {result.stdout}")
+
+    def test_no_python_fallback_allows_git_commit_inspection(self) -> None:
+        for cmd in (
+            "git log --oneline",
+            "git log --grep commit",
+            "git show --stat HEAD",
+            "git rev-list --count HEAD",
         ):
             with self.subTest(cmd=cmd):
                 result = self.run_hook_without_python({"tool_name": "Bash", "tool_input": {"command": cmd}})

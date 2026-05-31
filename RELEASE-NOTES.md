@@ -7,8 +7,8 @@ Hook failure hardening release.
 - Hardens the shared hook wrapper, session startup hook, and event-policy hook
   so missing helper scripts, stripped shell environments, and incomplete plugin
   installs exit cleanly instead of surfacing host hook errors.
-- Narrows commit and release interception to explicit protected commands while
-  keeping accidental-trigger denials instructive for agents.
+- Narrows commit and release interception to explicit mutating actions while
+  allowing read-only commit, tag, and release inspection commands.
 - Adds broader hook regression and live-probe coverage across Claude and Codex,
   including commit/release block and receipt-allow paths.
 
