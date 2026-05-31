@@ -250,11 +250,11 @@ def commands_from_log(text: str) -> list[str]:
 
 def unwrap_shell_command(command: str) -> str:
     try:
-        tokens = shlex.split(command)
+        argv = shlex.split(command)
     except ValueError:
         return command
-    if len(tokens) >= 3 and Path(tokens[0]).name in {"bash", "sh"} and tokens[1] in {"-lc", "-c"}:
-        return tokens[2]
+    if len(argv) >= 3 and Path(argv[0]).name in {"bash", "sh"} and argv[1] in {"-lc", "-c"}:
+        return argv[2]
     return command
 
 
@@ -274,8 +274,8 @@ def protected_commands(commands: list[str], event: str) -> list[str]:
     ]
 
 
-def is_allowed_path_token(token: str, allowed_paths: list[str]) -> bool:
-    return any(token == path or token.endswith(f"/{path}") for path in allowed_paths)
+def is_allowed_path_arg(arg: str, allowed_paths: list[str]) -> bool:
+    return any(arg == path or arg.endswith(f"/{path}") for path in allowed_paths)
 
 
 def is_allowed_sem_prelude(command: str, probe: Probe) -> bool:
@@ -300,18 +300,18 @@ def is_allowed_sem_prelude(command: str, probe: Probe) -> bool:
         if "&" in part:
             return False
         try:
-            tokens = shlex.split(part)
+            argv = shlex.split(part)
         except ValueError:
             return False
-        if not tokens or Path(tokens[0]).name not in {"cat", "sed"}:
+        if not argv or Path(argv[0]).name not in {"cat", "sed"}:
             return False
-        if Path(tokens[0]).name == "cat":
-            if len(tokens) < 2 or not all(is_allowed_path_token(token, allowed_paths) for token in tokens[1:]):
+        if Path(argv[0]).name == "cat":
+            if len(argv) < 2 or not all(is_allowed_path_arg(arg, allowed_paths) for arg in argv[1:]):
                 return False
             continue
-        if len(tokens) < 4 or tokens[1] != "-n" or not re.fullmatch(r"\d+(?:,\d+)?p", tokens[2]):
+        if len(argv) < 4 or argv[1] != "-n" or not re.fullmatch(r"\d+(?:,\d+)?p", argv[2]):
             return False
-        if not all(is_allowed_path_token(token, allowed_paths) for token in tokens[3:]):
+        if not all(is_allowed_path_arg(arg, allowed_paths) for arg in argv[3:]):
             return False
     return True
 

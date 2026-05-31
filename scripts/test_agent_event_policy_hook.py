@@ -347,7 +347,7 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         live_probes = load_live_probes()
         command = f"{HOOK} ack release --repo {self.repo} && git tag v9.9.9"
         log = (
-            "2026-05-31T19:14:51Z ERROR codex_core::tools::router: "
+            "ERROR codex_core::tools::router: "
             "error=Command blocked by PreToolUse hook: "
             "Do not combine the ack command with the release command. "
             f"Command: {command}"
