@@ -167,6 +167,15 @@ def collect_commands(value: Any, commands: list[str]) -> None:
             collect_commands(child, commands)
 
 
+def codex_pretooluse_block_command(line: str) -> str | None:
+    if "Command blocked by PreToolUse hook:" not in line:
+        return None
+    _prefix, separator, command = line.rpartition(" Command: ")
+    if not separator:
+        return None
+    return command.strip() or None
+
+
 def command_attempts_from_log(text: str) -> list[CommandAttempt]:
     by_item_id: dict[str, CommandAttempt] = {}
     order: list[str] = []
@@ -186,6 +195,13 @@ def command_attempts_from_log(text: str) -> list[CommandAttempt]:
             by_item_id[item_id].exit_code = exit_code
 
     for line in text.splitlines():
+        blocked_command = codex_pretooluse_block_command(line)
+        if blocked_command is not None:
+            item_id = f"codex_pretooluse_{len(order) + 1}"
+            ensure_attempt(item_id, blocked_command)
+            mark_failed(item_id, blocked=True, exit_code=2)
+            continue
+
         try:
             value = json.loads(line)
         except json.JSONDecodeError:
@@ -290,7 +306,7 @@ def is_allowed_sem_prelude(command: str, probe: Probe) -> bool:
         if not tokens or Path(tokens[0]).name not in {"cat", "sed"}:
             return False
         if Path(tokens[0]).name == "cat":
-            if len(tokens) != 2 or not is_allowed_path_token(tokens[1], allowed_paths):
+            if len(tokens) < 2 or not all(is_allowed_path_token(token, allowed_paths) for token in tokens[1:]):
                 return False
             continue
         if len(tokens) < 4 or tokens[1] != "-n" or not re.fullmatch(r"\d+(?:,\d+)?p", tokens[2]):

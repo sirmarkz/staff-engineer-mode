@@ -120,6 +120,16 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         response = json.loads(result.stdout)
         self.assertEqual(response["decision"], "block")
 
+    def test_block_response_writes_reason_to_stderr_for_host_lifecycle_errors(self) -> None:
+        self.stage_change("initial\nchanged\n")
+
+        result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git commit -m change"}})
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertEqual(response["decision"], "block")
+        self.assertIn(response["reason"], result.stderr)
+
     def test_ack_and_commit_same_shell_command_explains_separate_invocation(self) -> None:
         self.stage_change("initial\nchanged\n")
 
@@ -326,6 +336,25 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         ok, details = live_probes.verify_result(
             live_probes.Probe("claude", "commit", "block", "claude-opus-4-8", "xhigh"),
+            self.repo,
+            log,
+            [command],
+        )
+
+        self.assertTrue(ok, details)
+
+    def test_live_probe_accepts_codex_pretooluse_block_error_line(self) -> None:
+        live_probes = load_live_probes()
+        command = f"{HOOK} ack release --repo {self.repo} && git tag v9.9.9"
+        log = (
+            "2026-05-31T19:14:51Z ERROR codex_core::tools::router: "
+            "error=Command blocked by PreToolUse hook: "
+            "Do not combine the ack command with the release command. "
+            f"Command: {command}"
+        )
+
+        ok, details = live_probes.verify_result(
+            live_probes.Probe("codex", "release", "block", "gpt-5.5", "xhigh"),
             self.repo,
             log,
             [command],
@@ -561,6 +590,18 @@ class AgentEventPolicyHookTests(unittest.TestCase):
             live_probes.is_allowed_sem_prelude(
                 (
                     "sed -n '1,220p' "
+                    "/home/mark/.codex/plugins/cache/staff-engineer-mode/staff-engineer-mode/"
+                    "current/specialists/release-build-reproducibility.md "
+                    "/home/mark/.codex/plugins/cache/staff-engineer-mode/staff-engineer-mode/"
+                    "current/specialists/production-readiness-review.md"
+                ),
+                live_probes.Probe("codex", "release", "allow", "gpt-5.5", "xhigh"),
+            )
+        )
+        self.assertTrue(
+            live_probes.is_allowed_sem_prelude(
+                (
+                    "cat "
                     "/home/mark/.codex/plugins/cache/staff-engineer-mode/staff-engineer-mode/"
                     "current/specialists/release-build-reproducibility.md "
                     "/home/mark/.codex/plugins/cache/staff-engineer-mode/staff-engineer-mode/"
@@ -1006,6 +1047,14 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         response = json.loads(result.stdout)
         self.assertEqual(response["decision"], "block")
+
+    def test_release_block_response_writes_reason_to_stderr_for_host_lifecycle_errors(self) -> None:
+        result = self.run_hook({"tool_name": "Bash", "tool_input": {"command": "git tag v1.2.3"}})
+
+        self.assertEqual(result.returncode, 2)
+        response = json.loads(result.stdout)
+        self.assertEqual(response["decision"], "block")
+        self.assertIn(response["reason"], result.stderr)
 
     def test_ack_and_release_same_shell_command_explains_separate_invocation(self) -> None:
         result = self.run_hook(

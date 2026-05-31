@@ -31,6 +31,7 @@ shell_quote() {
 
 block_tool() {
   local reason="$1"
+  printf '%s\n' "$reason" >&2
   printf '{\n  "decision": "block",\n  "reason": %s\n}\n' "$(json_escape "$reason")"
   exit 2
 }
