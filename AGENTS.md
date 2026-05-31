@@ -146,6 +146,8 @@ maintaining complex software systems.
 - Versioned metadata may stay at the pre-release placeholder before public
   release. When the user asks to release, use `scripts/bump-version.sh --check`,
   `scripts/bump-version.sh --audit`, then `scripts/bump-version.sh <new-version>`.
+- Release tags and hosted GitHub release titles must both be exactly `vX.Y.Z`.
+  `RELEASE-NOTES.md` headings keep the plain `X.Y.Z - YYYY-MM-DD` format.
 - Release install references are part of the release artifact. Before a release
   is considered complete, update `.claude-plugin/marketplace.json`
   `plugins.0.source.sha` to the plugin artifact commit and keep README/install
@@ -167,8 +169,8 @@ maintaining complex software systems.
 - Do not add AI assistants, automation, or tools as co-authors or attribution in
   commit messages, file headers, docs, or release notes.
 - Do not commit secrets, local `.env` files, private keys, machine-specific
-  config, editor state, caches, local Claude review outputs, or unintended
-  generated output.
+  config, editor state, caches, local Claude review outputs, local memory
+  exports such as `<claude-mem-context>`, or unintended generated output.
 - Run a staged secret scan before committing when the hook is available:
 
   ```bash

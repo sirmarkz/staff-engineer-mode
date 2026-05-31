@@ -146,6 +146,23 @@ def validate_https_plugin_install_paths() -> None:
             fail(f"{relative} must not use SSH git install paths")
 
 
+def validate_agents_release_policy() -> None:
+    path = ROOT / "AGENTS.md"
+    if not path.exists():
+        fail("missing AGENTS.md")
+    text = path.read_text()
+    for term in [
+        "Release tags and hosted GitHub release titles must both be exactly `vX.Y.Z`.",
+        "`RELEASE-NOTES.md` headings keep the plain `X.Y.Z - YYYY-MM-DD` format.",
+        "local memory",
+        "`<claude-mem-context>`",
+    ]:
+        if term not in text:
+            fail(f"AGENTS.md missing release policy term: {term}")
+    if "<claude-mem-context>" in text.replace("`<claude-mem-context>`", ""):
+        fail("AGENTS.md must not contain committed claude-mem-context payloads")
+
+
 def validate_codex() -> None:
     path = ROOT / ".codex-plugin" / "plugin.json"
     value = require_name_version(path)
@@ -495,6 +512,7 @@ def validate_docs() -> None:
 
 def main() -> int:
     validate_https_plugin_install_paths()
+    validate_agents_release_policy()
     validate_manifest_descriptions()
     validate_codex()
     validate_claude()

@@ -289,6 +289,28 @@ class PlatformDocsValidationTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 self.validator.validate_https_plugin_install_paths()
 
+    def test_agents_requires_release_version_format_rule(self) -> None:
+        self.write("AGENTS.md", "## Git And Commit Rules\n")
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_agents_release_policy()
+
+        self.write(
+            "AGENTS.md",
+            "\n".join(
+                [
+                    "## Git And Commit Rules",
+                    "- Release tags and hosted GitHub release titles must both be exactly `vX.Y.Z`.",
+                    "- `RELEASE-NOTES.md` headings keep the plain `X.Y.Z - YYYY-MM-DD` format.",
+                    "- Do not commit local memory exports such as `<claude-mem-context>`.",
+                    "",
+                ]
+            ),
+        )
+
+        self.validator.validate_agents_release_policy()
+
     def test_hooks_require_agent_event_policy_wiring(self) -> None:
         self.write(
             "skills/staff-engineer-mode/references/bootstrap-context.md",
