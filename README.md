@@ -2,11 +2,12 @@
 
 **Production-engineering judgment for AI coding agents.**
 
-Staff Engineer Mode packages public production-engineering practices as decision
-guidance for AI coding agents. As agents write material amounts of production
-code, they need to reason about what happens when that code runs at 3am. The
-router and specialist files add reliability, security, operability,
-compatibility, and rollout checks before code ships.
+Staff Engineer Mode bakes lessons from major outages into one set of agents
+that combines thousands of engineer-years of knowledge from tenured senior and
+distinguished engineers across the most influential computing companies over
+the past decade. This skill pack turns that knowledge into reliability,
+resilience, security, operability, compatibility, and rollout-safety checks
+before code ships.
 
 ## Sources
 
@@ -118,6 +119,9 @@ Start a fresh session inside any open repo and ask one of:
 - "Review my last commit."
 
 The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps.
+
+For more coverage, see the [sample prompts](SAMPLE-PROMPTS.md) used by the
+router eval catalog.
 
 ## What's Inside
 
