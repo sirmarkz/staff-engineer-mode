@@ -1,11 +1,11 @@
 # Staff Engineer Mode
 
-This skill pack bakes lessons from major outages into one set of agents
-that combines thousands of engineer-years of knowledge from tenured senior and
+Staff Engineer Mode bakes lessons from major outages into one set of agents,
+combining thousands of engineer-years of knowledge from senior and
 distinguished engineers across the most influential computing companies over
-the past decade. This skill pack turns that knowledge into reliability,
-resilience, security, operability, compatibility, and rollout-safety checks
-before code ships.
+the past decade. It turns that knowledge into reliability, resilience,
+security, operability, compatibility, and rollout-safety checks before code
+ships.
 
 ## Sources
 
