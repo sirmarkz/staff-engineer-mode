@@ -3,9 +3,9 @@
 Staff Engineer Mode bakes lessons from major outages into one set of agents,
 combining thousands of engineer-years of knowledge from senior and
 distinguished engineers across the most influential computing companies over
-the past decade. It turns that knowledge into reliability, resilience,
-security, operability, compatibility, and rollout-safety checks before code
-ships.
+the past decade. It turns that knowledge into availability, reliability,
+resilience, security, operability, compatibility, and rollout-safety checks
+before code ships.
 
 ## Sources
 
