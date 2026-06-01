@@ -36,7 +36,7 @@ and promotions, it calls `release-build-reproducibility` and
 
 ## Installation
 
-Examples labeled "terminal" are run in your shell. Examples labeled "agent
+Commands labeled "terminal" are run in your shell. Commands labeled "agent
 chat" are typed inside that tool's interactive agent session.
 
 ### Claude Code
