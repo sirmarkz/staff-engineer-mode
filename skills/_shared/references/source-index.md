@@ -14,9 +14,47 @@ encyclopedias, Q&A/forum threads, scraped mirrors, SEO summaries, anonymous
 content farms, or unmaintained unofficial copies when a primary source exists.
 
 Sections below are grouped by source owner: company, project, standards body,
-publisher, or named author. The large company source-owner sections appear
-first alphabetically, followed by Microsoft, then the remaining source-owner
-sections. They are not grouped by skill topic.
+publisher, or named author, except for the curated public outage case-study
+section. The large company source-owner sections appear first alphabetically,
+followed by Microsoft, then the remaining source-owner sections. Outside the
+case-study section, they are not grouped by skill topic.
+
+### Public Outage And Incident Case Studies
+- AWS Post-Event Summary - Amazon S3 Service Disruption in US-EAST-1: https://aws.amazon.com/message/41926/
+- AWS Post-Event Summary - Amazon EC2 and Amazon RDS Service Disruption in US East: https://aws.amazon.com/message/65648/
+- AWS Post-Event Summary - October 22, 2012 AWS Service Event in US East: https://aws.amazon.com/message/680342/
+- AWS Post-Event Summary - December 24, 2012 Amazon ELB Service Event in US East: https://aws.amazon.com/message/680587/
+- AWS Post-Event Summary - Amazon DynamoDB Service Disruption and Related Impacts in US East: https://aws.amazon.com/message/5467D2/
+- AWS Post-Event Summary - Amazon Kinesis Event in US-EAST-1: https://aws.amazon.com/message/11201/
+- AWS Post-Event Summary - AWS Service Event in US-EAST-1: https://aws.amazon.com/message/12721/
+- AWS Post-Event Summary - Amazon Kinesis Data Streams Service Event in US-EAST-1: https://aws.amazon.com/message/073024/
+- AWS Post-Event Summary - Amazon DynamoDB Service Disruption in US-EAST-1: https://aws.amazon.com/message/101925/
+- Azure Post Incident Review - Networking Issues Impacting Azure Services in East US 2: https://azure.status.microsoft/en-us/status/history/?trackingId=PLP3-1W8
+- Azure Post Incident Review - Multiple Services Control Plane Issues in East US: https://azure.status.microsoft/en-us/status/history/?trackingId=5GP8-W0G
+- Azure Post Incident Review - Datacenter Cooling Event in East US 2: https://azure.status.microsoft/en-us/status/history/?trackingId=NMB2-ND0
+- Azure Post Incident Review - Azure Software Load Balancer in Multiple Regions: https://azure.status.microsoft/en-us/status/history/?trackingId=YVTL-RS0
+- Azure Post Incident Review - Wide Area Network in Multiple Regions: https://azure.status.microsoft/en-us/status/history/?trackingId=YKDK-TT8
+- Azure Post Incident Review - Power Event Impacting Multiple Services in West US: https://azure.status.microsoft/en-us/status/history/?trackingId=_SVS-5_G
+- Azure Post Incident Review - Network Connectivity Across Multiple Services in Switzerland North: https://azure.status.microsoft/en-us/status/history/?trackingId=BT6W-FX0
+- Azure Post Incident Review - Service Management Operations Failures in East US 2: https://azure.status.microsoft/en-us/status/history/?trackingId=VKY3-PF8
+- Azure Post Incident Review - Azure Portal and Management Portal Access Issues in Multiple Regions: https://azure.status.microsoft/en-us/status/history/?trackingId=QKNQ-PB8
+- Azure Post Incident Review - Azure Front Door Access Issues in Multiple Regions: https://azure.status.microsoft/en-us/status/history/?trackingId=QNBQ-5W8
+- Azure Post Incident Review - Azure Front Door Connectivity Issues Across Multiple Regions: https://azure.status.microsoft/en-us/status/history/?trackingId=YKYN-BWZ
+- Azure Post Incident Review - Thermal Event Impacting Multiple Services in West Europe AZ01: https://azure.status.microsoft/en-us/status/history/?trackingId=2LGD-9VG
+- Google Cloud Incident Report - Cloud, Workspace, and Security Operations 503 Errors: https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW
+- Google Cloud Incident Report - US-WEST1 Control Plane and Data Plane Unavailability: https://status.cloud.google.com/incidents/u6rQ2nNVbhAFqGCcTm58
+- Google Cloud Incident Report - VPC Controller Automation Shutdown Across Zones: https://status.cloud.google.com/incidents/xVSEV3kVaJBmS7SZbnre
+- Google Cloud Incident Report - Europe-West2 Cooling-System Failure: https://status.cloud.google.com/incidents/fmEL9i2fArADKawkZAa2
+- Google Cloud Incident Report - Management Plane Behavior Change in US-CENTRAL1: https://status.cloud.google.com/incidents/U39RSGjaANJXtjHpRkdq
+- Google Cloud Incident Report - US-WEST1 Packet Loss: https://status.cloud.google.com/incident/cloud-networking/19020
+- Google Cloud Incident Report - Compute Engine Network Administration Operation Latency: https://status.cloud.google.com/incident/compute/19008
+- Google Cloud Incident Report - Cloud Storage Error Rate and Tail Latency: https://status.cloud.google.com/incident/storage/18003
+- Google Cloud Incident Report - Cloud Pub/Sub Error Rate and Latency: https://status.cloud.google.com/incident/cloud-pubsub/19001
+- Google Cloud Blog - An Update on Sunday's Service Disruption: https://cloud.google.com/blog/topics/inside-google-cloud/an-update-on-sundays-service-disruption
+- Meta Engineering - More Details on Today's Outage: https://engineering.fb.com/2010/09/23/uncategorized/more-details-on-today-s-outage/
+- Meta Engineering - Update About the October 4th Outage: https://engineering.fb.com/2021/10/04/networking-traffic/outage/
+- Meta Engineering - More Details About the October 4 Outage: https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/
+- Netflix TechBlog - Lessons Netflix Learned from the AWS Outage: https://netflixtechblog.com/lessons-netflix-learned-from-the-aws-outage-deefe5fd0c04
 
 ### Amazon And AWS
 - AWS Well-Architected Framework PDF: https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf
@@ -118,7 +156,6 @@ sections. They are not grouped by skill topic.
 - Meta Engineering - TAO: The Power of the Graph: https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/
 - Meta Engineering - Scaling Memcache at Facebook: https://engineering.fb.com/2013/04/15/core-infra/scaling-memcache-at-facebook/
 - Meta Engineering - Cache Made Consistent: https://engineering.fb.com/2022/06/08/core-infra/cache-made-consistent/
-- Meta Engineering - More Details About the October 4 Outage: https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/
 - Meta Engineering - Automating Dead Code Cleanup: https://engineering.fb.com/2023/10/24/data-infrastructure/automating-dead-code-cleanup/
 - Meta Engineering - Automating Product Deprecation: https://engineering.fb.com/2023/10/17/data-infrastructure/automating-product-deprecation-meta/
 - Meta Engineering - Automating Data Removal: https://engineering.fb.com/2023/10/31/data-infrastructure/automating-data-removal/

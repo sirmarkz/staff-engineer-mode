@@ -55,7 +55,7 @@ Configuration and automation can change production faster than ordinary code pat
 4. **Record production changes.** For production-impacting changes, including pre-launch production, capture user confirmation, confirmation basis, expected blast radius, and recovery path before execution.
 5. **Validate before execution.** Require parse, semantic, dependency, permission, and environment checks before production use; for tabular bulk inputs, reject unknown columns, duplicate targets, missing required values, unsafe deltas, and changes above per-tenant caps.
 6. **Preview the effect.** Show intended creates, updates, deletes, traffic impact, permission changes, affected systems, unchanged rows, skipped rows, and per-tenant cap violations before apply.
-7. **Bound execution.** Use batches, locks, rate limits, stop criteria, per-target caps, and idempotency for automation that touches shared state.
+7. **Bound execution.** Use fault-domain-aware batches, locks, rate limits, stop criteria, per-target and aggregate caps, and idempotency for automation that touches shared state.
 8. **Make recovery concrete.** Define rollback, disable, restore, or roll-forward behavior for config, generated changes, and automation side effects; capture previous values in a replayable rollback artifact before mutating state.
 9. **Prepare operational levers.** For emergency adjustment or recovery levers, state the effect, prerequisites, activation time, last test, and disable or revert path before relying on them.
 10. **Control drift.** Detect unmanaged overrides and stale settings; decide reconcile, exception, or removal.
@@ -63,7 +63,7 @@ Configuration and automation can change production faster than ordinary code pat
 
 ## Synthesized Default
 
-Use typed config contracts, deterministic validation, effect preview, small execution batches, explicit user confirmation for production-impacting work, linked change records, drift checks, and tested recovery paths. Automation should be idempotent by default and should fail closed when it cannot confirm the intended target.
+Use typed config contracts, deterministic validation, effect preview, small fault-domain-aware execution batches, explicit user confirmation for production-impacting work, linked change records, drift checks, and tested recovery paths. Automation should be idempotent by default and should fail closed when it cannot confirm the intended target.
 
 
 
@@ -118,6 +118,7 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 - `contract_defined`: schema, defaults, bounds, invariants, and local change path are explicit.
 - `preview_checked`: intended production effect is visible before execution.
 - `blast_radius`: affected users, systems, and data are bounded.
+- `execution_bounds`: automation that can cross locations, tenants, partitions, or deployment units has fault-domain-aware batches, aggregate caps, and stop criteria.
 - `recovery_path`: rollback, disable, restore, or roll-forward path is defined.
 - `lever_ready`: emergency adjustment or recovery levers have named effect, prerequisites, activation path, and disable or revert path.
 - `lever_tested`: operational levers have a recent test result or an explicit unknown.
@@ -137,6 +138,6 @@ Use typed config contracts, deterministic validation, effect preview, small exec
 | Mistake | Correction |
 | --- | --- |
 | Valid syntax as safety | Add semantic, dependency, and blast-radius checks. |
-| One giant automation run | Use batches, locks, stop criteria, and idempotency. |
+| One giant automation run | Use fault-domain-aware batches, locks, aggregate caps, stop criteria, and idempotency. |
 | Silent config drift | Detect, reconcile, or exception-check unmanaged changes. |
 | Rollback by memory | Record prior state and verify recovery. |
