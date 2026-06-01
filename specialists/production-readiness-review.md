@@ -100,9 +100,27 @@ Use PRR as a cross-domain readiness decision for launches and major changes. It 
 - Stay inside launch readiness. Route only the highest-risk specialist follow-ups and cap them at two unless the user asks for a full readiness pack.
 - Be concise: avoid generic checklist prose and prefer compact readiness matrices, blocker tables, and exception registers.
 
+## PRR Output Scaling
+
+Show a user-visible structured PRR artifact, scaled to launch impact.
+
+- **Local source checkpoint:** local tag/build/checkpoint; no push, publish, deploy, users, runtime, production data, or external commitment.
+- **External artifact:** pushed tag, hosted release, package, or artifact used outside the local repo.
+- **Production/customer-impacting:** deploy, traffic shift, migration, stateful change, customer-facing change, or sensitive-data change.
+
+If scope is ambiguous, ask once:
+
+> I am treating this as local-only because it is not being pushed, published, deployed, or exposed to users. If wrong, tell me whether this is public or production/customer-impacting.
+
+Local output: compact table with scope, impact dimensions, checks, blockers/exceptions (`None` if absent), and advisory posture.
+
+External output: compact readiness matrix with commitment, compatibility, rollback, checks, blockers/exceptions, and advisory posture.
+
+Production/customer-impacting output: full `prr-checklist.md` shape.
+
 ## Required Outputs
 
-- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
+- Output shape: use PRR Output Scaling. Use the full template for production/customer-impacting changes; include compact structured fields for local source checkpoints and external artifacts.
 - PRR readiness matrix by domain and status.
 - Freshness and drift notes for readiness details that can go stale, such as dashboards, runbooks, rollout checks, recovery checks, and load tests.
 - Architecture entry with component diagram or textual map, production dependencies, and fault-domain map.

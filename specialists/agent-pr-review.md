@@ -125,9 +125,27 @@ Run this table after mapping the diff and before the verdict. These routes are e
 - Stay inside pre-merge review of a single diff. Use the sanity-check table for extra surface lenses or follow-ups rather than replacing this review.
 - Be concise: prefer a single structured artifact with categorized findings over running narrative.
 
+## PR Review Output Scaling
+
+Show a user-visible structured PR review, scaled to diff size and risk. Do not replace review with a prose-only summary.
+
+Use compact output for tiny, mechanical, doc-only, or low-risk commit/amend diffs with no blocker or must-fix finding.
+
+Compact output must include:
+- Review anchors, or a note that the diff has fewer than two changed locations
+- Reconstructed intent and intent-match status
+- Explicit verdict: ready, request changes, or block
+- Behavior verification status
+- Findings table, even when findings are `none`
+- Failure-mode pass: silent assumptions, plausible-wrong logic, hallucinated APIs/imports/types, deleted-but-used code, unmotivated edits, missing edge cases, scope creep
+- Compact code-quality dimensions
+- Override or commit posture
+
+Use the full `agent-pr-review` template when the diff touches public contracts, production behavior, data, security boundaries, migrations, generated code, or has any blocker or must-fix finding.
+
 ## Required Outputs
 
-- Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
+- Output shape: use PR Review Output Scaling. Use the full template when scaling requires a full review; include every compact required field for compact reviews.
 - Review anchors: at least two changed `file:line` citations from the diff, unless the diff itself has fewer than two changed lines.
 - One-sentence reconstructed intent and one-sentence assessment of whether the diff matches it, anchored to at least one changed file, function, or line when available.
 - Explicit merge verdict: ready to merge, request changes, or block, with reasons tied to observed issues or their absence.
