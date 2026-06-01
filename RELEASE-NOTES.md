@@ -1,5 +1,14 @@
 # Staff Engineer Mode Release Notes
 
+## 1.9.4 - 2026-06-01
+
+README and marketplace copy refresh.
+
+- Updates package, marketplace, and plugin descriptions with shorter
+  outage-learning positioning.
+- Refreshes the README intro, source wording, install-command wording, and
+  sample-prompt link.
+
 ## 1.9.3 - 2026-06-01
 
 Tooling and review-output hardening release.
