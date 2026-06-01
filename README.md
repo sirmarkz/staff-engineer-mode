@@ -1,6 +1,6 @@
 # Staff Engineer Mode
 
-Staff Engineer Mode bakes lessons from major outages into one set of agents
+This skill pack bakes lessons from major outages into one set of agents
 that combines thousands of engineer-years of knowledge from tenured senior and
 distinguished engineers across the most influential computing companies over
 the past decade. This skill pack turns that knowledge into reliability,
@@ -9,14 +9,13 @@ before code ships.
 
 ## Sources
 
-Staff Engineer Mode distills public engineering practices into practical guidance
-for AI coding agents. Representative source families include AWS Builders'
-Library, Google SRE and Software Engineering at Google, Meta Engineering,
-Microsoft SDL and DevOps guidance, Apple security and privacy docs, Netflix
-resilience work, and standards or guidance from NIST, CISA, OWASP, OpenSSF,
-IETF, and W3C. See the [source index](skills/_shared/references/source-index.md)
-for the full reference set. Staff Engineer Mode is independent and is not
-endorsed by or affiliated with those organizations.
+Representative source families include AWS Builders' Library, Google SRE and
+Software Engineering at Google, Meta Engineering, Microsoft SDL and DevOps
+guidance, Apple security and privacy docs, Netflix resilience work, and
+standards or guidance from NIST, CISA, OWASP, OpenSSF, IETF, and W3C. See the
+[source index](skills/_shared/references/source-index.md) for the full
+reference set. Staff Engineer Mode is independent and is not endorsed by or
+affiliated with those organizations.
 
 ## How It Works
 
