@@ -8,19 +8,16 @@ platform validators, skill-pack validation, and brand linting cannot drift.
 from __future__ import annotations
 
 CANONICAL_PLUGIN_DESCRIPTION = (
-    "Staff-engineering decision guidance for AI coding agents. Routes design, "
-    "development, testing, release, operations, reliability, security, API, "
-    "data, and platform work to specialist guidance."
+    "Major outage lessons baked into AI agents trained by thousands of "
+    "engineer-years of production knowledge."
 )
 
 CLAUDE_PLUGIN_DESCRIPTION = (
-    "Staff-engineering decision guidance for Claude Code. Routes design, "
-    "development, testing, release, operations, reliability, security, API, "
-    "data, and platform work to specialist guidance."
+    CANONICAL_PLUGIN_DESCRIPTION
 )
 
 CODEX_INTERFACE_SHORT_DESCRIPTION = (
-    "Staff Engineer Mode engineering lifecycle and operations guidance"
+    CANONICAL_PLUGIN_DESCRIPTION
 )
 
 CODEX_INTERFACE_LONG_DESCRIPTION = (

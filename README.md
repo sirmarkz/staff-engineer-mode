@@ -1,7 +1,5 @@
 # Staff Engineer Mode
 
-**Production-engineering judgment for AI coding agents.**
-
 Staff Engineer Mode bakes lessons from major outages into one set of agents
 that combines thousands of engineer-years of knowledge from tenured senior and
 distinguished engineers across the most influential computing companies over
