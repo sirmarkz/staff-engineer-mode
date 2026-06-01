@@ -1,5 +1,20 @@
 # Staff Engineer Mode Release Notes
 
+## 1.9.3 - 2026-06-01
+
+Tooling and review-output hardening release.
+
+- Hardens version-bump auditing so release metadata drift and malformed
+  `X.Y.Z` versions fail before publication.
+- Makes OpenCode bootstrap injection tolerate malformed host messages while
+  preserving duplicate-injection checks.
+- Expands CI to compile every tracked script and run discovered script tests,
+  with regressions for release tooling, OpenCode bootstrap, and platform
+  validation.
+- Right-sizes pre-merge and production-readiness review output so small changes
+  can use compact artifacts while release and high-impact checks keep full
+  required detail.
+
 ## 1.9.2 - 2026-05-31
 
 Hook failure hardening release.
