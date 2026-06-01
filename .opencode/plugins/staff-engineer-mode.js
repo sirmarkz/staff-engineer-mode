@@ -55,15 +55,19 @@ export const StaffEngineerModePlugin = async () => {
     },
     "experimental.chat.messages.transform": async (_input, output) => {
       const bootstrap = getBootstrapContent();
-      if (!bootstrap || !output.messages.length) {
+      const messages = Array.isArray(output?.messages) ? output.messages : [];
+      if (!bootstrap || !messages.length) {
         return;
       }
-      const firstUser = output.messages.find((message) => message.info.role === "user");
-      if (!firstUser || !firstUser.parts.length) {
+      const firstUser = messages.find((message) => message?.info?.role === "user");
+      if (!firstUser || !Array.isArray(firstUser.parts) || !firstUser.parts.length) {
         return;
       }
       const alreadyInjected = firstUser.parts.some(
-        (part) => part.type === "text" && part.text.includes("You have staff-engineer-mode"),
+        (part) =>
+          part?.type === "text" &&
+          typeof part.text === "string" &&
+          part.text.includes("You have staff-engineer-mode"),
       );
       if (alreadyInjected) {
         return;

@@ -484,6 +484,76 @@ class PlatformDocsValidationTests(unittest.TestCase):
 
         self.validator.validate_hooks()
 
+    def test_ci_workflow_requires_script_globs_and_test_discovery(self) -> None:
+        self.write(
+            ".github/workflows/validation.yml",
+            "\n".join(
+                [
+                    "pull_request:",
+                    "push:",
+                    "python3 -m py_compile",
+                    "scripts/run_router_eval.py",
+                    "scripts/test_run_router_eval.py",
+                    "scripts/test_agent_event_policy_hook.py",
+                    "scripts/test_session_start_hook.py",
+                    "scripts/test_validate_platform_support.py",
+                    "bash -n hooks/agent-event-policy",
+                    "bash -n hooks/session-start",
+                    "bash -n hooks/run-hook.cmd",
+                    "bash -n evals/adapters/codex-router.sh",
+                    "bash -n evals/adapters/claude-router.sh",
+                    "bash -n scripts/bump-version.sh",
+                    "python3 -m unittest scripts/test_run_router_eval.py",
+                    "python3 -m unittest scripts/test_agent_event_policy_hook.py",
+                    "python3 -m unittest scripts/test_session_start_hook.py",
+                    "python3 -m unittest scripts/test_validate_platform_support.py",
+                    "scripts/bump-version.sh --check",
+                    "scripts/bump-version.sh --audit",
+                    "python3 scripts/validate_source_quality.py",
+                    "python3 scripts/validate_skill_pack.py",
+                    "python3 scripts/validate_router_eval.py",
+                    "python3 scripts/validate_platform_support.py",
+                    "node --check .opencode/plugins/staff-engineer-mode.js",
+                    "git grep -nI '[[:blank:]]$' -- .",
+                    "",
+                ]
+            ),
+        )
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_ci_workflow()
+
+    def test_ci_workflow_accepts_full_script_and_test_discovery(self) -> None:
+        self.write(
+            ".github/workflows/validation.yml",
+            "\n".join(
+                [
+                    "pull_request:",
+                    "push:",
+                    "python3 -m py_compile scripts/*.py",
+                    "bash -n hooks/agent-event-policy",
+                    "bash -n hooks/session-start",
+                    "bash -n hooks/run-hook.cmd",
+                    "bash -n evals/adapters/codex-router.sh",
+                    "bash -n evals/adapters/claude-router.sh",
+                    "bash -n scripts/bump-version.sh",
+                    "python3 -m unittest discover -s scripts -p 'test_*.py'",
+                    "scripts/bump-version.sh --check",
+                    "scripts/bump-version.sh --audit",
+                    "python3 scripts/validate_source_quality.py",
+                    "python3 scripts/validate_skill_pack.py",
+                    "python3 scripts/validate_router_eval.py",
+                    "python3 scripts/validate_platform_support.py",
+                    "node --check .opencode/plugins/staff-engineer-mode.js",
+                    "git grep -nI '[[:blank:]]$' -- .",
+                    "",
+                ]
+            ),
+        )
+
+        self.validator.validate_ci_workflow()
+
 
 if __name__ == "__main__":
     unittest.main()

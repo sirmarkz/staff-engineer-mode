@@ -145,7 +145,10 @@ cmd_check() {
 }
 
 cmd_audit() {
-  cmd_check || true
+  local has_drift=0
+  if ! cmd_check; then
+    has_drift=1
+  fi
   echo
 
   local current_version
@@ -205,12 +208,14 @@ cmd_audit() {
     echo "Review the above files. If they should be bumped, add them to .version-bump.json."
     return 1
   fi
+
+  return "$has_drift"
 }
 
 cmd_bump() {
   local new_version="$1"
 
-  if ! echo "$new_version" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+'; then
+  if [[ ! "$new_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "error: '$new_version' does not look like a version (expected X.Y.Z)" >&2
     exit 1
   fi
