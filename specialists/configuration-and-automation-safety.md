@@ -38,7 +38,7 @@ Configuration and automation can change production faster than ordinary code pat
 
 - Current work phase, next decision, what is known, and assumptions where details are missing.
 - Config or automation surface, consumers, environments, affected production state, and local change path.
-- Runtime config values, input source, schema, allowed values, defaults, invariants, dependency ordering, scheduling or priority class, unsafe values, and unsafe combinations.
+- Runtime config values, input source, schema, required and non-empty fields, allowed values, defaults, invariants, dependency ordering, scheduling or priority class, unsafe values, and unsafe combinations.
 - Dormant or not-yet-in-service features present in production binaries, their activation guards, test evidence, and safe disabled behavior.
 - Generated or derived config state, producer and receiver validation, accepted-versus-applied status, fanout or pull behavior, last-known-good snapshots, cross-version readers or writers, queues, caches, and client-visible artifacts that may survive rollback.
 - Rejected or pending config state, quarantine location, retry behavior, and whether later unrelated changes can carry failed config forward if validation is disabled or bypassed.
@@ -54,7 +54,7 @@ Configuration and automation can change production faster than ordinary code pat
 ## Workflow
 
 1. **Classify the surface and change class.** Separate static config, dynamic config, generated changes, scheduled automation, and emergency automation; name the change class as low-risk, standard production, or emergency, with a distinct confirmation path for each class.
-2. **Define the contract.** Specify schema, defaults, bounds, invariants, local change path, and incompatible combinations.
+2. **Define the contract.** Specify schema, required and non-empty inputs, safe defaults, bounds, invariants, local change path, and incompatible combinations. Missing, blank, or unknown inputs that can mutate or delete production state must fail closed.
 3. **Inventory override risk before cleanup.** Find runtime config values, unsafe values, temporary overrides, and stale settings; block cleanup automation when any production-impacting entry lacks owner, expiry, validation evidence, cleanup action, and rollback target.
 4. **Record production changes.** For production-impacting changes, including pre-launch production, capture user confirmation, confirmation basis, expected blast radius, and recovery path before execution.
 5. **Validate before execution.** Require parse, semantic, dependency, permission, target-scope, and environment checks before production use; for tabular bulk inputs, reject unknown columns, duplicate targets, missing required values, unsafe deltas, and changes above per-tenant caps. Check generated state, producer and receiver-side validation for generated configs, dormant-feature activation guards, current ownership, route or policy scope, version compatibility, scheduling or priority demotions of critical jobs, and minimum healthy capacity where the config can change routing, permissions, or serving eligibility. Quarantine rejected config, make validation gates fail closed, and prove later unrelated changes cannot reintroduce a failed change.
@@ -107,7 +107,7 @@ Use typed config contracts, deterministic validation, effect preview, small faul
 - Configuration or automation safety decision.
 - Change class and confirmation path: low-risk, standard production, or emergency, with required checks and decision rationale.
 - Production change record with user confirmation, expected effect, blast radius, and recovery results where the change can affect production state.
-- Contract: schema, defaults, invariants, scheduling or priority class, unsafe combinations, allowed overrides, and local change path.
+- Contract: schema, required and non-empty inputs, defaults, invariants, scheduling or priority class, unsafe combinations, allowed overrides, and local change path.
 - Dormant-feature guard check with disabled behavior, activation path, test evidence, and rollback or disable action.
 - Bulk input contract: required fields, row identity, duplicate behavior, current-value preconditions, per-tenant caps, skipped-row handling, and aggregate limits.
 - Runtime config and temporary override inventory with owner, expiry, validation evidence, cleanup action, rollback target, and unsafe values called out.
@@ -127,7 +127,7 @@ Use typed config contracts, deterministic validation, effect preview, small faul
 
 - `change_class_confirmed`: low-risk, standard production, or emergency class is named with the required checks for that class.
 - `change_record`: production-impacting config or automation has linked preview, user confirmation, execution identity, and recovery results.
-- `contract_defined`: schema, defaults, bounds, invariants, and local change path are explicit.
+- `contract_defined`: schema, required and non-empty inputs, defaults, bounds, invariants, and local change path are explicit.
 - `preview_checked`: intended production effect is visible before execution.
 - `tracking_mode`: enforcement-style config changes compare predicted and actual effects in tracking mode before production enforcement.
 - `application_state`: accepted, persisted, propagated, and serving-applied config states are distinguishable where they can diverge.
@@ -154,6 +154,7 @@ Use typed config contracts, deterministic validation, effect preview, small faul
 - All readers or processors reload from the config source at once without a cap, jitter, or stop signal.
 - Validation proves syntax while target scope, generated state, ownership, or version compatibility remains unchecked.
 - Defaults differ by environment without a documented reason.
+- Blank or missing inputs silently choose a destructive or time-delayed default.
 - Recovery depends on remembering the previous value manually.
 - Temporary overrides have no expiry or cleanup action.
 

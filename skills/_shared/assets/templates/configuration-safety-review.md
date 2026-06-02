@@ -20,8 +20,8 @@
 
 ## Contract
 
-| Setting | Meaning | Default | Bounds | Priority/Scheduling Class | Unsafe Combinations |
-| --- | --- | --- | --- | --- | --- |
+| Setting | Meaning | Required/Non-Empty? | Default | Bounds | Priority/Scheduling Class | Unsafe Combinations |
+| --- | --- | --- | --- | --- | --- | --- |
 
 ## Dormant Feature Guards
 

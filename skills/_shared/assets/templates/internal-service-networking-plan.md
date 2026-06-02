@@ -54,6 +54,11 @@
 | Path | Packet Size Or Encapsulation Case | Primary Result | Failover Result | Gap |
 | --- | --- | --- | --- | --- |
 
+## Observer Path Safety
+
+| Path | Observer Or Policy Feature | Affected Endpoint Class | Validation | Disable Or Bypass |
+| --- | --- | --- | --- | --- |
+
 ## Operations
 
 | Diagnostic Or Control | Signal | Owner | Runbook | Degraded-Path Check |

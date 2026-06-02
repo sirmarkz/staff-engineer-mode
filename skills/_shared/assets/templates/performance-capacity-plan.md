@@ -52,7 +52,7 @@
 
 ## Control Loop Behavior
 
-| Control | Saturation Input | Expected Action | Capacity Impact | Amplification Guard | Safety Check |
+| Control | Input Contract | Expected Action | Capacity Impact | Amplification Guard | Safety Check |
 | --- | --- | --- | --- | --- | --- |
 
 ## Latency Budget By Hop

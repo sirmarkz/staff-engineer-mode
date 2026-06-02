@@ -46,6 +46,7 @@ Users experience tail latency, not averages.
 - Existing load tests, production incidents, profiling/flame graphs, and regression data.
 - Tested breakpoint, startup-to-ready time, recovery time after stress, and profile differences between normal and heavy load.
 - Headroom rule, autoscaling, load-balancing, or protection-control behavior under saturation, feedback-amplification risks, static failed-domain capacity, and unit-cost constraints.
+- Control-loop input contracts for autoscaling, load-balancing, and protection controls: metric source, unit, labels, filters, missing-data behavior, validation path, and compatibility across changes.
 - Capacity-change plan: scale-up batch size, rebalance work, scheduler or allocator processing cost, and rollback path if adding capacity slows the serving path.
 
 ## Workflow
@@ -58,7 +59,7 @@ Users experience tail latency, not averages.
 6. **Test to the knee.** Run load/stress/spike/soak tests in production-like environments until latency or errors become nonlinear; include representative peak traffic, tenant skew, and background jobs that share serving resources. Record the breakpoint, startup-to-ready time, recovery behavior after stress, and the profile differences that explain bottlenecks.
 7. **Protect the system.** Define admission control, load shedding, prioritization, and graceful degradation before saturation.
 8. **Budget background work.** Set resource ceilings, scheduling limits, and preemption behavior for maintenance, config-processing, compaction, indexing, and other background paths that can starve foreground requests.
-9. **Validate control loops.** Test autoscaling, load-balancing, and protection controls when their input signals are slow, missing, or erroring; confirm the action does not add work to the same saturated path or scale a failing dependency into a feedback loop.
+9. **Validate control loops.** Test autoscaling, load-balancing, and protection controls when their input signals are slow, missing, erroring, renamed, relabeled, or rejected by policy validation; confirm the action does not add work to the same saturated path or scale a failing dependency into a feedback loop.
 10. **Investigate regressions scientifically.** Compare before/after profiles, deploy markers, dependency metrics, cache behavior, and resource saturation.
 11. **Model failed-domain headroom.** For HA requirements, show remaining domains have enough already-available capacity at peak; do not count emergency scaling as the primary recovery mechanism.
 12. **Treat capacity changes as load.** When adding, moving, or reserving capacity, model rebalance work, scheduler or allocator processing, and rollout batch size so the expansion itself cannot create a latency incident.
@@ -110,7 +111,7 @@ Every answer, including narrow regression diagnoses, must state, in this order:
 5. **Queue/backpressure model** for any asynchronous path: queue-depth metric and the backpressure response.
 6. **Hot-path / hot-key analysis**: the suspected hot path or hot key and its mitigation.
 7. Background-work resource budget where maintenance, config-processing, compaction, indexing, or control work shares foreground serving capacity.
-8. Capacity model (normal/peak/burst/failure-domain), capacity-change and rebalance plan, control-loop behavior under saturation with feedback-amplification guard, latency budget by hop, regression analysis, tested breakpoint, recovery-after-stress result, and cost/headroom tradeoff when cost is in scope.
+8. Capacity model (normal/peak/burst/failure-domain), capacity-change and rebalance plan, control-loop input contract and behavior under saturation with feedback-amplification guard, latency budget by hop, regression analysis, tested breakpoint, recovery-after-stress result, and cost/headroom tradeoff when cost is in scope.
 
 ## Checks Before Moving On
 
@@ -123,7 +124,7 @@ Every answer, including narrow regression diagnoses, must state, in this order:
 - `background_budget`: shared-capacity background work has resource ceilings, breach actions, and representative peak-load test coverage.
 - `headroom_check`: capacity includes peak, resource or dependency limits, and expected failure-domain conditions, with static capacity separated from emergency scaling.
 - `capacity_change_load`: capacity additions, reservations, or moves account for rebalance work, scheduler or allocator cost, batch size, and rollback.
-- `control_loop_behavior`: autoscaling, load-balancing, and protection controls have expected actions under saturation, cannot amplify the failing path, and cannot reduce serving capacity below the user contract without an explicit overload decision.
+- `control_loop_behavior`: autoscaling, load-balancing, and protection controls have input metric contracts, expected actions under saturation, compatibility checks for label/filter changes, cannot amplify the failing path, and cannot reduce serving capacity below the user contract without an explicit overload decision.
 - `recovery_after_stress`: recovery time and behavior after stress are measured or explicitly unknown.
 
 ## Red Flags - Stop And Rework

@@ -22,6 +22,11 @@
 | Segment | Coverage | Known Risk | Action |
 | --- | --- | --- | --- |
 
+## Client Exposure And Feature Load
+
+| Entry Point Or Default | Expected Usage Change | Backend Or Feature Capacity | Failure Signal | Rollback/Kill Switch |
+| --- | --- | --- | --- | --- |
+
 ## Compatibility
 
 | Backend/API/Config | Environment Target | Minimum Version | Offline/Sync Behavior | Kill Switch |

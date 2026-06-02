@@ -52,6 +52,11 @@
 | Aggregated Operation | Scope Boundary | Unavailable-Scope Behavior | Partial Result Signal | Global Failure Exception |
 | --- | --- | --- | --- | --- |
 
+## Result Metadata Invariants
+
+| Collection Operation | Count/Total/Continuation Field | Payload Match Check | Partial Result Signal | Client Fallback |
+| --- | --- | --- | --- | --- |
+
 ## Security And Audit Requirements
 
 | Surface | Authentication/Authorization | Audit Event | Sensitive Data Rule | Abuse Control |

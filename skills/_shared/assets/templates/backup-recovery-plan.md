@@ -18,9 +18,19 @@
 | Data Set | Key Responsibility | Immutability | Restore Validation |
 | --- | --- | --- | --- |
 
+## Backup Creation Path
+
+| Artifact | Creation Dependency | Backlog Or Retry Behavior | Blast Radius | Alternate Path |
+| --- | --- | --- | --- | --- |
+
 ## Restore Runbook
 
 | Step | Command Or Action | Prerequisite | Expected Result | Rollback |
+| --- | --- | --- | --- | --- |
+
+## Alternate Restore Target
+
+| Scenario | Alternate Target | Promotion Or Redirect | Validation | Limitation |
 | --- | --- | --- | --- | --- |
 
 ## Restore Capacity Guardrails
@@ -31,6 +41,11 @@
 ## Recovery Scenarios
 
 | Scenario | Method | Validation | Last Tested | Gap |
+| --- | --- | --- | --- | --- |
+
+## Client-Visible References
+
+| Reference | Restore Behavior | Repair Or Redirect | User Communication | Verification |
 | --- | --- | --- | --- | --- |
 
 ## Restore Test Results

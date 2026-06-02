@@ -13,6 +13,11 @@
 | Artifact | Build Time | Confirmation Path | Verification Location |
 | --- | --- | --- | --- |
 
+## Provenance Consumer Compatibility
+
+| Provenance Change | Reader Or Display | Old-Type Behavior | New-Type Behavior | Deprecation Gate |
+| --- | --- | --- | --- | --- |
+
 ## Dependency Inventory
 
 | Dependency | Producer | Consumer | Retention | Vulnerability Checkpoint |

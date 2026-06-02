@@ -40,6 +40,7 @@ Mobile releases are hard to roll back, so stability checks must be conservative 
 - Stability metrics: crash-free users/sessions, hang rate, startup failures, fatal/non-fatal error rate, and watchdog events.
 - Device/OS/app-version/network/account-policy segmentation and known high-risk cohorts.
 - Critical journeys, offline behavior, sync/data-loss risk, and backend compatibility.
+- UI entry points, feature prominence, deep links, notifications, or defaults that can increase use of an existing path without changing its implementation.
 - Backend response normalization, environment target selection, remote config compatibility, local data migrations, and app-version adoption lag that can keep a bad state after a server rollback.
 - Telemetry fields, privacy controls, symbolication/deobfuscation, and alerting thresholds.
 - Rollback, halt, kill switch, remote config, and forward-fix options.
@@ -48,7 +49,7 @@ Mobile releases are hard to roll back, so stability checks must be conservative 
 
 1. **Define mobile SLIs.** Use crash-free users/sessions, hang rate, startup success, and critical journey success.
 2. **Segment the rollout.** Check by platform, app version, device class, OS version, geography/network, account policy, entitlement, or managed cohort where risk warrants it.
-3. **Set staged thresholds.** Define metrics and sample-size requirements for each widening step.
+3. **Set staged thresholds.** Define metrics and sample-size requirements for each widening step, including client-exposure or UI-prominence changes that can create a backend or feature-usage surge.
 4. **Use explicit stability checks.** If local budgets are missing, propose provisional checks with windows: crash-free users at least 99.5%, crash-free sessions at least 99.9%, hang/ANR rate no worse than baseline plus 10% and below the app's severe-alert threshold, measured over each 24-hour rollout step before widening.
 5. **Check compatibility.** Verify backend, API, schema, feature flag, config, and environment-target compatibility with old and new app versions. Include response normalization, stale remote config, client-held state, and local data migrations so server rollback does not hide a client crash or startup loop.
 6. **Plan offline and sync behavior.** Test intermittent network, stale config, retry, conflict, and data-loss scenarios.
@@ -97,6 +98,7 @@ Use staged mobile rollout with crash-free, hang, startup, and critical-journey b
 - Mobile release train and staged rollout plan.
 - Crash-free users/sessions, hang/ANR, startup, and critical-journey budgets with numeric thresholds and measurement windows.
 - Device/OS/app-version/account-policy segmentation plan.
+- Client-exposure and feature-usage surge check for new entry points, defaults, notifications, or UI prominence changes.
 - Backend/API/config compatibility plan.
 - Environment target validation for production, pre-production, sandbox, and test backends or dependency tiers.
 - Server-client compatibility plan covering response normalization, stale config, client-held state, local migrations, and adoption lag.
@@ -109,6 +111,7 @@ Use staged mobile rollout with crash-free, hang, startup, and critical-journey b
 - `stability_budget`: crash-free, hang, startup, and critical journey thresholds are defined.
 - `segment_check`: device, OS, app version, network, account policy, entitlement, and managed-cohort segmentation is considered.
 - `compatibility_check`: backend, API, config, and old-version compatibility are addressed.
+- `exposure_load_check`: client entry-point, default, notification, or UI-prominence changes have expected usage, backend capacity, and critical-journey failure signals before broad exposure.
 - `environment_target_check`: release artifacts point at the intended backend and dependency tiers before broad rollout.
 - `server_client_state`: response normalization, stale config, client-held state, local migrations, and adoption lag are covered before broad rollout.
 - `halt_fix_check`: rollout halt, kill switch, rollback, or forward-fix path is explicit.

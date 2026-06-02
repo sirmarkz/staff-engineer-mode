@@ -20,6 +20,11 @@
 | Component/Journey | State Or Content Variant | Constraint | Blocks Release? | Evidence |
 | --- | --- | --- | --- | --- |
 
+## Request Target Checks
+
+| Client Path | Intended Target | Document-Origin Risk | Failure Handling | Evidence |
+| --- | --- | --- | --- | --- |
+
 ## Accessibility Smoke Checks
 
 | Check | Tool/Manual Step | Blocks Release? | Evidence |
