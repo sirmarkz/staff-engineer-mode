@@ -1,11 +1,10 @@
 # Staff Engineer Mode
 
 Staff Engineer Mode bakes decades of major-outage lessons into a set of
-specialists. Each one carries thousands of engineer-years of judgment from the
-senior and distinguished engineers who built and operated systems at the
-largest scale, and turns it into availability, reliability, resilience,
-security, operability, compatibility, and rollout-safety checks before your
-code ships.
+specialists. Each carries thousands of engineer-years of judgment from the
+engineers who built and ran systems at the largest scale. You get
+availability, reliability, resilience, security, operability, compatibility,
+and rollout-safety checks before your code ships.
 
 ## Sources
 
