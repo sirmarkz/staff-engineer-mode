@@ -1,27 +1,28 @@
 # Staff Engineer Mode
 
-Staff Engineer Mode bakes lessons from major outages into one set of agents,
-combining thousands of engineer-years of knowledge from senior and
-distinguished engineers across the most influential computing companies over
-the past decade. It turns that knowledge into availability, reliability,
-resilience, security, operability, compatibility, and rollout-safety checks
-before code ships.
+Staff Engineer Mode bakes decades of major-outage lessons into a set of
+specialists. Each one carries thousands of engineer-years of judgment from the
+senior and distinguished engineers who built and operated systems at the
+largest scale, and turns it into availability, reliability, resilience,
+security, operability, compatibility, and rollout-safety checks before your
+code ships.
 
 ## Sources
 
-Representative source families include AWS Builders' Library, Google SRE and
-Software Engineering at Google, Meta Engineering, Microsoft SDL and DevOps
-guidance, Apple security and privacy docs, Netflix resilience work, and
-standards or guidance from NIST, CISA, OWASP, OpenSSF, IETF, and W3C.
+Every outage case study here is built on a primary incident record: AWS
+post-event summaries, Azure post-incident reviews, Google Cloud and Google
+Workspace incident reports, Meta's outage writeups, and Netflix's AWS-outage
+analysis.
 
-The outage and reliability guidance uses official incident sources, including
-AWS post-event summaries, Azure post-incident reviews, Google Cloud incident
-reports, Google Workspace incident reports, Meta outage writeups, and the
-Netflix technology-blog AWS outage writeup.
+The broader practices rest on first-party engineering sources: AWS Builders'
+Library, Google's SRE books and Software Engineering at Google, Meta
+Engineering, Microsoft's SDL and DevOps guidance, Apple's security and privacy
+documentation, and Netflix's resilience work. Standards and guidance come from
+NIST, CISA, OWASP, OpenSSF, IETF, and W3C.
 
 See the [source index](skills/_shared/references/source-index.md) for the full
 reference set. Staff Engineer Mode is independent and is not endorsed by or
-affiliated with those organizations.
+affiliated with these organizations.
 
 ## How It Works
 
