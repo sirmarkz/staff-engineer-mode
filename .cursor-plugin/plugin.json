@@ -2,7 +2,7 @@
   "name": "staff-engineer-mode",
   "displayName": "Staff Engineer Mode",
   "description": "Major outage lessons baked into AI agents trained by thousands of engineer-years of production knowledge.",
-  "version": "1.9.4",
+  "version": "1.10.0",
   "author": {
     "name": "sirmarkz"
   },

@@ -1,5 +1,17 @@
 # Staff Engineer Mode Release Notes
 
+## 1.10.0 - 2026-06-02
+
+Outage/RCA source expansion release.
+
+- Adds a large first-party outage and incident case-study source set covering
+  AWS, Azure, Google Cloud, Google Workspace, Meta, and Netflix incident
+  records.
+- Integrates full-corpus reliability lessons into routed specialists and shared
+  templates while keeping guidance technology-agnostic.
+- Refreshes README source language and hardens SessionStart bootstrap spacing
+  so routed context remains readable after host linebreak collapse.
+
 ## 1.9.4 - 2026-06-01
 
 README and marketplace copy refresh.
