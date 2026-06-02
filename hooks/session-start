@@ -23,8 +23,15 @@ escape_for_json() {
   printf '%s' "$s"
 }
 
+linebreak_collapse_safe() {
+  local s="$1"
+  s="${s//$'\n'/$' \n'}"
+  printf '%s' "$s"
+}
+
 emit_context() {
   local session_context="$1"
+  session_context="$(linebreak_collapse_safe "$session_context")"
   session_context="$(escape_for_json "$session_context")"
 
   if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then

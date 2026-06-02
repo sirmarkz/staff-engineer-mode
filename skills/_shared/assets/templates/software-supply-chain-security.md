@@ -7,8 +7,11 @@
 
 ## Provenance And Integrity
 
-| Artifact | Source Revision | Accepted Change | Builder Identity | Dependency Inputs | Build Time | Confirmation Path | Verification Location |
-| --- | --- | --- | --- | --- | --- | --- | --- |
+| Artifact | Source Revision | Accepted Change | Builder Identity | Dependency Inputs |
+| --- | --- | --- | --- | --- |
+
+| Artifact | Build Time | Confirmation Path | Verification Location |
+| --- | --- | --- | --- |
 
 ## Dependency Inventory
 

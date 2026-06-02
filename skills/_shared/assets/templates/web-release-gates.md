@@ -15,6 +15,11 @@
 | Signal | Lab Source | Field Source | Segment | Owner |
 | --- | --- | --- | --- | --- |
 
+## Component State Checks
+
+| Component/Journey | State Or Content Variant | Constraint | Blocks Release? | Evidence |
+| --- | --- | --- | --- | --- |
+
 ## Accessibility Smoke Checks
 
 | Check | Tool/Manual Step | Blocks Release? | Evidence |
@@ -27,7 +32,7 @@
 
 ## Compatibility And Rollback
 
-| Browser/Device/Config | Risk | Rollout Guard | Rollback/Kill Switch |
+| Browser/Device/Extension/Config | Risk | Rollout Guard | Rollback/Kill Switch |
 | --- | --- | --- | --- |
 
 ## Privacy-Safe Telemetry

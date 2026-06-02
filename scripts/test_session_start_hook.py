@@ -44,6 +44,21 @@ class SessionStartHookTests(unittest.TestCase):
         self.assertIsInstance(output["additionalContext"], str)
         self.assertGreater(len(output["additionalContext"]), 0)
 
+    def test_session_start_context_survives_linebreak_collapse(self) -> None:
+        result = self.run_session_start()
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        output = json.loads(result.stdout)
+        context = output["additionalContext"]
+        collapsed = context.replace("\n", "")
+
+        self.assertRegex(collapsed, r"SPECIALIST_ROOT=.* ROUTER_PATH=")
+        self.assertRegex(collapsed, r"ROUTER_PATH=.* EVENT_HOOK=")
+        self.assertRegex(collapsed, r"EVENT_HOOK=.* CURRENT_REPO=")
+        self.assertRegex(collapsed, r"specialist\. +This precedence")
+        self.assertRegex(collapsed, r"first\. +Direct commit/amend")
+        self.assertRegex(collapsed, r"guidance\. +Do not parallel-load")
+
     def test_session_start_missing_template_exits_cleanly_with_fallback_context(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             plugin_root = Path(tmp)
@@ -84,7 +99,7 @@ class SessionStartHookTests(unittest.TestCase):
         fields = {
             key: value
             for key, value in (
-                line.split("=", 1)
+                (part.strip() for part in line.split("=", 1))
                 for line in context.splitlines()
                 if "=" in line
             )

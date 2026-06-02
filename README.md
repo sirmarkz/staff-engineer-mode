@@ -12,7 +12,11 @@ before code ships.
 Representative source families include AWS Builders' Library, Google SRE and
 Software Engineering at Google, Meta Engineering, Microsoft SDL and DevOps
 guidance, Apple security and privacy docs, Netflix resilience work, and
-standards or guidance from NIST, CISA, OWASP, OpenSSF, IETF, and W3C. See the
+standards or guidance from NIST, CISA, OWASP, OpenSSF, IETF, and W3C. The
+outage and reliability guidance uses official incident sources, including AWS
+post-event summaries, Azure post-incident reviews, Google Cloud incident
+reports, Google Workspace incident reports, Meta outage writeups, and the
+Netflix technology-blog AWS outage writeup. See the
 [source index](skills/_shared/references/source-index.md) for the full
 reference set. Staff Engineer Mode is independent and is not endorsed by or
 affiliated with those organizations.

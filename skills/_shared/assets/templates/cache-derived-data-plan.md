@@ -19,8 +19,8 @@
 
 ## Stampede And Miss Amplification
 
-| Scenario | Protection | Backing-Load Limit | Verification |
-| --- | --- | --- | --- |
+| Scenario | Protection | Refresh/Rebuild Spread | Backing-Load Limit | Verification |
+| --- | --- | --- | --- | --- |
 
 ## Failure Behavior
 
