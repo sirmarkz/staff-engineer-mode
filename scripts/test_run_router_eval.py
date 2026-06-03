@@ -23,27 +23,138 @@ def load_runner():
 
 
 class RouterEvalHarnessTests(unittest.TestCase):
-    def test_parse_sample_prompts_produces_four_cases_per_specialist(self) -> None:
+    def test_parse_positive_routings_produces_five_cases_per_specialist(self) -> None:
         runner = load_runner()
 
-        cases = runner.parse_sample_prompts()
+        cases = runner.parse_positive_routings()
         names = runner.specialist_names()
 
-        self.assertEqual(len(cases), len(names) * 4 + 4)
+        self.assertEqual(len(cases), len(names) * 5 + 4)
         self.assertEqual(sum(1 for case in cases if case["expected_primary"] == "none"), 4)
-        self.assertTrue(all(case["category"] in {"sample_prompt", "out_of_scope"} for case in cases))
+        self.assertTrue(all(case["category"] in {"positive_routing", "out_of_scope"} for case in cases))
+
+    def test_parse_boundary_prompts_has_all_boundary_categories_per_specialist(self) -> None:
+        runner = load_runner()
+
+        cases = runner.parse_boundary_prompts()
+        names = set(runner.specialist_names())
+        counts: dict[str, int] = {}
+        by_target: dict[str, set[str]] = {}
+        for case in cases:
+            target = str(case["target_specialist"])
+            counts[target] = counts.get(target, 0) + 1
+            by_target.setdefault(target, set()).add(str(case["category"]))
+
+        self.assertEqual(len(cases), len(names) * 20)
+        self.assertEqual(set(by_target), names)
+        for name in names:
+            self.assertEqual(counts[name], 20)
+            self.assertEqual(
+                by_target[name],
+                {"negative", "near_miss", "keyword_bait", "adversarial"},
+            )
+        self.assertTrue(all("design_source" not in case for case in cases))
+        self.assertTrue(
+            all(case["expected_primary"] != case["target_specialist"] for case in cases),
+            "boundary cases should prove the named specialist does not fire on near misses",
+        )
+
+    def test_load_catalog_cases_selects_boundary_catalog(self) -> None:
+        runner = load_runner()
+
+        cases = runner.load_catalog_cases("boundary", "all")
+
+        self.assertTrue(cases)
+        self.assertTrue(
+            all(
+                case["category"]
+                in {"negative", "near_miss", "keyword_bait", "adversarial"}
+                for case in cases
+            )
+        )
+
+    def test_load_catalog_cases_combines_sample_and_boundary_catalogs(self) -> None:
+        runner = load_runner()
+
+        sample_cases = runner.load_catalog_cases("positive", "all")
+        boundary_cases = runner.load_catalog_cases("boundary", "all")
+        all_cases = runner.load_catalog_cases("all", "all")
+
+        self.assertEqual(len(all_cases), len(sample_cases) + len(boundary_cases))
 
     def test_filter_cases_by_category_selects_out_of_scope_cases(self) -> None:
         runner = load_runner()
 
-        cases = runner.filter_cases_by_category(runner.parse_sample_prompts(), "out_of_scope")
+        cases = runner.filter_cases_by_category(runner.parse_positive_routings(), "out_of_scope")
 
         self.assertEqual(len(cases), 4)
         self.assertTrue(all(case["expected_primary"] == "none" for case in cases))
 
+    def test_select_cases_by_id_preserves_requested_order_and_original_ids(self) -> None:
+        runner = load_runner()
+        cases = [
+            {
+                "prompt": "Design a highly available checkout service.",
+                "expected_primary": "high-availability-design",
+                "expected_behavior": "route to HA",
+                "category": "positive_routing",
+                "expected_checks": ["single_primary", "intent_inference"],
+            },
+            {
+                "prompt": "Define error budget policy for checkout.",
+                "expected_primary": "slo-and-error-budgets",
+                "expected_behavior": "route to SLO policy",
+                "category": "positive_routing",
+                "expected_checks": ["single_primary", "intent_inference"],
+            },
+        ]
+
+        selected = runner.select_cases_by_id(cases, ["002-slo-and-error-budgets", "001-high-availability-design"])
+
+        self.assertEqual(
+            [case["expected_primary"] for case in selected],
+            ["slo-and-error-budgets", "high-availability-design"],
+        )
+        self.assertEqual(runner.case_id(1, selected[0]), "002-slo-and-error-budgets")
+        self.assertEqual(runner.case_id(2, selected[1]), "001-high-availability-design")
+
+    def test_select_cases_by_id_rejects_unknown_and_duplicate_ids(self) -> None:
+        runner = load_runner()
+        cases = [
+            {
+                "prompt": "Design a highly available checkout service.",
+                "expected_primary": "high-availability-design",
+                "expected_behavior": "route to HA",
+                "category": "positive_routing",
+                "expected_checks": ["single_primary", "intent_inference"],
+            }
+        ]
+
+        with self.assertRaises(SystemExit):
+            runner.select_cases_by_id(cases, ["999-missing"])
+        with self.assertRaises(SystemExit):
+            runner.select_cases_by_id(cases, ["001-high-availability-design", "001-high-availability-design"])
+
+    def test_load_case_id_file_accepts_plain_ids_and_failure_summary_lines(self) -> None:
+        runner = load_runner()
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "failures.txt"
+            path.write_text(
+                "# failed full run\n"
+                "068-release-build-reproducibility\n"
+                "748-data-contracts failed:\n"
+                "\n",
+                encoding="utf-8",
+            )
+
+            ids = runner.load_case_id_file(path)
+
+        self.assertEqual(ids, ["068-release-build-reproducibility", "748-data-contracts"])
+
     def test_random_specialist_cases_selects_distinct_specialists(self) -> None:
         runner = load_runner()
-        cases = runner.filter_cases_by_category(runner.parse_sample_prompts(), "sample_prompt")
+        cases = runner.filter_cases_by_category(runner.parse_positive_routings(), "positive_routing")
 
         selected = runner.random_specialist_cases(cases, 10, "release-seed")
 
@@ -52,9 +163,19 @@ class RouterEvalHarnessTests(unittest.TestCase):
         self.assertEqual(len(set(primaries)), 10)
         self.assertNotIn("none", primaries)
 
+    def test_random_specialist_cases_uses_boundary_target_specialists(self) -> None:
+        runner = load_runner()
+        cases = runner.parse_boundary_prompts()
+
+        selected = runner.random_specialist_cases(cases, 10, "release-seed")
+
+        targets = [case["target_specialist"] for case in selected]
+        self.assertEqual(len(selected), 10)
+        self.assertEqual(len(set(targets)), 10)
+
     def test_random_specialist_cases_is_seed_deterministic(self) -> None:
         runner = load_runner()
-        cases = runner.filter_cases_by_category(runner.parse_sample_prompts(), "sample_prompt")
+        cases = runner.filter_cases_by_category(runner.parse_positive_routings(), "positive_routing")
 
         first = runner.random_specialist_cases(cases, 10, "release-seed")
         second = runner.random_specialist_cases(cases, 10, "release-seed")
@@ -66,7 +187,7 @@ class RouterEvalHarnessTests(unittest.TestCase):
 
     def test_random_specialist_cases_rejects_invalid_counts(self) -> None:
         runner = load_runner()
-        cases = runner.filter_cases_by_category(runner.parse_sample_prompts(), "sample_prompt")
+        cases = runner.filter_cases_by_category(runner.parse_positive_routings(), "positive_routing")
 
         with self.assertRaises(SystemExit):
             runner.random_specialist_cases(cases, 0, "release-seed")
@@ -84,6 +205,17 @@ class RouterEvalHarnessTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "stdout-failure-token"):
                 runner.command_response("adapter", "prompt")
 
+    def test_command_response_marks_adapter_failures(self) -> None:
+        runner = load_runner()
+
+        with patch.object(
+            runner.subprocess,
+            "run",
+            return_value=subprocess.CompletedProcess("adapter", 1, "", "transient provider failure\n"),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "command failed: transient provider failure"):
+                runner.command_response("adapter", "prompt")
+
     def test_main_rejects_limit_with_random_selection(self) -> None:
         runner = load_runner()
 
@@ -93,6 +225,28 @@ class RouterEvalHarnessTests(unittest.TestCase):
                     sys,
                     "argv",
                     ["run_router_eval.py", "--sample", "all", "--limit", "5", flag, "2", "--list-cases"],
+                ):
+                    with self.assertRaises(SystemExit):
+                        runner.main()
+
+    def test_main_rejects_case_ids_with_random_or_limit_selection(self) -> None:
+        runner = load_runner()
+
+        for flag in ("--random", "--random-specialists", "--limit"):
+            with self.subTest(flag=flag):
+                with patch.object(
+                    sys,
+                    "argv",
+                    [
+                        "run_router_eval.py",
+                        "--sample",
+                        "all",
+                        "--case-id",
+                        "001-high-availability-design",
+                        flag,
+                        "1",
+                        "--list-cases",
+                    ],
                 ):
                     with self.assertRaises(SystemExit):
                         runner.main()
@@ -136,14 +290,14 @@ class RouterEvalHarnessTests(unittest.TestCase):
                 "prompt": "Design a highly available checkout service.",
                 "expected_primary": "high-availability-design",
                 "expected_behavior": "route to HA",
-                "category": "sample_prompt",
+                "category": "positive_routing",
                 "expected_checks": ["single_primary", "intent_inference"],
             },
             {
                 "prompt": "Define error budget policy for checkout.",
                 "expected_primary": "slo-and-error-budgets",
                 "expected_behavior": "route to SLO policy",
-                "category": "sample_prompt",
+                "category": "positive_routing",
                 "expected_checks": ["single_primary", "intent_inference"],
             },
         ]
@@ -215,7 +369,7 @@ class RouterEvalHarnessTests(unittest.TestCase):
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
-            "category": "sample_prompt",
+            "category": "positive_routing",
             "expected_checks": ["single_primary", "unknown_shape_check"],
         }
         response = """```routing
@@ -230,6 +384,55 @@ class RouterEvalHarnessTests(unittest.TestCase):
             result.failures,
         )
 
+    def test_summarize_counts_failure_types(self) -> None:
+        runner = load_runner()
+        results = [
+            runner.CaseResult(
+                case_id="748-data-contracts",
+                category="near_miss",
+                expected_primary="data-contracts",
+                actual_primary=None,
+                passed=False,
+                failures=["missing routing block"],
+            ),
+            runner.CaseResult(
+                case_id="278-none",
+                category="negative",
+                expected_primary="none",
+                actual_primary="api-design-and-compatibility",
+                passed=False,
+                failures=[
+                    "forbidden skill name leaked: api-design-and-compatibility",
+                    "routing block emitted for low-confidence or out-of-scope case",
+                    "scope_check check failed: routed out-of-scope prompt",
+                ],
+            ),
+        ]
+
+        summary = runner.summarize(results)
+
+        self.assertEqual(summary["failure_types"], {"model_format": 1, "over_route": 1})
+        self.assertEqual(summary["failures"][0]["failure_types"], ["model_format"])
+        self.assertEqual(summary["failures"][1]["failure_types"], ["over_route"])
+
+    def test_summarize_counts_command_errors(self) -> None:
+        runner = load_runner()
+        results = [
+            runner.CaseResult(
+                case_id="673-observability-and-alerting",
+                category="near_miss",
+                expected_primary="observability-and-alerting",
+                actual_primary=None,
+                passed=False,
+                failures=["command failed: gpt-image-2 does not exist"],
+            )
+        ]
+
+        summary = runner.summarize(results)
+
+        self.assertEqual(summary["failure_types"], {"command_error": 1})
+        self.assertEqual(summary["failures"][0]["failure_types"], ["command_error"])
+
 
     def test_no_skill_invoke_check_fails_on_specialist_skill_call(self) -> None:
         runner = load_runner()
@@ -237,7 +440,7 @@ class RouterEvalHarnessTests(unittest.TestCase):
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
-            "category": "sample_prompt",
+            "category": "positive_routing",
             "expected_checks": ["single_primary", "intent_inference", "no_skill_invoke"],
         }
         response = """```routing
@@ -255,7 +458,7 @@ Skill(staff-engineer-mode:high-availability-design)
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
-            "category": "sample_prompt",
+            "category": "positive_routing",
             "expected_checks": ["single_primary", "intent_inference", "no_skill_invoke"],
         }
         for invocation in (
@@ -283,7 +486,7 @@ Skill(staff-engineer-mode:high-availability-design)
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
-            "category": "sample_prompt",
+            "category": "positive_routing",
             "expected_checks": ["single_primary", "intent_inference", "no_skill_invoke"],
         }
         response = """```routing
@@ -301,7 +504,7 @@ Read(/abs/path/specialists/high-availability-design.md)
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
-            "category": "sample_prompt",
+            "category": "positive_routing",
             "expected_checks": ["single_primary", "intent_inference", "read_load"],
         }
         body = (
@@ -323,7 +526,7 @@ Read(/abs/path/specialists/high-availability-design.md)
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
-            "category": "sample_prompt",
+            "category": "positive_routing",
             "expected_checks": ["single_primary", "intent_inference", "read_load"],
         }
         body = (
@@ -346,7 +549,7 @@ Read(/abs/path/specialists/high-availability-design.md)
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
-            "category": "sample_prompt",
+            "category": "positive_routing",
             "expected_checks": ["single_primary", "intent_inference", "read_load"],
         }
         body = (
@@ -375,7 +578,7 @@ Read(/abs/path/specialists/high-availability-design.md)
             "prompt": "Design a highly available checkout service.",
             "expected_primary": "high-availability-design",
             "expected_behavior": "route to HA",
-            "category": "sample_prompt",
+            "category": "positive_routing",
             "expected_checks": ["single_primary", "intent_inference", "read_load"],
         }
         response = (

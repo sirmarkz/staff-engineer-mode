@@ -21,7 +21,7 @@ Engineering documentation is useful only when it is findable, maintained, curren
 
 ## When To Use
 
-- The user is designing, restructuring, or lifecycle-managing engineering docs, runbooks, design docs, decision records, onboarding guides, operational references, or documentation standards.
+- The user is designing, restructuring, or lifecycle-managing engineering docs, runbooks, design docs, decision records, onboarding guides, operational references, or documentation standards that need ownership, source-of-truth, freshness, archive, or operational-accuracy rules.
 - The user asks to inventory stale docs or decide ownership, source of truth, freshness rules, verification cadence, or archive criteria.
 - Documentation is stale, duplicated, missing hard to find, or disconnected from code and operations.
 - A launch, migration, incident, or deprecation needs docs that remain accurate after the change lands.
@@ -32,7 +32,7 @@ Engineering documentation is useful only when it is findable, maintained, curren
 - The main artifact is an architecture decision; use `architecture-decisions`.
 - The main artifact is an incident timeline or postmortem; use `incident-response-and-postmortems`.
 - The request is marketing, sales, or public positioning copy.
-- The request is routine editorial or mechanical documentation maintenance with no source-of-truth dispute, operational guidance gap, stale-doc risk, or lifecycle decision.
+- The request is routine editorial, explanatory, or mechanical documentation work with no source-of-truth dispute, operational guidance gap, stale-doc risk, or lifecycle decision.
 
 ## Info To Gather
 

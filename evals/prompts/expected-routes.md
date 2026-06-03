@@ -1,4 +1,4 @@
-# Sample Prompts
+# Router Correct Routing Prompts
 
 You do not need to name specialists when you use Staff Engineer Mode. These
 prompts are grouped by specialist file so you can see the kinds of repository
@@ -15,6 +15,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Design the new partner API before implementation: resource names, operation shapes, errors, idempotency, and future compatibility."
 - "The mobile SDK and a partner integration both read this response field; check whether changing it stays compatible and define the client rollout."
 - "Several SDKs and partner clients still parse this response field; check compatibility before changing its type or semantics."
+- "A generated client treats missing fields differently from null fields; review the response change and define how old clients keep working."
 
 ### `architecture-decisions`
 
@@ -22,6 +23,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Turn the decision in this PR into a short ADR with tradeoffs and revisit conditions."
 - "Compare these two proposed service-boundary designs and tell me which is easier to operate and change later."
 - "Map the current background jobs and request paths, then recommend whether the new worker boundary should own retries or leave them with callers."
+- "The team wants one owner for checkout reconciliation; compare keeping it in the API service versus a separate worker with decision criteria."
 
 ### `data-contracts`
 
@@ -29,6 +31,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Define the producer and consumer contract for this shared schema field, including compatibility and deprecation rules."
 - "Inspect this existing shared data shape and define producer/consumer compatibility rules before changing it."
 - "A reporting table adds nullable columns and changes enum meanings; check producer and consumer expectations before publishing it."
+- "A domain event gains a nested address payload; define producer guarantees, consumer rollout checks, and what values may be omitted."
 
 ## Reliability And Resilience
 
@@ -38,6 +41,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this service's SLO burn-rate rules and separate urgent alerts from follow-up-only budget responses."
 - "Use the service code and recent incidents to draft error-budget release rules."
 - "Checkout has fast failures and slow successes; decide which user outcome should burn budget and which alerts should stay non-urgent follow-ups."
+- "A service is meeting latency charts but users abandon retries; define the reliability target and release policy around that outcome."
 
 ### `high-availability-design`
 
@@ -45,6 +49,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the failover code path, static capacity, and runbook, then list the availability assumptions we still need to check."
 - "Trace the serving path and fault-domain map, then identify which shared dependency or control-plane loss could break high availability for the whole feature."
 - "During a zone evacuation, this feature still needs reads and writes; inspect which components share a failover dependency."
+- "The control plane can only run in one location; map whether steady-state capacity survives losing that location."
 
 ### `dependency-resilience`
 
@@ -52,6 +57,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Trace this existing queue consumer and tell me how it behaves when the dependency gets slow."
 - "Inspect this downstream payment dependency call and find where retries could double-charge or duplicate work."
 - "A checkout worker has retries, a queue, and a fallback; verify overload behavior when its dependency stalls."
+- "A fraud check sometimes takes five seconds; set caller behavior for timeout, fallback, duplicate requests, and overload."
 
 ### `performance-and-capacity`
 
@@ -59,6 +65,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this load-test script and tell me whether it shows enough headroom for the code path it exercises."
 - "Trace the hot path for this endpoint and point out likely bottlenecks before traffic doubles."
 - "P99 doubled only for large tenants after the merge; use traces and profiles to find the saturation point."
+- "Traffic will triple during enrollment week; choose load scenarios, headroom targets, and bottleneck probes before the event."
 
 ### `backup-and-recovery`
 
@@ -66,6 +73,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this migration and tell me how we would recover from production data corruption or accidental deletion."
 - "Read the disaster-recovery runbook and backup files, then call out restore assumptions that still need a test."
 - "Before deleting old records, verify we can restore a tenant snapshot and reconcile writes made during recovery."
+- "A bulk import may overwrite historical records; define the restore rehearsal and reconciliation evidence before it runs."
 
 ### `resilience-experiments`
 
@@ -73,6 +81,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the failover script and monitoring, then plan a game day with blast-radius limits and abort criteria."
 - "Look at this chaos-test PR and define stop conditions, impact limits, learning goals, and rollback steps."
 - "Plan a drill where the queue broker returns errors for ten minutes, with who can abort and what blast radius is allowed."
+- "Inject packet loss into one internal dependency during a limited window and define abort signals, observers, and learning goals."
 
 ### `state-machine-correctness`
 
@@ -80,6 +89,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this existing locking code and tests for races, impossible states, or missed concurrency edges."
 - "Design property tests or simulations for this high-stakes money-moving state machine."
 - "The order can move from paid to canceled during retry races; enumerate invalid transitions and how to test them."
+- "Subscriptions can pause, resume, cancel, and renew on the same invoice cycle; enumerate forbidden transitions and eventual outcomes."
 
 ## Delivery And Quality
 
@@ -89,6 +99,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the CI config and test layout, then find weak signals that could let a bad release through."
 - "Build a practical test plan for this feature using the code that changed in this branch."
 - "The feature touches auth, billing, and background jobs; decide the minimal blocking test set and what can run nightly."
+- "A hotfix skipped two suites last time; decide which checks must block merge versus release for this risky path."
 
 ### `test-data-engineering`
 
@@ -96,6 +107,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Design fixture and golden-file rules for this new integration test suite before it starts using production samples."
 - "Find where production data shape has drifted from the data the tests run on and design a drift-detection check."
 - "These fixtures came from support exports; check whether they are still representative and safe to keep."
+- "The contract tests use hand-written orders that never match holiday traffic; plan representative fixtures and regeneration rules."
 
 ### `configuration-and-automation-safety`
 
@@ -103,13 +115,15 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this automation script and tell me how it can safely mutate production state with an abort path."
 - "Find unsafe runtime config values and temporary overrides before the cleanup automation runs, then add owners, expiry, validation, and rollback."
 - "A script will rewrite tenant limits from a CSV; add preview, validation, per-tenant caps, and rollback."
+- "An ops job will disable dormant accounts from a query result; require dry run output, approval thresholds, rollback, and audit trail."
 
 ### `release-build-reproducibility`
 
 - "Define build reproducibility checks for version consistency, artifact identity, required checks, promotion path, and rollback target."
 - "Inspect the packaging config and design a build-once, promote-many release path."
-- "Find why this repo's builds are flaky or cache-sensitive and rank the fixes."
+- "Trace why identical release-tag inputs produce cache-sensitive package hashes and rank the artifact reproducibility fixes."
 - "Two CI runners produce different package hashes; trace the unpinned inputs before the release is promoted."
+- "The tag, package metadata, and deployed artifact disagree; trace the version line and define promotion evidence."
 
 ### `dev-environment-parity`
 
@@ -117,6 +131,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "This fix worked locally and failed in CI; trace the environment dimensions that differ and tell me which one hid the bug."
 - "Define a drift budget for these environments with action triggers, allowed divergence, and required parity."
 - "Staging uses seeded tenants while local uses mocks; find which environment gap hid this serialization bug."
+- "Only production has the compression setting that triggers this bug; map the drift across environments and close the gap."
 
 ### `progressive-delivery`
 
@@ -124,6 +139,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "This rollout plan has canary metrics but no rollback target; review the stop criteria before exposure."
 - "Define first-rollout stop criteria from deploy workflow signals and canary metrics, including minimum signal, thresholds, owner, abort, and rollback."
 - "Ramp the new ranking path by tenant cohort and define metrics that pause exposure before all users see it."
+- "The search rewrite should reach only low-risk cohorts first; define ramp steps, stop metrics, and rollback ownership."
 
 ### `feature-flag-lifecycle`
 
@@ -131,6 +147,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Find orphan flags whose feature shipped or whose owner left, and propose a safe removal sequence."
 - "Inspect this flag-debt scorecard and tell me which flags will become contradictory defaults if we leave them in."
 - "This flag now defaults on in every environment; find remaining off-path code and plan removal safely."
+- "A temporary kill switch now controls three code paths; set ownership, default state, expiry, and cleanup after launch."
 
 ### `production-readiness-review`
 
@@ -138,6 +155,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Before this migration moves traffic tomorrow, inspect code, deploy config, dashboards, and runbooks for launch blockers."
 - "Review this production-readiness packet and identify stale launch evidence before the go/no-go call."
 - "Before the new importer becomes high impact, collect blockers across code, deploy, telemetry, and support docs."
+- "Leadership wants to launch Friday; inspect the readiness packet for blockers across dependencies, support handoff, telemetry, and rollback."
 
 ### `migration-and-deprecation`
 
@@ -145,6 +163,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the deprecation PR and tell me how to prevent new usage from being added."
 - "Inspect this service retirement plan against the codebase and identify anything that could strand users or teams."
 - "The legacy invoice worker still has hidden cron callers; build batches to move them and block new usage."
+- "A replacement library exists, but new code still imports the old one; plan batches, no-new-usage checks, and final removal."
 
 ### `fleet-upgrades`
 
@@ -152,6 +171,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this platform upgrade and identify mixed-version combinations we need to test before rollout."
 - "Inspect the existing fleet inventory and find unsupported versions, owners, exceptions, and cleanup checks."
 - "During this runtime fleet upgrade, some services cannot move until clients update; plan version-skew windows and exceptions."
+- "Some workers will run the new runtime while callers stay old for weeks; define skew tests, support windows, and exception handling."
 
 ### `agent-pr-review`
 
@@ -159,6 +179,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Find risks in the diff I'm about to push: silent assumptions, hallucinated APIs, scope creep, deleted-but-used code."
 - "What did the agent (or I) miss in this branch that we'd be embarrassed to ship?"
 - "The diff passes tests but changed deletion behavior; review what details are missing before merge."
+- "Before I merge this branch, check whether the diff still matches the request and whether test evidence covers the changed behavior."
 
 ### `code-readability-for-agents`
 
@@ -166,6 +187,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Find names in this codebase that collide or mislead code search and propose renames that make the canonical version unambiguous."
 - "Inspect function and file sizes against a budget and tell me which files an agent will silently misread."
 - "There are three payment clients with similar names; find the canonical one and where an agent could choose wrong."
+- "An agent keeps editing the legacy billing helper; rename or restructure paths so the intended implementation is obvious from search."
 
 ### `documentation-lifecycle`
 
@@ -173,6 +195,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the docs touched by this release and identify stale or missing operational guidance."
 - "Turn this undocumented maintenance workflow into a lifecycle-managed runbook with source of truth, owner, freshness rule, and change triggers."
 - "The failover runbook points to old dashboards; set owner, expiry, and freshness trigger so it stays current."
+- "A maintenance guide is accurate today but lacks an owner or stale-signal; set source-of-truth and refresh triggers."
 
 ### `dependency-and-code-hygiene`
 
@@ -180,6 +203,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Plan this dependency update and lockfile sweep for migration, hygiene, and rollback risks."
 - "Inspect the static-analysis backlog and changed files, then prioritize fixes that reduce real maintenance risk."
 - "Triage the static-analysis warning on a deprecated helper across five packages, then plan small hygiene cleanup batches with codemod safety checks."
+- "A dead utility remains in three packages after the refactor; plan a small cleanup with usage checks and rollback notes."
 
 ## Operations And Observability
 
@@ -189,6 +213,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the alert definitions in this repo and map each one to user-journey telemetry, dashboard context, and a runbook."
 - "Trace this request across services and tell me what correlation context is missing."
 - "Users report missing receipts but dashboards only show worker CPU; design signals that show where work disappears."
+- "A background job silently skips invoices; design the signal, dashboard context, alert route, and runbook link that would expose it."
 
 ### `incident-response-and-postmortems`
 
@@ -196,6 +221,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "An incident is in progress; use these symptoms and recent commits to help set severity, roles, updates, and next decisions."
 - "Inspect this postmortem draft and mark follow-up actions that are too vague to verify in the repo."
 - "Checkout errors spiked after a deploy twenty minutes ago; build the timeline, owners, and next update."
+- "Mitigation is underway and symptoms keep changing; build the current timeline, decision log, roles, and next update."
 
 ### `oncall-health`
 
@@ -203,6 +229,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect these on-call suppression rules and verify page-noise reduction is not hiding real user impact."
 - "This alert fires every week and the runbook says to rerun a job manually; decide what engineering fix should replace that manual step."
 - "Find which alerts should page, which should become follow-ups, and which should be deleted or grouped."
+- "Responders page themselves on a warning every morning; decide whether to automate, downgrade, group, or delete the alert."
 
 ## Security And Privacy
 
@@ -212,6 +239,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the changed files and write trust-boundary and data-flow security requirements we should meet before implementation is done."
 - "Threat-model this new endpoint using the code, routes, permissions, data flows, and controls it touches."
 - "A new admin export crosses customer data and support tools; trace trust boundaries and abuse cases before implementation."
+- "Before the partner upload feature ships, map trust boundaries, abuse cases, unsafe inputs, and required controls."
 
 ### `identity-and-secrets`
 
@@ -219,6 +247,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect how secrets are loaded in this repo and design credential rotation that will not break production."
 - "Inspect workload identities, secret scopes, credential lifetime, break-glass access, and traceability gaps in this repo."
 - "The importer uses a shared token with write access everywhere; design narrower workload access and rotation."
+- "A batch job needs temporary write access for launch; define scoped identity, rotation, traceability, and emergency access cleanup."
 
 ### `cryptography-and-key-lifecycle`
 
@@ -226,6 +255,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Plan a certificate rotation that shows old and new trust paths work before the old certificate is removed."
 - "Inspect this cryptographic algorithm transition for compatibility, monitoring, exceptions, and retirement checks."
 - "The signing key has no owner and clients pin the old algorithm; plan compatibility and retirement checks."
+- "The certificate chain will change for old clients; plan trust validation, overlap, expiry ownership, and rollback."
 
 ### `software-supply-chain-security`
 
@@ -233,6 +263,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the release scripts and show how artifact provenance, signing, and builder isolation identify where artifacts came from."
 - "Find secret-scanning, dependency inventory, signing, provenance, or deployment-admission checks that should block release."
 - "A deploy can pull artifacts from a mutable bucket; verify source, builder, signature, and admission controls."
+- "A release uses third-party generated artifacts; verify source lineage, isolated build path, signatures, and admission checks."
 
 ### `vulnerability-management`
 
@@ -240,6 +271,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this PR that delays a security patch and define the vulnerability exception details, owner, and expiry it needs."
 - "Map the current advisories to deployed services and propose remediation deadlines based on exploitability and impact."
 - "An advisory affects a library used by two live services and one internal tool; set patch order and exception expiry."
+- "A patched package is available but production exposure differs by service; rank remediation, exceptions, and verification evidence."
 
 ### `tenant-isolation`
 
@@ -247,6 +279,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the multi-tenant quota code and tell me whether one large tenant can hurt other tenants."
 - "Use the access logs and tenant-context code path to check whether support search stayed isolated to one tenant."
 - "Support search can query multiple accounts; verify tenant context cannot be dropped on fallback paths."
+- "A shared export queue can process records from several customers; prove context cannot bleed between jobs or retries."
 
 ### `privacy-and-data-lifecycle`
 
@@ -254,6 +287,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the telemetry changes and remove personal data that is not needed for privacy-safe operations."
 - "Check the retention, erasure, and deletion-propagation jobs for this workflow and identify missing privacy controls."
 - "Debug logs include email and free-form notes; decide what to drop, hash, retain, and erase."
+- "Support transcripts are now searchable; decide retention, deletion propagation, minimization, and logging controls."
 
 ### `engineering-control-evidence`
 
@@ -261,6 +295,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Build a control record pack from the tests, CI, dashboards, runbooks, and change records."
 - "Inspect these engineering exceptions and make sure each one has an owner, expiry, and compensating control."
 - "For the release record pack, map CI, approvals, runbooks, and dashboards into one control record set with exceptions."
+- "Create one release evidence set that ties tests, approvals, dashboards, exceptions, and runbook checks to owners."
 
 ### `llm-application-security`
 
@@ -268,6 +303,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the LLM retrieval and tool boundary for prompt injection, unsafe document access, and data leakage."
 - "Inspect the model output handling path for prompt-injected links, unsafe tool arguments, and data leakage before this feature ships."
 - "The assistant can open retrieved docs and call tools; identify where a malicious document could steer actions."
+- "A retrieved policy page can tell the assistant to call tools; test injection paths, data leakage, and unsafe arguments."
 
 ### `ai-coding-governance`
 
@@ -275,6 +311,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Design repo-level verification requirements for AI-generated PRs before a human should approve them."
 - "Define acceptance checks for agent-written code in this repo without replacing normal change responsibility."
 - "Agents can edit generated schemas and fixtures; write repo rules for protected paths, tests, and traceability details."
+- "Define what generated code may change in protected schema files and which verification receipts reviewers must see."
 
 ### `llm-evaluation`
 
@@ -282,6 +319,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect these model-backed workflow evals and find where the scoring or slice coverage is weak."
 - "Turn recent bad outputs into release-blocking eval cases with owners and failure triage."
 - "A prompt tweak improved summaries but broke refund cases; build regression slices and a pass threshold."
+- "The assistant now handles cancellation requests; add judged cases, slice thresholds, baseline comparison, and failure triage."
 
 ### `llm-serving-cost-and-latency`
 
@@ -289,6 +327,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Design the prompt, embedding, and response cache strategy for this feature, and define when a cache miss has to fall back to a smaller model."
 - "Map existing per-call LLM spend to route, feature, and tenant, then draft a degradation path for the next provider outage."
 - "The support route fans out to three model calls; set latency and token budgets plus what degrades first."
+- "A chat endpoint streams slowly during peak usage; set per-call budget, cache rules, tail-latency threshold, and degradation order."
 
 ## Data, Platform, And Client Systems
 
@@ -298,6 +337,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Trace this workflow across two services and the database, then show where correctness can break."
 - "Inspect this cross-service lock and decide whether failover or replica lag can make it unsafe."
 - "A tenant move may leave reads split across old and new shards; decide acceptable consistency and repair path."
+- "Writes move from one shard to another while reads can hit either side; define conflict handling and repair checks."
 
 ### `event-workflows`
 
@@ -305,6 +345,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this event message change and find producer or consumer replay, ordering, idempotency, or DLQ behavior that might break."
 - "Trace this event-driven workflow across producers, consumers, replay, and failed-message handling; show where partial failure could lose work."
 - "A refund saga sends email before payment settles; trace partial failures and replay behavior."
+- "A shipment event can be redelivered after the email consumer has already sent mail; define idempotency, replay, and poison-message handling."
 
 ### `caching-and-derived-data`
 
@@ -312,6 +353,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this hot cache key and design protection so too many callers do not hit the backend at once."
 - "Check the derived search-index refresh path and define stale-result freshness checks we can verify."
 - "Inventory updates arrive but the product card stays stale; map invalidation order and cold-cache behavior."
+- "The recommendation index lags source updates by minutes; set freshness checks, invalidation order, and stale-result behavior."
 
 ### `database-operations`
 
@@ -319,6 +361,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this index change and tell me how to avoid table locks or replica pain."
 - "Inspect the query plan, index choice, and schema migration diff, then decide whether the database change needs rollback, throttling, or a new index."
 - "Use the query plan and schema migration diff to find why this endpoint got slower after the database change."
+- "A backfill touches every account row while live writes continue; define lock limits, throttling, query-plan checks, and rollback."
 
 ### `data-pipeline-reliability`
 
@@ -326,6 +369,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this stream change and design data-quality checks before downstream reports trust it."
 - "Use the failed warehouse load logs and jobs to build a recovery plan that avoids double-counting."
 - "Late-arriving events are replayed after dashboard cutoff; define freshness, validation, and no-double-count recovery."
+- "The monthly metrics job missed a partition and rerun may double-count; define lineage, validation, replay, and freshness evidence."
 
 ### `ml-reliability-and-evaluation`
 
@@ -333,6 +377,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the training and serving code for places the model can get stale or behave differently in production."
 - "The new model will replace the live fraud endpoint; define promotion checks from evals, skew checks, drift monitors, rollback, tests, metrics, and deploy workflow."
 - "The fraud model retrains weekly but features changed yesterday; compare training and serving inputs plus rollback checks."
+- "A ranking model trained on old labels is ready for promotion; check skew, drift, offline evals, live monitors, and rollback."
 
 ### `platform-golden-paths`
 
@@ -340,6 +385,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the service catalog and template docs for friction teams hit when starting new services."
 - "Find where teams bypass the platform in this repo and identify friction we should remove."
 - "New services copy old templates then delete safety checks; update the template and scorecard to make the paved path easier."
+- "Teams keep deleting health checks from the service template; remove friction and update the template so the safer path is easier."
 
 ### `infrastructure-and-policy-as-code`
 
@@ -347,6 +393,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect infrastructure environment promotion for desired-state drift, missing policy checks, and whether actual changes match what is declared in code."
 - "Design policy checks and exception records for these infrastructure files."
 - "A manual console change fixed staging; capture desired state, drift detection, and emergency exception rules."
+- "A production firewall exception was made manually; capture desired state, policy checks, drift response, and expiry."
 
 ### `internal-service-networking`
 
@@ -354,6 +401,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this internal traffic policy for service-to-service access that is too open."
 - "Inspect internal service-to-service routing config and keep this private dependency's traffic local when possible."
 - "Refresh the internal networking runbook for checkout: discovery, locality, identity, and fallback when private routing fails."
+- "A private service calls a regional dependency across regions during failover; set discovery, locality, identity, and fallback rules."
 
 ### `edge-traffic-and-ddos-defense`
 
@@ -361,6 +409,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect the signup flow and edge rules for bot filters that will not block real users."
 - "Design edge traffic shedding for this route using the current routing and deployment config."
 - "Signup traffic spikes with suspicious user agents; set edge limits that protect origin without blocking real customers."
+- "A public login endpoint gets bursty traffic from new IP ranges; tune edge filtering without blocking real users."
 
 ### `cost-aware-reliability`
 
@@ -368,6 +417,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect this capacity change and explain the reliability benefit versus the cost."
 - "Inspect tags, owners, and shared resources so teams can act on their platform costs."
 - "Replica count grew after an incident; decide what spend can be removed without losing failover headroom."
+- "A second hot standby reduces outage risk but doubles monthly spend; compare the reliability gain with cheaper safeguards."
 
 ### `mobile-release-engineering`
 
@@ -375,6 +425,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect startup, crash, hang, and offline telemetry before approving this app release."
 - "Use the release notes and changed files to choose rollback or forward-fix options for this app-store bug."
 - "Crash-free users dip only on older OS versions after the mobile app staged rollout; decide pause, forward fix, or rollback."
+- "A store release cannot be rolled back instantly; define staged exposure, halt signals, crash slices, and forward-fix plan."
 
 ### `web-release-gates`
 
@@ -382,6 +433,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Inspect field and lab performance signals before rolling out this frontend change."
 - "For this browser client-side change, add release checks and telemetry for loading, interaction readiness, layout stability, runtime errors, and payload growth."
 - "The checkout bundle gained a heavy dependency; set checks for interaction readiness and runtime errors."
+- "A new client route hydrates late on slow devices; define checks for load, interaction, layout stability, errors, and payload size."
 
 ### `accessibility-gates`
 
@@ -389,6 +441,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "Design accessibility checks for a new checkout flow before launch."
 - "Turn these accessibility bugs into journey-based regression checks with owners and retest dates."
 - "A modal traps keyboard focus after payment failure; turn it into a release-blocking journey check."
+- "A form works with a mouse but screen-reader users miss validation errors; make that journey block release until retested."
 
 ### `experimentation-and-metric-guardrails`
 
@@ -396,6 +449,7 @@ paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
 - "The A/B test result looks suspicious; inspect sample balance, missing telemetry, and metric definitions."
 - "Decide whether this experiment ramp should continue using assignment balance, exposure logging, metric validity checks, and guardrail metrics."
 - "The ramp looks positive but guardrail logging changed halfway through; decide whether the readout is trustworthy."
+- "The experiment ramps by account size and revenue changed early; verify assignment balance, exposure logging, and guardrail validity."
 
 ## Out Of Scope
 

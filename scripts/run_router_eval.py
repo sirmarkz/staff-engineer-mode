@@ -18,7 +18,14 @@ if str(SCRIPT_DIR) not in sys.path:
 
 from staff_engineer_mode_contract import ROUTER_EVAL_CHECKS, ROUTER_SAMPLE_PROMPT_CHECKS
 
-SAMPLE_PROMPTS = ROOT / "SAMPLE-PROMPTS.md"
+POSITIVE_ROUTING_PROMPTS = ROOT / "evals" / "prompts" / "expected-routes.md"
+BOUNDARY_PROMPT_DIR = ROOT / "evals" / "prompts"
+BOUNDARY_PROMPT_FILES = {
+    "negative": BOUNDARY_PROMPT_DIR / "negative.md",
+    "near_miss": BOUNDARY_PROMPT_DIR / "near-miss.md",
+    "keyword_bait": BOUNDARY_PROMPT_DIR / "keyword-bait.md",
+    "adversarial": BOUNDARY_PROMPT_DIR / "adversarial.md",
+}
 SKILLS = ROOT / "skills"
 SPECIALISTS = ROOT / "specialists"
 ROUTING_BLOCK_RE = re.compile(r"```routing\s*(?P<body>.*?)```", re.DOTALL)
@@ -33,6 +40,10 @@ TOOL_BAIT_TERMS = [
 ]
 SPECIALIST_HEADING_RE = re.compile(r"^### `(?P<slug>[^`]+)`$")
 PROMPT_RE = re.compile(r'^- "(?P<prompt>.+)"$')
+BOUNDARY_PROMPT_RE = re.compile(
+    r'^- "(?P<prompt>.+)" '
+    r"\(-> `(?P<expected_primary>[^`]+)`\)$"
+)
 PHASE_DIVERSITY_EXCEPTIONS = {
     "agent-pr-review",
     "incident-response-and-postmortems",
@@ -202,7 +213,7 @@ def specialist_names() -> list[str]:
     return sorted(path.stem for path in SPECIALISTS.glob("*.md"))
 
 
-def parse_sample_prompts(path: Path = SAMPLE_PROMPTS) -> list[dict[str, Any]]:
+def parse_positive_routings(path: Path = POSITIVE_ROUTING_PROMPTS) -> list[dict[str, Any]]:
     known = set(specialist_names())
     seen_headings: set[str] = set()
     counts: dict[str, int] = {}
@@ -256,8 +267,8 @@ def parse_sample_prompts(path: Path = SAMPLE_PROMPTS) -> list[dict[str, Any]]:
                     {
                         "prompt": prompt,
                         "expected_primary": current,
-                        "expected_behavior": "route sample prompt to its grouped specialist",
-                        "category": "sample_prompt",
+                        "expected_behavior": "route positive routing prompt to its grouped specialist",
+                        "category": "positive_routing",
                         "expected_checks": list(ROUTER_SAMPLE_PROMPT_CHECKS),
                     }
                 )
@@ -268,17 +279,21 @@ def parse_sample_prompts(path: Path = SAMPLE_PROMPTS) -> list[dict[str, Any]]:
     if "none" not in seen_headings:
         fail(f"{path} missing out-of-scope heading: none")
 
-    bad_counts = {slug: count for slug, count in counts.items() if count != 4}
+    bad_counts = {
+        slug: count
+        for slug, count in counts.items()
+        if (slug == "none" and count != 4) or (slug != "none" and count != 5)
+    }
     if bad_counts:
         details = ", ".join(f"{slug}={count}" for slug, count in sorted(bad_counts.items()))
-        fail(f"{path} must have exactly four prompts per specialist: {details}")
+        fail(f"{path} must have exactly five prompts per specialist and four none prompts: {details}")
 
     if not cases:
-        fail(f"{path} produced no sample prompt cases")
+        fail(f"{path} produced no positive routing prompt cases")
 
     missing_phases = [phase for phase, count in phase_counts.items() if count == 0]
     if missing_phases:
-        fail(f"{path} sample prompts do not cover lifecycle phases: {', '.join(missing_phases)}")
+        fail(f"{path} positive routing prompts do not cover lifecycle phases: {', '.join(missing_phases)}")
 
     if context_only_count < 4:
         fail(f"{path} needs at least four context-only prompts without explicit lifecycle phase words")
@@ -290,10 +305,63 @@ def parse_sample_prompts(path: Path = SAMPLE_PROMPTS) -> list[dict[str, Any]]:
             low_diversity.append(f"{slug}={','.join(sorted(phases)) or 'none'}")
     if low_diversity:
         fail(
-            f"{path} sample prompts need at least three lifecycle phases per non-exception specialist: "
+            f"{path} positive routing prompts need at least three lifecycle phases per non-exception specialist: "
             + "; ".join(low_diversity)
         )
 
+    return cases
+
+
+def parse_boundary_prompt_file(path: Path, category: str) -> list[dict[str, Any]]:
+    if not path.exists():
+        fail(f"missing boundary router eval catalog {path.relative_to(ROOT)}")
+    known = set(specialist_names())
+    cases: list[dict[str, Any]] = []
+    current: str | None = None
+
+    for line_number, line in enumerate(path.read_text().splitlines(), 1):
+        heading = SPECIALIST_HEADING_RE.match(line)
+        if heading:
+            current = heading.group("slug")
+            if current not in known:
+                fail(f"{path}:{line_number} unknown specialist heading {current!r}")
+            continue
+
+        prompt_match = BOUNDARY_PROMPT_RE.match(line)
+        if not prompt_match:
+            continue
+        if current is None:
+            fail(f"{path}:{line_number} prompt appears before a specialist heading")
+
+        expected_primary = prompt_match.group("expected_primary")
+        checks = ["scope_check"] if expected_primary == "none" else ["single_primary", "intent_inference"]
+        if category == "adversarial":
+            checks.append("no_skill_invoke")
+        case: dict[str, Any] = {
+            "target_specialist": current,
+            "prompt": prompt_match.group("prompt"),
+            "expected_primary": expected_primary,
+            "expected_behavior": (
+                f"withhold routing; {current} must not fire"
+                if expected_primary == "none"
+                else f"route to {expected_primary}; {current} must not fire"
+            ),
+            "category": category,
+            "expected_checks": checks,
+        }
+        if expected_primary == "none":
+            case["forbidden_in_response"] = ["all_specialist_names"]
+        cases.append(case)
+
+    if not cases:
+        fail(f"{path} produced no boundary eval cases")
+    return cases
+
+
+def parse_boundary_prompts(paths: dict[str, Path] = BOUNDARY_PROMPT_FILES) -> list[dict[str, Any]]:
+    cases: list[dict[str, Any]] = []
+    for category in ["negative", "near_miss", "keyword_bait", "adversarial"]:
+        cases.extend(parse_boundary_prompt_file(paths[category], category))
     return cases
 
 
@@ -310,6 +378,16 @@ def select_sample_cases(cases: list[dict[str, Any]], sample: str) -> list[dict[s
     return selected
 
 
+def load_catalog_cases(catalog: str, sample: str) -> list[dict[str, Any]]:
+    if catalog in {"positive", "sample"}:
+        return select_sample_cases(parse_positive_routings(), sample)
+    if catalog == "boundary":
+        return parse_boundary_prompts()
+    if catalog == "all":
+        return select_sample_cases(parse_positive_routings(), sample) + parse_boundary_prompts()
+    fail(f"unknown catalog {catalog!r}")
+
+
 def filter_cases_by_category(cases: list[dict[str, Any]], category: str | None) -> list[dict[str, Any]]:
     if category is None:
         return cases
@@ -324,7 +402,7 @@ def random_specialist_cases(cases: list[dict[str, Any]], count: int, seed: str) 
         fail("--random-specialists must be at least 1")
     grouped: dict[str, list[dict[str, Any]]] = {}
     for case in cases:
-        primary = str(case["expected_primary"])
+        primary = str(case.get("target_specialist") or case["expected_primary"])
         if primary == "none":
             continue
         grouped.setdefault(primary, []).append(case)
@@ -335,7 +413,50 @@ def random_specialist_cases(cases: list[dict[str, Any]], count: int, seed: str) 
     return [rng.choice(grouped[primary]) for primary in selected_primaries]
 
 
+CASE_ID_RE = re.compile(r"^(?P<case_id>[0-9]{3}-[a-z0-9-]+)\b")
+
+
+def load_case_id_file(path: Path) -> list[str]:
+    case_ids: list[str] = []
+    for line_number, raw_line in enumerate(path.read_text().splitlines(), 1):
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        match = CASE_ID_RE.match(line)
+        if not match:
+            fail(f"{path}:{line_number} expected case ID, found {line!r}")
+        case_ids.append(match.group("case_id"))
+    if not case_ids:
+        fail(f"{path} did not contain any case IDs")
+    return case_ids
+
+
+def select_cases_by_id(cases: list[dict[str, Any]], requested_ids: list[str]) -> list[dict[str, Any]]:
+    seen: set[str] = set()
+    duplicates: list[str] = []
+    for requested_id in requested_ids:
+        if requested_id in seen:
+            duplicates.append(requested_id)
+        seen.add(requested_id)
+    if duplicates:
+        fail(f"duplicate --case-id values: {', '.join(sorted(set(duplicates)))}")
+
+    by_id = {case_id(index, case): case for index, case in enumerate(cases, 1)}
+    missing = [requested_id for requested_id in requested_ids if requested_id not in by_id]
+    if missing:
+        fail(f"unknown case IDs for selected catalog: {', '.join(missing)}")
+
+    selected: list[dict[str, Any]] = []
+    for requested_id in requested_ids:
+        case = dict(by_id[requested_id])
+        case["_case_id"] = requested_id
+        selected.append(case)
+    return selected
+
+
 def case_id(index: int, case: dict[str, Any]) -> str:
+    if "_case_id" in case:
+        return str(case["_case_id"])
     primary = str(case["expected_primary"]).replace("_", "-")
     primary = re.sub(r"[^a-zA-Z0-9-]+", "-", primary).strip("-")
     return f"{index:03d}-{primary}"
@@ -507,7 +628,7 @@ def command_response(command: str, prompt: str) -> str:
     )
     if completed.returncode != 0:
         detail = completed.stderr.strip() or completed.stdout.strip() or f"command exited {completed.returncode}"
-        raise RuntimeError(detail)
+        raise RuntimeError(f"command failed: {detail}")
     return completed.stdout
 
 
@@ -516,23 +637,46 @@ def print_case_list(cases: list[dict[str, Any]]) -> None:
         print(f"{case_id(index, case)}\t{case['category']}\t{case['prompt']}")
 
 
+def failure_type(message: str) -> str:
+    if message.startswith("command failed:"):
+        return "command_error"
+    if "missing routing block" in message or "invalid routing block" in message:
+        return "model_format"
+    if (
+        "routing block emitted for low-confidence or out-of-scope case" in message
+        or "scope_check check failed" in message
+        or "forbidden skill name leaked" in message
+    ):
+        return "over_route"
+    if "primary mismatch" in message:
+        return "route_mismatch"
+    if "unknown expected_checks" in message:
+        return "harness_contract"
+    return "check_failure"
+
+
 def summarize(results: list[CaseResult]) -> dict[str, Any]:
     categories: dict[str, dict[str, int]] = {}
+    failure_types: dict[str, int] = {}
     for result in results:
         bucket = categories.setdefault(result.category, {"passed": 0, "total": 0})
         bucket["total"] += 1
         if result.passed:
             bucket["passed"] += 1
+        for message_type in {failure_type(message) for message in result.failures}:
+            failure_types[message_type] = failure_types.get(message_type, 0) + 1
     return {
         "passed": sum(1 for result in results if result.passed),
         "total": len(results),
         "categories": categories,
+        "failure_types": dict(sorted(failure_types.items())),
         "failures": [
             {
                 "case_id": result.case_id,
                 "category": result.category,
                 "expected_primary": result.expected_primary,
                 "actual_primary": result.actual_primary,
+                "failure_types": sorted({failure_type(message) for message in result.failures}),
                 "failures": result.failures,
             }
             for result in results
@@ -599,13 +743,24 @@ def print_summary(summary: dict[str, Any]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Score SAMPLE-PROMPTS.md or custom Staff Engineer Mode routing eval responses."
+        description="Score Staff Engineer Mode router eval responses."
+    )
+    parser.add_argument(
+        "--catalog",
+        choices=["positive", "sample", "boundary", "all"],
+        default="positive",
+        help=(
+            "built-in router eval catalog to score when --eval-file is not provided; "
+            "sample is a legacy alias for positive"
+        ),
     )
     parser.add_argument("--eval-file", help="optional router eval YAML fixture")
     parser.add_argument("--responses-dir", help="directory containing <case-id>.txt responses")
     parser.add_argument("--command", help="command that reads a prompt on stdin and writes a response")
     parser.add_argument("--sample", choices=["one-per-specialist", "all"], default="one-per-specialist")
-    parser.add_argument("--category", choices=["sample_prompt", "out_of_scope"], help="score only one case category")
+    parser.add_argument("--category", help="score only one case category")
+    parser.add_argument("--case-id", action="append", default=[], help="score one stable case ID from the selected catalog")
+    parser.add_argument("--case-id-file", help="file containing stable case IDs to score, one per line")
     parser.add_argument("--list-cases", action="store_true", help="print stable case IDs and prompts")
     parser.add_argument("--limit", type=int, help="score only the first N cases")
     parser.add_argument("--random", type=int, help="score N randomly selected cases after category filtering")
@@ -628,12 +783,21 @@ def main() -> int:
         eval_path = Path(args.eval_file)
         cases = parse_cases(eval_path.read_text())
     else:
-        cases = select_sample_cases(parse_sample_prompts(), args.sample)
+        cases = load_catalog_cases(args.catalog, args.sample)
     cases = filter_cases_by_category(cases, args.category)
+    requested_case_ids = list(args.case_id)
+    if args.case_id_file:
+        requested_case_ids.extend(load_case_id_file(Path(args.case_id_file)))
     if args.random is not None and args.random_specialists is not None:
         fail("provide at most one of --random or --random-specialists")
+    if requested_case_ids and (
+        args.limit is not None or args.random is not None or args.random_specialists is not None
+    ):
+        fail("--case-id and --case-id-file cannot be combined with --limit, --random, or --random-specialists")
     if args.limit is not None and (args.random is not None or args.random_specialists is not None):
         fail("--limit cannot be combined with --random or --random-specialists")
+    if requested_case_ids:
+        cases = select_cases_by_id(cases, requested_case_ids)
     if args.limit is not None:
         cases = cases[: args.limit]
     if args.random is not None:

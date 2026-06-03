@@ -21,7 +21,7 @@ maintaining complex software systems.
 | `specialists/<specialist-name>.md` | Routed specialist reference files loaded only after the router selects one. |
 | `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
 | `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. Template ownership is listed in `skills/_shared/assets/templates/README.md`. |
-| `evals/` | Router eval adapter docs. `SAMPLE-PROMPTS.md` is the canonical eval catalog; neither path is runtime skill guidance. |
+| `evals/` | Router eval catalogs, adapter docs, and live harness entrypoints. These paths are not runtime skill guidance. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
 | `.claude-plugin/`, `.cursor-plugin/`, `.codex-plugin/`, `.codex/`, `.opencode/`, `gemini-extension.json`, `GEMINI.md` | Cross-tool plugin manifests and install docs. |
 
@@ -101,7 +101,8 @@ maintaining complex software systems.
   or citation changes.
 - Run `python3 scripts/validate_platform_support.py` before committing plugin
   manifest, install, README, LICENSE, or cross-tool packaging changes.
-- Router eval cases come from `SAMPLE-PROMPTS.md`, outside runtime skill paths.
+- Router eval cases come from `evals/prompts/expected-routes.md` and
+  `evals/prompts/`, outside runtime skill paths.
   Keep prompts representative across direct, paraphrased, ambiguous,
   mixed-intent, out-of-scope, and lifecycle-phase routing behavior. Runtime
   router guidance stays in `skills/staff-engineer-mode/references/routing-matrix.md`.

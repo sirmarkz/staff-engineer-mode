@@ -22,16 +22,16 @@ router_eval = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 SPEC.loader.exec_module(router_eval)
 
-SAMPLE_PROMPTS = ROOT / "SAMPLE-PROMPTS.md"
+POSITIVE_ROUTING_PROMPTS = ROOT / "evals" / "prompts" / "expected-routes.md"
 
 
 def fail(message: str) -> None:
-    print(f"sample prompt eval failed: {message}", file=sys.stderr)
+    print(f"positive routing prompt eval failed: {message}", file=sys.stderr)
     raise SystemExit(1)
 
 
-def parse_sample_prompts(path: Path = SAMPLE_PROMPTS) -> list[dict[str, Any]]:
-    return router_eval.parse_sample_prompts(path)
+def parse_positive_routings(path: Path = POSITIVE_ROUTING_PROMPTS) -> list[dict[str, Any]]:
+    return router_eval.parse_positive_routings(path)
 
 
 def select_cases(cases: list[dict[str, Any]], sample: str) -> list[dict[str, Any]]:
@@ -40,7 +40,7 @@ def select_cases(cases: list[dict[str, Any]], sample: str) -> list[dict[str, Any
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Score SAMPLE-PROMPTS.md through the Staff Engineer Mode router."
+        description="Score evals/prompts/expected-routes.md through the Staff Engineer Mode router."
     )
     parser.add_argument("--responses-dir", help="directory containing <case-id>.txt responses")
     parser.add_argument("--command", help="command that reads a prompt on stdin and writes a response")
@@ -51,7 +51,7 @@ def main() -> int:
     parser.add_argument("--warn-only", action="store_true", help="return zero even when cases fail")
     args = parser.parse_args()
 
-    cases = select_cases(parse_sample_prompts(), args.sample)
+    cases = select_cases(parse_positive_routings(), args.sample)
     if args.list_cases:
         router_eval.print_case_list(cases)
         return 0

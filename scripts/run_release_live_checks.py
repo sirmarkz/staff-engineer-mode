@@ -26,7 +26,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Release-blocking live checks: Claude/Codex hook probes plus "
-            "5 seeded random specialist router evals from SAMPLE-PROMPTS.md for each host."
+            "5 seeded random specialist router evals from evals/prompts/expected-routes.md for each host."
         )
     )
     parser.add_argument("--random-specialists", type=int, default=5)
@@ -83,7 +83,7 @@ def main() -> int:
             "--sample",
             "all",
             "--category",
-            "sample_prompt",
+            "positive_routing",
             "--random-specialists",
             str(args.random_specialists),
             "--seed",
@@ -104,7 +104,7 @@ def main() -> int:
             "--sample",
             "all",
             "--category",
-            "sample_prompt",
+            "positive_routing",
             "--random-specialists",
             str(args.random_specialists),
             "--seed",

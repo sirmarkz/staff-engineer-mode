@@ -1,128 +1,193 @@
 # Router Evals
 
-This directory holds the real-LLM adapter used by the router eval harness.
-`SAMPLE-PROMPTS.md` is the canonical eval catalog. Each prompt is grouped under
-the specialist that should handle it, so the user-facing examples and eval cases
-cannot drift apart.
+This directory contains the router eval catalogs, live-model adapters, and
+operator instructions. These files are eval inputs, not runtime skill guidance.
 
-## How the harness treats the model
+## What Is Tested
 
-The harness contains no model. It is a deterministic scorer. It reads a response,
-parses the ` ```routing ` JSON block out of it, and checks that block against the
-expected specialist from `SAMPLE-PROMPTS.md`. The model lives outside the
-harness, behind one of two flags:
+| File | What it tests | Expected result |
+| --- | --- | --- |
+| `prompts/expected-routes.md` | Normal in-scope engineering prompts grouped by the specialist that should handle them. | The router selects the grouped specialist. |
+| `prompts/negative.md` | Routine, out-of-scope, or neighboring work that could falsely trigger the grouped specialist. | The grouped specialist does not fire. |
+| `prompts/near-miss.md` | In-scope work close to the grouped specialist but owned by another specialist. | The narrower or more correct neighboring specialist fires. |
+| `prompts/keyword-bait.md` | Prompts that name the grouped specialist or label while asking for another artifact. | Keyword matching does not win. |
+| `prompts/adversarial.md` | Prompts that explicitly try to force the wrong grouped specialist. | The override is ignored. |
 
-- `--command "<cmd>"` runs a shell command per case. The harness pipes the prompt
-  on stdin and reads the response from stdout. Point this at a real LLM to run a
-  live eval.
-- `--responses-dir <dir>` reads a saved `<case-id>.txt` file per case. Use this
-  to score responses captured earlier, from any source.
+Correct-routing prompts use the same shape as the public examples: specialist
+headings with quoted prompt bullets. Boundary files use the same grouped shape;
+the suffix on each bullet gives the correct route:
 
-Provide exactly one of the two when scoring. CI uses neither: it runs the scorer's
-unit tests against canned strings (`scripts/test_run_router_eval.py`), so the
-published pipeline never calls a model or the network.
+```markdown
+### `documentation-lifecycle`
+
+- "Fix README typos without ownership or freshness decisions." (-> `none`)
+```
 
 ## Files
 
 | Path | Contains |
 | --- | --- |
-| `../SAMPLE-PROMPTS.md` | Canonical router eval catalog: four prompts per specialist plus four out-of-scope prompts, 220 total cases. |
-| `adapters/codex-router.sh` | Real-LLM adapter that drives Codex as the router. Reads a prompt on stdin, writes a routing block on stdout. |
-| `adapters/claude-router.sh` | Real-LLM adapter that drives Claude as the router. Reads a prompt on stdin, writes a routing block on stdout. |
+| `prompts/expected-routes.md` | Expected-route catalog: five prompts per specialist plus four out-of-scope prompts. |
+| `prompts/negative.md` | Negative false-positive cases by target specialist, five prompts per specialist. |
+| `prompts/near-miss.md` | Near-miss neighboring-specialist cases by target specialist, five prompts per specialist. |
+| `prompts/keyword-bait.md` | Target-name and label bait cases by target specialist, five prompts per specialist. |
+| `prompts/adversarial.md` | Explicit wrong-route override cases by target specialist, five prompts per specialist. |
+| `adapters/codex-router.sh` | Live Codex adapter. Reads one prompt on stdin and writes one routing response on stdout. |
+| `adapters/claude-router.sh` | Live Claude adapter. Reads one prompt on stdin and writes one routing response on stdout. |
 
-## Run a live eval
+## Local Validation
 
-The adapter wraps a prompt with router instructions, calls the model once, and
-returns its routing block. `adapters/codex-router.sh` does this with Codex:
+Run this before live evals or commits:
 
 ```bash
-# Score one prompt per specialist plus one out-of-scope prompt (55 cases)
-python3 scripts/run_router_eval.py \
-  --command evals/adapters/codex-router.sh
+python3 scripts/validate_router_eval.py
+python3 -m unittest scripts/test_run_router_eval.py scripts/test_validate_router_eval.py
+```
 
-# Score every sample prompt (220 cases)
+Validation checks catalog shape before any model runs:
+
+- expected-route catalog covers every specialist with five prompts and keeps four out-of-scope cases;
+- boundary files cover every specialist with five prompts for each boundary category;
+- boundary cases never expect the target specialist under their heading;
+- keyword-bait and adversarial prompts name the target specialist;
+- adversarial cases include the `no_skill_invoke` check;
+- live adapters load the local router and routing matrix.
+
+## Listing Cases
+
+```bash
+# One expected-route case per specialist plus one out-of-scope case.
+python3 scripts/run_router_eval.py --catalog positive --list-cases
+
+# Every expected-route case.
+python3 scripts/run_router_eval.py --catalog positive --sample all --list-cases
+
+# Every boundary case from all boundary files.
+python3 scripts/run_router_eval.py --catalog boundary --list-cases
+
+# One boundary category.
+python3 scripts/run_router_eval.py --catalog boundary --category adversarial --list-cases
+```
+
+`--catalog sample` remains a legacy alias for `--catalog positive`.
+
+## Targeted Reruns
+
+Use the same catalog and sampling flags that produced the failed case IDs, then
+select the failures directly:
+
+```bash
 python3 scripts/run_router_eval.py \
+  --catalog all \
+  --sample all \
+  --case-id 068-release-build-reproducibility \
+  --case-id 748-data-contracts \
+  --command evals/adapters/codex-router.sh \
+  --json
+```
+
+For longer lists, put one case ID per line. Lines copied from failure output
+such as `748-data-contracts failed:` are accepted.
+
+```bash
+python3 scripts/run_router_eval.py \
+  --catalog all \
+  --sample all \
+  --case-id-file runs/full-failures.txt \
+  --command evals/adapters/codex-router.sh \
+  --json
+```
+
+Do not mix targeted IDs with `--limit`, `--random`, or
+`--random-specialists`; those change the case population. After targeted fixes
+pass, run the full affected slice again before treating the eval as clean.
+
+## Live Runs
+
+The harness is deterministic; the model is only behind `--command`. Each case is
+one live model call. Keep `--jobs` bounded to avoid provider rate limits.
+
+```bash
+# Expected-route smoke: one case per specialist plus one out-of-scope case.
+python3 scripts/run_router_eval.py \
+  --catalog positive \
+  --command evals/adapters/codex-router.sh \
+  --json
+
+# Full expected-route catalog.
+python3 scripts/run_router_eval.py \
+  --catalog positive \
   --sample all \
   --jobs 4 \
   --command evals/adapters/codex-router.sh \
   --json
 
-# Score only the four out-of-scope prompts
+# Seeded boundary smoke, one random case per selected target specialist.
 python3 scripts/run_router_eval.py \
+  --catalog boundary \
+  --random-specialists 5 \
+  --seed boundary-smoke \
+  --command evals/adapters/codex-router.sh \
+  --json
+
+# One boundary category with Claude.
+python3 scripts/run_router_eval.py \
+  --catalog boundary \
+  --category adversarial \
+  --random-specialists 5 \
+  --seed adversarial-smoke \
+  --command evals/adapters/claude-router.sh \
+  --json
+
+# Full boundary catalog.
+python3 scripts/run_router_eval.py \
+  --catalog boundary \
+  --jobs 4 \
+  --command evals/adapters/codex-router.sh \
+  --json
+
+# Expected-route and boundary catalogs together.
+python3 scripts/run_router_eval.py \
+  --catalog all \
   --sample all \
-  --category out_of_scope \
   --jobs 4 \
   --command evals/adapters/codex-router.sh \
   --json
 ```
 
-Each case is one live model call, so a full run takes minutes and costs tokens.
-Full live runs are manual checks for router changes, model comparisons, and
-targeted failure triage. Before tagging or publishing a release, run the manual
-release-blocking live gate; do not add it to GitHub Actions. The gate samples
-5 seeded random specialist cases from the specialist portion of the 220-case
-catalog against Claude Opus 4.8 high and Codex `gpt-5.5` high via
-`scripts/run_release_live_checks.py`. `--jobs` controls bounded parallelism;
-keep it small enough to avoid provider rate limits.
+Adapters must print the model response to stdout and diagnostics to stderr. Live
+evals are manual checks and should stay out of default CI. JSON summaries include
+`failure_types` so triage can distinguish route mismatches, over-routing on
+`none` cases, malformed or missing routing blocks, and harness contract errors.
 
-Use the Claude adapter with the same scorer when comparing hosts:
+Slice thresholds should be set before running a release check. Do not let a high
+aggregate score hide failures in `negative`, `near_miss`, `keyword_bait`, or
+`adversarial`; direct override cases should pass without waivers.
 
-```bash
-CLAUDE_MODEL=claude-opus-4-8 CLAUDE_EFFORT=high \
-  python3 scripts/run_router_eval.py \
-    --sample all \
-    --random-specialists 5 \
-    --command evals/adapters/claude-router.sh \
-    --json
-```
+## Saved Responses
 
-Any adapter must print the model's routing block to stdout and nothing that
-would confuse the parser. Send diagnostic logs to stderr.
-
-## Score saved responses
-
-When you already have model outputs, skip the live call:
+Use saved responses when you already captured model output:
 
 ```bash
-# 1. List stable case IDs (format: NNN-<primary-slug>)
-python3 scripts/run_router_eval.py --sample all --list-cases
+# 1. List stable case IDs.
+python3 scripts/run_router_eval.py --catalog boundary --list-cases
 
-# 2. Save each model response as <case-id>.txt, for example:
-#    runs/2026-05-30/001-accessibility-gates.txt
+# 2. Save each response as <case-id>.txt under a run directory.
+#    Example: runs/boundary/001-none.txt
 
-# 3. Score the directory
+# 3. Score the directory.
 python3 scripts/run_router_eval.py \
-  --sample all \
-  --responses-dir runs/2026-05-30
+  --catalog boundary \
+  --responses-dir runs/boundary \
+  --json
 ```
 
-A response file holds the model's full reply for that prompt, including its
-` ```routing ` block.
+The response file should include the model's fenced `routing` JSON block.
 
-## Catalog Shape
+## Designing Boundary Cases
 
-Parsing enforces the catalog's shape before any model runs:
-
-- four prompts per specialist and four out-of-scope prompts;
-- every specialist covered;
-- lifecycle phases represented;
-- at least four context-only prompts without explicit lifecycle phase words.
-
-## What a case checks
-
-For each prompt the scorer requires a routing block whose `primary` matches the
-specialist heading and whose `confidence` is `high` or `medium`. Sample-prompt
-cases also require:
-
-- `single_primary`: exactly one primary slug, never a list.
-- `intent_inference`: `artifact`, `surface`, `phase`, and `rationale` are all present.
-- `no_skill_invoke`: the response never calls the `Skill` tool on a specialist.
-
-`read_load` remains available for saved responses from full agent runs: when a
-case opts into that check, any substantive answer must include a `Read` of the
-routed specialist file. Live adapter runs stay in eval-harness mode and score
-the routing block only.
-
-A run exits non-zero when any case fails, prints a per-category pass count, and
-lists each failure with its reason. Add `--warn-only` to report failures without
-failing the command.
+Use adversarial subagents when adding or refreshing boundary cases. Give each
+subagent a bounded file or specialist slice and instruct it to make the target
+specialist fail closed. Generated prompts are drafts: curate them, remove
+duplicates, confirm the expected route is not the heading specialist, then run
+local validation.

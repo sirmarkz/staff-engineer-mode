@@ -15,13 +15,13 @@ from staff_engineer_mode_contract import PROHIBITED_SPECIALIST_BODY_TERMS, ROUTE
 SKILLS = ROOT / "skills"
 SPECIALISTS = ROOT / "specialists"
 README = ROOT / "README.md"
-SAMPLE_PROMPTS = ROOT / "SAMPLE-PROMPTS.md"
+SAMPLE_PROMPTS = ROOT / "evals/prompts/expected-routes.md"
 SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
 CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
 CODEX_MAX_SKILL_NAME_LENGTH = 64
 MAX_SKILL_LINES = 300
 MAX_DESCRIPTION_CHARS = 180
-SAMPLE_PROMPTS_PER_SPECIALIST = 4
+SAMPLE_PROMPTS_PER_SPECIALIST = 5
 ROUTER_MAX_WORDS = 2000
 ROUTER_TIEBREAKER_MAX_WORDS = 260
 SAMPLE_PROMPT_RE = re.compile(r'^- ".+"$')
@@ -87,6 +87,21 @@ ROUTING_MATRIX_REQUIRED_BOUNDARIES = {
         "do not route",
         "agent-pr-review",
         "ai-coding-governance",
+    ],
+    "cache overload boundary": [
+        "hot cache keys",
+        "caching-and-derived-data",
+        "dependency-resilience",
+    ],
+    "llm security eval boundary": [
+        "prompt-injection or red-team evals",
+        "llm-application-security",
+        "llm-evaluation",
+    ],
+    "retired flag hygiene boundary": [
+        "after a retired flag is gone",
+        "dependency-and-code-hygiene",
+        "feature-flag-lifecycle",
     ],
 }
 
@@ -613,9 +628,9 @@ def validate_skill_contract() -> None:
         fail("shared skill contract is missing")
 
 
-def validate_sample_prompts(skill_files: list[Path]) -> None:
+def validate_positive_routings(skill_files: list[Path]) -> None:
     if not SAMPLE_PROMPTS.exists():
-        fail("SAMPLE-PROMPTS.md is missing")
+        fail("evals/prompts/expected-routes.md is missing")
 
     specialist_names = {
         skill_name_for_path(path)
@@ -643,22 +658,23 @@ def validate_sample_prompts(skill_files: list[Path]) -> None:
     missing = specialist_names - section_names
     extra = section_names - allowed_sections
     if missing:
-        fail(f"SAMPLE-PROMPTS.md missing specialists: {', '.join(sorted(missing))}")
+        fail(f"evals/prompts/expected-routes.md missing specialists: {', '.join(sorted(missing))}")
     if extra:
-        fail(f"SAMPLE-PROMPTS.md has unknown specialist sections: {', '.join(sorted(extra))}")
+        fail(f"evals/prompts/expected-routes.md has unknown specialist sections: {', '.join(sorted(extra))}")
     if "none" not in section_names:
-        fail("SAMPLE-PROMPTS.md missing out-of-scope section: none")
+        fail("evals/prompts/expected-routes.md missing out-of-scope section: none")
 
     wrong_counts = {
         name: prompt_count
         for name, prompt_count in sections.items()
-        if prompt_count != SAMPLE_PROMPTS_PER_SPECIALIST
+        if (name == "none" and prompt_count != 4)
+        or (name != "none" and prompt_count != SAMPLE_PROMPTS_PER_SPECIALIST)
     }
     if wrong_counts:
         details = ", ".join(f"{name}={count}" for name, count in sorted(wrong_counts.items()))
         fail(
-            "SAMPLE-PROMPTS.md must list "
-            f"{SAMPLE_PROMPTS_PER_SPECIALIST} prompts per specialist; found {details}"
+            "evals/prompts/expected-routes.md must list "
+            f"{SAMPLE_PROMPTS_PER_SPECIALIST} prompts per specialist and 4 none prompts; found {details}"
         )
 
     if README.exists():
@@ -667,7 +683,7 @@ def validate_sample_prompts(skill_files: list[Path]) -> None:
         if match and match.group(1).lower() != "four":
             fail(
                 "README.md representative prompt count must match "
-                f"SAMPLE-PROMPTS.md ({SAMPLE_PROMPTS_PER_SPECIALIST})"
+                f"evals/prompts/expected-routes.md ({SAMPLE_PROMPTS_PER_SPECIALIST})"
             )
 
 
@@ -701,7 +717,7 @@ def main() -> int:
     validate_router_boundary_split(router_file.read_text(), routing_matrix.read_text(), router_file, routing_matrix)
 
     validate_skill_contract()
-    validate_sample_prompts(skill_files)
+    validate_positive_routings(skill_files)
     print(f"skill pack validation passed: 1 router skill, {len(specialist_files)} routed specialists")
     return 0
 
