@@ -1,5 +1,20 @@
 # Staff Engineer Mode Release Notes
 
+## 1.11.0 - 2026-06-03
+
+Router eval corpus and boundary hardening release.
+
+- Moves router examples into `evals/prompts/` and expands the corpus to cover
+  expected routes plus negative, near-miss, keyword-bait, and adversarial
+  boundary prompts for every specialist.
+- Hardens the live router eval harness with local router/matrix context,
+  targeted reruns, failure-type summaries, and isolated Codex adapter output.
+- Tightens documentation lifecycle routing so routine copy, README, and
+  markdown edits do not trigger the specialist unless ownership, freshness,
+  source-of-truth, or operational accuracy is actually in scope.
+- Clarifies public sample-prompt wording while keeping boundary eval prompts in
+  the eval docs rather than the root README.
+
 ## 1.10.0 - 2026-06-02
 
 Outage/RCA source expansion release.
