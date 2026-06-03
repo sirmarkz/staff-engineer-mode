@@ -123,8 +123,7 @@ Start a fresh session inside any open repo and ask one of:
 
 The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps.
 
-For more coverage, see the [positive routing evals](evals/prompts/expected-routes.md)
-and the [eval instructions](evals/README.md).
+For more coverage, see the [sample prompts](evals/prompts/expected-routes.md).
 
 ## What's Inside
 

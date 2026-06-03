@@ -1,11 +1,12 @@
-# Router Correct Routing Prompts
+# Expected Route Demo Prompts
 
-You do not need to name specialists when you use Staff Engineer Mode. These
-prompts are grouped by specialist file so you can see the kinds of repository
-work the router understands.
+These are demo prompts for Staff Engineer Mode's expected-route eval catalog.
+They are grouped by specialist file to show the kinds of repository work the
+router should understand.
 
-Paste them while the agent is in a repo, PR, branch, or workspace. Swap in real
-paths, files, migrations, logs, alerts, runbooks, or diffs when you have them.
+Use them as examples when adapting prompts to a real repo, PR, branch, or
+workspace with concrete paths, files, migrations, logs, alerts, runbooks, or
+diffs.
 
 ## Architecture And Interfaces
 
