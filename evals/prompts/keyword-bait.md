@@ -60,7 +60,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 - "The graph says performance-and-capacity, but query-plan changes after schema migration caused the latency spike." (-> `database-operations`)
 - "The dashboard name says performance-and-capacity, but the blocker is browser bundle growth, interaction latency, layout shifts, and client runtime errors." (-> `web-release-gates`)
-- "The issue tag says performance-and-capacity, but the task is per-route LLM token budgets, p99 latency budgets, cache policy, and degraded provider fallback." (-> `llm-serving-cost-and-latency`)
+- "The issue tag says performance-and-capacity, but the concrete hosted-model route task is per-route token budgets, p99 latency budgets, cache policy, and degraded provider fallback." (-> `llm-serving-cost-and-latency`)
 - "The profile file says performance-and-capacity, but the real question is whether stale derived data invalidation can corrupt cached reads." (-> `caching-and-derived-data`)
 - "The planning note says performance-and-capacity, but the work is reserved-capacity spend versus availability commitments and reliability tradeoffs." (-> `cost-aware-reliability`)
 
@@ -68,7 +68,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 - "The DR doc says backup-and-recovery, but the task is to prove a zone can fail without data restore by checking fault-domain topology, preallocated failover capacity, and location-loss survivability." (-> `high-availability-design`)
 - "The filename says backup-and-recovery, but the request is backup job telemetry, failed-run alerts, dashboard context, and runbook links." (-> `observability-and-alerting`)
-- "The plan title says backup-and-recovery, but the task is build artifact identity, promotion provenance, and rollback package selection." (-> `release-build-reproducibility`)
+- "The plan title says backup-and-recovery, but the task is online schema backfill safety with query-plan checks, lock limits, throttling, and abort criteria." (-> `database-operations`)
 - "The ticket label says backup-and-recovery, but the concrete issue is tenant data minimization, retention, deletion, and lifecycle enforcement." (-> `privacy-and-data-lifecycle`)
 - "The checklist section says backup-and-recovery, but the work is production readiness across code, deploy config, dashboards, runbooks, and launch blockers." (-> `production-readiness-review`)
 
@@ -168,7 +168,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The runtime inventory says fleet-upgrades, but the task is package provenance, trusted builders, signatures, and deployment admission checks." (-> `software-supply-chain-security`)
 - "The upgrade ticket says fleet-upgrades, but the work is environment drift across local, CI, staging, and production that hides runtime bugs." (-> `dev-environment-parity`)
 - "The rollout doc says fleet-upgrades, but the ask is canary metrics, pause thresholds, rollback target, and staged exposure." (-> `progressive-delivery`)
-- "The checklist label says fleet-upgrades, but the concrete issue is private service routing, discovery, identity, locality, and network policy." (-> `internal-service-networking`)
+- "The checklist label says fleet-upgrades, but the concrete issue is retiring a legacy API family with replacement, consumer inventory, no-new-usage blocks, and decommission evidence." (-> `migration-and-deprecation`)
 
 ### `agent-pr-review`
 
@@ -276,7 +276,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The architecture note says tenant-isolation, but the concrete work is public API tenant field compatibility for SDK clients during rollout." (-> `api-design-and-compatibility`)
 - "The privacy ticket says tenant-isolation, but the ask is retention, deletion, minimization, and lifecycle controls for one tenant's exported data." (-> `privacy-and-data-lifecycle`)
 - "The security review says tenant-isolation, but the issue is prompt injection leaking retrieved data through an assistant tool boundary." (-> `llm-application-security`)
-- "The doc title says tenant-isolation, but the request is an ADR about whether workers or services should own retry boundaries." (-> `architecture-decisions`)
+- "The doc title says tenant-isolation, but the task is public edge rate limits, breach actions, bot handling, and origin shielding for abusive clients." (-> `edge-traffic-and-ddos-defense`)
 
 ### `privacy-and-data-lifecycle`
 
@@ -397,7 +397,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The dependency map says internal-service-networking, but the request is retry, timeout, circuit-breaker, and idempotency behavior." (-> `dependency-resilience`)
 - "The network diagram says internal-service-networking, but the task is edge traffic filtering, abusive traffic mitigation, and DDoS defense." (-> `edge-traffic-and-ddos-defense`)
 - "The service discovery ticket says internal-service-networking, but the ask is tenant isolation across shared request routing and authorization boundaries." (-> `tenant-isolation`)
-- "The route table says internal-service-networking, but the concrete work is high-availability fault-domain topology and failover capacity." (-> `high-availability-design`)
+- "The route table says internal-service-networking, but the concrete work is egress controls for user-supplied webhook URLs: allowlists, private-address blocking, redirect policy, and audit fields." (-> `secure-sdlc-and-threat-modeling`)
 - "The mesh note says internal-service-networking, but the task is observability signals, dashboard context, alert routing, and runbook links." (-> `observability-and-alerting`)
 
 ### `edge-traffic-and-ddos-defense`
@@ -406,7 +406,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The WAF ticket says edge-traffic-and-ddos-defense, but the concrete task is private service routing, internal discovery, identity, and locality." (-> `internal-service-networking`)
 - "The edge alert says edge-traffic-and-ddos-defense, but the request is SLO burn-rate policy for user-impacting errors and slow successes." (-> `slo-and-error-budgets`)
 - "The traffic note says edge-traffic-and-ddos-defense, but the work is load-test saturation, queue depth, and capacity headroom for checkout." (-> `performance-and-capacity`)
-- "The security label says edge-traffic-and-ddos-defense, but the issue is prompt injection leaking retrieved data through an LLM tool." (-> `llm-application-security`)
+- "The traffic label says edge-traffic-and-ddos-defense, but the task is tenant-aware quotas, burst sharing, and noisy-neighbor fairness inside shared workers." (-> `tenant-isolation`)
 
 ### `cost-aware-reliability`
 

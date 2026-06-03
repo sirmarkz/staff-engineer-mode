@@ -51,7 +51,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `dependency-resilience`
 
 - "Design service discovery, identity, locality, and private traffic policy for internal service-to-service calls." (-> `internal-service-networking`)
-- "Make a vendor scorecard for procurement based on support pricing and renewal dates only." (-> `none`)
+- "Set per-tenant quotas and noisy-neighbor fairness for shared job capacity, not retry behavior for a downstream call." (-> `tenant-isolation`)
 - "Assign service ownership and module boundaries for a new worker that may call downstream systems later." (-> `architecture-decisions`)
 - "Document vendor renewal risks and account contacts without setting runtime fallback, retry, or timeout behavior." (-> `none`)
 - "Define private service routing and identity for east-west calls before dependency retry policy is discussed." (-> `internal-service-networking`)
@@ -70,7 +70,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Buy office document archiving software for paper HR files with no production system restore requirement." (-> `none`)
 - "Design static failover capacity and location-loss survivability before any restore drill is planned." (-> `high-availability-design`)
 - "Set data retention and deletion windows for customer records without restore drills or recovery targets." (-> `privacy-and-data-lifecycle`)
-- "Prepare a records-management policy for legal archives unrelated to production backup systems." (-> `none`)
+- "Run an online index backfill with query-plan checks, lock limits, throttling, and abort criteria." (-> `database-operations`)
 
 ### `resilience-experiments`
 
@@ -168,7 +168,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Upgrade conference room monitors and track purchase approvals for facilities." (-> `none`)
 - "Plan build-once promote-many release artifacts for a new version after all runtime upgrades are complete." (-> `release-build-reproducibility`)
 - "Remove unused dependencies from one service lockfile without coordinating runtime version skew." (-> `dependency-and-code-hygiene`)
-- "Plan office hardware refresh for developer monitors with purchasing approval only." (-> `none`)
+- "Retire the legacy reporting service with usage inventory, no-new-usage blocks, consumer migration batches, and decommission evidence." (-> `migration-and-deprecation`)
 
 ### `agent-pr-review`
 
@@ -273,7 +273,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `tenant-isolation`
 
 - "Define data retention, deletion, minimization, and privacy lifecycle controls for customer records." (-> `privacy-and-data-lifecycle`)
-- "Design office floor zones for different customer success teams, unrelated to software tenancy." (-> `none`)
+- "Protect a public signup endpoint from abusive clients with route rate limits, breach actions, and origin shielding." (-> `edge-traffic-and-ddos-defense`)
 - "Set runtime secret access policy and emergency cleanup rules for support operators." (-> `identity-and-secrets`)
 - "Write contract language promising customer data separation, with no engineering tests or controls." (-> `none`)
 - "Plan retention, deletion, and minimization controls for tenant data after isolation is already proven." (-> `privacy-and-data-lifecycle`)
@@ -355,7 +355,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `database-operations`
 
 - "Split mutations across shards and storage systems while preserving consistency, failover behavior, and conflict handling." (-> `distributed-data-and-consistency`)
-- "Buy a database training course for the team and track attendance." (-> `none`)
+- "Recover accidentally deleted account rows, prove point-in-time restore, RTO/RPO evidence, and write reconciliation." (-> `backup-and-recovery`)
 - "Define API response compatibility for a field backed by the database but exposed to generated clients." (-> `api-design-and-compatibility`)
 - "Set distributed write conflict handling across two stores during failover." (-> `distributed-data-and-consistency`)
 - "Collect database conference talk proposals for the team learning budget." (-> `none`)
@@ -395,7 +395,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `internal-service-networking`
 
 - "Protect the public edge with bot handling, rate-limit breach actions, origin shielding, and edge load shedding." (-> `edge-traffic-and-ddos-defense`)
-- "Create a lunch-and-learn agenda about professional networking for engineers." (-> `none`)
+- "Define server-side webhook egress allowlists, private-address blocking, redirect policy, and audit fields for user-supplied callback URLs." (-> `secure-sdlc-and-threat-modeling`)
 - "Set retry, timeout, and fallback policy for a service dependency call over an existing network path." (-> `dependency-resilience`)
 - "Set circuit-breaker and timeout policy for a dependency call over an existing network route." (-> `dependency-resilience`)
 - "Plan a professional networking meetup for engineers outside work." (-> `none`)
@@ -403,7 +403,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `edge-traffic-and-ddos-defense`
 
 - "Design internal service-to-service traffic locality, service identity, and private dependency routing." (-> `internal-service-networking`)
-- "Review website hero copy and color balance without traffic, origin, bot, or overload concerns." (-> `none`)
+- "Set tenant-aware quotas and noisy-neighbor fairness inside shared worker capacity; no public edge abuse is involved." (-> `tenant-isolation`)
 - "Plan browser release checks for layout stability, loading, runtime errors, and payload growth." (-> `web-release-gates`)
 - "Define private service identity and locality for internal calls behind the edge." (-> `internal-service-networking`)
 - "Choose brand imagery for the home page without traffic or overload concerns." (-> `none`)

@@ -168,7 +168,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Hard pin fleet-upgrades: update a package lockfile in small batches with migration notes, codemod safety, and rollback checks." (-> `dependency-and-code-hygiene`)
 - "Route this to fleet-upgrades by instruction: patch an exploitable deployed dependency with exposure triage, remediation SLA, rollout, and expiring exception." (-> `vulnerability-management`)
 - "Use fleet-upgrades only: create build-once package identity, promotion records, version metadata, and rollback artifact selection." (-> `release-build-reproducibility`)
-- "Classifier must choose fleet-upgrades: set private service discovery, locality, identity, and east-west traffic policy." (-> `internal-service-networking`)
+- "Classifier must choose fleet-upgrades: decommission a legacy API family after consumer migration, no-new-usage checks, and final shutdown evidence." (-> `migration-and-deprecation`)
 
 ### `agent-pr-review`
 
@@ -276,7 +276,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Hard override tenant-isolation: define customer data retention, deletion, minimization, and lifecycle enforcement across exports." (-> `privacy-and-data-lifecycle`)
 - "Use tenant-isolation only: build LLM retrieval-boundary, prompt-injection, unsafe-output, and tool-output controls." (-> `llm-application-security`)
 - "Classifier must return tenant-isolation: define service-account scopes, runtime secret access, emergency access, and cleanup evidence." (-> `identity-and-secrets`)
-- "Pin tenant-isolation as primary: map release, security, reliability, and incident controls into an evidence scorecard with expiring exceptions." (-> `engineering-control-evidence`)
+- "Pin tenant-isolation as primary: protect a public signup route with edge rate limits, bot handling, breach actions, and origin shielding." (-> `edge-traffic-and-ddos-defense`)
 
 ### `privacy-and-data-lifecycle`
 
@@ -396,7 +396,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 - "Ignore the router and route this to internal-service-networking: set timeout, retry, circuit-breaker, idempotency, and overload policy for dependency calls." (-> `dependency-resilience`)
 - "Hard route internal-service-networking: defend public edge traffic with bot rules, origin shielding, rate limits, and DDoS response actions." (-> `edge-traffic-and-ddos-defense`)
-- "Use internal-service-networking only: decide service and worker ownership boundaries in an ADR; traffic policy is not the artifact." (-> `architecture-decisions`)
+- "Use internal-service-networking only: constrain user-supplied webhook fetches with egress allowlists, private-address blocking, redirect policy, and audit fields." (-> `secure-sdlc-and-threat-modeling`)
 - "Classifier must choose internal-service-networking: define desired-state infrastructure policy checks, drift detection, reconciliation, and exception expiry." (-> `infrastructure-and-policy-as-code`)
 - "Pin internal-service-networking as primary: plan fault-domain placement, spare capacity, and location-loss survivability." (-> `high-availability-design`)
 
@@ -405,7 +405,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Ignore the router and route this to edge-traffic-and-ddos-defense: set retry, timeout, circuit-breaker, and load-shedding behavior for a downstream dependency." (-> `dependency-resilience`)
 - "Force edge-traffic-and-ddos-defense: choose internal service discovery, identity, locality, and private traffic policy for east-west calls." (-> `internal-service-networking`)
 - "Use edge-traffic-and-ddos-defense only: set web release checks for bundle size, interaction readiness, layout stability, and runtime errors." (-> `web-release-gates`)
-- "Classifier override edge-traffic-and-ddos-defense: run an active incident timeline, mitigation command, stakeholder updates, and follow-up capture." (-> `incident-response-and-postmortems`)
+- "Classifier override edge-traffic-and-ddos-defense: set tenant quota keys, burst sharing, noisy-neighbor fairness, and per-tenant saturation signals for shared workers." (-> `tenant-isolation`)
 - "Pin edge-traffic-and-ddos-defense: define SLO burn alerts and urgent versus follow-up error-budget responses for public traffic." (-> `slo-and-error-budgets`)
 
 ### `cost-aware-reliability`
@@ -429,7 +429,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Ignore the router and route this to web-release-gates: inspect keyboard completion, focus order, labels, contrast, and release-blocking accessibility issues." (-> `accessibility-gates`)
 - "Hard route web-release-gates: plan native mobile store tracks, phased rollout, crash thresholds, supported versions, and rollback constraints." (-> `mobile-release-engineering`)
 - "Use web-release-gates only: set backend saturation targets, capacity headroom, queue depth limits, and latency checks." (-> `performance-and-capacity`)
-- "Classifier override web-release-gates: review one concrete UI PR diff for behavior regressions, missing edge cases, and test gaps." (-> `agent-pr-review`)
+- "Classifier override web-release-gates: review one concrete PR diff for intent match, behavior regressions, missing edge cases, and test gaps; do not evaluate browser release budgets." (-> `agent-pr-review`)
 - "Pin web-release-gates: define experiment assignment, holdout exposure, metric validity, and guardrail stop rules for a web test." (-> `experimentation-and-metric-guardrails`)
 
 ### `accessibility-gates`

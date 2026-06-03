@@ -51,7 +51,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `dependency-resilience`
 
 - "A queue consumer retries messages and sometimes creates duplicate work after DLQ replay; define ordering, idempotency, and poison-message recovery, not downstream-call timeout policy." (-> `event-workflows`)
-- "Choose service discovery, locality, and private routing policy for internal service-to-service traffic, not retry behavior." (-> `internal-service-networking`)
+- "Set per-tenant quota keys, burst sharing, and noisy-neighbor limits for shared capacity, not caller retry policy." (-> `tenant-isolation`)
 - "Define whether delayed webhook events are replayed, reordered, or discarded after consumer downtime." (-> `event-workflows`)
 - "Set event replay windows, poison-message handling, and idempotent repair for a queue workflow." (-> `event-workflows`)
 - "Choose mTLS identity, service discovery, and locality rules for private east-west calls." (-> `internal-service-networking`)
@@ -68,7 +68,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 - "Add isolated builder, artifact provenance, signing, and deployment admission checks; there is no restore or data-loss scenario." (-> `software-supply-chain-security`)
 - "Design HA failover capacity and fault-domain placement for losing one region without a restore." (-> `high-availability-design`)
-- "Verify isolated builder provenance for deployment artifacts after a source compromise concern." (-> `software-supply-chain-security`)
+- "Execute an online schema backfill with lock limits, query-plan checks, throttling, and abort criteria." (-> `database-operations`)
 - "Run a zonal failover game day with injected faults and clear abort criteria; no restore path is exercised." (-> `resilience-experiments`)
 - "Place quorum and spare capacity across fault domains to survive a data-center loss without restoring backups." (-> `high-availability-design`)
 
@@ -168,7 +168,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Patch a vulnerable deployed dependency with exploitability triage, SLA, and exception expiry." (-> `vulnerability-management`)
 - "Bump one dependency for a bug fix and remove obsolete imports without fleet-wide support windows." (-> `dependency-and-code-hygiene`)
 - "Triage a CVE in a deployed package with exposure, patch SLA, rollout, and exception expiry." (-> `vulnerability-management`)
-- "Update one stale library and lockfile with a small rollback note, without a fleet support window." (-> `dependency-and-code-hygiene`)
+- "Sunset a deprecated API family across services with no-new-usage checks and migration completion evidence, not mixed-version runtime rollout." (-> `migration-and-deprecation`)
 
 ### `agent-pr-review`
 
@@ -273,7 +273,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `tenant-isolation`
 
 - "Define retention, deletion, minimization, and privacy lifecycle controls for customer data." (-> `privacy-and-data-lifecycle`)
-- "Set data retention exceptions and deletion verification for customer exports." (-> `privacy-and-data-lifecycle`)
+- "Throttle abusive public API clients with edge route limits, breach actions, and origin shielding before requests reach shared tenant workers." (-> `edge-traffic-and-ddos-defense`)
 - "Handle prompt session isolation and tool-output leakage for an LLM assistant across tenants." (-> `llm-application-security`)
 - "Set retention, deletion proof, and minimization rules for customer exports." (-> `privacy-and-data-lifecycle`)
 - "Threat model prompt-injection and retrieval leakage for a multi-tenant LLM assistant." (-> `llm-application-security`)
@@ -321,7 +321,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `llm-serving-cost-and-latency`
 
 - "A hosted model endpoint intermittently times out; define circuit breakers, retry bounds, idempotency, and overload policy for the existing remote dependency." (-> `dependency-resilience`)
-- "Set generic backend capacity headroom and latency SLO checks for a non-LLM endpoint." (-> `performance-and-capacity`)
+- "Set generic backend capacity headroom, saturation limits, load-test targets, and p95/p99 latency targets for a non-LLM endpoint." (-> `performance-and-capacity`)
 - "Define remote dependency retry, timeout, circuit-breaker, and overload policy for an existing model provider call." (-> `dependency-resilience`)
 - "Set retry bounds, timeout policy, and circuit breakers for an existing model provider call." (-> `dependency-resilience`)
 - "Measure CPU saturation and p95 latency for a non-LLM hot path." (-> `performance-and-capacity`)
@@ -356,7 +356,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 - "Split mutation state across shards and stores while preserving conflict handling, replication lag behavior, and failover consistency." (-> `distributed-data-and-consistency`)
 - "Choose conflict resolution for writes split between ledger storage and profile storage during failover." (-> `distributed-data-and-consistency`)
-- "Handle a slow endpoint by measuring hot-path latency and capacity headroom outside the database plan." (-> `performance-and-capacity`)
+- "Restore a tenant snapshot after accidental deletion and reconcile writes made during recovery." (-> `backup-and-recovery`)
 - "Choose cross-store conflict rules and replication-lag behavior for a split ledger write." (-> `distributed-data-and-consistency`)
 - "Profile endpoint headroom and p95 latency where the database is not implicated." (-> `performance-and-capacity`)
 
@@ -397,13 +397,13 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Protect public ingress with bot handling, rate-limit actions, origin shielding, and edge load shedding." (-> `edge-traffic-and-ddos-defense`)
 - "Set retry budgets, circuit breakers, fallbacks, and overload behavior for an existing dependency call." (-> `dependency-resilience`)
 - "Add public ingress bot challenges and origin shielding for a traffic spike at the edge." (-> `edge-traffic-and-ddos-defense`)
-- "Add public edge bot challenges, origin shielding, rate limits, and edge load shedding." (-> `edge-traffic-and-ddos-defense`)
+- "Constrain a server-side importer that fetches user-supplied URLs with egress allowlists, private-address blocks, redirect limits, and audit fields." (-> `secure-sdlc-and-threat-modeling`)
 - "Set retry budgets, fallback behavior, and circuit breakers for an existing downstream dependency." (-> `dependency-resilience`)
 
 ### `edge-traffic-and-ddos-defense`
 
 - "Set internal service identity, locality, discovery, and private dependency routing for service-to-service calls." (-> `internal-service-networking`)
-- "Choose private dependency routing and locality hints for service-to-service calls." (-> `internal-service-networking`)
+- "Set tenant-aware quotas and noisy-neighbor fairness for shared capacity after one customer saturates workers." (-> `tenant-isolation`)
 - "Plan browser release checks for responsiveness, layout stability, runtime errors, and payload growth." (-> `web-release-gates`)
 - "Set private service discovery, identity, locality, and east-west routing policy." (-> `internal-service-networking`)
 - "Gate a web deploy on layout shift, payload size, runtime errors, and interaction readiness." (-> `web-release-gates`)

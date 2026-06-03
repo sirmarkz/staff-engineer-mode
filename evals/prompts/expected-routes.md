@@ -98,7 +98,7 @@ diffs.
 
 - "Design the test strategy for this payment workflow change: what blocks merge, what blocks release, and what can run later."
 - "Inspect the CI config and test layout, then find weak signals that could let a bad release through."
-- "Build a practical test plan for this feature using the code that changed in this branch."
+- "Build a practical test plan for this feature area: name the merge blockers, release blockers, nightly checks, and weak signals."
 - "The feature touches auth, billing, and background jobs; decide the minimal blocking test set and what can run nightly."
 - "A hotfix skipped two suites last time; decide which checks must block merge versus release for this risky path."
 
