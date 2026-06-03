@@ -131,9 +131,9 @@ One native router skill: `staff-engineer-mode`. It routes to 54 specialist
 files under `specialists/`; those files are not installed or listed as separate
 native skills.
 
-Examples by surface:
+All specialist files by surface:
 
-| Surface | Example specialist files |
+| Surface | Specialist files |
 | --- | --- |
 | Architecture and interfaces | [`architecture-decisions`](specialists/architecture-decisions.md), [`api-design-and-compatibility`](specialists/api-design-and-compatibility.md), [`data-contracts`](specialists/data-contracts.md), [`state-machine-correctness`](specialists/state-machine-correctness.md) |
 | Reliability and resilience | [`slo-and-error-budgets`](specialists/slo-and-error-budgets.md), [`high-availability-design`](specialists/high-availability-design.md), [`dependency-resilience`](specialists/dependency-resilience.md), [`backup-and-recovery`](specialists/backup-and-recovery.md), [`resilience-experiments`](specialists/resilience-experiments.md), [`performance-and-capacity`](specialists/performance-and-capacity.md) |
@@ -143,8 +143,8 @@ Examples by surface:
 | Data and workflow systems | [`distributed-data-and-consistency`](specialists/distributed-data-and-consistency.md), [`database-operations`](specialists/database-operations.md), [`event-workflows`](specialists/event-workflows.md), [`data-pipeline-reliability`](specialists/data-pipeline-reliability.md), [`caching-and-derived-data`](specialists/caching-and-derived-data.md) |
 | Platform and edge | [`platform-golden-paths`](specialists/platform-golden-paths.md), [`infrastructure-and-policy-as-code`](specialists/infrastructure-and-policy-as-code.md), [`internal-service-networking`](specialists/internal-service-networking.md), [`edge-traffic-and-ddos-defense`](specialists/edge-traffic-and-ddos-defense.md), [`cost-aware-reliability`](specialists/cost-aware-reliability.md) |
 | Client, ML/AI, and experimentation | [`web-release-gates`](specialists/web-release-gates.md), [`mobile-release-engineering`](specialists/mobile-release-engineering.md), [`accessibility-gates`](specialists/accessibility-gates.md), [`llm-application-security`](specialists/llm-application-security.md), [`llm-evaluation`](specialists/llm-evaluation.md), [`llm-serving-cost-and-latency`](specialists/llm-serving-cost-and-latency.md), [`ml-reliability-and-evaluation`](specialists/ml-reliability-and-evaluation.md), [`experimentation-and-metric-guardrails`](specialists/experimentation-and-metric-guardrails.md) |
-| AI-assisted engineering workflow and controls | [`agent-pr-review`](specialists/agent-pr-review.md), [`ai-coding-governance`](specialists/ai-coding-governance.md), [`code-readability-for-agents`](specialists/code-readability-for-agents.md), [`engineering-control-evidence`](specialists/engineering-control-evidence.md) |
-| Runbook and source-of-truth lifecycle | [`documentation-lifecycle`](specialists/documentation-lifecycle.md) |
+| Pre-merge review, AI-agent workflow, and control records | [`agent-pr-review`](specialists/agent-pr-review.md), [`ai-coding-governance`](specialists/ai-coding-governance.md), [`code-readability-for-agents`](specialists/code-readability-for-agents.md), [`engineering-control-evidence`](specialists/engineering-control-evidence.md) |
+| Engineering documentation lifecycle | [`documentation-lifecycle`](specialists/documentation-lifecycle.md) |
 
 ## Contributing
 
