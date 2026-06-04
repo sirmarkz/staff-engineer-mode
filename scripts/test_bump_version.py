@@ -73,6 +73,11 @@ class BumpVersionTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(self.read_json("package.json"), {"version": "1.0.0"})
 
+    def test_repo_audit_excludes_dependency_lockfile_basename(self) -> None:
+        config = json.loads((ROOT / ".version-bump.json").read_text(encoding="utf-8"))
+
+        self.assertIn("package-lock.json", config["audit"]["exclude"])
+
 
 if __name__ == "__main__":
     unittest.main()

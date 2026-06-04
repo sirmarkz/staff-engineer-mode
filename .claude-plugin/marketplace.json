@@ -8,11 +8,11 @@
     {
       "name": "staff-engineer-mode",
       "description": "Major outage lessons baked into AI agents trained by thousands of engineer-years of production knowledge.",
-      "version": "1.11.0",
+      "version": "2.0.0",
       "source": {
         "source": "url",
         "url": "https://github.com/sirmarkz/staff-engineer-mode.git",
-        "ref": "v1.11.0",
+        "ref": "v2.0.0",
         "sha": "c2ebd392274b7912cfa14e1472d93d0ad4f502b9"
       },
       "author": {

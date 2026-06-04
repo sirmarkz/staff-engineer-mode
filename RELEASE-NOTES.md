@@ -1,5 +1,22 @@
 # Staff Engineer Mode Release Notes
 
+## 2.0.0 - 2026-06-04
+
+Specialist catalog expansion release.
+
+- Adds routed specialists and templates for container runtime behavior,
+  multi-region and data residency, persistent connections, resilience
+  requirements, service decommissioning, data lineage, input validation, and
+  operational ownership transfer.
+- Expands router guidance, routing matrix coverage, and README categorization
+  for the broader specialist catalog while keeping only the native router in
+  plugin discovery.
+- Strengthens boundary evals across expected, negative, near-miss,
+  keyword-bait, and adversarial prompts so new specialists route cleanly
+  without stealing adjacent work.
+- Extends the router eval harness with deterministic random-specialist
+  sampling for release-gate evidence.
+
 ## 1.11.0 - 2026-06-03
 
 Router eval corpus and boundary hardening release.
