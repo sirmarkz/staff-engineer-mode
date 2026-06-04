@@ -365,10 +365,10 @@ diffs.
 ### `llm-evaluation`
 
 - "Design an eval harness for this prompt change with cases, graders, thresholds, and regression history."
-- "Inspect these model-backed workflow evals and find where the scoring or slice coverage is weak."
+- "For this retrieval-grounded answer flow, design eval cases for retrieval fit, cited-context use, answer correctness, slice thresholds, and regression history."
 - "Turn recent bad outputs into release-blocking eval cases with owners and failure triage."
 - "A prompt tweak improved summaries but broke refund cases; build regression slices and a pass threshold."
-- "The assistant now handles cancellation requests; add judged cases, slice thresholds, baseline comparison, and failure triage."
+- "The support agent now reads order status and proposes cancellations; add task-run evals with tool-call trace checks, final-state assertions, repeated runs, and failure triage."
 
 ### `llm-serving-cost-and-latency`
 

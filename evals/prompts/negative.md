@@ -344,7 +344,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 ### `llm-application-security`
 
-- "Design an LLM eval dataset with graders, thresholds, slice coverage, regression history, and failure triage." (-> `llm-evaluation`)
+- "Design agent task-run evals with allowed-tool trace checks, final-state assertions, slice thresholds, regression history, and failure triage." (-> `llm-evaluation`)
 - "Write social media copy about responsible AI features without changing an LLM product surface." (-> `none`)
 - "Set model-serving token budgets, prompt-cache policy, and latency degradation behavior for one route." (-> `llm-serving-cost-and-latency`)
 - "Create an LLM benchmark with slice coverage, graders, thresholds, and failure triage." (-> `llm-evaluation`)
@@ -360,7 +360,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 ### `llm-evaluation`
 
-- "A retrieval tool can expose hidden customer data through prompt injection; define tool-boundary and unsafe-output controls." (-> `llm-application-security`)
+- "An agent can follow malicious retrieved instructions to call write tools; define red-team evals and containment controls for prompt injection and unsafe tool output." (-> `llm-application-security`)
 - "Ask a model to draft a product tagline and pick the most appealing option, with no eval harness or threshold." (-> `none`)
 - "Plan production model promotion checks with drift monitors, serving rollback, and training-serving skew review." (-> `ml-reliability-and-evaluation`)
 - "Tune prompt-cache keys and max-token limits to reduce serving cost for one model route." (-> `llm-serving-cost-and-latency`)
@@ -428,7 +428,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 - "Compare model vendors for roadmap positioning and write a purchasing recommendation; no production model promotion, serving check, drift monitor, or rollback decision is involved." (-> `none`)
 - "Create a model-themed recruiting exercise that does not touch a deployed ML system or evaluation gate." (-> `none`)
-- "Define LLM evaluation graders, thresholds, slice coverage, and regression history for a prompt workflow." (-> `llm-evaluation`)
+- "Define retrieval-grounded and agent task-run eval graders, trace checks, final-state assertions, thresholds, slice coverage, and regression history." (-> `llm-evaluation`)
 - "Build LLM prompt regression graders and slice thresholds for a support assistant." (-> `llm-evaluation`)
 - "Write model-themed swag copy for recruiting." (-> `none`)
 

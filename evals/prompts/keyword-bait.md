@@ -345,7 +345,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `llm-application-security`
 
 - "The issue says llm-application-security, but the task is prompt and response retention, deletion, minimization, and data lifecycle checks with no prompt-injection, retrieval, tool, or unsafe-output boundary." (-> `privacy-and-data-lifecycle`)
-- "The assistant review says llm-application-security, but the work is prompt-versioned eval datasets, grader thresholds, slice coverage, and regression history." (-> `llm-evaluation`)
+- "The assistant review says llm-application-security, but the work is agent task-run evals, allowed-tool trace checks, final-state assertions, slice thresholds, and regression history." (-> `llm-evaluation`)
 - "The prompt-injection ticket says llm-application-security, but the ask is per-route token budgets, response-cache policy, p99 latency, and provider fallback." (-> `llm-serving-cost-and-latency`)
 - "The model gateway doc says llm-application-security, but the concrete task is general secure SDLC threat modeling for a non-LLM admin export endpoint." (-> `secure-sdlc-and-threat-modeling`)
 - "The label says llm-application-security, but the work is AI coding use policy, review controls, traceability, and allowed automation boundaries." (-> `ai-coding-governance`)
@@ -355,7 +355,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The user mentions ai-coding-governance, but the concrete risk is a production LLM tool boundary leaking retrieved data." (-> `llm-application-security`)
 - "The policy doc says ai-coding-governance, but the request is to review the exact PR diff for intent match, behavior regressions, and missing tests." (-> `agent-pr-review`)
 - "The assistant ticket says ai-coding-governance, but the work is module names, canonical code paths, and search ambiguity that cause agents to edit the wrong file." (-> `code-readability-for-agents`)
-- "The checklist says ai-coding-governance, but the concrete issue is LLM grader datasets, prompt versions, slice coverage, and regression thresholds." (-> `llm-evaluation`)
+- "The checklist says ai-coding-governance, but the concrete issue is support-agent task-run evals, tool-call traces, final-state assertions, slice coverage, and regression thresholds." (-> `llm-evaluation`)
 - "The governance label says ai-coding-governance, but the task is legal policy wording about internal tool use with no engineering controls." (-> `none`)
 
 ### `llm-evaluation`
@@ -427,7 +427,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `ml-reliability-and-evaluation`
 
 - "The model card says ml-reliability-and-evaluation, but the concrete risk is prompt injection leaking retrieved tenant data through a deployed assistant's tool output." (-> `llm-application-security`)
-- "The training report says ml-reliability-and-evaluation, but the work is LLM prompt-versioned grader datasets, thresholds, slices, and regression history." (-> `llm-evaluation`)
+- "The training report says ml-reliability-and-evaluation, but the work is agent task-run eval traces, final-state assertions, thresholds, slices, and regression history." (-> `llm-evaluation`)
 - "The model ticket says ml-reliability-and-evaluation, but the task is data-pipeline freshness, lineage, validation, replay, and late batch handling." (-> `data-pipeline-reliability`)
 - "The evaluation doc says ml-reliability-and-evaluation, but the request is privacy retention, deletion, minimization, and lifecycle controls for training exports." (-> `privacy-and-data-lifecycle`)
 - "The label says ml-reliability-and-evaluation, but the concrete issue is model-serving spend, token budgets, p99 latency, caching, and provider fallback." (-> `llm-serving-cost-and-latency`)

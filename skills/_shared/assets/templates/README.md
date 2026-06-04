@@ -45,7 +45,7 @@ mark them as shared use in this index.
 | `documentation-lifecycle.md` | `documentation-lifecycle` | Documentation inventory and freshness plan | Keep source of truth, current-state verification, cadence, staleness signal, archive rule, and no-duplication rule visible. |
 | `edge-traffic-defense-plan.md` | `edge-traffic-and-ddos-defense` | Edge traffic defense plan | Keep origin protection, limit behavior, traffic steering, recovery drain behavior, customer impact, and abort path visible. |
 | `engineering-control-evidence-map.md` | `engineering-control-evidence` | Engineering control evidence map | Keep control, evidence, owner, expiry, exception, and collection path aligned. |
-| `eval-harness-spec.md` | `llm-evaluation` | Evaluation harness spec | Keep case coverage, grader, threshold, regression history, and triage fields visible. |
+| `eval-harness-spec.md` | `llm-evaluation` | Evaluation harness spec | Keep eval unit, case coverage, trace or final-state checks, grader, threshold, regression history, and triage fields visible. |
 | `event-workflow-contract.md` | `event-workflows` | Event workflow contract | Keep trigger compatibility, replay, ordering, duplicate handling, failed-message behavior, side-effect acceptance, and owner visible. |
 | `experiment-guardrail-plan.md` | `experimentation-and-metric-guardrails` | Experiment guardrail plan | Keep assignment, exposure, guardrails, sample balance, and readout validity visible. |
 | `feature-flag-lifecycle.md` | `feature-flag-lifecycle` | Feature flag lifecycle record | Keep owner, expiry, fallback, cleanup, and removal evidence visible. |

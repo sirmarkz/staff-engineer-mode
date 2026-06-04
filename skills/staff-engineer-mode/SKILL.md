@@ -191,7 +191,7 @@ Load `references/routing-matrix.md`.
 - Retiring/replacing with no-new-usage checks -> `migration-and-deprecation`; terminal teardown/no-resurrection -> `service-decommission-and-sunset`; model promotion/drift -> `ml-reliability-and-evaluation`.
 - Release split: readiness verdict -> `production-readiness-review`; staged exposure/rollback -> `progressive-delivery`; build artifact identity -> `release-build-reproducibility`; browser/mobile gates route client-specific.
 - Security split: threat model, per-sink input defense, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, and LLM app risk.
-- LLM split: app security -> `llm-application-security`; eval harness -> `llm-evaluation`; serving cost/latency -> `llm-serving-cost-and-latency`; ML serving reliability -> `ml-reliability-and-evaluation`.
+- LLM split: app security -> `llm-application-security`; eval, retrieval-grounded, or agent task-run checks -> `llm-evaluation`; serving cost/latency -> `llm-serving-cost-and-latency`; ML serving reliability -> `ml-reliability-and-evaluation`.
 - Traffic split: public edge -> `edge-traffic-and-ddos-defense`; private service routing -> `internal-service-networking`; dependency-call policy -> `dependency-resilience`.
 - Test split: production-derived fixtures -> `test-data-engineering`; CI/merge gates -> `testing-and-quality-gates`; environment drift -> `dev-environment-parity`.
 - Dependency cleanup -> `dependency-and-code-hygiene`; fleet waves/support windows -> `fleet-upgrades`; supply-chain trust stays separate.

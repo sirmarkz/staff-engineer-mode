@@ -345,7 +345,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `llm-application-security`
 
 - "Build an LLM eval dataset with graders, thresholds, regression history, and failure triage." (-> `llm-evaluation`)
-- "Calibrate graders and slice thresholds for a support assistant regression suite, with failure triage." (-> `llm-evaluation`)
+- "Build task-run evals for a support agent with allowed-tool trace checks, final-state assertions, repeated runs, and failure triage." (-> `llm-evaluation`)
 - "Set token-budget attribution, response-cache policy, and tail-latency guardrails for LLM calls." (-> `llm-serving-cost-and-latency`)
 - "Create prompt eval slices, grader thresholds, and regression history for model changes." (-> `llm-evaluation`)
 - "Set per-route token budgets, cache policy, and tail-latency limits for assistant calls." (-> `llm-serving-cost-and-latency`)
@@ -363,7 +363,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Build a prompt-injection red-team eval set for an assistant that retrieves customer records and calls write tools; require least-privilege controls, audit, and retest criteria." (-> `llm-application-security`)
 - "Threat model tool access, prompt-injection boundaries, retrieval leakage, and unsafe output handling." (-> `llm-application-security`)
 - "Plan production model drift monitors, promotion gates, and rollback for a non-LLM classifier." (-> `ml-reliability-and-evaluation`)
-- "Threat model tool access, retrieval boundaries, prompt injection, and unsafe output handling." (-> `llm-application-security`)
+- "Create a red-team eval for prompt-injection attempts that manipulate retrieval context and write-tool arguments." (-> `llm-application-security`)
 - "Set drift monitors and rollback gates for a non-LLM ranking model in production." (-> `ml-reliability-and-evaluation`)
 
 ### `llm-serving-cost-and-latency`
@@ -429,7 +429,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Build an LLM prompt eval harness with datasets, graders, thresholds, and regression history." (-> `llm-evaluation`)
 - "Calibrate LLM judge rubrics and failure slices for a prompt-change release gate." (-> `llm-evaluation`)
 - "Set per-route token budgets, response-cache strategy, and tail-latency limits for LLM serving." (-> `llm-serving-cost-and-latency`)
-- "Build an LLM regression eval set with grader thresholds and slice history." (-> `llm-evaluation`)
+- "Build agent task-run evals with tool-call trace checks, final-state assertions, repeated runs, and failure triage." (-> `llm-evaluation`)
 - "Set hosted LLM token budgets, cache rules, and tail-latency objectives." (-> `llm-serving-cost-and-latency`)
 
 ### `platform-golden-paths`
