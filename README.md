@@ -1,10 +1,10 @@
 # Staff Engineer Mode
 
-Staff Engineer Mode bakes decades of major-outage lessons into a set of
-specialists. Each carries thousands of engineer-years of judgment from the
-engineers who built and ran systems at the largest scale. You get
-availability, reliability, resilience, security, operability, compatibility,
-and rollout-safety checks before your code ships.
+Staff Engineer Mode gives your coding agent production instincts. It turns
+major-outage writeups, SRE practice, security guidance, and release lessons
+into routed specialists for architecture, reliability, security, delivery, and
+operations. It puts hard-won production judgment in the path of everyday coding
+work.
 
 ## Sources
 
