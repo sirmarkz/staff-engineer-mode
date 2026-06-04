@@ -32,6 +32,7 @@ LLM applications move untrusted text across tool, data, and decision boundaries.
 - The request is broad AI strategy, model strategy, or ethics work outside engineering controls.
 - The work is classical ML evaluation or drift; use `ml-reliability-and-evaluation` instead.
 - The request is general application threat modeling without LLM-specific boundaries; use `secure-sdlc-and-threat-modeling` instead.
+- The request is conventional non-model input reaching query, command, render, parser, path, upload, or deserialization sinks; use `input-validation-and-injection-defense` instead.
 - The issue is generic artifact provenance with no model/prompt/tool supply chain concern; use `software-supply-chain-security` instead.
 - The main work is personal-data lifecycle, retention, deletion, export, or prompt/response storage controls; use `privacy-and-data-lifecycle` instead unless LLM prompt, retrieval, tool, or output boundaries dominate.
 - The main work is tenant boundary enforcement outside LLM retrieval/session context; use `tenant-isolation` instead.

@@ -22,6 +22,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Assign owners, freshness cadence, and archive criteria for ADRs that already document the service split." (-> `documentation-lifecycle`)
 - "Collect cross-team control evidence for architecture review checkpoints, exception records, and release signoff artifacts." (-> `engineering-control-evidence`)
 
+### `resilience-requirements`
+
+- "Choose service boundaries, ownership, and call direction for a feature whose failure behavior is already specified." (-> `architecture-decisions`)
+- "Turn existing availability and latency targets into burn-rate alerts, error-budget policy, and follow-up ownership." (-> `slo-and-error-budgets`)
+- "Map trust boundaries, abuse cases, mitigations, and residual risk for a planned feature before code ships." (-> `secure-sdlc-and-threat-modeling`)
+- "Define suite-wide merge blockers and release gates for already-written failure-behavior acceptance criteria." (-> `testing-and-quality-gates`)
+- "Set retries, timeout budgets, fallback behavior, and overload policy for an existing downstream call." (-> `dependency-resilience`)
+
 ### `data-contracts`
 
 - "Change one public API response field while preserving generated-client and existing-caller behavior." (-> `api-design-and-compatibility`)
@@ -29,6 +37,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Define replay, ordering, idempotency, and DLQ behavior for a message workflow whose schema is already stable." (-> `event-workflows`)
 - "Design a typed public API operation and generated client names for a new account export endpoint." (-> `api-design-and-compatibility`)
 - "Choose DLQ replay and out-of-order handling for an existing event whose schema will not change." (-> `event-workflows`)
+
+### `persistent-connection-systems`
+
+- "Define broker-mediated replay, ordering, idempotency, and poison-message recovery for async delivery after disconnects." (-> `event-workflows`)
+- "Set request-response timeout, retry, fallback, and circuit-breaker policy for a dependency reached over an existing route." (-> `dependency-resilience`)
+- "Model concurrent-connection headroom, memory, file descriptors, and autoscaling without changing reconnect or drain semantics." (-> `performance-and-capacity`)
+- "Set private service identity, locality, and load-balancer policy for east-west traffic that carries streaming requests." (-> `internal-service-networking`)
+- "Plan mobile offline sync, startup, crash, and release gates for a client feature that uses a connection when online." (-> `mobile-release-engineering`)
 
 ## Reliability And Resilience
 
@@ -47,6 +63,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Define RTO, RPO, restore drills, and corruption recovery for the storage layer." (-> `backup-and-recovery`)
 - "Prove the region-failover runbook with a scoped game day and abort criteria, not by redesigning placement." (-> `resilience-experiments`)
 - "Set backup retention and restore verification for regional data loss, including RTO and RPO targets." (-> `backup-and-recovery`)
+
+### `multi-region-and-data-residency`
+
+- "Set static fault-domain placement, spare capacity, and quorum assumptions to survive a region loss without residency rules." (-> `high-availability-design`)
+- "Run a controlled regional evacuation game day with abort criteria and evidence, after topology and residency are already defined." (-> `resilience-experiments`)
+- "Define replication conflict resolution, stale-read bounds, and write failover semantics for one replicated store." (-> `distributed-data-and-consistency`)
+- "Set retention, deletion, minimization, and purpose limits for regulated regional personal data." (-> `privacy-and-data-lifecycle`)
+- "Protect public edge routes with abuse controls, origin shielding, and rate-limit breach behavior across regions." (-> `edge-traffic-and-ddos-defense`)
 
 ### `dependency-resilience`
 
@@ -162,6 +186,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Add generated-client compatibility checks for changing a public response field, with existing callers preserved." (-> `api-design-and-compatibility`)
 - "Remove obsolete helpers and warnings in small batches with static-analysis ratchets." (-> `dependency-and-code-hygiene`)
 
+### `service-decommission-and-sunset`
+
+- "Sunset a deprecated API family by blocking new callers, migrating consumers, and proving no-new-usage before teardown." (-> `migration-and-deprecation`)
+- "Preview a single destructive production configuration change with input validation, blast-radius cap, abort, and rollback." (-> `configuration-and-automation-safety`)
+- "Delete one obsolete database table with lock limits, query-plan checks, backup point, and rollback criteria." (-> `database-operations`)
+- "Revoke and rotate service certificates and trust-chain material for a still-running replacement service." (-> `cryptography-and-key-lifecycle`)
+- "Prove restore capability before deleting a store by running point-in-time recovery and reconciliation checks." (-> `backup-and-recovery`)
+
 ### `fleet-upgrades`
 
 - "Update one package lockfile in small batches with migration notes and rollback checks." (-> `dependency-and-code-hygiene`)
@@ -228,6 +260,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Build missing traces, logs, dashboard panels, and runbook annotations for a new checkout dependency." (-> `observability-and-alerting`)
 - "Set burn-rate paging thresholds and error-budget follow-up ownership for the service." (-> `slo-and-error-budgets`)
 
+### `operational-ownership-transfer`
+
+- "Assign runbook owners, source-of-truth links, freshness cadence, stale-signal checks, and archive criteria." (-> `documentation-lifecycle`)
+- "Reduce noisy recurring pages, suppression rules, and responder toil for the current service owner." (-> `oncall-health`)
+- "Run launch readiness for a service with customer impact, dependency, observability, rollback, and support checks." (-> `production-readiness-review`)
+- "Record architectural ownership boundaries, module responsibilities, and call direction in an ADR." (-> `architecture-decisions`)
+- "Retire a service with zero-traffic proof, data disposition, credential revocation, and no-resurrection evidence." (-> `service-decommission-and-sunset`)
+
 ## Security And Privacy
 
 ### `secure-sdlc-and-threat-modeling`
@@ -237,6 +277,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Triage a deployed CVE with exposure, patch rollout, SLA, and exception expiry." (-> `vulnerability-management`)
 - "Assess deployed CVE exposure, patch SLA, rollout sequence, and exception expiry." (-> `vulnerability-management`)
 - "Verify isolated builder provenance, artifact signing, and deployment admission before release." (-> `software-supply-chain-security`)
+
+### `input-validation-and-injection-defense`
+
+- "Threat model trust boundaries, data flows, abuse cases, and residual risk for an admin import feature before implementation." (-> `secure-sdlc-and-threat-modeling`)
+- "Set API request bounds, malformed-field behavior, and generated-client compatibility for an external contract, with no query or render sink." (-> `api-design-and-compatibility`)
+- "Handle prompt-injection, retrieval leakage, unsafe tool output, and least-privilege controls for an LLM assistant." (-> `llm-application-security`)
+- "Triage a deployed injection flaw with exploitability, patch SLA, rollout sequence, and exception expiry." (-> `vulnerability-management`)
+- "Define server-side callback egress allowlists, private-address blocking, redirect handling, and audit fields." (-> `secure-sdlc-and-threat-modeling`)
 
 ### `identity-and-secrets`
 
@@ -368,6 +416,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Decide message replay, ordering, and DLQ repair for a queue after consumer downtime." (-> `event-workflows`)
 - "Set producer-consumer schema compatibility for an analytics event without freshness work." (-> `data-contracts`)
 
+### `data-lineage-and-provenance`
+
+- "Recover a stale reporting pipeline with freshness validation, replay bounds, backlog burn-down, and idempotent reprocessing." (-> `data-pipeline-reliability`)
+- "Define personal-data retention, deletion proof, minimization, and consent lifecycle controls for customer exports." (-> `privacy-and-data-lifecycle`)
+- "Verify source-to-deploy artifact provenance, signed attestations, isolated builders, and admission controls." (-> `software-supply-chain-security`)
+- "Set producer-consumer schema versioning and compatibility rules for a shared revenue event." (-> `data-contracts`)
+- "Resolve replication-lag consistency and conflict handling for writes split across operational stores." (-> `distributed-data-and-consistency`)
+
 ### `ml-reliability-and-evaluation`
 
 - "Build an LLM prompt eval harness with datasets, graders, thresholds, and regression history." (-> `llm-evaluation`)
@@ -391,6 +447,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Define developer golden-path templates, paved-road service defaults, and platform adoption checks." (-> `platform-golden-paths`)
 - "Run a one-time generated production config change with preview, blast-radius cap, abort, and rollback." (-> `configuration-and-automation-safety`)
 - "Define paved-road service templates and golden-path adoption checks for developers." (-> `platform-golden-paths`)
+
+### `container-runtime-and-orchestration`
+
+- "Define desired-state policy checks, drift repair, and expiring exceptions for workload runtime settings." (-> `infrastructure-and-policy-as-code`)
+- "Model latency, saturation, throughput, and headroom for a workload before choosing resource bounds." (-> `performance-and-capacity`)
+- "Verify image provenance, signed attestations, builder isolation, and deployment admission for runtime artifacts." (-> `software-supply-chain-security`)
+- "Plan runtime version waves, mixed-version support windows, skew exceptions, and rollback across the fleet." (-> `fleet-upgrades`)
+- "Design fault-domain capacity and node-as-failure-domain survivability before setting per-workload probes." (-> `high-availability-design`)
 
 ### `internal-service-networking`
 

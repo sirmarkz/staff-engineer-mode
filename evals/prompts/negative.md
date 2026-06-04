@@ -22,6 +22,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Write a quarterly roadmap memo comparing staffing options, with no system boundaries or technical decision to record." (-> `none`)
 - "Define merge-blocking quality checks for a service after architecture ownership and module boundaries are already agreed." (-> `testing-and-quality-gates`)
 
+### `resilience-requirements`
+
+- "Choose service boundaries and ownership for a proposed worker after failure behavior has already been specified." (-> `architecture-decisions`)
+- "Calculate burn-rate alerts and error-budget policy from existing availability targets, without writing feature acceptance criteria." (-> `slo-and-error-budgets`)
+- "Threat model a planned admin workflow with trust boundaries, data flows, abuse cases, and residual-risk owners." (-> `secure-sdlc-and-threat-modeling`)
+- "Place merge-blocking tests and flaky-test quarantine policy for failure cases that are already defined." (-> `testing-and-quality-gates`)
+- "Rank product feature ideas by market demand with no engineering failure behavior or non-functional target." (-> `none`)
+
 ### `data-contracts`
 
 - "Change one exposed API response field while preserving existing client callers and generated-client behavior." (-> `api-design-and-compatibility`)
@@ -29,6 +37,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Plan replay, idempotency, and dead-letter handling for a consumer workflow after the event schema is already stable." (-> `event-workflows`)
 - "Create a glossary of business terms for analytics users without producer, consumer, schema, or compatibility work." (-> `none`)
 - "Tune stale cache invalidation for derived product counts after event payload fields are already stable." (-> `caching-and-derived-data`)
+
+### `persistent-connection-systems`
+
+- "Define ordering, idempotency, replay, and dead-letter handling for an asynchronous queue workflow, with no long-lived client connection." (-> `event-workflows`)
+- "Set timeout, retry, fallback, and circuit-breaker behavior for a normal request-response dependency call." (-> `dependency-resilience`)
+- "Estimate connection-count headroom and file-descriptor capacity for a service without changing reconnect, heartbeat, or drain behavior." (-> `performance-and-capacity`)
+- "Design internal service discovery, locality, and private load-balancer routing for east-west traffic." (-> `internal-service-networking`)
+- "Write a customer newsletter titled stay connected, with no software connection lifecycle or runtime system scope." (-> `none`)
 
 ## Reliability And Resilience
 
@@ -47,6 +63,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Run a scoped failure-injection exercise to validate assumptions in the existing topology." (-> `resilience-experiments`)
 - "Increase worker pool size for expected traffic growth without adding region-loss or failover design." (-> `performance-and-capacity`)
 - "Prepare an office move continuity checklist for facilities, with no production service topology or failover scope." (-> `none`)
+
+### `multi-region-and-data-residency`
+
+- "Design static failover capacity and fault-domain survivability for a service without residency placement or geo-routing rules." (-> `high-availability-design`)
+- "Define restore drills, RTO, RPO, and corruption recovery for rebuilding data after a regional storage loss." (-> `backup-and-recovery`)
+- "Resolve cross-store replication conflicts and stale-read semantics for one data model during failover." (-> `distributed-data-and-consistency`)
+- "Set private east-west service discovery and routing policy between regional backends." (-> `internal-service-networking`)
+- "Compare regional sales territories for the go-to-market plan, with no production topology or data placement decision." (-> `none`)
 
 ### `dependency-resilience`
 
@@ -162,6 +186,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Define a fleet-wide runtime upgrade window with version-skew exceptions and rollback batches." (-> `fleet-upgrades`)
 - "Archive old office-event wiki pages by HR request without engineering docs, users, APIs, or data paths." (-> `none`)
 
+### `service-decommission-and-sunset`
+
+- "Drive remaining consumers off a deprecated API with no-new-usage checks and migration batches before terminal teardown." (-> `migration-and-deprecation`)
+- "Preview one destructive configuration mutation, cap blast radius, and define abort and rollback steps." (-> `configuration-and-automation-safety`)
+- "Represent infrastructure deletion in desired state with drift detection and emergency exception rules." (-> `infrastructure-and-policy-as-code`)
+- "Plan certificate revocation and trust-chain rotation for a service that will continue running." (-> `cryptography-and-key-lifecycle`)
+- "Write a retirement party invitation for the team that built a legacy service, with no system teardown." (-> `none`)
+
 ### `fleet-upgrades`
 
 - "Plan a routine package update and lockfile sweep with small-batch hygiene and rollback checks." (-> `dependency-and-code-hygiene`)
@@ -228,6 +260,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Choose a wellness stipend vendor for support staff, unrelated to paging or incidents." (-> `none`)
 - "Define SLO alert urgency and follow-up policy for a service objective." (-> `slo-and-error-budgets`)
 
+### `operational-ownership-transfer`
+
+- "Assign owners, source-of-truth links, freshness cadence, and archive criteria for runbook documentation." (-> `documentation-lifecycle`)
+- "Reduce recurring alert noise and escalation fatigue for the team that already owns the service." (-> `oncall-health`)
+- "Run a launch go/no-go for a new service based on dependencies, observability, rollback, and support readiness." (-> `production-readiness-review`)
+- "Record component ownership and call-direction boundaries in an architecture decision." (-> `architecture-decisions`)
+- "Draft a staffing reorganization memo with headcount targets and no running system handoff." (-> `none`)
+
 ## Security And Privacy
 
 ### `secure-sdlc-and-threat-modeling`
@@ -237,6 +277,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Set AI-agent protected paths, allowed actions, data boundaries, and verification requirements for generated code." (-> `ai-coding-governance`)
 - "Review a deployed CVE and set patch rollout deadlines with temporary exception expiry." (-> `vulnerability-management`)
 - "Ask procurement to score security vendors by contract price and renewal date only." (-> `none`)
+
+### `input-validation-and-injection-defense`
+
+- "Define malformed-request bounds, field compatibility, and generated-client behavior for a public API contract, with no interpreting sink." (-> `api-design-and-compatibility`)
+- "Threat model trust boundaries, data flows, abuse cases, and residual-risk owners before choosing implementation controls." (-> `secure-sdlc-and-threat-modeling`)
+- "Handle prompt-injection and unsafe tool-output controls for an LLM assistant that can call write tools." (-> `llm-application-security`)
+- "Set remediation SLA, exploitability triage, rollout order, and exception expiry for a deployed injection vulnerability." (-> `vulnerability-management`)
+- "Write a security-awareness article about input hygiene for employees, with no application code or sink." (-> `none`)
 
 ### `identity-and-secrets`
 
@@ -336,6 +384,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Plan schema migration lock windows and rollback for one relational table." (-> `database-operations`)
 - "Write a data team mission statement with no storage, replication, or consistency decision." (-> `none`)
 
+### `data-lineage-and-provenance`
+
+- "Recover a delayed analytics pipeline with freshness checks, replay, backlog burn-down, and no-double-count validation." (-> `data-pipeline-reliability`)
+- "Define retention, deletion, minimization, and consent lifecycle controls for personal data records." (-> `privacy-and-data-lifecycle`)
+- "Verify build artifact provenance, signing, isolated builders, and deployment admission for release packages." (-> `software-supply-chain-security`)
+- "Set producer and consumer schema compatibility rules for a shared event payload." (-> `data-contracts`)
+- "Prepare a slide deck about data-driven culture with no regulated figures, derivation graph, or recompute need." (-> `none`)
+
 ### `event-workflows`
 
 - "Define producer and consumer schema compatibility for a shared event payload without replay or ordering concerns." (-> `data-contracts`)
@@ -391,6 +447,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Plan public edge rate-limit breach handling, origin shielding, and load shedding." (-> `edge-traffic-and-ddos-defense`)
 - "Preview and bound a generated config change before rollout, with abort and rollback criteria." (-> `configuration-and-automation-safety`)
 - "Draft an HR policy about home internet reimbursement." (-> `none`)
+
+### `container-runtime-and-orchestration`
+
+- "Capture desired runtime settings as policy-as-code with drift detection, reconciliation, and exception expiry." (-> `infrastructure-and-policy-as-code`)
+- "Model service demand, tail latency, and headroom targets without changing workload probes, drain, or image posture." (-> `performance-and-capacity`)
+- "Verify image provenance, signing, builder isolation, and deployment admission before a release." (-> `software-supply-chain-security`)
+- "Plan mixed-version runtime upgrade waves, support windows, skew exceptions, and rollback across the fleet." (-> `fleet-upgrades`)
+- "Choose labels for office storage containers and update the facilities inventory." (-> `none`)
 
 ### `internal-service-networking`
 

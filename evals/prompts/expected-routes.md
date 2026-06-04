@@ -34,6 +34,22 @@ diffs.
 - "A reporting table adds nullable columns and changes enum meanings; check producer and consumer expectations before publishing it."
 - "A domain event gains a nested address payload; define producer guarantees, consumer rollout checks, and what values may be omitted."
 
+### `resilience-requirements`
+
+- "Before we build the new payouts feature, write its resiliency contract: failure behavior per dependency, non-functional targets, and testable acceptance criteria."
+- "Inspect this feature spec and tell me which failure behaviors and non-functional targets it leaves undefined."
+- "Trace this design back to its requirements and find the dependency failures and malformed-input cases nobody specified."
+- "The spec covers the happy path only; define what the feature should do when the inventory service is down or returns garbage."
+- "We keep shipping features that break on edge cases; turn this request into acceptance criteria a test can check for partial failure and bad input."
+
+### `persistent-connection-systems`
+
+- "Design the connection protocol for this new live-updates feature: heartbeat, reconnect with resume, slow-consumer backpressure, and drain on deploy."
+- "Inspect this streaming endpoint for reconnect storms after deploy and unbounded buffers on slow clients."
+- "Test what happens to live sessions during a rolling release, then define the connection-drain and reconnect-rate plan."
+- "A network blip reconnects every client at once and overwhelms the backend; add backoff with jitter and a resume cursor."
+- "Slow mobile clients grow server memory until workers restart; define per-connection backpressure and overflow behavior before launch."
+
 ## Reliability And Resilience
 
 ### `slo-and-error-budgets`
@@ -91,6 +107,14 @@ diffs.
 - "Design property tests or simulations for this high-stakes money-moving state machine."
 - "The order can move from paid to canceled during retry races; enumerate invalid transitions and how to test them."
 - "Subscriptions can pause, resume, cancel, and renew on the same invoice cycle; enumerate forbidden transitions and eventual outcomes."
+
+### `multi-region-and-data-residency`
+
+- "Design the multi-region program for this service: topology, residency placement, replication-aware routing, and an evacuation runbook, before we expand to a second region."
+- "Inspect this two-region setup for residency rules that are documented but not enforced in placement or routing."
+- "Trace how a user request pins to a region and what happens to reads and writes during a region evacuation."
+- "Regulated records can land in either region during failover; map data classes to permitted geographies and define the compliant fallback."
+- "We claim active-active without region-loss rehearsal evidence; write the drain, traffic-shift, and cutover runbook and the abort signals."
 
 ## Delivery And Quality
 
@@ -162,7 +186,7 @@ diffs.
 
 - "Find every caller of this old module and plan a safe migration across the repo."
 - "Inspect the deprecation PR and tell me how to prevent new usage from being added."
-- "Inspect this service retirement plan against the codebase and identify anything that could strand users or teams."
+- "Inspect this consumer migration plan before teardown and identify hidden callers, no-new-usage gaps, or teams that could be stranded."
 - "The legacy invoice worker still has hidden cron callers; build batches to move them and block new usage."
 - "A replacement library exists, but new code still imports the old one; plan batches, no-new-usage checks, and final removal."
 
@@ -173,6 +197,14 @@ diffs.
 - "Inspect the existing fleet inventory and find unsupported versions, owners, exceptions, and cleanup checks."
 - "During this runtime fleet upgrade, some services cannot move until clients update; plan version-skew windows and exceptions."
 - "Some workers will run the new runtime while callers stay old for weeks; define skew tests, support windows, and exception handling."
+
+### `service-decommission-and-sunset`
+
+- "Plan the full teardown of this retired service: zero-traffic proof, data disposition under retention and legal hold, credential and DNS reclamation, and a no-resurrection record."
+- "Inspect this retirement plan for dangling DNS names, orphaned credentials, and data deleted while under legal hold."
+- "Trace what this service still owns: names, certs, credentials, alarms, and held data, then order the teardown so nothing is stranded."
+- "Before release of the teardown automation, verify the old service has zero traffic and no remaining consumers."
+- "As part of terminal service teardown, retirement wants to purge all records, but some are under a legal hold; define disposition per data class with hold-driven suspension."
 
 ### `agent-pr-review`
 
@@ -232,6 +264,14 @@ diffs.
 - "Find which alerts should page, which should become follow-ups, and which should be deleted or grouped."
 - "Responders page themselves on a warning every morning; decide whether to automate, downgrade, group, or delete the alert."
 
+### `operational-ownership-transfer`
+
+- "Design the ownership-transfer gate for moving this service to another team: bus-factor inventory, runbook executability, deploy and rollback dry-run, and paging transfer."
+- "Inspect this handoff plan and tell me whether the receiving team can run and change the system or only inherits the docs."
+- "Trace what only one engineer knows about operating this system and turn it into runbooks the receiving team can execute."
+- "Test the receiving team's failover and rollback dry-run before the transfer is accepted."
+- "After the transfer, pages still route to the old team and the new team has no failover dry-run; define the verification that fixes both."
+
 ## Security And Privacy
 
 ### `secure-sdlc-and-threat-modeling`
@@ -241,6 +281,14 @@ diffs.
 - "Threat-model this new endpoint using the code, routes, permissions, data flows, and controls it touches."
 - "A new admin export crosses customer data and support tools; trace trust boundaries and abuse cases before implementation."
 - "Before the partner upload feature ships, map trust boundaries, abuse cases, unsafe inputs, and required controls."
+
+### `input-validation-and-injection-defense`
+
+- "Design the input-handling defense for this new search endpoint before implementation: which untrusted fields reach which sinks, boundary validation, and the parameterization or encoding each sink needs."
+- "Inspect this branch for sinks that build queries, commands, markup, file paths, or deserialized objects from request data, and tell me which ones are not parameterized or context-encoded."
+- "Trace how the uploaded-document import flows into the template renderer and the report query, then define the per-sink controls and a negative test for each."
+- "Search results render user-submitted names that show up unescaped in the page; map the output contexts and define the encoding each one needs."
+- "A reporting filter concatenates a request parameter into the database query; rewrite the data path to parameterize it and add a malicious-input test that proves it is neutralized."
 
 ### `identity-and-secrets`
 
@@ -372,6 +420,14 @@ diffs.
 - "Late-arriving events are replayed after dashboard cutoff; define freshness, validation, and no-double-count recovery."
 - "The monthly metrics job missed a partition and rerun may double-count; define lineage, validation, replay, and freshness evidence."
 
+### `data-lineage-and-provenance`
+
+- "Design the lineage spine for our regulated revenue figures: source-of-record, derivation chain, downstream dependency graph, and recompute impact analysis."
+- "Inspect this reporting pipeline for figures with no designated authoritative source and lineage that stops at a system boundary."
+- "Trace where this dashboard number comes from end to end and tell me what must be recomputed if the upstream source was wrong."
+- "An auditor asks how this regulated metric was produced; build the lineage record from the figure back to its authoritative source."
+- "Test the restatement path after a bad upstream feed corrupted a source table; map the blast radius across the derived datasets, reports, and models."
+
 ### `ml-reliability-and-evaluation`
 
 - "Define eval coverage, rollback, and production-risk checks for this model-serving change."
@@ -395,6 +451,14 @@ diffs.
 - "Design policy checks and exception records for these infrastructure files."
 - "A manual console change fixed staging; capture desired state, drift detection, and emergency exception rules."
 - "A production firewall exception was made manually; capture desired state, policy checks, drift response, and expiry."
+
+### `container-runtime-and-orchestration`
+
+- "Set the runtime posture for this new service before rollout: resource requests and limits, drain contract, probe thresholds, and image hardening."
+- "Inspect this workload manifest and probe config for missing limits, restart-loop risk, and a shutdown path that drops in-flight requests."
+- "Trace what happens to in-flight requests when this deployment rolls or a host drains, then define the grace period and readiness gating that prevent drops."
+- "Test peak load where workers get OOM-killed and restart-loop on a slow dependency; set memory bounds and fix the probe semantics."
+- "Every deploy sheds a few hundred ordinary HTTP requests; define the workload shutdown/drain contract and capacity floor that take that to zero before launch."
 
 ### `internal-service-networking`
 

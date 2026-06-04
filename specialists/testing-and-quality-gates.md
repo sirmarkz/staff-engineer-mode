@@ -41,6 +41,7 @@ Quality checks should catch real risk early without turning delivery into ritual
 - Pre-traffic health checks, critical-path sanity checks, production-like integration checks, synthetic or canary checks, and performance bottleneck tests.
 - Distributed edge cases: independent client, network, server, timeout, duplicate, and retry outcomes for request/reply or workflow boundaries.
 - CI structure, runtime, flake rate, failure responsibility, required versus advisory checks, and shared test-environment capacity or cleanup health.
+- Build and test cache behavior, stale-output risk, non-hermetic inputs, and execution-cost pressure that could weaken required gate coverage.
 - Coverage signal, mutation or fault-injection needs, legacy findings, and known blind spots.
 - Release process and where checks can run without excessive feedback delay.
 
@@ -53,15 +54,17 @@ Quality checks should catch real risk early without turning delivery into ritual
 5. **Separate check types.** Pre-merge checks should be fast and high-signal; use a default budget such as p95 under 10 minutes for the full pre-merge lane and under 5 minutes for a fast path. Pre-release checks can be broader; production checks belong to rollout.
 6. **Check before traffic.** For serving systems, startup/readiness checks and critical-path sanity checks should pass before new capacity accepts real traffic.
 7. **Make checks actionable.** Every blocking check needs failure instructions and a path to fix or quarantine.
-8. **Validate test infrastructure.** For broad, device, browser, integration, or hosted-environment checks, watch pool capacity, queue time, cleanup of per-test resources, leak symptoms, and infrastructure errors separately from product failures.
-9. **Handle flakes as defects.** A flaky blocker teaches people to ignore checks. Fix it, quarantine it, or downgrade it with a dated expiry.
-10. **Use ratchets for legacy.** Prevent new critical findings and reduce existing debt over time without requiring impossible cleanup.
-11. **Cover distributed failure permutations.** For request/reply, event, or workflow boundaries, test independent outcomes for client, network, server, timeout, duplicate, and retry behavior. Do not collapse them into one "network failed" case. Route stateful protocol invariants and counterexample search to `state-machine-correctness` when example tests cannot cover the interleavings.
-12. **Place high-assurance tests deliberately.** Bounded property tests on pure logic and ordinary fuzzing can live in this skill; concurrency/protocol invariants, model checking, deterministic simulation, and counterexample-driven validation route to `state-machine-correctness`.
-13. **Choose test data safely.** Use synthetic data for pre-merge by default, anonymized or captured production-like data in controlled release stages, and explicit privacy checks for sensitive fixtures.
-14. **Use mutation testing selectively.** Apply it to safety, security, financial, or dense branch logic where coverage percentage is misleading; do not make it a universal check.
-15. **Keep style mechanical.** Formatting and simple style should be automated, not debated manually.
-16. **Verify the strategy.** Confirm each critical risk has a check, test, check artifact, or explicit exception.
+8. **Protect gate integrity under cost pressure.** If slow or expensive checks tempt bypasses, split lanes, shard safely, or move checks to release blockers without dropping coverage for the risky behavior.
+9. **Verify cache correctness.** Confirm build and test cache keys include all behavior-changing inputs and that stale outputs cannot satisfy changed code or fixtures.
+10. **Validate test infrastructure.** For broad, device, browser, integration, or hosted-environment checks, watch pool capacity, queue time, cleanup of per-test resources, leak symptoms, and infrastructure errors separately from product failures.
+11. **Handle flakes as defects.** A flaky blocker teaches people to ignore checks. Fix it, quarantine it, or downgrade it with a dated expiry.
+12. **Use ratchets for legacy.** Prevent new critical findings and reduce existing debt over time without requiring impossible cleanup.
+13. **Cover distributed failure permutations.** For request/reply, event, or workflow boundaries, test independent outcomes for client, network, server, timeout, duplicate, and retry behavior. Do not collapse them into one "network failed" case. Route stateful protocol invariants and counterexample search to `state-machine-correctness` when example tests cannot cover the interleavings.
+14. **Place high-assurance tests deliberately.** Bounded property tests on pure logic and ordinary fuzzing can live in this skill; concurrency/protocol invariants, model checking, deterministic simulation, and counterexample-driven validation route to `state-machine-correctness`.
+15. **Choose test data safely.** Use synthetic data for pre-merge by default, anonymized or captured production-like data in controlled release stages, and explicit privacy checks for sensitive fixtures.
+16. **Use mutation testing selectively.** Apply it to safety, security, financial, or dense branch logic where coverage percentage is misleading; do not make it a universal check.
+17. **Keep style mechanical.** Formatting and simple style should be automated, not debated manually.
+18. **Verify the strategy.** Confirm each critical risk has a check, test, check artifact, or explicit exception.
 
 ## Synthesized Default
 
@@ -105,6 +108,8 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - Check matrix: pre-merge, pre-release, launch, and advisory checks.
 - Critical-path sanity and pre-traffic health checks with expected behavior and stop condition.
 - Runtime budget for blocking lanes with a measurement source (p95 from CI history, not aspirational), and the action when the budget is exceeded.
+- Gate-integrity plan for slow or costly checks: preserved coverage, safe lane split, bypass prevention, and owner for runtime pressure.
+- Build/test cache correctness evidence: cache keys, invalidation, hermetic inputs, and stale-output failure mode.
 - Test composition by layer (unit/component, contract/integration, end-to-end, and specialized checks) with counts or ratios and rationale whenever cutting CI time, handling flakes, or redesigning a suite.
 - Distributed-boundary failure matrix for request/reply or workflow edges, covering timeout, unknown result, duplicate, retry, and server-side state safety where relevant.
 - Failure response for each blocking check.
@@ -120,6 +125,8 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - `risk_mapping`: every critical risk maps to a test, check artifact, or explicit exception.
 - `check_signal`: every blocking check has high signal, and failure response.
 - `test_infra_health`: shared test environments expose capacity, cleanup, leak, queue, and infrastructure-error signals before failures are treated as product regressions.
+- `gate_integrity`: execution cost does not remove coverage for risky behavior or create an unowned bypass path.
+- `cache_correctness`: cache keys and invalidation include behavior-changing inputs so stale output cannot pass the gate.
 - `flake_policy`: flaky checks have fix, quarantine, downgrade, or expiry decision.
 - `stage_fit`: each check runs at the earliest stage where it can check the intended property.
 - `critical_path_sanity`: critical user paths have sanity checks that validate behavior and process health.
@@ -132,6 +139,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 ## Red Flags - Stop And Rework
 
 - A slow end-to-end suite is the only meaningful pre-merge check.
+- A stale or non-hermetic cache can produce green results for changed inputs.
 - Coverage percentage is treated as quality without behavior/risk mapping.
 - Flaky tests are required but failures are routinely rerun until green.
 - Static analysis results appear after merge with no local fix path or suppression rule.
@@ -148,3 +156,5 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 | Blocking on noisy tools | Start advisory, tune signal, then enforce. |
 | One giant quality check | Split by lifecycle stage and risk. |
 | Demanding instant legacy perfection | Use ratchets and prevent new debt. |
+| Speeding up by dropping coverage | Preserve the gate and change placement, sharding, or ownership. |
+| Trusting cache hits blindly | Prove cache keys cover behavior-changing inputs and invalidate stale output. |

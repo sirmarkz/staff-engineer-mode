@@ -837,11 +837,13 @@ case-study section, they are not grouped by skill topic.
 
 ### IETF
 - RFC 7696 - Guidelines for Cryptographic Algorithm Agility: https://www.rfc-editor.org/rfc/rfc7696
+- RFC 6455 - The WebSocket Protocol: https://www.rfc-editor.org/rfc/rfc6455
 
 ### ISO/IEC
 - ISO/IEC 27001:2022 - Information Security Management Systems Requirements: https://www.iso.org/standard/27001
 - ISO 31000:2018 - Risk Management Guidelines: https://www.iso.org/standard/65694.html
 - ISO/IEC 27005:2022 - Information Security Risk Management: https://www.iso.org/standard/80585.html
+- ISO/IEC/IEEE 29148:2018 - Requirements Engineering: https://www.iso.org/standard/72089.html
 
 ### Martin Fowler
 - Martin Fowler - What do you mean by Event-Driven?: https://martinfowler.com/articles/201701-event-driven.html
@@ -864,10 +866,14 @@ case-study section, they are not grouped by skill topic.
 - MITRE ATT&CK Software: https://attack.mitre.org/software/
 - MITRE ATT&CK Campaigns: https://attack.mitre.org/campaigns/
 - MITRE ATT&CK Data and Tools: https://attack.mitre.org/resources/attack-data-and-tools/
+- MITRE CWE-707 - Improper Neutralization: https://cwe.mitre.org/data/definitions/707.html
+- MITRE CWE Top 25 Most Dangerous Software Weaknesses: https://cwe.mitre.org/top25/archive/2024/2024_cwe_top25.html
 
 ### NIST
 - NIST SP 800-218 - Secure Software Development Framework PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf
 - NIST SP 800-207 - Zero Trust Architecture PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-207.pdf
+- NIST SP 800-190 - Application Container Security Guide PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-190.pdf
+- NIST SP 800-88 Revision 1 - Guidelines for Media Sanitization PDF: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r1.pdf
 - NIST Cybersecurity Framework 2.0 PDF: https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf
 - NIST FIPS 203 - Module-Lattice-Based Key-Encapsulation Mechanism Standard PDF: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf
 - NIST FIPS 204 - Module-Lattice-Based Digital Signature Standard PDF: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf
@@ -901,11 +907,20 @@ case-study section, they are not grouped by skill topic.
 - OWASP Top 10:2021 A09 Security Logging and Monitoring Failures: https://owasp.org/Top10/2021/A09_2021-Security_Logging_and_Monitoring_Failures/
 - OWASP Top 10:2021 A10 Server-Side Request Forgery: https://owasp.org/Top10/2021/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/
 - OWASP Cheat Sheet Series - Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+- OWASP Cheat Sheet Series - Injection Prevention: https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html
+- OWASP Cheat Sheet Series - SQL Injection Prevention: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
+- OWASP Cheat Sheet Series - Cross Site Scripting Prevention: https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+- OWASP Cheat Sheet Series - Input Validation: https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html
+- OWASP Cheat Sheet Series - Deserialization: https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html
+- OWASP Cheat Sheet Series - File Upload: https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html
+- OWASP Cheat Sheet Series - Mass Assignment: https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html
 - OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
 
 ### W3C
 - W3C - Web Content Accessibility Guidelines 2.2: https://www.w3.org/TR/WCAG22/
 - W3C - Accessibility Conformance Testing Rules Format: https://www.w3.org/TR/act-rules-format/
+- W3C - PROV-Overview, the Provenance data model: https://www.w3.org/TR/prov-overview/
+- WHATWG HTML Living Standard - Server-Sent Events: https://html.spec.whatwg.org/multipage/server-sent-events.html
 
 ### Werner Vogels
 - Werner Vogels - Eventually Consistent: https://www.allthingsdistributed.com/2008/12/eventually_consistent.html

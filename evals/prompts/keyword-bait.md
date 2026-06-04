@@ -30,6 +30,22 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The PR label says data-contracts, but the work is package provenance, signature verification, and deploy admission trust." (-> `software-supply-chain-security`)
 - "The comment says data-contracts, but the task is route-specific LLM grader slices, thresholds, prompt versions, and regression history." (-> `llm-evaluation`)
 
+### `resilience-requirements`
+
+- "The feature brief is labeled resilience-requirements, but the requested artifact is an ADR choosing service boundaries, call direction, and ownership tradeoffs." (-> `architecture-decisions`)
+- "The acceptance-criteria section says resilience-requirements, but the work is SLO target math, burn-rate alerts, and budget response policy." (-> `slo-and-error-budgets`)
+- "The backlog item says resilience-requirements, but the task is trust-boundary mapping, abuse cases, and control selection for a new endpoint." (-> `secure-sdlc-and-threat-modeling`)
+- "The spec tag says resilience-requirements, but the concrete ask is merge-blocking checks, flaky-test quarantine, release gates, and nightly coverage." (-> `testing-and-quality-gates`)
+- "The roadmap note says resilience-requirements, but the request is market prioritization and feature value ranking with no engineering failure behavior." (-> `none`)
+
+### `persistent-connection-systems`
+
+- "The ticket title says persistent-connection-systems, but the work is message ordering, idempotent consumers, dead-letter replay, and compensation." (-> `event-workflows`)
+- "The design note says persistent-connection-systems, but the concrete ask is retry, timeout, fallback, idempotency, and overload behavior for one request-reply dependency." (-> `dependency-resilience`)
+- "The capacity doc is labeled persistent-connection-systems, but the task is load-test saturation, headroom, queue depth, and autoscaling targets for an API." (-> `performance-and-capacity`)
+- "The route map says persistent-connection-systems, but the work is internal service discovery, identity, locality, and private traffic policy." (-> `internal-service-networking`)
+- "The rollout card says persistent-connection-systems, but the ask is canary stages, stop metrics, rollback target, and production exposure sequencing." (-> `progressive-delivery`)
+
 ## Reliability And Resilience
 
 ### `slo-and-error-budgets`
@@ -47,6 +63,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The runbook file says high-availability-design, but the concrete task is a safe fault-injection drill with blast radius, abort criteria, telemetry, and rollback." (-> `resilience-experiments`)
 - "The release card says high-availability-design, but the issue is runtime fleet version skew, support windows, temporary exceptions, and rollback compatibility." (-> `fleet-upgrades`)
 - "The architecture note says high-availability-design, but the task is private service discovery, identity, locality, and internal routing policy." (-> `internal-service-networking`)
+
+### `multi-region-and-data-residency`
+
+- "The regional plan says multi-region-and-data-residency, but the work is static failover capacity, fault-domain placement, and location-loss survivability." (-> `high-availability-design`)
+- "The DR checklist says multi-region-and-data-residency, but the task is restore testing, corruption recovery, RTO, RPO, and rebuild evidence." (-> `backup-and-recovery`)
+- "The replication note says multi-region-and-data-residency, but the concrete issue is stale reads, conflicts, and consistency semantics for one store." (-> `distributed-data-and-consistency`)
+- "The routing diagram says multi-region-and-data-residency, but the ask is internal service discovery, identity, locality, and private east-west traffic policy." (-> `internal-service-networking`)
+- "The residency spreadsheet says multi-region-and-data-residency, but the task is retention, deletion, minimization, and lifecycle controls for personal data." (-> `privacy-and-data-lifecycle`)
 
 ### `dependency-resilience`
 
@@ -162,6 +186,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The ticket label says migration-and-deprecation, but the ask is to review the current diff for behavior regressions and missing tests before merge." (-> `agent-pr-review`)
 - "The doc title says migration-and-deprecation, but the work is stale runbook archival, source-of-truth selection, owner assignment, and freshness rules." (-> `documentation-lifecycle`)
 
+### `service-decommission-and-sunset`
+
+- "The retirement board says service-decommission-and-sunset, but the work is still consumer migration, replacement adoption, no-new-usage checks, and backsliding prevention." (-> `migration-and-deprecation`)
+- "The delete ticket says service-decommission-and-sunset, but the requested artifact is a previewed runtime mutation with validation, blast-radius cap, and rollback." (-> `configuration-and-automation-safety`)
+- "The teardown folder says service-decommission-and-sunset, but the task is desired-state deletion policy, drift detection, reconciliation, and exception expiry." (-> `infrastructure-and-policy-as-code`)
+- "The certificate cleanup note says service-decommission-and-sunset, but the work is key and certificate revocation lifecycle, expiry, trust-chain rotation, and evidence." (-> `cryptography-and-key-lifecycle`)
+- "The database section says service-decommission-and-sunset, but the concrete issue is destructive schema-change execution, lock limits, query plans, and rollback." (-> `database-operations`)
+
 ### `fleet-upgrades`
 
 - "The plan says fleet-upgrades, but the concrete issue is backwards-compatible public API field behavior during client rollout." (-> `api-design-and-compatibility`)
@@ -228,6 +260,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The action item says oncall-health, but the real work is recurring runbook owner, freshness cadence, source of truth, and stale guidance cleanup." (-> `documentation-lifecycle`)
 - "The alert label says oncall-health, but the concrete issue is fault-injection drill planning with impact limits, abort criteria, telemetry, and rollback." (-> `resilience-experiments`)
 
+### `operational-ownership-transfer`
+
+- "The handoff doc says operational-ownership-transfer, but the task is runbook source of truth, owner, freshness cadence, and stale guidance cleanup." (-> `documentation-lifecycle`)
+- "The rotation review says operational-ownership-transfer, but the work is steady-state page noise, suppression safety, responder toil, and recurring alert fixes." (-> `oncall-health`)
+- "The acceptance packet says operational-ownership-transfer, but the concrete ask is launch readiness across deploy config, telemetry, runbooks, support, and rollback blockers." (-> `production-readiness-review`)
+- "The ownership note says operational-ownership-transfer, but the artifact is an ADR for component responsibility, service boundaries, and call-direction tradeoffs." (-> `architecture-decisions`)
+- "The team-transfer label says operational-ownership-transfer, but the system is being retired with zero-traffic proof, data disposition, and no-resurrection evidence." (-> `service-decommission-and-sunset`)
+
 ## Security And Privacy
 
 ### `secure-sdlc-and-threat-modeling`
@@ -237,6 +277,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The checklist says secure-sdlc-and-threat-modeling, but the task is a deployed vulnerable dependency needing exposure analysis, patch SLA, rollout, and exception expiry." (-> `vulnerability-management`)
 - "The review template says secure-sdlc-and-threat-modeling, but the requested artifact is package provenance, signing, SBOM completeness, and deployment admission trust." (-> `software-supply-chain-security`)
 - "The doc heading says secure-sdlc-and-threat-modeling, but the ask is legal policy wording for a public security FAQ with no engineering control decision." (-> `none`)
+
+### `input-validation-and-injection-defense`
+
+- "The bug label says input-validation-and-injection-defense, but the issue is prompt injection, retrieved-data leakage, and unsafe tool output in a model-backed assistant." (-> `llm-application-security`)
+- "The endpoint review says input-validation-and-injection-defense, but the task is API request bounds, malformed-request behavior, response compatibility, and client error semantics." (-> `api-design-and-compatibility`)
+- "The security brief says input-validation-and-injection-defense, but the work is trust-boundary mapping, abuse cases, data flows, and residual risk for a new workflow." (-> `secure-sdlc-and-threat-modeling`)
+- "The CVE ticket says input-validation-and-injection-defense, but the deployed system needs exposure triage, remediation SLA, rollout, and expiring exception evidence." (-> `vulnerability-management`)
+- "The upload folder says input-validation-and-injection-defense, but the request is retention, deletion, minimization, and lifecycle controls for stored customer files." (-> `privacy-and-data-lifecycle`)
 
 ### `identity-and-secrets`
 
@@ -368,6 +416,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The metric table label says data-pipeline-reliability, but the request is experiment treatment assignment, metric guardrails, and stop rules." (-> `experimentation-and-metric-guardrails`)
 - "The ingestion ticket says data-pipeline-reliability, but the work is consumer schema compatibility and deprecation rules for shared data." (-> `data-contracts`)
 
+### `data-lineage-and-provenance`
+
+- "The report catalog says data-lineage-and-provenance, but the immediate issue is pipeline freshness, late-batch replay, validation checks, and backlog recovery." (-> `data-pipeline-reliability`)
+- "The consent inventory says data-lineage-and-provenance, but the task is personal-data retention, erasure, minimization, and privacy lifecycle enforcement." (-> `privacy-and-data-lifecycle`)
+- "The provenance dashboard says data-lineage-and-provenance, but the work is build artifact signing, builder isolation, SBOM integrity, and deployment admission." (-> `software-supply-chain-security`)
+- "The schema registry note says data-lineage-and-provenance, but the request is producer and consumer compatibility rules for a shared data field." (-> `data-contracts`)
+- "The store diagram says data-lineage-and-provenance, but the concrete issue is replication lag, stale reads, conflict handling, and failover consistency." (-> `distributed-data-and-consistency`)
+
 ### `ml-reliability-and-evaluation`
 
 - "The model card says ml-reliability-and-evaluation, but the concrete risk is prompt injection leaking retrieved tenant data through a deployed assistant's tool output." (-> `llm-application-security`)
@@ -383,6 +439,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The onboarding doc says platform-golden-paths, but the issue is environment parity across local, CI, staging, and production." (-> `dev-environment-parity`)
 - "The template comment says platform-golden-paths, but the request is service-boundary ADR tradeoffs and ownership decisions." (-> `architecture-decisions`)
 - "The platform issue says platform-golden-paths, but the concrete work is package provenance, trusted build inputs, signatures, and deploy admission." (-> `software-supply-chain-security`)
+
+### `container-runtime-and-orchestration`
+
+- "The workload note says container-runtime-and-orchestration, but the task is desired-state policy checks, drift detection, reconciliation, and exception expiry for runtime settings." (-> `infrastructure-and-policy-as-code`)
+- "The pod sizing spreadsheet says container-runtime-and-orchestration, but the work is demand modeling, tail latency, saturation tests, and capacity headroom for the service." (-> `performance-and-capacity`)
+- "The image checklist says container-runtime-and-orchestration, but the concrete issue is provenance, signatures, builder isolation, SBOM gaps, and deploy admission trust." (-> `software-supply-chain-security`)
+- "The node rollout card says container-runtime-and-orchestration, but the request is runtime version waves, mixed-version support windows, exceptions, and rollback compatibility." (-> `fleet-upgrades`)
+- "The placement diagram says container-runtime-and-orchestration, but the task is fault-domain topology, spare capacity, and surviving location loss." (-> `high-availability-design`)
 
 ### `infrastructure-and-policy-as-code`
 

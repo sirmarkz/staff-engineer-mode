@@ -29,7 +29,8 @@ class RouterEvalDataContractTests(unittest.TestCase):
 
         count = validator.validate_positive_routing_catalog()
 
-        self.assertEqual(count, 274)
+        expected_count = (len(validator.skill_names() - {"staff-engineer-mode"}) * 5) + 4
+        self.assertEqual(count, expected_count)
 
     def test_validator_accepts_boundary_prompt_catalog(self) -> None:
         validator = load_module(VALIDATOR_PATH, "validate_router_eval")

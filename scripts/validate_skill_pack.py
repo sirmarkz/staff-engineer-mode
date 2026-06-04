@@ -22,8 +22,8 @@ CODEX_MAX_SKILL_NAME_LENGTH = 64
 MAX_SKILL_LINES = 300
 MAX_DESCRIPTION_CHARS = 180
 SAMPLE_PROMPTS_PER_SPECIALIST = 5
-ROUTER_MAX_WORDS = 2000
-ROUTER_TIEBREAKER_MAX_WORDS = 260
+ROUTER_MAX_WORDS = 2300
+ROUTER_TIEBREAKER_MAX_WORDS = 450
 SAMPLE_PROMPT_RE = re.compile(r'^- ".+"$')
 PROCESS_PAGE_RE = re.compile(r"\b(?:pages?|paging)\b", re.IGNORECASE)
 PROCESS_PAGE_ALLOWED_SPECIALISTS = {
@@ -33,6 +33,7 @@ PROCESS_PAGE_ALLOWED_SPECIALISTS = {
     "engineering-control-evidence",
     "incident-response-and-postmortems",
     "oncall-health",
+    "operational-ownership-transfer",
     "platform-golden-paths",
     "production-readiness-review",
 }

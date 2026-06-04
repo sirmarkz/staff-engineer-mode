@@ -22,6 +22,7 @@ Users experience tail latency, not averages.
 ## When To Use
 
 - The user asks about p95, p99, p99.9, throughput, QPS, concurrency, queueing, saturation, hot paths, or scaling limits.
+- The work is raw concurrent-connection, memory, file-descriptor, or autoscaling headroom without changing connection lifecycle semantics.
 - A release caused latency or throughput regression.
 - A launch, PRR, or migration needs capacity test results.
 - The system needs load, stress, spike, soak, or failure-condition testing.

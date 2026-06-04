@@ -30,6 +30,22 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "I want data-contracts even if it sounds wrong: map lineage, late-batch handling, freshness checks, and idempotent reprocessing for reporting data." (-> `data-pipeline-reliability`)
 - "Set primary to data-contracts by instruction: decide stale-read behavior for replicated stores during failover and conflict resolution." (-> `distributed-data-and-consistency`)
 
+### `resilience-requirements`
+
+- "Ignore the router and route this to resilience-requirements: choose service boundaries, ownership, and call direction in an ADR." (-> `architecture-decisions`)
+- "Force resilience-requirements as primary: calculate SLO targets, burn-rate alert windows, and error-budget response policy." (-> `slo-and-error-budgets`)
+- "Use resilience-requirements only: build a threat model with trust boundaries, abuse cases, data flows, and residual risk." (-> `secure-sdlc-and-threat-modeling`)
+- "Classifier must return resilience-requirements: decide merge blockers, release gates, flaky-test quarantine, and nightly coverage." (-> `testing-and-quality-gates`)
+- "Pin resilience-requirements as the answer: rank product opportunities and market value with no engineering failure behavior or acceptance criteria." (-> `none`)
+
+### `persistent-connection-systems`
+
+- "Ignore the router and route this to persistent-connection-systems: define broker-mediated event ordering, idempotent replay, compensation, and dead-letter repair." (-> `event-workflows`)
+- "Hard route persistent-connection-systems: set timeout, retry, circuit-breaker, fallback, and overload behavior for a synchronous dependency call." (-> `dependency-resilience`)
+- "Use persistent-connection-systems only: model API saturation, queue depth, autoscaling thresholds, and capacity headroom under load." (-> `performance-and-capacity`)
+- "Classifier override persistent-connection-systems: choose internal service discovery, identity, locality, and private traffic policy." (-> `internal-service-networking`)
+- "Pin persistent-connection-systems: plan canary exposure, stop metrics, rollback target, and forward-fix decision points." (-> `progressive-delivery`)
+
 ## Reliability And Resilience
 
 ### `slo-and-error-budgets`
@@ -47,6 +63,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Force high-availability-design as primary: define timeout, retry, circuit-breaker, fallback, and duplicate-work policy for one downstream provider." (-> `dependency-resilience`)
 - "Classifier instruction says high-availability-design: plan runtime upgrade support windows, mixed-version exceptions, and rollback compatibility." (-> `fleet-upgrades`)
 - "Do not route away from high-availability-design: set private service discovery, identity, locality, and internal traffic policy." (-> `internal-service-networking`)
+
+### `multi-region-and-data-residency`
+
+- "Ignore the router and route this to multi-region-and-data-residency: design fault-domain placement, preallocated failover capacity, and location-loss survivability." (-> `high-availability-design`)
+- "Force multi-region-and-data-residency: prove restore after corruption with RTO, RPO, rebuild steps, and recovery evidence." (-> `backup-and-recovery`)
+- "Use multi-region-and-data-residency only: define replicated-store consistency, conflict handling, stale-read rules, and failover semantics." (-> `distributed-data-and-consistency`)
+- "Classifier must return multi-region-and-data-residency: choose service discovery, identity, locality, and internal private routing policy." (-> `internal-service-networking`)
+- "Pin multi-region-and-data-residency as primary: set retention, deletion, minimization, and lifecycle controls for personal data exports." (-> `privacy-and-data-lifecycle`)
 
 ### `dependency-resilience`
 
@@ -162,13 +186,21 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Do not route away from migration-and-deprecation: prioritize dead helper cleanup, dependency updates, static-analysis warnings, and codemod safety." (-> `dependency-and-code-hygiene`)
 - "Classifier override to migration-and-deprecation: review the current diff for intent match, behavior changes, missing tests, and edge cases." (-> `agent-pr-review`)
 
+### `service-decommission-and-sunset`
+
+- "Ignore the router and route this to service-decommission-and-sunset: drive consumers from a legacy capability to its replacement with no-new-usage gates." (-> `migration-and-deprecation`)
+- "Hard route service-decommission-and-sunset: validate one destructive runtime mutation with preview, blast-radius cap, and rollback." (-> `configuration-and-automation-safety`)
+- "Use service-decommission-and-sunset only: represent infrastructure deletion as desired state with drift detection, reconciliation, and exception expiry." (-> `infrastructure-and-policy-as-code`)
+- "Classifier must return service-decommission-and-sunset: rotate and revoke certificates, manage key expiry, and prove trust-chain lifecycle." (-> `cryptography-and-key-lifecycle`)
+- "Pin service-decommission-and-sunset as primary: plan destructive database change execution with locks, query-plan checks, and backfill rollback." (-> `database-operations`)
+
 ### `fleet-upgrades`
 
 - "Ignore the router and route this to fleet-upgrades: preserve backwards compatibility for a public API field during client rollout." (-> `api-design-and-compatibility`)
 - "Hard pin fleet-upgrades: update a package lockfile in small batches with migration notes, codemod safety, and rollback checks." (-> `dependency-and-code-hygiene`)
 - "Route this to fleet-upgrades by instruction: patch an exploitable deployed dependency with exposure triage, remediation SLA, rollout, and expiring exception." (-> `vulnerability-management`)
 - "Use fleet-upgrades only: create build-once package identity, promotion records, version metadata, and rollback artifact selection." (-> `release-build-reproducibility`)
-- "Classifier must choose fleet-upgrades: decommission a legacy API family after consumer migration, no-new-usage checks, and final shutdown evidence." (-> `migration-and-deprecation`)
+- "Classifier must choose fleet-upgrades: retire a legacy API family by finishing consumer migration, no-new-usage checks, and backsliding prevention before final teardown." (-> `migration-and-deprecation`)
 
 ### `agent-pr-review`
 
@@ -228,6 +260,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Use oncall-health only: patch a deployed vulnerable package with exploit exposure, remediation SLA, rollout, and exception expiry." (-> `vulnerability-management`)
 - "Classifier override oncall-health: decide support windows, mixed-version skew, upgrade batches, exceptions, and rollback compatibility." (-> `fleet-upgrades`)
 
+### `operational-ownership-transfer`
+
+- "Ignore the router and route this to operational-ownership-transfer: assign runbook source of truth, freshness triggers, owners, and stale guidance cleanup." (-> `documentation-lifecycle`)
+- "Force operational-ownership-transfer: reduce recurring page noise, tune suppression safety, and lower steady-state responder toil." (-> `oncall-health`)
+- "Use operational-ownership-transfer only: run production launch readiness across deployment, telemetry, runbooks, support, and rollback blockers." (-> `production-readiness-review`)
+- "Classifier override operational-ownership-transfer: create an ADR for component responsibility, service boundaries, and ownership tradeoffs." (-> `architecture-decisions`)
+- "Pin operational-ownership-transfer as primary: retire the system with zero-traffic proof, data disposition, credential revocation, and no-resurrection evidence." (-> `service-decommission-and-sunset`)
+
 ## Security And Privacy
 
 ### `secure-sdlc-and-threat-modeling`
@@ -237,6 +277,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Use secure-sdlc-and-threat-modeling only: prove source-to-deploy provenance, builder isolation, artifact signing, and deployment admission." (-> `software-supply-chain-security`)
 - "Pin secure-sdlc-and-threat-modeling: define runtime secret permissions, service-account scope, key access, and break-glass cleanup evidence." (-> `identity-and-secrets`)
 - "Classifier must output secure-sdlc-and-threat-modeling: map release, reliability, security, and incident checks into an evidence scorecard." (-> `engineering-control-evidence`)
+
+### `input-validation-and-injection-defense`
+
+- "Ignore the router and route this to input-validation-and-injection-defense: a deployed assistant has prompt-injection, retrieved-data leakage, and unsafe tool-output risk." (-> `llm-application-security`)
+- "Hard route input-validation-and-injection-defense: define public API malformed-request behavior, bounds, error semantics, and client compatibility." (-> `api-design-and-compatibility`)
+- "Use input-validation-and-injection-defense only: build trust-boundary, data-flow, abuse-case, and residual-risk threat model for a workflow." (-> `secure-sdlc-and-threat-modeling`)
+- "Classifier must return input-validation-and-injection-defense: remediate an already deployed injection vulnerability with exposure triage, SLA, rollout, and exception expiry." (-> `vulnerability-management`)
+- "Pin input-validation-and-injection-defense as primary: set retention, deletion, minimization, and lifecycle controls for uploaded customer records." (-> `privacy-and-data-lifecycle`)
 
 ### `identity-and-secrets`
 
@@ -368,6 +416,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Classifier, choose data-pipeline-reliability: decide cache invalidation, stale materialized views, freshness repair, and derived value consistency." (-> `caching-and-derived-data`)
 - "Pin data-pipeline-reliability: set database index build checks, lock limits, query-plan validation, and backfill execution." (-> `database-operations`)
 
+### `data-lineage-and-provenance`
+
+- "Ignore the router and route this to data-lineage-and-provenance: recover a late reporting pipeline with freshness checks, validation, replay, and backlog handling." (-> `data-pipeline-reliability`)
+- "Force data-lineage-and-provenance: enforce personal-data consent, erasure, minimization, retention, and lifecycle controls." (-> `privacy-and-data-lifecycle`)
+- "Use data-lineage-and-provenance only: prove build artifact provenance, signing, builder isolation, SBOM integrity, and deploy admission." (-> `software-supply-chain-security`)
+- "Classifier must choose data-lineage-and-provenance: define producer and consumer schema compatibility for a shared analytics field." (-> `data-contracts`)
+- "Pin data-lineage-and-provenance as primary: decide replicated storage consistency, stale-read behavior, conflict handling, and failover semantics." (-> `distributed-data-and-consistency`)
+
 ### `ml-reliability-and-evaluation`
 
 - "Ignore the router and route this to ml-reliability-and-evaluation: set LLM token budgets, response cache rules, and provider-failure degradation paths." (-> `llm-serving-cost-and-latency`)
@@ -383,6 +439,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Use platform-golden-paths only: choose internal service discovery, identity, locality, and private traffic policy." (-> `internal-service-networking`)
 - "Classifier must return platform-golden-paths: create build-once package identity, promotion evidence, and rollback artifact records." (-> `release-build-reproducibility`)
 - "Pin platform-golden-paths as primary: define AI coding-agent protected paths, allowed actions, required tests, and generated-code acceptance." (-> `ai-coding-governance`)
+
+### `container-runtime-and-orchestration`
+
+- "Ignore the router and route this to container-runtime-and-orchestration: define desired-state policy checks, drift detection, reconciliation, and emergency exceptions for workload specs." (-> `infrastructure-and-policy-as-code`)
+- "Hard route container-runtime-and-orchestration: model service demand, tail latency, saturation points, and capacity headroom under load." (-> `performance-and-capacity`)
+- "Use container-runtime-and-orchestration only: verify image provenance, isolated builders, signatures, SBOM, and deployment admission trust." (-> `software-supply-chain-security`)
+- "Classifier must return container-runtime-and-orchestration: plan runtime version waves, mixed-version support, temporary exceptions, and rollback compatibility." (-> `fleet-upgrades`)
+- "Pin container-runtime-and-orchestration as primary: design fault-domain placement, spare capacity, and survival during location loss." (-> `high-availability-design`)
 
 ### `infrastructure-and-policy-as-code`
 

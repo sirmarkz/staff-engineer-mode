@@ -9,7 +9,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, NamedTuple
+from typing import Any, Callable, NamedTuple
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -413,7 +413,7 @@ def random_specialist_cases(cases: list[dict[str, Any]], count: int, seed: str) 
     return [rng.choice(grouped[primary]) for primary in selected_primaries]
 
 
-CASE_ID_RE = re.compile(r"^(?P<case_id>[0-9]{3}-[a-z0-9-]+)\b")
+CASE_ID_RE = re.compile(r"^(?P<case_id>[0-9]{3,}-[a-z0-9-]+)\b")
 
 
 def load_case_id_file(path: Path) -> list[str]:
@@ -685,12 +685,71 @@ def summarize(results: list[CaseResult]) -> dict[str, Any]:
     }
 
 
+def case_result_record(result: CaseResult) -> dict[str, Any]:
+    return {
+        "case_id": result.case_id,
+        "category": result.category,
+        "expected_primary": result.expected_primary,
+        "actual_primary": result.actual_primary,
+        "passed": result.passed,
+        "failure_types": sorted({failure_type(message) for message in result.failures}),
+        "failures": result.failures,
+    }
+
+
+class JsonlProgressWriter:
+    def __init__(self, path: Path, total: int) -> None:
+        self.path = path
+        self.total = total
+        self.completed = 0
+        self.passed = 0
+        self.failed = 0
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.write_text("", encoding="utf-8")
+
+    def write_case(self, result: CaseResult) -> None:
+        self.completed += 1
+        if result.passed:
+            self.passed += 1
+        else:
+            self.failed += 1
+
+        record = case_result_record(result)
+        record.update(
+            {
+                "type": "case",
+                "completed": self.completed,
+                "total": self.total,
+                "passed_so_far": self.passed,
+                "failed_so_far": self.failed,
+            }
+        )
+        self._append(record)
+
+    def write_summary(self, summary: dict[str, Any]) -> None:
+        self._append(
+            {
+                "type": "summary",
+                "completed": self.completed,
+                "total": self.total,
+                "passed_so_far": self.passed,
+                "failed_so_far": self.failed,
+                "summary": summary,
+            }
+        )
+
+    def _append(self, record: dict[str, Any]) -> None:
+        with self.path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
+
+
 def score_cases(
     cases: list[dict[str, Any]],
     names: list[str],
     responses_dir: Path | None = None,
     command: str | None = None,
     jobs: int = 1,
+    on_result: Callable[[CaseResult], None] | None = None,
 ) -> list[CaseResult]:
     if jobs < 1:
         fail("--jobs must be at least 1")
@@ -714,8 +773,17 @@ def score_cases(
             )
         return score_case(case, response, names, index)
 
+    def emit(result: CaseResult) -> None:
+        if on_result is not None:
+            on_result(result)
+
     if jobs == 1 or len(cases) <= 1:
-        return [run_one(index, case) for index, case in enumerate(cases, 1)]
+        results = []
+        for index, case in enumerate(cases, 1):
+            result = run_one(index, case)
+            results.append(result)
+            emit(result)
+        return results
 
     results: list[CaseResult | None] = [None] * len(cases)
     with ThreadPoolExecutor(max_workers=jobs) as executor:
@@ -725,7 +793,9 @@ def score_cases(
         }
         for future in as_completed(future_to_index):
             index = future_to_index[future]
-            results[index - 1] = future.result()
+            result = future.result()
+            results[index - 1] = result
+            emit(result)
     return [result for result in results if result is not None]
 
 
@@ -775,6 +845,10 @@ def main() -> int:
         help="seed for --random and --random-specialists selection",
     )
     parser.add_argument("--jobs", type=int, default=1, help="number of cases to score concurrently")
+    parser.add_argument(
+        "--results-jsonl",
+        help="append one JSON record per completed case and a final summary record to this path",
+    )
     parser.add_argument("--json", action="store_true", help="emit machine-readable summary")
     parser.add_argument("--warn-only", action="store_true", help="return zero even when cases fail")
     args = parser.parse_args()
@@ -819,9 +893,19 @@ def main() -> int:
 
     names = specialist_names()
     responses_dir = Path(args.responses_dir) if args.responses_dir else None
-    results = score_cases(cases, names, responses_dir=responses_dir, command=args.command, jobs=args.jobs)
+    progress_writer = JsonlProgressWriter(Path(args.results_jsonl), len(cases)) if args.results_jsonl else None
+    results = score_cases(
+        cases,
+        names,
+        responses_dir=responses_dir,
+        command=args.command,
+        jobs=args.jobs,
+        on_result=progress_writer.write_case if progress_writer is not None else None,
+    )
 
     summary = summarize(results)
+    if progress_writer is not None:
+        progress_writer.write_summary(summary)
     if args.json:
         print(json.dumps(summary, indent=2))
     else:

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -144,13 +145,14 @@ class RouterEvalHarnessTests(unittest.TestCase):
                 "# failed full run\n"
                 "068-release-build-reproducibility\n"
                 "748-data-contracts failed:\n"
+                "1089-resilience-experiments\n"
                 "\n",
                 encoding="utf-8",
             )
 
             ids = runner.load_case_id_file(path)
 
-        self.assertEqual(ids, ["068-release-build-reproducibility", "748-data-contracts"])
+        self.assertEqual(ids, ["068-release-build-reproducibility", "748-data-contracts", "1089-resilience-experiments"])
 
     def test_random_specialist_cases_selects_distinct_specialists(self) -> None:
         runner = load_runner()
@@ -432,6 +434,48 @@ class RouterEvalHarnessTests(unittest.TestCase):
 
         self.assertEqual(summary["failure_types"], {"command_error": 1})
         self.assertEqual(summary["failures"][0]["failure_types"], ["command_error"])
+
+    def test_progress_writer_appends_case_records_and_summary(self) -> None:
+        runner = load_runner()
+        results = [
+            runner.CaseResult(
+                case_id="001-high-availability-design",
+                category="positive_routing",
+                expected_primary="high-availability-design",
+                actual_primary="high-availability-design",
+                passed=True,
+                failures=[],
+            ),
+            runner.CaseResult(
+                case_id="002-slo-and-error-budgets",
+                category="positive_routing",
+                expected_primary="slo-and-error-budgets",
+                actual_primary="observability-and-alerting",
+                passed=False,
+                failures=[
+                    "primary mismatch: expected slo-and-error-budgets, got observability-and-alerting"
+                ],
+            ),
+        ]
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "progress" / "router-eval.jsonl"
+            writer = runner.JsonlProgressWriter(path, total=2)
+
+            writer.write_case(results[0])
+            first_snapshot = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+            writer.write_case(results[1])
+            writer.write_summary(runner.summarize(results))
+            records = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+
+        self.assertEqual(len(first_snapshot), 1)
+        self.assertEqual(first_snapshot[0]["type"], "case")
+        self.assertEqual(first_snapshot[0]["completed"], 1)
+        self.assertEqual(first_snapshot[0]["total"], 2)
+        self.assertEqual(records[1]["failure_types"], ["route_mismatch"])
+        self.assertEqual(records[2]["type"], "summary")
+        self.assertEqual(records[2]["summary"]["passed"], 1)
+        self.assertEqual(records[2]["summary"]["total"], 2)
 
 
     def test_no_skill_invoke_check_fails_on_specialist_skill_call(self) -> None:
