@@ -1,10 +1,10 @@
 # Staff Engineer Mode
 
 Staff Engineer Mode gives your coding agent production instincts. It turns
-major-outage writeups, SRE practice, security guidance, and release lessons
-into routed specialists for architecture, reliability, security, delivery, and
-operations. It puts hard-won production judgment in the path of everyday coding
-work.
+major-outage writeups, reliability practice, security guidance, and release
+lessons into routed specialists for architecture, reliability, security,
+delivery, and operations. It puts hard-won production judgment in the path of
+everyday coding work.
 
 ## Sources
 
@@ -13,8 +13,8 @@ post-event summaries, Azure post-incident reviews, Google Cloud and Google
 Workspace incident reports, Meta's outage writeups, and Netflix's AWS-outage
 analysis.
 
-The broader practices rest on first-party engineering sources: AWS Builders'
-Library, Google's SRE books and Software Engineering at Google, Meta
+The broader practices rest on first-party engineering sources: Amazon's
+Builders' Library, Google's SRE books and Software Engineering at Google, Meta
 Engineering, Microsoft's SDL and DevOps guidance, Apple's security and privacy
 documentation, and Netflix's resilience work. Standards and guidance come from
 NIST, CISA, OWASP, OpenSSF, IETF, and W3C.
