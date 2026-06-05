@@ -1,5 +1,20 @@
 # Staff Engineer Mode Release Notes
 
+## 2.1.0 - 2026-06-04
+
+Specialist coverage and adversarial-eval practice release.
+
+- Adds routed specialists and templates for scheduled job reliability and
+  client application security, with router, README, template, and eval coverage.
+- Expands specialist guidance across reliability, release, security, privacy,
+  data, platform, and LLM surfaces from the review pass.
+- Adds split-access adversarial eval guidance for agentic eval design, including
+  black-box or gray-box case authorship, withheld happy-path context, and
+  white-box review after cases exist.
+- Strengthens router boundary guidance and eval prompts for scheduled jobs,
+  on-call toil, client security, and model-provider dependency resilience.
+- Removes the obsolete shared synthesis matrix reference file.
+
 ## 2.0.0 - 2026-06-04
 
 Specialist catalog expansion release.
