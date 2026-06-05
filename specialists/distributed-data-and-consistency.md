@@ -50,7 +50,7 @@ Data architecture starts with semantics, not storage brands.
 ## Workflow
 
 1. **Classify data by consequence.** Financial, authorization, privacy, and audit data usually need stronger guarantees than analytics or derived views.
-2. **Write operation semantics.** For each critical operation, define allowed staleness, conflict behavior, idempotency, and durability.
+2. **Write operation semantics.** For each critical operation, define allowed staleness, conflict behavior, idempotency, and durability. Choose conflict resolution from an explicit menu: last-writer-wins (note its silent-update-loss risk), CRDT/commutative merge, or application-level merge, and name the lever that implements the chosen read guarantee: sticky routing to the node that took the write, a read-from-primary window for read-your-writes, or R+W>N quorum with read-repair/anti-entropy.
 3. **Choose consistency deliberately.** Use the weakest guarantee that preserves correctness and user expectation; document the tradeoff.
 4. **Choose time and ordering deliberately.** Use monotonic clocks for elapsed time, wall clocks only for human timestamps, explicit skew bounds for leases and TTLs, define leap-second and daylight-saving behavior for schedulers, and use logical clocks where wall-clock ordering is unsafe.
 5. **Avoid cross-service transactions.** Prefer local transactions plus outbox, sagas, reconciliation, or compensating actions over distributed two-phase commit.
@@ -100,6 +100,7 @@ Default to the simplest storage and consistency model that satisfies operation s
 - Operation-level consistency matrix.
 - Storage decision record with rejected alternatives.
 - Replication, failover, and conflict-resolution model.
+- Conflict-resolution choice from the explicit menu (LWW / CRDT / app-merge) with the read-your-writes or quorum lever that implements the chosen guarantee.
 - Sharding/hot-key/tenant-routing plan.
 - Transaction, outbox, saga, or reconciliation plan.
 - Time, clock, leap-second, daylight-saving, lease, TTL, and ordering decision where temporal correctness matters.
@@ -109,6 +110,8 @@ Default to the simplest storage and consistency model that satisfies operation s
 ## Checks Before Moving On
 
 - `semantics_check`: every critical operation has freshness, ordering, idempotency, conflict, and durability semantics.
+- `conflict_strategy`: the conflict-resolution approach is chosen from the explicit menu and the session-guarantee lever is named.
+- `failover_check`: replication-lag and failover behavior is defined for each read/write path, including the data-loss bound and split-brain prevention.
 - `consistency_choice`: chosen guarantees are justified by user consequence and failure behavior.
 - `responsibility_check`: every data class has an explicit mutation boundary and repair path.
 - `partition_check`: shard/tenant key, hot-key risk, and resharding approach are addressed where scale requires it.

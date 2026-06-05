@@ -47,7 +47,7 @@ Produces the governance and audit lineage spine for business and regulated data 
 
 1. **Designate source-of-record.** For each figure, name the authoritative source and resolve competing sources.
 2. **Capture origin and derivation.** Record where data originates and each transformation that produces the reported figure.
-3. **Build the dependency graph.** Map downstream consumers, reports, datasets, and models that depend on each source.
+3. **Build the dependency graph.** Map downstream consumers, reports, datasets, and models that depend on each source. Record provenance with an entity/activity/agent model (what was derived, by which process, attributed to which owner) and stamp each derivation edge with the producing process version and timestamp so a published figure can be defended and recomputed.
 4. **Cross boundaries.** Make lineage survive service and storage boundary crossings, not stop at the edge of one system.
 5. **Carry purpose tags.** Where consent or purpose constrains use, attach tags that travel with the data.
 6. **Define recompute impact.** For a wrong source, define how to compute the blast radius and recompute or restate every derived figure.
@@ -80,6 +80,7 @@ Designate a source-of-record, capture the derivation chain, and build the downst
 - Cover authoritative sources, transformations, downstream consumers, boundary crossings, purpose tags, recompute procedure, and auditable records before optional data-governance breadth.
 - Make recommendations actionable with lineage tables, graph edges, recompute steps, and records an auditor can follow.
 - Name the details to inspect, such as data flows, transformations, reports, datasets, models, source candidates, and existing lineage capture; do not state details you have not seen.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside governance and audit lineage; route pipeline recovery, privacy lifecycle, contract compatibility, and build provenance when those are central.
 
 ## Required Outputs
@@ -87,6 +88,7 @@ Designate a source-of-record, capture the derivation chain, and build the downst
 - Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Source-of-record designation per regulated figure.
 - Origin and derivation chain from source to reported figure.
+- Provenance records using an entity/activity/agent model with version and timestamp on each derivation edge.
 - Downstream dependency graph: consumers, reports, datasets, models.
 - Boundary-crossing lineage decision.
 - Purpose and consent origin tags where they apply.
@@ -97,6 +99,7 @@ Designate a source-of-record, capture the derivation chain, and build the downst
 
 - `source_of_record`: every regulated figure has one authoritative source, competing sources resolved.
 - `derivation_chain`: the transformations from source to figure are captured.
+- `provenance_model`: each derivation edge records the producing process, responsible owner, and the version and time it ran.
 - `dependency_graph`: downstream consumers, reports, datasets, and models are mapped.
 - `boundary_lineage`: lineage survives service and storage boundary crossings.
 - `recompute_impact`: a wrong source has a defined blast-radius and recompute procedure.
@@ -116,5 +119,6 @@ Designate a source-of-record, capture the derivation chain, and build the downst
 | --- | --- |
 | Treat pipeline lineage as governance lineage | Build a source-to-figure graph that survives boundaries. |
 | Leave the authoritative source implicit | Designate and resolve source-of-record per figure. |
+| Lineage as an undated diagram | Use an entity/activity/agent model with version and timestamp per edge. |
 | Skip downstream mapping | Map every consumer, report, dataset, and model. |
 | Discover recompute scope during the incident | Define blast-radius and recompute before you need it. |

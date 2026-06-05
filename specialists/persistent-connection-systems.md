@@ -32,7 +32,7 @@ Produces the connection-protocol spec and a capacity and drain plan for long-liv
 - The concern is request/reply timeout, retry, or circuit-breaker policy; use `dependency-resilience`.
 - The concern is raw connection-count, memory, file-descriptor, or autoscaling headroom without reconnect, heartbeat, or drain semantics; use `performance-and-capacity`.
 - The concern is east-west load-balancer or service-routing internals; use `internal-service-networking`.
-- Staged rollout sequencing goes to `progressive-delivery`; client-side offline and sync gating goes to `web-release-gates` or `mobile-release-engineering`.
+- Staged rollout sequencing goes to `progressive-delivery`; client-side offline and sync gating goes to `mobile-release-engineering`.
 
 ## Info To Gather
 
@@ -80,6 +80,7 @@ Give each long-lived connection a resume cursor, a slow-consumer bound, and a dr
 - Cover handshake, heartbeat, reconnect-with-resume, slow-consumer bounds, presence cleanup, capacity, drain, and gap detection before optional client or broker breadth.
 - Make recommendations actionable with protocol choices, buffer limits, reconnect-rate bounds, deploy-drain steps, and verification cases.
 - Name the details to inspect, such as connection counts, message rates, resume cursor behavior, buffer growth, deploy logs, and presence state; do not state details you have not seen.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside long-lived connection lifecycle and drain; route broker workflows, request/reply dependency policy, and raw capacity when those are central.
 
 ## Required Outputs

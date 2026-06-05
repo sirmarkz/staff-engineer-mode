@@ -699,6 +699,7 @@ case-study section, they are not grouped by skill topic.
 
 ### Google And Firebase
 - Google SRE Book - Embracing Risk: https://sre.google/sre-book/embracing-risk/
+- DORA - DevOps Research and Assessment, Capabilities and State of DevOps: https://dora.dev/research/
 - Google SRE Book - Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
 - Google SRE Book - Monitoring Distributed Systems: https://sre.google/sre-book/monitoring-distributed-systems/
 - Google SRE Book - Release Engineering: https://sre.google/sre-book/release-engineering/
@@ -832,6 +833,13 @@ case-study section, they are not grouped by skill topic.
 - CISA Known Exploited Vulnerabilities Catalog: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 - CISA And Partners - Deploying AI Systems Securely: https://media.defense.gov/2024/Apr/15/2003439257/-1/-1/0/CSI-DEPLOYING-AI-SYSTEMS-SECURELY.PDF
 
+### CNCF
+- OpenTelemetry Documentation: https://opentelemetry.io/docs/
+
+### FIRST
+- FIRST EPSS - Exploit Prediction Scoring System: https://www.first.org/epss/
+- FIRST CVSS - Common Vulnerability Scoring System Specification: https://www.first.org/cvss/specification-document
+
 ### Grafana
 - Grafana - Dashboard Best Practices: https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/
 
@@ -894,6 +902,9 @@ case-study section, they are not grouped by skill topic.
 - OpenSSF - Security-Focused Guide for AI Code Assistant Instructions: https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions
 - OpenSSF AI/ML Security WG MVSR: https://raw.githubusercontent.com/ossf/ai-ml-security/main/mvsr.md
 
+### SLSA
+- SLSA - Supply-chain Levels for Software Artifacts Specification: https://slsa.dev/spec/v1.0/
+
 ### OWASP
 - OWASP ASVS 5.0.0 Requirements CSV: https://raw.githubusercontent.com/OWASP/ASVS/v5.0.0/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv
 - OWASP Top 10:2021 A01 Broken Access Control: https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/
@@ -914,6 +925,8 @@ case-study section, they are not grouped by skill topic.
 - OWASP Cheat Sheet Series - Deserialization: https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html
 - OWASP Cheat Sheet Series - File Upload: https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html
 - OWASP Cheat Sheet Series - Mass Assignment: https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html
+- OWASP Mobile Application Security Verification Standard (MASVS): https://mas.owasp.org/MASVS/
+- OWASP Cheat Sheet Series - Content Security Policy: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
 - OWASP Top 10 Risk and Mitigations for LLMs and Gen AI Apps: https://genai.owasp.org/llm-top-10/
 
 ### W3C
@@ -921,6 +934,11 @@ case-study section, they are not grouped by skill topic.
 - W3C - Accessibility Conformance Testing Rules Format: https://www.w3.org/TR/act-rules-format/
 - W3C - PROV-Overview, the Provenance data model: https://www.w3.org/TR/prov-overview/
 - WHATWG HTML Living Standard - Server-Sent Events: https://html.spec.whatwg.org/multipage/server-sent-events.html
+
+### Books And Practitioner References
+- Martin Kleppmann - Designing Data-Intensive Applications: https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/
+- Michael T. Nygard - Release It! Design and Deploy Production-Ready Software: https://pragprog.com/titles/mnee2/release-it-second-edition/
+- Matthew Skelton and Manuel Pais - Team Topologies: https://teamtopologies.com/book
 
 ### Werner Vogels
 - Werner Vogels - Eventually Consistent: https://www.allthingsdistributed.com/2008/12/eventually_consistent.html

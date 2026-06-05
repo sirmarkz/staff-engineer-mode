@@ -93,7 +93,7 @@ Pick `primary` and `secondary` only from this exact list. Never invent, shorten,
 ```
 accessibility-gates, agent-pr-review, ai-coding-governance, api-design-and-compatibility,
 architecture-decisions, backup-and-recovery, caching-and-derived-data,
-code-readability-for-agents, configuration-and-automation-safety,
+client-application-security, code-readability-for-agents, configuration-and-automation-safety,
 container-runtime-and-orchestration,
 cost-aware-reliability, cryptography-and-key-lifecycle, database-operations, data-contracts,
 data-lineage-and-provenance, data-pipeline-reliability, dependency-and-code-hygiene, dependency-resilience,
@@ -109,7 +109,7 @@ multi-region-and-data-residency, observability-and-alerting,
 oncall-health, operational-ownership-transfer, performance-and-capacity,
 persistent-connection-systems, platform-golden-paths, privacy-and-data-lifecycle,
 production-readiness-review, progressive-delivery, release-build-reproducibility,
-resilience-experiments, resilience-requirements, secure-sdlc-and-threat-modeling,
+resilience-experiments, resilience-requirements, scheduled-job-reliability, secure-sdlc-and-threat-modeling,
 service-decommission-and-sunset, slo-and-error-budgets,
 software-supply-chain-security, state-machine-correctness, tenant-isolation,
 test-data-engineering, testing-and-quality-gates, vulnerability-management,
@@ -180,7 +180,7 @@ Load `references/routing-matrix.md`.
 - Explicit negations suppress adjacent routes: API without contract changes, surveys without metric validity, toggles without ops/rollout flags.
 - Commit attempts or general PR/branch/patch/diff reviews -> `agent-pr-review`; surface-specific PRs route narrow.
 - System/module ownership -> `architecture-decisions`; ownership transfer/handoff -> `operational-ownership-transfer`; AI repo legibility -> `code-readability-for-agents`; retry/timeout/fallback/overload -> `dependency-resilience`.
-- HA capacity/fault-domain placement, including zone or region loss -> `high-availability-design`; residency/geo-routing/replication-aware region placement -> `multi-region-and-data-residency`; fault injection -> `resilience-experiments`; telemetry -> `observability-and-alerting`; alert toil -> `oncall-health`.
+- HA capacity/fault-domain placement, including zone or region loss -> `high-availability-design`; residency/geo-routing/replication-aware region placement -> `multi-region-and-data-residency`; fault injection -> `resilience-experiments`; telemetry -> `observability-and-alerting`; alert toil or recurring manual runbook work -> `oncall-health`.
 - Failure requirements before code -> `resilience-requirements`; game days -> `resilience-experiments`; proven topology -> `high-availability-design`.
 - Runtime drain/probes -> `container-runtime-and-orchestration`; reconnect/heartbeat/fanout -> `persistent-connection-systems`; raw headroom -> `performance-and-capacity`.
 - Cross-service storage correctness -> `distributed-data-and-consistency`; in-process states/invariants -> `state-machine-correctness`; restore/corruption recovery -> `backup-and-recovery`; DB execution/query/schema regression -> `database-operations`.
@@ -191,7 +191,7 @@ Load `references/routing-matrix.md`.
 - Retiring/replacing with no-new-usage checks -> `migration-and-deprecation`; terminal teardown/no-resurrection -> `service-decommission-and-sunset`; model promotion/drift -> `ml-reliability-and-evaluation`.
 - Release split: readiness verdict -> `production-readiness-review`; staged exposure/rollback -> `progressive-delivery`; build artifact identity -> `release-build-reproducibility`; browser/mobile gates route client-specific.
 - Security split: threat model, per-sink input defense, identity/secrets, cryptography, supply-chain trust, deployed vulnerability, tenant boundary, privacy lifecycle, and LLM app risk.
-- LLM split: app security -> `llm-application-security`; eval, retrieval-grounded, or agent task-run checks -> `llm-evaluation`; serving cost/latency -> `llm-serving-cost-and-latency`; ML serving reliability -> `ml-reliability-and-evaluation`.
+- LLM split: app security -> `llm-application-security`; eval, retrieval-grounded, or agent task-run checks -> `llm-evaluation`; serving cost/latency/token/cache/fallback budgets -> `llm-serving-cost-and-latency`; generic model-provider retry, timeout, circuit-breaker, or overload policy -> `dependency-resilience`; ML serving reliability -> `ml-reliability-and-evaluation`.
 - Traffic split: public edge -> `edge-traffic-and-ddos-defense`; private service routing -> `internal-service-networking`; dependency-call policy -> `dependency-resilience`.
 - Test split: production-derived fixtures -> `test-data-engineering`; CI/merge gates -> `testing-and-quality-gates`; environment drift -> `dev-environment-parity`.
 - Dependency cleanup -> `dependency-and-code-hygiene`; fleet waves/support windows -> `fleet-upgrades`; supply-chain trust stays separate.

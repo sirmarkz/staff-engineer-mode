@@ -50,7 +50,7 @@ Quality checks should catch real risk early without turning delivery into ritual
 1. **Classify risk.** Identify correctness, compatibility, security, reliability, performance, data, and accessibility risks introduced by the change.
 2. **Place tests low.** Prefer the cheapest deterministic check that exercises the behavior; use broader tests only for cross-boundary confidence.
 3. **Define a test taxonomy.** Group checks by dependency and runtime cost so fast in-memory/component tests protect merge, deployment tests protect release, and production probes protect rollout.
-4. **State suite composition.** For CI reduction, flake cleanup, or suite redesign, include a compact current or target layer mix such as unit/component, contract/integration, and end-to-end counts or ratios, with one rationale tied to speed, determinism, and risk coverage.
+4. **State suite composition.** For CI reduction, flake cleanup, or suite redesign, include a compact current or target layer mix such as unit/component, contract/integration, and end-to-end counts or ratios, with one rationale tied to speed, determinism, and risk coverage. Classify tests by size as well as scope: small (in-process, no network/disk/real clock), medium (local multi-process), large (external/e2e). Smaller, hermetic tests (no external network, real-time clock, or shared mutable state) are the determinism lever; place each test as small and hermetic as correctness allows.
 5. **Separate check types.** Pre-merge checks should be fast and high-signal; use a default budget such as p95 under 10 minutes for the full pre-merge lane and under 5 minutes for a fast path. Pre-release checks can be broader; production checks belong to rollout.
 6. **Check before traffic.** For serving systems, startup/readiness checks and critical-path sanity checks should pass before new capacity accepts real traffic.
 7. **Make checks actionable.** Every blocking check needs failure instructions and a path to fix or quarantine.
@@ -128,6 +128,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 - `gate_integrity`: execution cost does not remove coverage for risky behavior or create an unowned bypass path.
 - `cache_correctness`: cache keys and invalidation include behavior-changing inputs so stale output cannot pass the gate.
 - `flake_policy`: flaky checks have fix, quarantine, downgrade, or expiry decision.
+- `hermeticity`: pre-merge tests are hermetic (no external network, wall-clock, or shared mutable state) or the dependency is justified; flakes are detected by rerun-disagreement and quarantined out of the blocking set.
 - `stage_fit`: each check runs at the earliest stage where it can check the intended property.
 - `critical_path_sanity`: critical user paths have sanity checks that validate behavior and process health.
 - `distributed_failure_matrix`: distributed boundaries cover independent client, network, server, timeout, duplicate, and retry outcomes, or route high-stakes invariants to `state-machine-correctness`.
@@ -154,6 +155,7 @@ Use a risk-based test strategy with fast deterministic pre-merge checks, focused
 | --- | --- |
 | Testing implementation shape | Test supported behavior and contracts. |
 | Blocking on noisy tools | Start advisory, tune signal, then enforce. |
+| Scope-only test taxonomy | Also classify by size; prefer small, hermetic tests for determinism. |
 | One giant quality check | Split by lifecycle stage and risk. |
 | Demanding instant legacy perfection | Use ratchets and prevent new debt. |
 | Speeding up by dropping coverage | Preserve the gate and change placement, sharding, or ownership. |

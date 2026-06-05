@@ -68,7 +68,7 @@ Users experience tail latency, not averages.
 
 ## Synthesized Default
 
-Optimize around tail percentiles, saturation, queue age, and headroom rather than averages. Combine tail-at-scale design, SRE golden signals, performance baselines, load-shedding practice, and unit-cost discipline when cost is explicitly part of the reliability tradeoff.
+Optimize around tail percentiles, saturation, queue age, and headroom rather than averages. Combine tail-at-scale design, SRE golden signals, performance baselines, load-shedding practice, and unit-cost discipline when cost is explicitly part of the reliability tradeoff. Name the static-stability and constant-work patterns as the default for headroom: pre-provision capacity that is already available when a domain fails rather than relying on reactive scaling, and add proactive demand forecasting with provisioning lead-time instead of relying on reactive saturation response.
 
 
 
@@ -145,6 +145,7 @@ Every answer, including narrow regression diagnoses, must state, in this order:
 | --- | --- |
 | Treating CPU as capacity | Include all saturation points: queues, locks, pools, IO, network, and dependencies. |
 | Letting internal callers bypass quota | Apply capacity limits at every entry point and size them to the real bottleneck. |
+| Reactive scaling as the only plan | Pre-provision static-stability headroom and forecast demand with lead-time. |
 | Testing only steady load | Add bursts, soak, failover, cold cache, and dependency-slow scenarios. |
 | Letting background work share unlimited serving capacity | Give maintenance and control work explicit resource budgets and preemption behavior. |
 | Hiding overload in queues | Track age and drain rate; shed work before recovery becomes impossible. |

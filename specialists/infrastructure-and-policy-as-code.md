@@ -55,7 +55,7 @@ Infrastructure is safer when desired state, policy checks, drift handling, and r
 5. **Encode and test policies.** Convert standards into automated rules with clear failure messages, fixture tests, historical dry runs where feasible, and an exception path.
 6. **Separate platform and workload boundaries.** Make shared services, application environments, fault-domain boundaries, shared control-plane dependencies, and responsibility explicit so policy inheritance and exceptions are understandable.
 7. **Enforce at the right point.** Use pre-merge, pre-deploy, admission, or continuous drift checks depending on risk and feasibility.
-8. **Detect drift.** Compare actual state to desired state and decide whether to alert, reconcile, or open a ticket.
+8. **Detect drift.** Compare actual state to desired state and decide whether to alert, reconcile, or open a ticket. State the reconciliation mode (alert-only, converge-on-next-apply, or auto-remediate) and pause auto-reconciliation during an active break-glass window so it cannot revert an emergency fix. Require a reviewed plan/preview and approval before applying to production state, and stage infrastructure applies by environment or fault domain. Treat the state store as a secret-bearing control plane: encrypt at rest, lock against concurrent applies, and avoid persisting plaintext secrets.
 9. **Plan rollback.** State when rollback is possible, when roll-forward is safer, and how state is protected.
 10. **Handle emergencies.** Permit manual break-glass only with separate emergency identity, traceability, maximum duration, automatic re-locking, reconciliation, and post-change check.
 11. **Protect the source of truth.** Treat desired-state repositories, state stores, lock stores, and reconcilers as production control-plane dependencies with access control, backup, and recovery plans.
@@ -118,6 +118,9 @@ Use declarative desired state, traceable changes, automated policy checks, clear
 - `policy_check`: policies map to engineering standards and enforcement/advisory mode.
 - `secure_baseline`: desired state encodes hardened baseline content before it reconciles settings.
 - `drift_check`: drift detection and reconciliation response are defined.
+- `reconcile_mode`: reconciliation mode is explicit and paused during break-glass.
+- `plan_before_apply`: production applies require a reviewed plan/preview and are staged by blast radius.
+- `state_integrity`: the state store is encrypted, locked, and free of plaintext secrets.
 - `infra_fault_boundary`: intended independent fault domains have separate configurable boundaries or an explicit shared-dependency exception.
 - `emergency_check`: manual break-glass changes require separate identity, expiry, change history, reconciliation, and re-locking.
 

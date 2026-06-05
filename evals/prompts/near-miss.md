@@ -112,6 +112,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Set merge-blocking CI checks for a pure JSON parser with fixture coverage and flaky-test quarantine." (-> `testing-and-quality-gates`)
 - "Resolve replication-lag conflict handling for account writes split across two stores." (-> `distributed-data-and-consistency`)
 
+### `scheduled-job-reliability`
+
+- "Recover a delayed metric pipeline with lineage, freshness validation, late-batch replay, and no-double-count checks rather than a timer contract." (-> `data-pipeline-reliability`)
+- "Define message ordering, idempotent replay, compensation, and DLQ repair for queue consumers after downtime." (-> `event-workflows`)
+- "Preview a one-shot production account-disable mutation with input validation, blast-radius caps, audit trail, and rollback." (-> `configuration-and-automation-safety`)
+- "Set workload drain, readiness probes, restart-loop behavior, and resource bounds for a worker process; the schedule itself is already safe." (-> `container-runtime-and-orchestration`)
+- "Add logs, dashboard panels, alert annotations, and runbook links for an existing job after its idempotency and overlap policy are already defined." (-> `observability-and-alerting`)
+
 ## Delivery And Quality
 
 ### `testing-and-quality-gates`
@@ -286,6 +294,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Triage a deployed injection flaw with exploitability, patch SLA, rollout sequence, and exception expiry." (-> `vulnerability-management`)
 - "Define server-side callback egress allowlists, private-address blocking, redirect handling, and audit fields." (-> `secure-sdlc-and-threat-modeling`)
 
+### `client-application-security`
+
+- "Fix a server-side SQL and template injection path from request data; no browser, mobile, deep-link, web-view, or local-storage surface is involved." (-> `input-validation-and-injection-defense`)
+- "Harden an LLM assistant against prompt injection, retrieved-data leakage, unsafe tool output, and tool least privilege." (-> `llm-application-security`)
+- "Set session-token lifetime, refresh rotation, workload identity, break-glass access, and credential cleanup for backend services." (-> `identity-and-secrets`)
+- "Gate a browser release on payload growth, interaction readiness, layout stability, and client runtime error rates." (-> `web-release-gates`)
+- "Plan native mobile staged rollout pauses for crash spikes, cold starts, hangs, offline sync, and forward-fix constraints." (-> `mobile-release-engineering`)
+
 ### `identity-and-secrets`
 
 - "Design service identity, discovery, locality, and private traffic policy for east-west calls; no runtime secret read policy or emergency access is involved." (-> `internal-service-networking`)
@@ -354,7 +370,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 - "Improve repository file names so agents can find the canonical payment implementation in one search." (-> `code-readability-for-agents`)
 - "Add canonical search terms and path labels for payment handlers so agents stop landing on deprecated files." (-> `code-readability-for-agents`)
-- "Review one AI-generated PR diff for regressions and missing tests before merge." (-> `agent-pr-review`)
+- "Design router-boundary adversarial evals where a white-box architect defines risk slices, a black-box/gray-box author lacks expected traces, reference solutions, implementation notes, happy-path examples, and route rationales, and a white-box reviewer validates coverage." (-> `llm-evaluation`)
 - "Rename ambiguous files and add canonical path labels so coding agents find the right implementation." (-> `code-readability-for-agents`)
 - "Review a concrete AI-generated PR for behavior changes, edge cases, and test gaps." (-> `agent-pr-review`)
 

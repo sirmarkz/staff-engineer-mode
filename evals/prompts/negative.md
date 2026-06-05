@@ -112,6 +112,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Rename workflow statuses in a help article without changing code, transitions, locks, or invariants." (-> `none`)
 - "Define API compatibility for a status field exposed to external clients, without changing internal transition logic." (-> `api-design-and-compatibility`)
 
+### `scheduled-job-reliability`
+
+- "Recover a late analytics pipeline with freshness validation, lineage, replay bounds, and no-double-count evidence." (-> `data-pipeline-reliability`)
+- "Plan queue consumer ordering, idempotent replay, duplicate-work prevention, and dead-letter recovery." (-> `event-workflows`)
+- "Preview a one-time destructive production config mutation with input validation, blast-radius caps, abort, and rollback." (-> `configuration-and-automation-safety`)
+- "Set readiness probes, shutdown drain, restart-loop behavior, and resource bounds for a worker container." (-> `container-runtime-and-orchestration`)
+- "Schedule the engineering team's holiday calendar and meeting reminders, with no production compute job or runtime system." (-> `none`)
+
 ## Delivery And Quality
 
 ### `testing-and-quality-gates`
@@ -286,6 +294,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Set remediation SLA, exploitability triage, rollout order, and exception expiry for a deployed injection vulnerability." (-> `vulnerability-management`)
 - "Write a security-awareness article about input hygiene for employees, with no application code or sink." (-> `none`)
 
+### `client-application-security`
+
+- "Patch a server-side SQL and template injection vulnerability from request parameters; no browser or mobile client sink is involved." (-> `input-validation-and-injection-defense`)
+- "Define prompt-injection, retrieval-boundary, unsafe-output, and tool-containment controls for an LLM assistant." (-> `llm-application-security`)
+- "Set backend session issuance, token refresh lifetime, service-account scope, and credential rotation policy." (-> `identity-and-secrets`)
+- "Plan browser release gates for payload size, interaction readiness, layout stability, and runtime error rates." (-> `web-release-gates`)
+- "Choose app icon colors and store screenshots for a marketing refresh without client security or release-risk work." (-> `none`)
+
 ### `identity-and-secrets`
 
 - "Plan certificate expiry handling, key rotation, trust-chain agility, and cryptographic rollback evidence." (-> `cryptography-and-key-lifecycle`)
@@ -361,7 +377,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 ### `llm-evaluation`
 
 - "An agent can follow malicious retrieved instructions to call write tools; define red-team evals and containment controls for prompt injection and unsafe tool output." (-> `llm-application-security`)
-- "Ask a model to draft a product tagline and pick the most appealing option, with no eval harness or threshold." (-> `none`)
+- "Write a workshop handout defining white-box architect, black-box/gray-box case author, withheld expected traces, reference solutions, implementation notes, happy-path examples, route rationales, and white-box reviewer coverage validation, with no eval harness or routing boundary." (-> `none`)
 - "Plan production model promotion checks with drift monitors, serving rollback, and training-serving skew review." (-> `ml-reliability-and-evaluation`)
 - "Tune prompt-cache keys and max-token limits to reduce serving cost for one model route." (-> `llm-serving-cost-and-latency`)
 - "Ask a chatbot for naming ideas and pick the funniest one manually." (-> `none`)

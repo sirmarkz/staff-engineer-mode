@@ -80,6 +80,7 @@ Use defense in depth anchored at the sink: allowlist boundary validation plus si
 - Cover boundary validation, sink-correct neutralization, structured binding, upload handling, and residual risk before optional security breadth.
 - Make recommendations actionable with sink names, control points, tests, and acceptance criteria.
 - Name the details to inspect, such as sources, sinks, validators, encoders, query builders, parsers, and negative tests; do not state details you have not seen.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside conventional per-sink input defense; route model-output, outbound fetch or egress control, broad threat modeling, and deployed vulnerability remediation away when they dominate.
 
 ## Required Outputs

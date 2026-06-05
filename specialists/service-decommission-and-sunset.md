@@ -42,14 +42,15 @@ Produces the terminal-phase teardown program, the counterpart to a launch-readin
 - DNS names, endpoints, certs, and credentials the system owns.
 - Infrastructure, pipelines, alarms, and on-call rotations tied to the system.
 - The ongoing cost the teardown is meant to stop.
+- Resurrection vectors: IaC/desired-state definitions, autoscaling or schedulers, and CI/CD pipelines that could recreate the service after teardown.
 
 ## Workflow
 
-1. **Prove zero traffic.** Confirm no live traffic and no remaining consumers, with evidence and a watch window, before any destructive step.
+1. **Prove zero traffic.** Confirm no live traffic and no remaining consumers, with evidence and a watch window, before any destructive step. Require the zero-traffic watch window to span the longest known invocation cycle (batch, cron, quarterly or annual reconciliation, break-glass), not just a short observation window.
 2. **Dispose of data lawfully.** Decide archival versus verified destruction per data class, honor retention minimums, and suspend destruction for any class under active legal hold.
 3. **Revoke credentials and keys.** Revoke the system's credentials, keys, and certs so they cannot be reused.
 4. **Reclaim names and endpoints.** Release or repoint DNS, endpoints, and certs so a later actor cannot claim a dangling name; stage with TTL awareness.
-5. **Tear down in order.** Sequence infrastructure and pipeline teardown so dependents go first, and verify the cost the teardown targeted actually stops.
+5. **Tear down in order.** Sequence infrastructure and pipeline teardown so dependents go first, and verify the cost the teardown targeted actually stops. Discover and neutralize resurrection vectors (IaC/desired-state, schedulers, CI/CD) so they cannot recreate the service, route the bulk destructive deletes through `configuration-and-automation-safety` guardrails (preview, blast-radius caps, rate limits, fail-closed), and state the data-sanitization level (clear/purge/cryptographic-erase/destroy) with verification.
 6. **Remove monitoring and on-call.** Retire alarms, dashboards, and on-call rotations so the system leaves no phantom alerts.
 7. **Record no-resurrection.** Produce an auditable record that the system is gone, names and credentials are reclaimed, data was disposed per policy, and nothing can silently revive it.
 
@@ -80,6 +81,7 @@ Prove zero traffic, dispose of data per retention and hold, revoke and reclaim c
 - Cover consumers, data disposition, credentials, names, ordered teardown, monitoring removal, and no-resurrection evidence before optional retirement breadth.
 - Make recommendations actionable with evidence windows, revocation lists, DNS and endpoint actions, teardown order, and irreversibility gates.
 - Name the details to inspect, such as traffic evidence, consumer inventory, data classes, holds, credentials, names, certs, pipelines, and alarms; do not state details you have not seen.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside terminal service teardown; route consumer migration, mutation safety, desired-state deletion, key lifecycle, and restore concerns when central.
 
 ## Required Outputs
@@ -96,12 +98,14 @@ Prove zero traffic, dispose of data per retention and hold, revoke and reclaim c
 ## Checks Before Moving On
 
 - `zero_traffic`: no live traffic and no remaining consumers, with evidence, before destruction.
+- `watch_window`: the zero-traffic proof spans the longest known business/invocation cycle.
 - `data_disposition`: each data class is archived or destroyed per retention, with legal hold suspending destruction.
 - `credential_revocation`: credentials, keys, and certs are revoked.
 - `name_reclamation`: DNS, endpoints, and certs cannot be hijacked or silently revived.
 - `ordered_teardown`: teardown follows dependency order and the targeted cost stops.
 - `monitoring_removed`: alarms and on-call rotations are retired.
-- `no_resurrection`: an auditable record shows the system is gone and cannot revive.
+- `no_resurrection`: IaC, schedulers, and pipelines are confirmed unable to recreate the service.
+- `sanitization_level`: retired data and media state a sanitization level and verification.
 
 ## Red Flags - Stop And Rework
 

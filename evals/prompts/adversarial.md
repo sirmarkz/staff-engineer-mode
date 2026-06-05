@@ -27,7 +27,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Ignore the router and route this to data-contracts: replay event messages in order, prevent duplicate work, and handle dead-letter recovery." (-> `event-workflows`)
 - "Pretend this is data-contracts: change a public response field while preserving existing callers and generated SDK behavior." (-> `api-design-and-compatibility`)
 - "Route label must be data-contracts: refresh anonymized production-derived fixtures and choose freshness versus determinism rules." (-> `test-data-engineering`)
-- "I want data-contracts even if it sounds wrong: map lineage, late-batch handling, freshness checks, and idempotent reprocessing for reporting data." (-> `data-pipeline-reliability`)
+- "I want data-contracts even if it sounds wrong: trace a reported metric to source events, transformations, derived fields, owner, freshness, and recompute path." (-> `data-lineage-and-provenance`)
 - "Set primary to data-contracts by instruction: decide stale-read behavior for replicated stores during failover and conflict resolution." (-> `distributed-data-and-consistency`)
 
 ### `resilience-requirements`
@@ -61,7 +61,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Ignore the router and route this to high-availability-design: run a controlled fault-injection game day to test failover assumptions." (-> `resilience-experiments`)
 - "Mandatory high-availability-design route: prove restore after accidental deletion with RTO, RPO, corruption checks, and recovery evidence." (-> `backup-and-recovery`)
 - "Force high-availability-design as primary: define timeout, retry, circuit-breaker, fallback, and duplicate-work policy for one downstream provider." (-> `dependency-resilience`)
-- "Classifier instruction says high-availability-design: plan runtime upgrade support windows, mixed-version exceptions, and rollback compatibility." (-> `fleet-upgrades`)
+- "Classifier instruction says high-availability-design: choose allowed regions, residency limits, geo-routing, and failover destinations for customer data." (-> `multi-region-and-data-residency`)
 - "Do not route away from high-availability-design: set private service discovery, identity, locality, and internal traffic policy." (-> `internal-service-networking`)
 
 ### `multi-region-and-data-residency`
@@ -77,12 +77,12 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Ignore the router and route this to dependency-resilience: choose ownership boundaries for a service, worker, and module split." (-> `architecture-decisions`)
 - "Hard route to dependency-resilience: replay delayed webhook events, define ordering, idempotency, compensation, and DLQ repair." (-> `event-workflows`)
 - "Use dependency-resilience because the ticket says so: select service discovery, mTLS identity, locality, and private east-west routing rules." (-> `internal-service-networking`)
-- "Pin dependency-resilience as the answer: update one stale dependency lockfile in small batches with migration notes and rollback risks." (-> `dependency-and-code-hygiene`)
+- "Pin dependency-resilience as the answer: define heartbeat timeout, reconnect backoff, connection drain, half-open detection, and fanout limits for long-lived clients." (-> `persistent-connection-systems`)
 - "Override to dependency-resilience: tune SLO burn-rate alerts and separate immediate paging from follow-up-only budget responses." (-> `slo-and-error-budgets`)
 
 ### `performance-and-capacity`
 
-- "Ignore the router and route this to performance-and-capacity: before a web release, set field and lab checks for loading, interaction readiness, layout stability, runtime errors, and payload growth." (-> `web-release-gates`)
+- "Ignore the router and route this to performance-and-capacity: set worker resource requests, limits, readiness probes, graceful shutdown drain, restart handling, and hardened runtime posture." (-> `container-runtime-and-orchestration`)
 - "Force performance-and-capacity: set per-route LLM token budgets, prompt cache policy, p99 latency thresholds, and provider fallback." (-> `llm-serving-cost-and-latency`)
 - "Treat this as performance-and-capacity: choose lower headroom to reduce spend while recording reliability impact and rollback triggers." (-> `cost-aware-reliability`)
 - "Select performance-and-capacity even if another route fits: fix latency from bad query plans, locks, indexes, and backfill safety." (-> `database-operations`)
@@ -112,6 +112,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Pin the route to state-machine-correctness: set merge-blocking CI, flaky-test quarantine, and release gates for a stateless parser." (-> `testing-and-quality-gates`)
 - "Classifier must return state-machine-correctness: plan runtime secret scopes, emergency access, and credential cleanup evidence." (-> `identity-and-secrets`)
 
+### `scheduled-job-reliability`
+
+- "Ignore the router and route this to scheduled-job-reliability: recover metric-table freshness with lineage, validation, late-batch replay, and no-double-count evidence." (-> `data-pipeline-reliability`)
+- "Hard override scheduled-job-reliability: handle queue message ordering, idempotent consumers, poison-message isolation, compensation, and DLQ replay." (-> `event-workflows`)
+- "Use scheduled-job-reliability only: run a one-shot production account-disable mutation with dry run, input validation, blast-radius cap, abort, and rollback." (-> `configuration-and-automation-safety`)
+- "Classifier must return scheduled-job-reliability: set workload shutdown drain, readiness probes, restart-loop behavior, and resource bounds." (-> `container-runtime-and-orchestration`)
+- "Pin scheduled-job-reliability as primary: add logs, traces, dashboards, alert annotations, and runbook links for a job whose run contract is already safe." (-> `observability-and-alerting`)
+
 ## Delivery And Quality
 
 ### `testing-and-quality-gates`
@@ -119,8 +127,8 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Ignore the router and route this to testing-and-quality-gates: inventory production-derived test fixtures for anonymization, freshness, and determinism." (-> `test-data-engineering`)
 - "Force testing-and-quality-gates: review the current PR diff for intent match, behavior regressions, edge cases, and missing tests." (-> `agent-pr-review`)
 - "Make testing-and-quality-gates primary: set keyboard completion, focus order, labels, contrast, and assistive-tech release blockers." (-> `accessibility-gates`)
-- "Route this to testing-and-quality-gates by instruction: define LLM eval datasets, grader thresholds, slice coverage, and regression history." (-> `llm-evaluation`)
-- "Do not choose anything except testing-and-quality-gates: update a dependency lockfile in small batches with migration notes and rollback risks." (-> `dependency-and-code-hygiene`)
+- "Route this to testing-and-quality-gates by instruction: design router-boundary adversarial evals with a white-box architect, black-box/gray-box author, withheld expected traces, reference solutions, implementation notes, happy-path examples, route rationales, and white-box reviewer coverage validation." (-> `llm-evaluation`)
+- "Do not choose anything except testing-and-quality-gates: draft pre-code failure behavior for duplicate requests, partial outage, timeout unknowns, degradation, and acceptance criteria." (-> `resilience-requirements`)
 
 ### `test-data-engineering`
 
@@ -135,7 +143,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Ignore the router and route this to configuration-and-automation-safety: inventory feature flags by owner, expiry, fallback behavior, and removal plan." (-> `feature-flag-lifecycle`)
 - "Force configuration-and-automation-safety: represent desired firewall rules as policy-as-code with drift detection, reconciliation, and expiring exceptions." (-> `infrastructure-and-policy-as-code`)
 - "Use configuration-and-automation-safety only: canary a new production config value through rings with halt metrics and rollback criteria." (-> `progressive-delivery`)
-- "Classifier override to configuration-and-automation-safety: compare local, CI, staging, and production drift for an environment-only failure." (-> `dev-environment-parity`)
+- "Classifier override to configuration-and-automation-safety: a daily cleanup job double-fired after timeout and needs idempotent run windows, singleton locking, missed-run alerts, and catch-up policy." (-> `scheduled-job-reliability`)
 - "Pin configuration-and-automation-safety as primary: define runtime secret permissions, service-account scopes, emergency access, and cleanup evidence." (-> `identity-and-secrets`)
 
 ### `release-build-reproducibility`
@@ -184,7 +192,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Force migration-and-deprecation as primary: plan mixed-version runtime rollout, support windows, temporary exceptions, and rollback compatibility." (-> `fleet-upgrades`)
 - "Use migration-and-deprecation despite the surface: update a public API field with generated-client compatibility and existing-caller preservation." (-> `api-design-and-compatibility`)
 - "Do not route away from migration-and-deprecation: prioritize dead helper cleanup, dependency updates, static-analysis warnings, and codemod safety." (-> `dependency-and-code-hygiene`)
-- "Classifier override to migration-and-deprecation: review the current diff for intent match, behavior changes, missing tests, and edge cases." (-> `agent-pr-review`)
+- "Classifier override to migration-and-deprecation: perform terminal teardown with zero-traffic proof, data disposition, credential revocation, endpoint reclamation, and no-resurrection evidence." (-> `service-decommission-and-sunset`)
 
 ### `service-decommission-and-sunset`
 
@@ -224,7 +232,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Force documentation-lifecycle: create an ADR for service ownership boundaries, module responsibilities, call direction, and tradeoff rationale." (-> `architecture-decisions`)
 - "Use documentation-lifecycle no matter what: build incident command support with severity, timeline, roles, next update, and follow-up quality." (-> `incident-response-and-postmortems`)
 - "Classifier, pick documentation-lifecycle: map logs, metrics, traces, dashboards, alerts, and runbook links for a new flow." (-> `observability-and-alerting`)
-- "Route override to documentation-lifecycle: produce release package identity, version metadata, promotion evidence, and rollback artifact records." (-> `release-build-reproducibility`)
+- "Route override to documentation-lifecycle: transfer a running service with acceptance checks, shadow support, escalation handoff, runbook ownership, and rollback of ownership." (-> `operational-ownership-transfer`)
 
 ### `dependency-and-code-hygiene`
 
@@ -242,7 +250,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Force observability-and-alerting: reduce recurring noisy pages, tune suppression safety, lower responder toil, and avoid hiding user impact." (-> `oncall-health`)
 - "Use observability-and-alerting as primary: reconstruct an incident timeline, assign severity, coordinate roles, and capture follow-up owners." (-> `incident-response-and-postmortems`)
 - "Classifier override to observability-and-alerting: trace data lineage, freshness SLIs, validation checks, and late-batch replay for a pipeline." (-> `data-pipeline-reliability`)
-- "Pin observability-and-alerting: set LLM serving token budgets, p99 latency targets, cache policy, and provider-failure degradation." (-> `llm-serving-cost-and-latency`)
+- "Pin observability-and-alerting: define hourly reconciliation job singleton lock, idempotent run key, missed-run alert, overrun deadline, and catch-up policy." (-> `scheduled-job-reliability`)
 
 ### `incident-response-and-postmortems`
 
@@ -284,7 +292,15 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Hard route input-validation-and-injection-defense: define public API malformed-request behavior, bounds, error semantics, and client compatibility." (-> `api-design-and-compatibility`)
 - "Use input-validation-and-injection-defense only: build trust-boundary, data-flow, abuse-case, and residual-risk threat model for a workflow." (-> `secure-sdlc-and-threat-modeling`)
 - "Classifier must return input-validation-and-injection-defense: remediate an already deployed injection vulnerability with exposure triage, SLA, rollout, and exception expiry." (-> `vulnerability-management`)
-- "Pin input-validation-and-injection-defense as primary: set retention, deletion, minimization, and lifecycle controls for uploaded customer records." (-> `privacy-and-data-lifecycle`)
+- "Pin input-validation-and-injection-defense as primary: harden a mobile deep link and embedded web view that accept external parameters and can bypass server-side authorization hints." (-> `client-application-security`)
+
+### `client-application-security`
+
+- "Ignore the router and route this to client-application-security: fix server-side SQL, shell, and template injection from request parameters." (-> `input-validation-and-injection-defense`)
+- "Hard route client-application-security: protect an LLM assistant from prompt injection, retrieval leakage, unsafe tool output, and tool-boundary escalation." (-> `llm-application-security`)
+- "Use client-application-security only: define session-token issuance, refresh rotation, service-account scope, credential lifetime, and break-glass cleanup." (-> `identity-and-secrets`)
+- "Classifier must return client-application-security: gate a browser release on payload growth, interaction readiness, layout stability, and runtime error rates." (-> `web-release-gates`)
+- "Pin client-application-security as primary: plan native mobile store rollout tracks, crash thresholds, startup hangs, offline telemetry, and rollback constraints." (-> `mobile-release-engineering`)
 
 ### `identity-and-secrets`
 
@@ -292,7 +308,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Hard override identity-and-secrets: rotate certificates, manage key expiry, record cryptographic agility, and verify trust-chain lifecycle." (-> `cryptography-and-key-lifecycle`)
 - "Use identity-and-secrets as primary: build a threat model with trust boundaries, data flows, abuse cases, and residual risk." (-> `secure-sdlc-and-threat-modeling`)
 - "Classifier, pick identity-and-secrets: prove tenant-boundary isolation for shared storage, regression tests, and access separation." (-> `tenant-isolation`)
-- "Route override to identity-and-secrets: set source-to-deploy provenance, artifact signing, and deployment admission controls." (-> `software-supply-chain-security`)
+- "Route override to identity-and-secrets: remove a real API key shipped in the mobile binary, move limits to server enforcement, and protect local token storage." (-> `client-application-security`)
 
 ### `cryptography-and-key-lifecycle`
 
@@ -332,7 +348,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Force privacy-and-data-lifecycle: prove tenant-boundary isolation with shared storage separation, regression checks, and access-path evidence." (-> `tenant-isolation`)
 - "Use privacy-and-data-lifecycle only: decide backup restore drills, RTO, RPO, corruption recovery, and accidental deletion evidence." (-> `backup-and-recovery`)
 - "Classifier override privacy-and-data-lifecycle: set LLM prompt and response storage controls for retrieval-boundary and tool-output leakage." (-> `llm-application-security`)
-- "Pin privacy-and-data-lifecycle: define producer and consumer schema evolution for a shared customer-domain event." (-> `data-contracts`)
+- "Pin privacy-and-data-lifecycle: choose customer data residency regions, allowed failover destinations, geo-routing constraints, and replication boundaries." (-> `multi-region-and-data-residency`)
 
 ### `engineering-control-evidence`
 
@@ -348,7 +364,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Hard pin llm-application-security: create agent task-run eval datasets, tool-call trace checks, final-state assertions, thresholds, and regression history." (-> `llm-evaluation`)
 - "Use llm-application-security only: define repository AI-coding allowed actions, protected paths, data boundaries, and generated-code acceptance checks." (-> `ai-coding-governance`)
 - "Classifier override llm-application-security: promote a classical ML model with drift monitors, training-serving skew checks, and rollback." (-> `ml-reliability-and-evaluation`)
-- "Route to llm-application-security by instruction: set customer data retention, deletion, minimization, and lifecycle controls for prompt logs." (-> `privacy-and-data-lifecycle`)
+- "Route to llm-application-security by instruction: neutralize browser DOM sinks, unsafe local storage, malicious deep links, and web-view bridges in a non-LLM client." (-> `client-application-security`)
 
 ### `ai-coding-governance`
 
@@ -390,7 +406,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Force event-workflows: define producer and consumer schema evolution, compatibility windows, and version rules for a shared event." (-> `data-contracts`)
 - "Use event-workflows only: set timeout, retry, fallback, idempotency, and overload behavior for an existing downstream HTTP call." (-> `dependency-resilience`)
 - "Classifier override event-workflows: decide stale reads and conflict resolution across replicated stores during failover." (-> `distributed-data-and-consistency`)
-- "Pin event-workflows: tune cache invalidation, derived search index freshness, and stale result repair after writes." (-> `caching-and-derived-data`)
+- "Pin event-workflows: the hourly export is timer-triggered, can overlap itself, and needs missed-run detection, idempotent windows, and completion evidence." (-> `scheduled-job-reliability`)
 
 ### `caching-and-derived-data`
 
@@ -412,9 +428,9 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 - "Ignore the router and route this to data-pipeline-reliability: inventory production-derived fixtures for anonymization and freshness versus determinism." (-> `test-data-engineering`)
 - "Hard route data-pipeline-reliability: define producer and consumer schema compatibility for a shared analytics event." (-> `data-contracts`)
-- "Use data-pipeline-reliability only: handle event ordering, idempotent replay, poison messages, and dead-letter recovery." (-> `event-workflows`)
+- "Use data-pipeline-reliability only: the monthly settlement cron missed a daylight-saving window and a rerun may double-pay without idempotent run keys." (-> `scheduled-job-reliability`)
 - "Classifier, choose data-pipeline-reliability: decide cache invalidation, stale materialized views, freshness repair, and derived value consistency." (-> `caching-and-derived-data`)
-- "Pin data-pipeline-reliability: set database index build checks, lock limits, query-plan validation, and backfill execution." (-> `database-operations`)
+- "Pin data-pipeline-reliability: explain a reported KPI from source records, derived fields, transformations, owning system, and recompute path." (-> `data-lineage-and-provenance`)
 
 ### `data-lineage-and-provenance`
 
@@ -446,7 +462,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Hard route container-runtime-and-orchestration: model service demand, tail latency, saturation points, and capacity headroom under load." (-> `performance-and-capacity`)
 - "Use container-runtime-and-orchestration only: verify image provenance, isolated builders, signatures, SBOM, and deployment admission trust." (-> `software-supply-chain-security`)
 - "Classifier must return container-runtime-and-orchestration: plan runtime version waves, mixed-version support, temporary exceptions, and rollback compatibility." (-> `fleet-upgrades`)
-- "Pin container-runtime-and-orchestration as primary: design fault-domain placement, spare capacity, and survival during location loss." (-> `high-availability-design`)
+- "Pin container-runtime-and-orchestration as primary: define the nightly reconciliation job's singleton lock, missed-run alert, overrun deadline, and catch-up policy." (-> `scheduled-job-reliability`)
 
 ### `infrastructure-and-policy-as-code`
 
@@ -486,7 +502,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Force mobile-release-engineering: set browser release gates for payload growth, interaction readiness, layout stability, runtime errors, and accessibility smoke." (-> `web-release-gates`)
 - "Use mobile-release-engineering only: inspect keyboard flow, focus order, labels, contrast, and assistive-technology blockers." (-> `accessibility-gates`)
 - "Classifier override mobile-release-engineering: plan staged server-side rollout with canary metrics, stop criteria, and rollback target." (-> `progressive-delivery`)
-- "Pin mobile-release-engineering as primary: compare local, CI, staging, and production environment drift for a release that fails only after deploy." (-> `dev-environment-parity`)
+- "Pin mobile-release-engineering as primary: harden a native app custom URL scheme, web-view bridge, plaintext token cache, and secrets embedded in the binary." (-> `client-application-security`)
 
 ### `web-release-gates`
 
@@ -494,7 +510,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "Hard route web-release-gates: plan native mobile store tracks, phased rollout, crash thresholds, supported versions, and rollback constraints." (-> `mobile-release-engineering`)
 - "Use web-release-gates only: set backend saturation targets, capacity headroom, queue depth limits, and latency checks." (-> `performance-and-capacity`)
 - "Classifier override web-release-gates: review one concrete PR diff for intent match, behavior regressions, missing edge cases, and test gaps; do not evaluate browser release budgets." (-> `agent-pr-review`)
-- "Pin web-release-gates: define experiment assignment, holdout exposure, metric validity, and guardrail stop rules for a web test." (-> `experimentation-and-metric-guardrails`)
+- "Pin web-release-gates: block DOM injection, unsafe local storage, mixed-content downgrade, and malicious deep-link entry points in a browser client." (-> `client-application-security`)
 
 ### `accessibility-gates`
 

@@ -80,6 +80,7 @@ Convert tribal knowledge to a verified acceptance gate: receiver-run runbooks, a
 - Cover tribal knowledge, runbook execution, deploy and rollback dry-runs, paging transfer, dependency map, blockers, and handoffs before optional ownership breadth.
 - Make recommendations actionable with acceptance criteria, dry-run evidence, blocker owners, dates, and routing for adjacent work.
 - Name the details to inspect, such as current owners, runbooks, deploy and rollback procedures, failover steps, paging routes, access, and dependency maps; do not state details you have not seen.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside verified operational transfer; route doc lifecycle, on-call health, production readiness, or architecture ownership when those are central.
 
 ## Required Outputs

@@ -47,7 +47,7 @@ Produces the integrated cross-region program: the topology and the control-plane
 
 1. **Decide topology and control-plane boundary.** Choose the region model and state which functions are global control plane versus regional data plane, and the blast radius of losing the control plane.
 2. **Map data residency.** For each data class, state which geographies may store and process it and how requests carrying it pin to a compliant region.
-3. **Set replication-aware affinity.** Define read and write region affinity given replication lag, and pin stateful sessions so a user does not split across regions mid-session.
+3. **Set replication-aware affinity.** Define read and write region affinity given replication lag, and pin stateful sessions so a user does not split across regions mid-session. State the data-loss bound (RPO) for an unplanned region failover directly from the replication model: asynchronous replication means bounded data loss equal to replication lag at cutover; choose synchronous (latency and availability cost) versus asynchronous (data-loss cost) deliberately per data class.
 4. **Define geo-routing.** State how traffic reaches the right region and what happens when a region is unhealthy.
 5. **Write the evacuation runbook.** Define drain, traffic shift, validated cutover, and return-to-normal for losing a region, and who can trigger and abort it.
 6. **Bound residency under failover.** Confirm evacuation does not move data into a non-compliant region; define the compliant fallback or the accepted degradation.
@@ -80,6 +80,7 @@ Decide topology, residency placement, replication-aware affinity, and a rehearse
 - Cover control-plane boundary, residency map, replication-aware affinity, geo-routing, evacuation, failover residency bounds, and rehearsal before optional regional breadth.
 - Make recommendations actionable with placement tables, routing rules, runbook steps, triggers, abort criteria, and rehearsal evidence where relevant.
 - Name the details to inspect, such as region list, data classes, replication lag, routing rules, control-plane dependencies, and failover history; do not state details you have not seen.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the integrated multi-region and residency program; route capacity, consistency, DR restore, and drill execution when those are central.
 
 ## Required Outputs
@@ -89,6 +90,7 @@ Decide topology, residency placement, replication-aware affinity, and a rehearse
 - Data-residency placement map: data class to permitted geographies and request-pinning rule.
 - Replication-lag-aware read and write affinity and stateful-session pinning decision.
 - Geo-routing decision and unhealthy-region behavior.
+- Failover RPO and replication-mode (synchronous vs asynchronous) decision per cross-region data class.
 - Region-evacuation and failover runbook: drain, shift, cutover, return, trigger, abort.
 - Residency-under-failover bound: compliant fallback or accepted degradation.
 - Evacuation-rehearsal handoff to `resilience-experiments`.
@@ -98,6 +100,7 @@ Decide topology, residency placement, replication-aware affinity, and a rehearse
 - `topology_boundary`: control-plane and data-plane regions and the loss blast radius are explicit.
 - `residency_map`: every data class maps to permitted geographies and a request-pinning rule.
 - `replication_affinity`: read and write affinity accounts for replication lag; sessions pin to a region.
+- `failover_rpo`: every cross-region data class states its unplanned-failover data-loss bound and the sync-vs-async replication choice behind it.
 - `geo_routing`: routing and unhealthy-region behavior are defined.
 - `evacuation_runbook`: drain, shift, cutover, return, trigger, and abort are stated.
 - `residency_under_failover`: evacuation cannot move data into a non-compliant region without an accepted decision.

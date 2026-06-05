@@ -80,6 +80,7 @@ Specify failure behavior, non-functional targets, and acceptance criteria up fro
 - Cover critical journeys, non-functional targets, dependency failure behavior, malformed input, abuse cases, non-goals, and testable criteria before optional planning breadth.
 - Make recommendations actionable with per-dependency decisions and acceptance criteria a test can check.
 - Name the details to inspect, such as feature specs, dependencies, input ranges, traffic expectations, incidents, and existing targets; do not state details you have not seen.
+- Stay technology-agnostic by default: do not introduce provider, product, framework, database, protocol, or command names unless the user supplied them or explicitly requested tool-specific guidance.
 - Stay inside the resiliency contract of the spec; route architecture choice, target math, threat models, and test strategy when those become the central artifact.
 
 ## Required Outputs

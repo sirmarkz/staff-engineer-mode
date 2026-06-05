@@ -112,6 +112,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The comment says state-machine-correctness, but the task is to inspect locking, permissions, secret scopes, and credential traceability." (-> `identity-and-secrets`)
 - "The test name includes state-machine-correctness, but the request is to decide merge-blocking, release-blocking, and nightly quality gates for a checkout change." (-> `testing-and-quality-gates`)
 
+### `scheduled-job-reliability`
+
+- "The runbook says scheduled-job-reliability, but the work is data-pipeline freshness, lineage, validation, and late-batch replay for reports." (-> `data-pipeline-reliability`)
+- "The ticket label says scheduled-job-reliability, but the concrete issue is queue message ordering, idempotent consumers, DLQ replay, and compensation." (-> `event-workflows`)
+- "The ops card says scheduled-job-reliability, but the requested artifact is a one-time production mutation with preview, blast-radius cap, abort, and rollback." (-> `configuration-and-automation-safety`)
+- "The workload note says scheduled-job-reliability, but the task is container drain, readiness probes, restart-loop behavior, and resource bounds." (-> `container-runtime-and-orchestration`)
+- "The dashboard title includes scheduled-job-reliability, but the ask is generic telemetry, alert annotations, and runbook links after the run contract is already defined." (-> `observability-and-alerting`)
+
 ## Delivery And Quality
 
 ### `testing-and-quality-gates`
@@ -286,6 +294,14 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The CVE ticket says input-validation-and-injection-defense, but the deployed system needs exposure triage, remediation SLA, rollout, and expiring exception evidence." (-> `vulnerability-management`)
 - "The upload folder says input-validation-and-injection-defense, but the request is retention, deletion, minimization, and lifecycle controls for stored customer files." (-> `privacy-and-data-lifecycle`)
 
+### `client-application-security`
+
+- "The browser ticket says client-application-security, but the sink is server-side SQL, shell, and template construction from request parameters." (-> `input-validation-and-injection-defense`)
+- "The assistant review says client-application-security, but the concrete risk is LLM prompt injection, retrieval leakage, unsafe tool output, and containment." (-> `llm-application-security`)
+- "The token policy note says client-application-security, but the work is session issuance, refresh rotation, credential lifetime, and backend secret access." (-> `identity-and-secrets`)
+- "The web checklist says client-application-security, but the blocker is payload growth, interaction latency, layout shifts, and client runtime errors." (-> `web-release-gates`)
+- "The mobile dashboard says client-application-security, but the task is app-store phased rollout, crash thresholds, startup hangs, and rollback constraints." (-> `mobile-release-engineering`)
+
 ### `identity-and-secrets`
 
 - "The access review says identity-and-secrets, but the task is retention, deletion, minimization, and data lifecycle checks." (-> `privacy-and-data-lifecycle`)
@@ -355,7 +371,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 - "The user mentions ai-coding-governance, but the concrete risk is a production LLM tool boundary leaking retrieved data." (-> `llm-application-security`)
 - "The policy doc says ai-coding-governance, but the request is to review the exact PR diff for intent match, behavior regressions, and missing tests." (-> `agent-pr-review`)
 - "The assistant ticket says ai-coding-governance, but the work is module names, canonical code paths, and search ambiguity that cause agents to edit the wrong file." (-> `code-readability-for-agents`)
-- "The checklist says ai-coding-governance, but the concrete issue is support-agent task-run evals, tool-call traces, final-state assertions, slice coverage, and regression thresholds." (-> `llm-evaluation`)
+- "The checklist says ai-coding-governance, but the task is split-access adversarial eval design: white-box architect, black-box/gray-box author, withheld expected traces, reference solutions, implementation notes, happy-path examples, route rationales, and white-box reviewer coverage validation." (-> `llm-evaluation`)
 - "The governance label says ai-coding-governance, but the task is legal policy wording about internal tool use with no engineering controls." (-> `none`)
 
 ### `llm-evaluation`

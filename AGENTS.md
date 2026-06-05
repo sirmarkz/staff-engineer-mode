@@ -106,6 +106,16 @@ maintaining complex software systems.
   Keep prompts representative across direct, paraphrased, ambiguous,
   mixed-intent, out-of-scope, and lifecycle-phase routing behavior. Runtime
   router guidance stays in `skills/staff-engineer-mode/references/routing-matrix.md`.
+- For agentic adversarial evals and router boundary-case adversarial prompts,
+  use split access. A white-box eval architect may use implementation details,
+  mitigations, route rationale, and failure history to define risk slices and
+  coverage goals. The adversarial case author should work black-box or gray-box
+  from the target boundary, allowed interface or tools, risk intent, and failure
+  class; withhold expected traces, reference solutions, implementation notes,
+  happy-path examples, and route rationales from that author. A white-box
+  reviewer may validate coverage and measurability after cases exist. Prefer an
+  adversarial subagent or independent reviewer; the agent that wrote the happy
+  path must not author final adversarial cases without this split.
 - Do not make live model evals a default CI or routine merge gate. Run them
   manually only when a change needs model-backed evidence, the user explicitly
   asks for them, or the release gate below applies.

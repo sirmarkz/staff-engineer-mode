@@ -51,7 +51,7 @@ Produces a trust-boundary and data-flow map, an abuse-case table, a control mapp
 1. **Map the system.** Identify actors, assets, trust boundaries, data flows, privileged paths, and externally reachable surfaces.
 2. **Classify data and operations.** Mark sensitive data, destructive operations, admin actions, and integrity-critical decisions.
 3. **List abuse cases.** Write what an attacker or malicious/buggy client tries to accomplish and what component might fail.
-4. **Apply a threat frame.** Use spoofing, tampering, repudiation, disclosure, denial, privilege elevation, or equivalent categories to avoid blind spots.
+4. **Apply a threat frame.** Use spoofing, tampering, repudiation, disclosure, denial, privilege elevation, or equivalent categories to avoid blind spots. Decompose with a data-flow diagram (processes, data stores, external entities, and the data flows that cross trust boundaries) and enumerate threats per element with STRIDE: spoofing, tampering, repudiation, information disclosure, denial of service, elevation of privilege. Make the secure path the default path (secure-by-default): insecure configuration requires an explicit, logged opt-out.
 5. **Map controls.** Assign authentication, authorization, validation, output handling, rate limits, audit, secrets handling, encryption, and isolation controls.
 6. **Constrain outbound requests.** For server-side fetchers, webhooks, callback URLs, or imports, define destination allowlists where feasible, DNS/IP rebinding checks, private and metadata address blocking, redirect policy, egress controls, timeout, size, content-type limits, and audit fields.
 7. **Map detection needs.** For high-risk abuse cases, state the detection hypothesis, telemetry or audit data needed, alert or review route, and runbook owner. Route detailed signal design to `observability-and-alerting` when detection coverage is central.
@@ -98,6 +98,7 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 
 - Output shape: render the matching shared template headings or tables in the reply, or use the same shape.
 - Trust-boundary and data-flow map.
+- Data-flow diagram with trust boundaries and a STRIDE-per-element threat enumeration.
 - Threat and abuse-case table.
 - Security requirements and control mapping.
 - Server-side outbound request and egress-control decision where URLs, callbacks, webhooks, or external fetches exist.
@@ -112,6 +113,7 @@ Use lightweight threat modeling tied to secure SDLC checks: trust-boundary map, 
 
 - `boundary_check`: actors, trust boundaries, data flows, and privileged paths are explicit.
 - `threat_coverage`: high-risk abuse cases map to controls.
+- `stride_dfd`: a data-flow diagram with trust boundaries exists, threats are enumerated per element (STRIDE), and a secure-by-default posture is stated.
 - `outbound_request_control`: server-side URL fetching and callback paths have destination, redirect, network, timeout, size, and audit controls.
 - `detection_route`: high-risk abuse cases define the telemetry, audit event, alert, or review path that would show attempted or successful abuse.
 - `audit_integrity`: high-risk audit records are tamper-evident or append-only, completeness-checked under load, and access-controlled.

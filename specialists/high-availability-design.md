@@ -34,6 +34,7 @@ High availability is the ability to keep serving through expected failures witho
 - The main question is planning a chaos experiment, game day, or fault injection drill; use `resilience-experiments` instead.
 - The work is only unit, integration, or CI testing.
 - The request is about generic uptime targets; define SLOs first via `slo-and-error-budgets`.
+- Failure-behavior requirements and non-functional targets before code exist belong to `resilience-requirements`; SLO math belongs to `slo-and-error-budgets`.
 
 ## Info To Gather
 

@@ -50,6 +50,7 @@ Classical ML prediction evals belong to `ml-reliability-and-evaluation`; keep th
 - Eval cases, production examples, synthetic cases, edge cases, slices, and known regressions.
 - Scoring method, graders, rubrics, deterministic checks, human judgment, and tie-break rules.
 - For agentic workflows: task context, allowed tools, environment assumptions, trace expectations, tool-call assertions, state updates, final-state assertions, and repeat-run policy.
+- For agentic adversarial evals: the white-box risk architect, black-box or gray-box case author, white-box reviewer, context each role saw, and whether expected traces, reference solutions, implementation notes, happy-path examples, and route rationales were withheld from the case author.
 - Thresholds, confidence needs, flake rate, baseline result, and comparison target.
 - Versioned prompts, models, retrieval inputs, tools, datasets, and harness code.
 - Failure triage workflow, severity, waiver rules, and re-run policy.
@@ -59,13 +60,14 @@ Classical ML prediction evals belong to `ml-reliability-and-evaluation`; keep th
 1. **Name the decision.** State whether the eval checks merge, release, prompt change, model change, or rollback.
 2. **Frame the risk context.** State intended use, affected user groups, unacceptable harms or workflow failures, misuse context, and human escalation or override expectations where impact warrants it.
 3. **Choose the eval unit dynamically.** Use the user's requested artifact to decide whether each case checks one generated response, one retrieval-grounded response, or one agentic task run; do not force agent trace fields onto non-agent evals.
-4. **Build representative cases.** Include production-like tasks, edge cases, regressions, adversarial examples, and important user slices.
+4. **Build representative cases.** Include production-like tasks, edge cases, regressions, adversarial examples, and important user slices. For agentic adversarial evals, split access by role: a white-box eval architect defines risk slices, interfaces, mitigations, and coverage goals; a black-box or gray-box case author receives only the target boundary, allowed interface/tools, risk intent, and failure class; a white-box reviewer validates coverage and measurability after cases exist. Withhold expected traces, reference solutions, implementation notes, happy-path examples, and route rationales from the case author. Prefer a separate adversarial subagent or independent reviewer for case writing, then curate duplicates and invalid cases before adding them.
 5. **Separate scoring types.** Use exact checks for structured requirements, trace and final-state checks for agent runs, rubric scoring for judgment, and human judgment for ambiguous high-impact cases. For retrieval-grounded evals, score retrieval quality separately from grounding and answer correctness so failures are attributable. For agent runs, fix task environment, tool fixtures, run isolation, seeds, and repeat-run policy so traces are reproducible and variance is measured.
 6. **Control grader risk.** Define rubrics, blind comparisons where useful, calibration cases, and checks for scoring drift.
-7. **Set thresholds first.** Declare pass, warn, and block criteria before looking at the new result.
-8. **Version inputs.** Link prompts, model, retrieval corpus, tool policy, eval cases, graders, harness code, and task environment to the result.
-9. **Triage failures.** Classify blockers, acceptable regressions, flaky cases, data issues, trace issues, and missing coverage.
-10. **Keep history.** Track baseline, deltas, regressions, waived failures, repeated-run variance, and production incidents that should become future cases.
+7. **Set thresholds first.** Declare pass, warn, and block criteria before looking at the new result. Report sample size and statistical uncertainty on eval deltas before gating.
+8. **Guard against contamination.** Use held-out sets and canary strings so cases cannot leak into training or few-shot context.
+9. **Version inputs.** Link prompts, model, retrieval corpus, tool policy, eval cases, graders, harness code, and task environment to the result.
+10. **Triage failures.** Classify blockers, acceptable regressions, flaky cases, data issues, trace issues, and missing coverage.
+11. **Keep history.** Track baseline, deltas, regressions, waived failures, repeated-run variance, and production incidents that should become future cases.
 
 ## Synthesized Default
 
@@ -106,6 +108,7 @@ Use a versioned eval harness whose evidence matches the requested workflow: outp
 - Intended-use, affected-user, unacceptable-failure, misuse, and escalation context.
 - Eval-unit and pipeline boundary, scoped to the requested LLM, retrieval-grounded, or agentic workflow.
 - Case inventory with production, synthetic, edge, regression, and slice coverage.
+- Adversarial-case access record for agentic adversarial evals: white-box architect, black-box or gray-box case author, white-box reviewer, context withheld from the author, failure intent, and curation result.
 - Scoring and grader rubric.
 - Trace, tool-call, state, and final-artifact checks for agentic workflows.
 - Thresholds for pass, warn, block, and rollback.
@@ -118,17 +121,22 @@ Use a versioned eval harness whose evidence matches the requested workflow: outp
 - `decision_named`: eval result maps to a merge, release, rollback, or investigation decision.
 - `risk_context`: intended use, affected user groups, unacceptable failures, misuse context, and escalation or override expectations are stated where relevant.
 - `case_coverage`: representative cases include critical tasks, slices, and known regressions.
+- `adversarial_independence`: for agentic adversarial evals, white-box risk design is recorded, the case author used black-box or gray-box context without expected traces, reference solutions, implementation notes, happy-path examples, or route rationales, and white-box review happened after case generation.
 - `scoring_defined`: checks, graders, rubrics, and tie-break rules are explicit.
 - `mode_evidence`: retrieval evals separate retrieval quality from answer correctness; agent evals fix a reproducible environment and repeat-run policy.
 - `trace_and_state_checks`: agentic evals check required tool calls, observations, state updates, final state, and final artifact where relevant.
 - `thresholds_predeclared`: pass, warn, and block criteria are set before judging the change.
 - `version_lineage`: prompts, model, data inputs, tools, eval cases, graders, and result are linked.
+- `contamination_guard`: eval sets are held out or canary-marked to detect contamination.
+- `delta_significance`: eval-gate decisions report sample size and uncertainty, not point deltas.
 
 ## Red Flags - Stop And Rework
 
 - A single aggregate score hides critical slice regressions.
 - The grader rubric changes between baseline and candidate.
 - Eval cases are generated from the same prompt being tested with no independent check.
+- Agentic adversarial cases are written from expected traces, reference solutions, implementation notes, happy-path examples, or route rationales.
+- The same agent writes the happy path and final adversarial cases without a separate black-box author or white-box review.
 - Failures are waived without a reason or an expiry.
 - Production incidents do not become regression cases.
 
@@ -137,6 +145,6 @@ Use a versioned eval harness whose evidence matches the requested workflow: outp
 | Mistake | Correction |
 | --- | --- |
 | Score first, threshold later | Set pass and block criteria before running. |
-| Only happy-path cases | Add edge, adversarial, and regression cases. |
+| Only happy-path cases | Add edge, adversarial, and regression cases with black-box or gray-box case authorship. |
 | Unversioned prompts | Link every input to every result. |
 | Treating judge output as truth | Calibrate rubrics and inspect failures. |

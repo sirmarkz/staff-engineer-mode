@@ -45,7 +45,7 @@ Produces a runtime-posture spec: per-workload resource requests and limits with 
 
 ## Workflow
 
-1. **Set resource bounds.** Choose requests from measured demand and limits from the failure behavior you accept; state what an OOM-kill or eviction does to in-flight work.
+1. **Set resource bounds.** Choose requests from measured demand and limits from the failure behavior you accept; state what an OOM-kill or eviction does to in-flight work. Distinguish limit failure modes: exceeding a CPU limit throttles (added latency) while exceeding a memory limit terminates the workload (OOM-kill or eviction); set requests and limits accordingly. Keep secrets and sensitive data out of images and out of plain environment variables.
 2. **Define the drain contract.** On shutdown, stop accepting new work, finish or hand off in-flight work within a deadline, then exit; tie the deadline to the orchestrator termination grace period.
 3. **Tune probes to real readiness.** Readiness gates traffic on dependencies and warm state; liveness restarts only on genuine deadlock, never on slow dependencies; startup probes cover cold-start time without masking crashes.
 4. **Order init and sidecars.** Make startup and shutdown ordering explicit so a workload never serves before its sidecar is ready or outlives a sidecar it depends on.
@@ -96,6 +96,7 @@ Set explicit workload bounds, define drain behavior for disruption paths, gate t
 ## Checks Before Moving On
 
 - `resource_bounds`: every workload has a request and a limit, with stated OOM and eviction behavior.
+- `limit_failure_modes`: CPU-limit throttling versus memory-limit termination is accounted for, and images/environment carry no embedded secrets.
 - `drain_contract`: shutdown stops intake, finishes or hands off in-flight work, and fits the grace period.
 - `probe_semantics`: readiness gates on real dependencies; liveness does not restart on slow dependencies.
 - `lifecycle_order`: init and sidecar startup and shutdown ordering is explicit.

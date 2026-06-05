@@ -187,7 +187,9 @@ The response file should include the model's fenced `routing` JSON block.
 ## Designing Boundary Cases
 
 Use adversarial subagents when adding or refreshing boundary cases. Give each
-subagent a bounded file or specialist slice and instruct it to make the target
-specialist fail closed. Generated prompts are drafts: curate them, remove
-duplicates, confirm the expected route is not the heading specialist, then run
-local validation.
+subagent a bounded file or specialist slice, the target boundary, the allowed
+interface, the risk intent, and the failure class. Do not give the case author
+expected traces, reference solutions, implementation notes, happy-path examples,
+or route rationales. A white-box reviewer may use that context afterward to
+curate drafts, remove duplicates, confirm the expected route is not the heading
+specialist, and run local validation.

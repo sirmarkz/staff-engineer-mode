@@ -108,6 +108,14 @@ diffs.
 - "The order can move from paid to canceled during retry races; enumerate invalid transitions and how to test them."
 - "Subscriptions can pause, resume, cancel, and renew on the same invoice cycle; enumerate forbidden transitions and eventual outcomes."
 
+### `scheduled-job-reliability`
+
+- "Design the nightly invoice job before launch: idempotent run windows, overlap control, missed-run detection, deadline, and catch-up behavior."
+- "Inspect this cron worker and run history for skipped windows, double-fires, stuck runs, and missing completion evidence."
+- "The hourly entitlement sync can run longer than its interval; define singleton locking, overrun behavior, and rate-bounded catch-up."
+- "Test the billing export through daylight-saving transitions so the scheduled run cannot skip or double-process a window."
+- "A monthly settlement job silently missed one run and the next retry may duplicate payouts; set the completion signal, alert, and recovery plan."
+
 ### `multi-region-and-data-residency`
 
 - "Design the multi-region program for this service: topology, residency placement, replication-aware routing, and an evacuation runbook, before we expand to a second region."
@@ -290,6 +298,14 @@ diffs.
 - "Search results render user-submitted names that show up unescaped in the page; map the output contexts and define the encoding each one needs."
 - "A reporting filter concatenates a request parameter into the database query; rewrite the data path to parameterize it and add a malicious-input test that proves it is neutralized."
 
+### `client-application-security`
+
+- "Inspect this mobile client for secrets in the binary, plaintext token storage, unsafe deep links, web-view bridges, and server-side enforcement gaps."
+- "Design client-side security for a browser checkout flow: trusted sinks, local storage classification, transport trust, and tamper assumptions."
+- "A custom URL scheme opens account pages from external apps; define validation, authorization, and negative tests for malicious deep-link parameters."
+- "Before release, check whether the client can enforce pricing or limits locally and prove the server rejects tampered requests."
+- "Test a browser route that renders partner content into the DOM and caches customer data locally; set sink defenses and storage rules."
+
 ### `identity-and-secrets`
 
 - "Inspect the service-account identity, scope, and permission changes in this PR for access that is too broad."
@@ -366,7 +382,7 @@ diffs.
 
 - "Design an eval harness for this prompt change with cases, graders, thresholds, and regression history."
 - "For this retrieval-grounded answer flow, design eval cases for retrieval fit, cited-context use, answer correctness, slice thresholds, and regression history."
-- "Turn recent bad outputs into release-blocking eval cases with owners and failure triage."
+- "Design agentic adversarial evals: white-box architect defines risk slices; black-box/gray-box author gets no expected traces, reference solutions, implementation notes, happy-path examples, or route rationales; white-box reviewer validates coverage."
 - "A prompt tweak improved summaries but broke refund cases; build regression slices and a pass threshold."
 - "The support agent now reads order status and proposes cancellations; add task-run evals with tool-call trace checks, final-state assertions, repeated runs, and failure triage."
 
