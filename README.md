@@ -3,11 +3,11 @@
 Staff Engineer Mode gives coding agents the engineering judgment behind proven
 practices from large-scale software organizations and public standards.
 
-It routes architecture, reliability, resilience, security, delivery,
-operations, data, platform, client, and AI/ML work to focused specialists. Each
-specialist pushes the agent to check availability, correctness, resilience,
-release safety, observability, performance, privacy, recovery, and
-maintainability before the work ships or changes production.
+Give it a design, diff, rollout, incident, migration, or maintenance problem.
+The router picks the right specialist and makes the agent reason through
+availability, correctness, resilience, release safety, observability,
+performance, privacy, recovery, and maintainability before the work ships or
+changes production.
 
 Outage and incident writeups are part of the corpus. They ground the guidance
 in real failure modes, while the main goal stays broader: better engineering
