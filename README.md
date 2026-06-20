@@ -9,9 +9,8 @@ availability, correctness, resilience, release safety, observability,
 performance, privacy, recovery, and maintainability before the work ships or
 changes production.
 
-Outage and incident writeups are part of the corpus. They ground the guidance
-in real failure modes, while the main goal stays broader: better engineering
-decisions across design, implementation, review, release, and operations.
+The specialists also carry built-in lessons from real outages, so the agent
+checks failure modes that have broken production systems before.
 
 ## Sources
 
