@@ -1,7 +1,7 @@
 # Staff Engineer Mode
 
-Staff Engineer Mode gives coding agents the engineering judgment behind proven
-practices from large-scale software organizations and public standards.
+Staff Engineer Mode gives coding agents the judgement of senior staff-level
+engineers.
 
 Give it a design, diff, rollout, incident, migration, or maintenance problem.
 The router picks the right specialist and makes the agent reason through
