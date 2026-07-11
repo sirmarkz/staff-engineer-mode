@@ -19,7 +19,6 @@ maintaining complex software systems.
 | `skills/staff-engineer-mode/SKILL.md` | The only native skill entrypoint exposed to plugin discovery. |
 | `specialists/<specialist-name>.md` | Routed specialist reference files loaded only after the router selects one. |
 | `skills/_shared/references/` | Shared source index, skill contract, and reusable reference material. Runtime specialist prose intentionally omits citations. |
-| `DOCUMENTATION-LIFECYCLE.md` | Responsibility, source-of-truth, freshness, and staleness rules for critical repository documentation. |
 | `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. Template ownership is listed in `skills/_shared/assets/templates/README.md`. |
 | `evals/` | Router eval catalogs, adapter docs, and live harness entrypoints. These paths are not runtime skill guidance. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
@@ -83,6 +82,10 @@ maintaining complex software systems.
 - Keep documentation plain, direct, and technically accurate.
 - Maintain authoritative sources in `skills/_shared/references/source-index.md`.
   Do not add citation or bibliography sections to runtime specialists.
+- Keep one canonical location for each repository documentation contract.
+  Critical docs name a responsibility path, a verification cadence or change
+  trigger, and a staleness signal. Summaries link to the canonical contract
+  rather than redefining it; stale duplicates are removed or marked non-authoritative.
 - Use authoritative sources: first-party engineering publications, official
   documentation, standards bodies, peer-reviewed papers, or widely cited
   practitioner references that originated the named pattern. Do not cite

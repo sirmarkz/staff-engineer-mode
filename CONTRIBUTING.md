@@ -147,8 +147,8 @@ prompts, and source references should match the router and specialist files.
 
 - Update docs when setup, CLI behavior, manifests, public paths, examples, or
   skill contracts change.
-- Use `DOCUMENTATION-LIFECYCLE.md` to identify the authoritative document,
-  responsibility path, freshness trigger, and staleness signal for critical docs.
+- Follow the [repository documentation rules](AGENTS.md#documentation) for
+  canonical ownership, freshness, staleness, and duplicate handling.
 - Review `skills/_shared/assets/templates/README.md` before changing required
   outputs. Update the owning template and index when artifact fields change.
 - Verify command examples before presenting them as working.

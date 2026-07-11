@@ -1,5 +1,20 @@
 # Staff Engineer Mode Release Notes
 
+## 3.0.0 - 2026-07-10
+
+Lifecycle guidance and release-evidence hardening release.
+
+- Deepens all 64 routed specialists and their owned templates with clearer
+  operational defaults, boundaries, required artifacts, and verification steps.
+- Strengthens intent-based routing while preserving released specialist slugs,
+  with broader positive, boundary, contract, and split-access adversarial evals.
+- Adds isolated, hash-bound router and specialist eval evidence and makes Codex
+  `gpt-5.6-terra` high part of the live release gate.
+- Hardens commit and release hooks around exact-state receipts, unsafe command
+  composition, alternate Git state, credential redaction, and live host probes.
+- Expands source, link, platform, packaging, and documentation validation while
+  removing the duplicate root documentation-lifecycle register.
+
 ## 2.1.0 - 2026-06-04
 
 Specialist coverage and adversarial-eval practice release.

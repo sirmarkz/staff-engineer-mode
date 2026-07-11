@@ -8,11 +8,11 @@
     {
       "name": "staff-engineer-mode",
       "description": "Applies engineering best practices to reliability, security, delivery, data, and architecture work.",
-      "version": "2.1.0",
+      "version": "3.0.0",
       "source": {
         "source": "url",
         "url": "https://github.com/sirmarkz/staff-engineer-mode.git",
-        "ref": "v2.1.0",
+        "ref": "v3.0.0",
         "sha": "9478f51e93f74edd59361fc387df8c60065f2e0a"
       },
       "author": {
