@@ -25,7 +25,7 @@ if [[ -f "${source_claude_home}/.credentials.json" ]]; then
   chmod 600 "${isolated_home}/.claude/.credentials.json"
 fi
 unset CLAUDE_CODE_SIMPLE
-printf '{}\n' > "${empty_mcp_config}"
+printf '{"mcpServers":{}}\n' > "${empty_mcp_config}"
 instructions="You are the Staff Engineer Mode router in eval-harness mode.
 Use the local router text below as the source of truth. Do not rely on installed
 plugin copies or prior router memory. Classify the prompt below and use exactly

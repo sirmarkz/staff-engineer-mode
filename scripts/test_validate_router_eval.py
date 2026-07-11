@@ -339,6 +339,7 @@ class RouterEvalDataContractTests(unittest.TestCase):
                 "  'workspace': os.environ['SEM_EVAL_ADAPTER_WORKSPACE'],\n"
                 "  'model': os.environ['SEM_EVAL_MODEL'],\n"
                 "  'effort': os.environ['SEM_EVAL_EFFORT'],\n"
+                "  'mcp_config': json.loads(pathlib.Path(args[args.index('--mcp-config') + 1]).read_text()),\n"
                 "}\n"
                 "pathlib.Path(os.environ['RECORD_PATH']).write_text(json.dumps(record))\n"
                 "print(os.environ['EXPECTED_RESPONSE'], end='')\n",
@@ -385,6 +386,7 @@ class RouterEvalDataContractTests(unittest.TestCase):
         self.assertEqual(record["workspace"], str(workspace))
         self.assertEqual(record["model"], "claude-opus-4-8")
         self.assertEqual(record["effort"], "medium")
+        self.assertEqual(record["mcp_config"], {"mcpServers": {}})
         self.assertEqual(Path(record["config"]).parents[1], workspace)
         self.assertFalse(Path(record["cwd"]).exists())
         self.assertFalse(Path(record["config"]).exists())
