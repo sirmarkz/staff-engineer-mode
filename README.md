@@ -1,45 +1,25 @@
 # Staff Engineer Mode
 
-Staff Engineer Mode routes coding agents to focused operational guidance for
-building, securing, shipping, and maintaining complex software systems.
+**Staff-level engineering judgment for coding agents, from design to production.**
 
-Give it a design, diff, rollout, incident, migration, or maintenance problem.
-The router picks the right specialist and makes the agent reason through
-availability, correctness, resilience, release safety, observability,
-performance, privacy, recovery, and maintainability before the work ships or
-changes production.
+Give Staff Engineer Mode a design, diff, rollout, incident, migration, or
+maintenance problem. One router selects one of 64 focused specialists. The
+agent works through relevant failure modes and verification checks before it
+ships code or changes production.
 
-The specialists synthesize public engineering practices and incident lessons so
-the agent checks relevant failure modes before work ships.
-
-## Sources
-
-The practice library draws from first-party engineering sources: Amazon's
-Builders' Library, Google's SRE books and Software Engineering at Google, Meta
-Engineering, Microsoft's SDL and DevOps guidance, Apple's security and privacy
-documentation, and Netflix's resilience work. Standards and guidance come from
-NIST, CISA, OWASP, OpenSSF, IETF, and W3C.
-
-Public outage and incident records provide case studies: AWS post-event
-summaries, Azure post-incident reviews, Google Cloud and Google Workspace
-incident reports, Meta's outage writeups, and Netflix's AWS-outage analysis.
-
-See the [source index](skills/_shared/references/source-index.md) for the full
-reference set. Runtime specialist files omit citations by design; the index owns
-reference maintenance. Staff Engineer Mode is independent and is not endorsed
-by or affiliated with these organizations.
+You get concrete decisions, risks, checks, owners, and next steps across
+architecture, reliability, security, delivery, data, platform, and operations.
 
 ## How It Works
 
-Ask a normal engineering question. Hand the agent a task, design, diff,
-incident, rollout, or maintenance problem. The router picks one specialist
-(occasionally one secondary), reads that file, and returns concrete decisions,
-risks, checks, owners, supporting details, and next steps. You never name a
-specialist.
+Ask a normal engineering question. You never need to name a specialist.
 
-Supported tools should list only the native `staff-engineer-mode` router.
-Specialist files live under `specialists/` and load only after routing. The
-router picks one primary specialist by default.
+The router classifies the requested artifact, lifecycle phase, engineering
+surface, and risk. It chooses one primary specialist and adds a secondary only
+when the request needs a separate artifact.
+
+Supported tools list only the native `staff-engineer-mode` router. The 64
+specialist files stay under `specialists/` and load only after routing.
 
 For commits and amends, Staff Engineer Mode calls `agent-pr-review` against
 the exact staged diff. For releases, tags, version bumps, packages, artifacts,
@@ -119,27 +99,26 @@ Terminal:
 gemini extensions install https://github.com/sirmarkz/staff-engineer-mode
 ```
 
-## Verify
+## Try It
 
-Start a fresh session inside any open repo and ask one of:
+Start a fresh session inside any open repo and try one of these prompts:
 
 - "Before implementing partner webhooks, design delivery retries, replay, and dead-letter handling."
 - "For a new inventory dependency call, decide timeout, retry, and fallback."
 - "Review my last commit."
 
-The agent should load the router, choose one specialist, and respond with concrete decisions, risks, checks, owners, supporting details, and next steps.
+The agent should load the router, choose one specialist, and respond with
+concrete decisions, risks, checks, owners, supporting details, and next steps.
 
 For more coverage, see the [sample prompts](evals/prompts/expected-routes.md).
 
 ## What's Inside
 
-One native router skill: `staff-engineer-mode`. It routes to 64 specialist
-files under `specialists/`; those files are not installed or listed as separate
-native skills.
+Staff Engineer Mode ships one native router skill. It keeps 64 specialist files
+under `specialists/` and loads them after routing.
 
-Specialists by engineering concern:
-
-These concern groups are a browsing aid; routing still follows the requested artifact, phase, surface, and risk.
+The concern groups below help you browse. Runtime routing still follows the
+requested artifact, phase, surface, and risk.
 
 | Engineering concern | Specialist files |
 | --- | --- |
@@ -156,13 +135,29 @@ These concern groups are a browsing aid; routing still follows the requested art
 | AI/ML evaluation & serving | [`llm-evaluation`](specialists/llm-evaluation.md), [`ml-reliability-and-evaluation`](specialists/ml-reliability-and-evaluation.md), [`llm-serving-cost-and-latency`](specialists/llm-serving-cost-and-latency.md) |
 | Engineering controls & readiness | [`ai-coding-governance`](specialists/ai-coding-governance.md), [`documentation-lifecycle`](specialists/documentation-lifecycle.md), [`engineering-control-evidence`](specialists/engineering-control-evidence.md), [`production-readiness-review`](specialists/production-readiness-review.md) |
 
+## Sources
+
+The practice library uses first-party engineering publications from Amazon,
+Google, Meta, Microsoft, Apple, and Netflix. Standards and guidance come from
+NIST, CISA, OWASP, OpenSSF, IETF, and W3C.
+
+The library covers public incident records from AWS, Azure, Google Cloud,
+Google Workspace, Meta, and Netflix.
+
+See the [source index](skills/_shared/references/source-index.md) for the full
+reference set. Staff Engineer Mode is independent and is not endorsed by or
+affiliated with these organizations.
+
 ## Contributing
 
-Patches welcome, especially practices from authoritative sources: first-party engineering publications, official documentation, standards bodies, peer-reviewed papers, or widely cited practitioner references.
+Patches are welcome. New practices should come from authoritative sources:
+first-party engineering publications, official documentation, standards
+bodies, peer-reviewed papers, or widely cited practitioner references.
 
-New specialist files must be technology-agnostic, keep runtime prose citation-free,
-and avoid vendor endorsement. Maintain authoritative sources in the shared index,
-and read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. The voice is enforced.
+Contributors must keep new specialists technology-agnostic. Do not endorse
+vendors. Maintain authoritative sources in the shared index and read
+[CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. Repository checks
+enforce this voice.
 
 ## License
 
