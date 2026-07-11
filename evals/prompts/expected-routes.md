@@ -399,7 +399,7 @@ diffs.
 ### `distributed-data-and-consistency`
 
 - "Inspect this data model and migration before we split it across databases."
-- "Trace this workflow across two services and the database, then show where correctness can break."
+- "Trace how writes cross two services and the database, then identify where replica lag, failover, or read consistency can violate correctness."
 - "Inspect this cross-service lock and decide whether failover or replica lag can make it unsafe."
 - "A tenant move may leave reads split across old and new shards; decide acceptable consistency and repair path."
 - "Writes move from one shard to another while reads can hit either side; define conflict handling and repair checks."
