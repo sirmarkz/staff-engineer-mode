@@ -7,7 +7,7 @@ maintenance problem. One router selects one of 64 focused specialists. The
 agent works through relevant failure modes and verification checks before it
 ships code or changes production.
 
-You get concrete decisions, risks, checks, owners, and next steps across
+You get concrete decisions, risks, checks, and next steps across
 architecture, reliability, security, delivery, data, platform, and operations.
 
 ## How It Works
