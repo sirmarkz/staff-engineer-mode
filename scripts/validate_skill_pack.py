@@ -17,6 +17,8 @@ SPECIALISTS = ROOT / "specialists"
 README = ROOT / "README.md"
 SAMPLE_PROMPTS = ROOT / "evals/prompts/expected-routes.md"
 SKILL_CONTRACT = SKILLS / "_shared" / "references" / "skill-contract.md"
+TEMPLATES = SKILLS / "_shared" / "assets" / "templates"
+TEMPLATE_INDEX = TEMPLATES / "README.md"
 CODEX_NAMESPACED_PREFIX = "staff-engineer-mode:"
 CODEX_MAX_SKILL_NAME_LENGTH = 64
 MAX_SKILL_LINES = 300
@@ -106,13 +108,231 @@ ROUTING_MATRIX_REQUIRED_BOUNDARIES = {
     ],
 }
 
+TEMPLATE_REQUIRED_TERMS: dict[str, tuple[str, ...]] = {
+    "adr.md": (
+        "Goals And Non-Goals",
+        "Constraints",
+        "Decision Responsibility Or Check Path",
+        "Reversibility Cost",
+        "Reconsideration Trigger",
+    ),
+    "ai-coding-instructions.md": (
+        "Prohibited Fields",
+        "Retention And Disposal",
+        "Integrity",
+        "Volume Bounds",
+    ),
+    "cert-lifecycle-plan.md": (
+        "Material Use",
+        "Activate For New Operations",
+        "Retain For Old Decrypt/Verify",
+        "Destroy",
+        "Confidentiality Exposure",
+        "Signature Validity",
+    ),
+    "api-contract.md": (
+        "Filtering Semantics",
+        "Item Correlation",
+        "Polling Avoidance",
+        "Stream/Export/Bulk/Projection Alternative",
+    ),
+    "code-readability-for-agents.md": (
+        "Representative Discovery Trials",
+        "Navigation Steps",
+        "Selected Authority",
+        "Verification Path",
+        "Wrong-File Rate",
+    ),
+    "container-runtime-and-orchestration.md": (
+        "Measured Demand",
+        "Scheduling Request",
+        "CPU Limit Decision",
+        "Memory-Limit Termination",
+        "Node-Pressure Eviction",
+        "Fleet-Capacity Floor",
+    ),
+    "configuration-safety-review.md": (
+        "Row Identity",
+        "Skipped-Row Handling",
+        "Aggregate Limit",
+    ),
+    "database-change-plan.md": (
+        "Authoritative State",
+        "Copy/Write-Consistency Boundary",
+        "Mixed-Version Behavior",
+        "Reconciliation",
+        "Point Of No Simple Code Rollback",
+    ),
+    "documentation-lifecycle.md": (
+        "Secondary Section Modes",
+        "Operational/Architectural Tag",
+        "Responsibility Path",
+        "Source Of Truth",
+        "Last Verified",
+        "Verification Cadence",
+        "Staleness Signal",
+    ),
+    "distributed-data-consistency-plan.md": (
+        "Conflict Prevention Or Resolution",
+        "Replica-Set Membership",
+        "Acknowledgement And Durability",
+        "Sloppy/Hinted Behavior",
+    ),
+    "eval-harness-spec.md": (
+        "Contamination Prevention, Detection, And Response",
+        "Eval Record Handling",
+        "Adversarial Split-Access Record",
+        "Withheld From Case Author",
+        "Baseline Sample",
+        "Candidate Sample",
+        "Uncertainty",
+        "Prohibited Fields",
+        "Disposal",
+    ),
+    "event-workflow-contract.md": (
+        "Terminal-Failure Disposition",
+        "Quarantine/DLQ Decision",
+        "Guarantee Boundary",
+    ),
+    "experiment-guardrail-plan.md": (
+        "Intent-To-Treat",
+        "Counterfactual Trigger",
+        "Untriggered Complement",
+        "Ship-Population Translation",
+        "Minimum Detectable Effect",
+        "Required Sample Size",
+        "Power",
+        "Multiplicity/False-Positive Control",
+    ),
+    "feature-flag-lifecycle.md": (
+        "Lifecycle Date Type",
+        "Retirement Condition",
+        "Long-Lived Controls Past Review",
+    ),
+    "incident-postmortem.md": (
+        "Prohibited Fields",
+        "Retention And Disposal",
+        "Allowed Within Current Authority",
+        "Requires User Confirmation",
+        "Rejected Hypotheses",
+        "Next Update Time",
+        "Current Hypothesis",
+        "In-Flight Actions",
+        "User Decision Point",
+        "Next Decision Point",
+    ),
+    "input-validation-and-injection-defense.md": (
+        "Authorization",
+        "File Count/Aggregate Quota",
+        "Archive/Decompression",
+        "Nesting/Parser-Work Bound",
+        "Quarantine/Scan",
+        "Atomic Promotion",
+        "Safe Serving",
+    ),
+    "internal-service-networking-plan.md": (
+        "Physical And Public Network Operations",
+        "Expected Route Origin",
+        "Address Attachment",
+        "Exact Asset/Target",
+        "Idle/In-Use State",
+    ),
+    "llm-application-security-review.md": (
+        "Content Moderation",
+        "Moderation Applicability Or N/A Rationale",
+        "False-Positive/Escalation Behavior",
+        "System-Prompt Confidentiality",
+        "Red-Team Scope Or Risk-Based Skip",
+        "Finding Severity",
+        "Retest Criteria",
+    ),
+    "llm-serving-cost-latency.md": (
+        "p50/p95/p99 Latency",
+        "Authorization Scope",
+        "Permission Version",
+        "Observed Or Target Hit Rate",
+        "Identifier/Privacy Rule",
+        "Prohibited Fields",
+    ),
+    "mobile-release-plan.md": (
+        "Baseline",
+        "Minimum Sample Or Confidence",
+        "Impact Rationale",
+        "Recalibration Trigger",
+    ),
+    "multi-region-and-data-residency.md": (
+        "Required RPO",
+        "Observed Recoverable Point",
+        "Checkpoint Evidence",
+        "Residual Gap",
+        "Missing/Divergent-Write Reconciliation",
+    ),
+    "observability-alerting-spec.md": (
+        "Urgent Basis",
+        "Imminent Harm Evidence",
+        "Prohibited Fields",
+        "Retention/Disposal",
+        "Integrity",
+        "Applicable Correlation Identifier",
+        "No Dummy Identifier",
+    ),
+    "persistent-connection-systems.md": (
+        "Authenticated Or Deliberately Anonymous",
+        "Anonymous/Public Scope",
+        "Abuse/Rate Bounds",
+        "Authentication",
+        "Authorization",
+        "Token Expiry/Revocation",
+        "Cursor Scope/Epoch",
+        "Replay Retention",
+        "Expired-Cursor Behavior",
+        "Deduplication/Idempotency",
+        "Snapshot/Resync",
+    ),
+    "scheduled-job-reliability-plan.md": ("Fencing Token/Generation", "Stale-Holder Test"),
+    "service-decommission-and-sunset.md": (
+        "Sanitization Method",
+        "Sanitization Verification",
+        "Namespace Retention Decision",
+    ),
+    "software-supply-chain-security.md": (
+        "Control Matrix",
+        "Pinning/Namespace Scope",
+        "Provenance Maturity",
+    ),
+    "state-machine-correctness-plan.md": (
+        "Fencing Token/Generation",
+        "Stale-Holder Test",
+        "Exploration Seed",
+        "Regression Seed",
+    ),
+    "tenant-isolation-review.md": (
+        "Context Source",
+        "Authentication Binding",
+        "Membership Check",
+        "Protected Transit",
+        "Boundary Revalidation",
+        "Integrity/Conflict Rule",
+    ),
+    "testing-quality-gates.md": (
+        "Historical Measurement",
+        "Feedback Objective",
+        "Sample Or Confidence",
+        "Provisional?",
+    ),
+    "vulnerability-management-plan.md": (
+        "Compensating Control",
+        "Accepted By",
+        "Expiry",
+    ),
+}
+
 SPECIALIST_OPERATIONAL_SECTIONS = [
     "## When To Use",
     "## When Not To Use",
     "## Info To Gather",
     "## Workflow",
     "## Synthesized Default",
-    "## Phase Behavior",
     "## Exceptions",
     "## Response Quality Bar",
     "## Required Outputs",
@@ -266,6 +486,7 @@ ROUTER_OPERATIONAL_SECTIONS = [
     "## Inputs To Infer",
     "## Workflow",
     "## Synthesized Default",
+    "## Common Lifecycle Behavior",
     "## Exceptions",
     "## Required Outputs",
     "## Checks Before Moving On",
@@ -341,13 +562,13 @@ def require_check_terms(check_bodies: dict[str, str], check_id: str, terms: list
         fail(f"{path} check {check_id!r} missing behavior terms: {', '.join(missing)}")
 
 
-def validate_phase_behavior(text: str, path: Path) -> None:
-    body = section_body(text, "## Phase Behavior", path)
+def validate_phase_behavior(text: str, path: Path, heading: str = "## Phase Behavior") -> None:
+    body = section_body(text, heading, path)
     lowered = body.lower()
     for label, terms in PHASE_BEHAVIOR_TERMS.items():
         missing = [term for term in terms if term not in lowered]
         if missing:
-            fail(f"{path} Phase Behavior missing {label} terms: {', '.join(missing)}")
+            fail(f"{path} {heading.removeprefix('## ')} missing {label} terms: {', '.join(missing)}")
 
 
 def validate_router_phase_triggers(text: str, path: Path) -> None:
@@ -475,7 +696,6 @@ def validate_specialist_skill(text: str, path: Path) -> None:
             if term in description:
                 fail(f"{path} description must trigger decision/design work, not {term}-only work")
     validate_operational_sections(text, path, SPECIALIST_OPERATIONAL_SECTIONS)
-    validate_phase_behavior(text, path)
     validate_decision_guide_framing(text, path)
     validate_agent_pr_review_commit_policy(text, path)
     validate_slo_burn_response_split(text, path)
@@ -494,6 +714,7 @@ def validate_router_skill(text: str, path: Path) -> None:
     if "needs routing" in description or "need routing" in description:
         fail(f"{path} router description must describe engineering decision work, not 'needs routing'")
     validate_operational_sections(text, path, ROUTER_OPERATIONAL_SECTIONS)
+    validate_phase_behavior(text, path, "## Common Lifecycle Behavior")
     validate_router_phase_triggers(text, path)
     validate_router_context_applicability(text, path)
     validate_router_inference_first(text, path)
@@ -629,6 +850,66 @@ def validate_skill_contract() -> None:
         fail("shared skill contract is missing")
 
 
+def parse_template_index(index_path: Path) -> dict[str, str]:
+    if not index_path.exists():
+        fail(f"missing template index {index_path}")
+
+    owners: dict[str, str] = {}
+    for line_number, line in enumerate(index_path.read_text().splitlines(), start=1):
+        if not line.startswith("| `"):
+            continue
+        columns = [column.strip() for column in line.strip().strip("|").split("|")]
+        if len(columns) != 4:
+            fail(f"{index_path} malformed template row on line {line_number}")
+        template_cell, owner_cell, _artifact, _notes = columns
+        template_name = template_cell.strip("`")
+        owner = owner_cell.strip("`")
+        if template_name in owners:
+            fail(f"{index_path} lists template {template_name!r} more than once")
+        owners[template_name] = owner
+    return owners
+
+
+def validate_template_ownership(
+    specialist_files: list[Path],
+    templates_dir: Path = TEMPLATES,
+    index_path: Path = TEMPLATE_INDEX,
+) -> None:
+    owners = parse_template_index(index_path)
+    indexed_templates = set(owners)
+    actual_templates = {path.name for path in templates_dir.glob("*.md") if path.name != "README.md"}
+
+    missing_files = indexed_templates - actual_templates
+    if missing_files:
+        fail(f"template index references missing files: {', '.join(sorted(missing_files))}")
+    unindexed_files = actual_templates - indexed_templates
+    if unindexed_files:
+        fail(f"template files missing from index: {', '.join(sorted(unindexed_files))}")
+
+    specialist_names = {path.stem for path in specialist_files}
+    indexed_owners = {owner for owner in owners.values() if owner != "Shared use"}
+    unknown_owners = indexed_owners - specialist_names
+    if unknown_owners:
+        fail(f"template index has unknown specialist owners: {', '.join(sorted(unknown_owners))}")
+    missing_owners = specialist_names - indexed_owners
+    if missing_owners:
+        fail(f"specialists missing an owned template: {', '.join(sorted(missing_owners))}")
+
+
+def validate_template_required_terms(path: Path, required_terms: tuple[str, ...]) -> None:
+    if not path.exists():
+        fail(f"missing required template {path}")
+    text = path.read_text().lower()
+    missing = [term for term in required_terms if term.lower() not in text]
+    if missing:
+        fail(f"{path} missing required contract fields: {', '.join(missing)}")
+
+
+def validate_template_contracts(templates_dir: Path = TEMPLATES) -> None:
+    for filename, required_terms in TEMPLATE_REQUIRED_TERMS.items():
+        validate_template_required_terms(templates_dir / filename, required_terms)
+
+
 def validate_positive_routings(skill_files: list[Path]) -> None:
     if not SAMPLE_PROMPTS.exists():
         fail("evals/prompts/expected-routes.md is missing")
@@ -718,6 +999,8 @@ def main() -> int:
     validate_router_boundary_split(router_file.read_text(), routing_matrix.read_text(), router_file, routing_matrix)
 
     validate_skill_contract()
+    validate_template_ownership(specialist_files)
+    validate_template_contracts()
     validate_positive_routings(skill_files)
     print(f"skill pack validation passed: 1 router skill, {len(specialist_files)} routed specialists")
     return 0

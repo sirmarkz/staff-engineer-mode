@@ -168,11 +168,10 @@ cmd_audit() {
   echo "Audit: scanning repo for version string '$current_version'..."
   echo
 
-  local -a exclude_args=()
-  while IFS= read -r pattern; do
-    exclude_args+=("--exclude=$pattern" "--exclude-dir=$pattern")
-  done < <(audit_excludes)
-  exclude_args+=("--exclude-dir=.git" "--exclude-dir=node_modules" "--binary-files=without-match")
+  if ! git -C "$REPO_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "error: version audit requires a Git worktree" >&2
+    return 1
+  fi
 
   local -a declared_paths=()
   while IFS=$'\t' read -r path _field _format; do
@@ -180,10 +179,21 @@ cmd_audit() {
   done < <(declared_files)
 
   local found_undeclared=0
-  while IFS= read -r match; do
-    local match_file rel_path is_declared=0
-    match_file="$(echo "$match" | cut -d: -f1)"
-    rel_path="${match_file#$REPO_ROOT/}"
+  while IFS= read -r -d '' rel_path; do
+    local fullpath matches is_declared=0 is_excluded=0
+    fullpath="$REPO_ROOT/$rel_path"
+    [[ -f "$fullpath" && ! -L "$fullpath" ]] || continue
+
+    while IFS= read -r pattern; do
+      [[ -z "$pattern" ]] && continue
+      if { [[ "$pattern" == */* ]] \
+          && [[ "$rel_path" == "$pattern" || "$rel_path" == "$pattern/"* ]]; } \
+        || { [[ "$pattern" != */* ]] && [[ "/$rel_path/" == *"/$pattern/"* ]]; }; then
+        is_excluded=1
+        break
+      fi
+    done < <(audit_excludes)
+    [[ "$is_excluded" -eq 1 ]] && continue
 
     for declared_path in "${declared_paths[@]}"; do
       if [[ "$rel_path" == "$declared_path" ]]; then
@@ -192,14 +202,18 @@ cmd_audit() {
       fi
     done
 
-    if [[ "$is_declared" -eq 0 ]]; then
-      if [[ "$found_undeclared" -eq 0 ]]; then
-        echo "UNDECLARED files containing '$current_version':"
-        found_undeclared=1
-      fi
-      echo "  $match"
+    [[ "$is_declared" -eq 1 ]] && continue
+    matches="$(grep -nH --binary-files=without-match -F "$current_version" "$fullpath" 2>/dev/null || true)"
+    [[ -n "$matches" ]] || continue
+
+    if [[ "$found_undeclared" -eq 0 ]]; then
+      echo "UNDECLARED files containing '$current_version':"
+      found_undeclared=1
     fi
-  done < <(grep -rn "${exclude_args[@]}" -F "$current_version" "$REPO_ROOT" 2>/dev/null || true)
+    while IFS= read -r match; do
+      echo "  $match"
+    done <<< "$matches"
+  done < <(git -C "$REPO_ROOT" ls-files -z --cached --others --exclude-standard)
 
   if [[ "$found_undeclared" -eq 0 ]]; then
     echo "No undeclared files contain the version string. All clear."

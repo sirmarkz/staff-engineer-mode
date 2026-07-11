@@ -65,6 +65,13 @@ class PlatformDocsValidationTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
 
+    def repository_text(self, relative: str) -> str:
+        return (SCRIPT.parents[1] / relative).read_text(encoding="utf-8")
+
+    def write_valid_bootstrap_context(self) -> None:
+        relative = str(self.validator.BOOTSTRAP_TEMPLATE_RELATIVE)
+        self.write(relative, self.repository_text(relative))
+
     def write_valid_readme(self) -> None:
         self.write(
             "README.md",
@@ -289,60 +296,45 @@ class PlatformDocsValidationTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 self.validator.validate_https_plugin_install_paths()
 
-    def test_agents_requires_release_version_format_rule(self) -> None:
+    def test_agents_release_policy_requires_stable_format_tokens(self) -> None:
         self.write("AGENTS.md", "## Git And Commit Rules\n")
 
         with contextlib.redirect_stderr(io.StringIO()):
             with self.assertRaises(SystemExit):
                 self.validator.validate_agents_release_policy()
 
-        self.write(
-            "AGENTS.md",
-            "\n".join(
-                [
-                    "## Git And Commit Rules",
-                    "- Release tags and hosted GitHub release titles must both be exactly `vX.Y.Z`.",
-                    "- `RELEASE-NOTES.md` headings keep the plain `X.Y.Z - YYYY-MM-DD` format.",
-                    "- Do not commit local memory exports such as `<claude-mem-context>`.",
-                    "",
-                ]
-            ),
-        )
-
+        policy = self.repository_text("AGENTS.md")
+        self.write("AGENTS.md", policy)
         self.validator.validate_agents_release_policy()
 
+        for token in ("`vX.Y.Z`", "`X.Y.Z - YYYY-MM-DD`", "`<claude-mem-context>`"):
+            with self.subTest(token=token):
+                self.assertIn(token, policy)
+                self.write("AGENTS.md", policy.replace(token, "", 1))
+                with contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit):
+                        self.validator.validate_agents_release_policy()
+
     def test_hooks_require_agent_event_policy_wiring(self) -> None:
-        self.write(
-            "skills/staff-engineer-mode/references/bootstrap-context.md",
-            "\n".join(
-                [
-                    "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
-                    "ROUTER_PATH={{ROUTER_PATH}}",
-                    "EVENT_HOOK={{EVENT_HOOK}}",
-                    "CURRENT_REPO={{CURRENT_REPO}}",
-                    "load the native `staff-engineer-mode` router",
-                    "Read `${ROUTER_PATH}`",
-                    "Router load alone is not enough",
-                    "Read `${SPECIALIST_ROOT}/<slug>.md`",
-                    "before any repo file",
-                    "Do not parallel-load router and repo files",
-                    "never call `Skill staff-engineer-mode:<slug>`",
-                    "Read `${SPECIALIST_ROOT}/agent-pr-review.md` before code-review",
-                    "Keep guidance technology-agnostic by default",
-                    "agent-pr-review",
-                    "release-build-reproducibility",
-                    "production-readiness-review",
-                    "Do not combine stage/commit/push",
-                    "",
-                ]
-            ),
-        )
+        self.write_valid_bootstrap_context()
         self.write(
             "hooks/session-start",
-            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists ROUTER_PATH EVENT_HOOK CURRENT_REPO\n",
+            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists ROUTER_PATH TEMPLATE_ROOT EVENT_HOOK CURRENT_REPO\n",
         )
         self.write("hooks/run-hook.cmd", "exec bash hook\n")
-        self.write("hooks/hooks-cursor.json", "{}\n")
+        self.write(
+            "hooks/hooks-cursor.json",
+            json.dumps(
+                {
+                    "version": 1,
+                    "hooks": {
+                        "sessionStart": [
+                            {"command": "./hooks/run-hook.cmd session-start"},
+                        ]
+                    },
+                }
+            ),
+        )
         self.write("hooks/hooks.json", '{"hooks":{"SessionStart":[]}}\n')
 
         with contextlib.redirect_stderr(io.StringIO()):
@@ -384,38 +376,43 @@ class PlatformDocsValidationTests(unittest.TestCase):
 
         self.validator.validate_hooks()
 
-    def test_hooks_require_codex_plugin_root_fallback(self) -> None:
         self.write(
-            "skills/staff-engineer-mode/references/bootstrap-context.md",
-            "\n".join(
-                [
-                    "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
-                    "ROUTER_PATH={{ROUTER_PATH}}",
-                    "EVENT_HOOK={{EVENT_HOOK}}",
-                    "CURRENT_REPO={{CURRENT_REPO}}",
-                    "load the native `staff-engineer-mode` router",
-                    "Read `${ROUTER_PATH}`",
-                    "Router load alone is not enough",
-                    "Read `${SPECIALIST_ROOT}/<slug>.md`",
-                    "before any repo file",
-                    "Do not parallel-load router and repo files",
-                    "never call `Skill staff-engineer-mode:<slug>`",
-                    "Read `${SPECIALIST_ROOT}/agent-pr-review.md` before code-review",
-                    "Keep guidance technology-agnostic by default",
-                    "agent-pr-review",
-                    "release-build-reproducibility",
-                    "production-readiness-review",
-                    "Do not combine stage/commit/push",
-                    "",
-                ]
+            "hooks/hooks-cursor.json",
+            json.dumps(
+                {
+                    "version": 1,
+                    "hooks": {
+                        "sessionStart": [
+                            {"command": "./hooks/session-start"},
+                        ]
+                    },
+                }
             ),
         )
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_hooks()
+
+    def test_hooks_require_codex_plugin_root_fallback(self) -> None:
+        self.write_valid_bootstrap_context()
         self.write(
             "hooks/session-start",
-            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists ROUTER_PATH EVENT_HOOK CURRENT_REPO\n",
+            "CURSOR_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT COPILOT_CLI additionalContext additional_context staff-engineer-mode skills/staff-engineer-mode/SKILL.md specialists ROUTER_PATH TEMPLATE_ROOT EVENT_HOOK CURRENT_REPO\n",
         )
         self.write("hooks/run-hook.cmd", "exec bash hook\n")
-        self.write("hooks/hooks-cursor.json", "{}\n")
+        self.write(
+            "hooks/hooks-cursor.json",
+            json.dumps(
+                {
+                    "version": 1,
+                    "hooks": {
+                        "sessionStart": [
+                            {"command": "./hooks/run-hook.cmd session-start"},
+                        ]
+                    },
+                }
+            ),
+        )
         self.write(
             "hooks/agent-event-policy",
             "before_commit before_release agent-pr-review release-build-reproducibility production-readiness-review\n",
@@ -501,6 +498,7 @@ class PlatformDocsValidationTests(unittest.TestCase):
                     "bash -n hooks/session-start",
                     "bash -n hooks/run-hook.cmd",
                     "bash -n evals/adapters/codex-router.sh",
+                    "bash -n evals/adapters/codex-specialist.sh",
                     "bash -n evals/adapters/claude-router.sh",
                     "bash -n scripts/bump-version.sh",
                     "python3 -m unittest scripts/test_run_router_eval.py",
@@ -536,6 +534,7 @@ class PlatformDocsValidationTests(unittest.TestCase):
                     "bash -n hooks/session-start",
                     "bash -n hooks/run-hook.cmd",
                     "bash -n evals/adapters/codex-router.sh",
+                    "bash -n evals/adapters/codex-specialist.sh",
                     "bash -n evals/adapters/claude-router.sh",
                     "bash -n scripts/bump-version.sh",
                     "python3 -m unittest discover -s scripts -p 'test_*.py'",
@@ -545,14 +544,136 @@ class PlatformDocsValidationTests(unittest.TestCase):
                     "python3 scripts/validate_skill_pack.py",
                     "python3 scripts/validate_router_eval.py",
                     "python3 scripts/validate_platform_support.py",
+                    "python3 scripts/validate_markdown_links.py",
                     "node --check .opencode/plugins/staff-engineer-mode.js",
                     "git grep -nI '[[:blank:]]$' -- .",
+                    "permissions:",
+                    "  contents: read",
+                    "uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4",
+                    "uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5",
+                    "uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4",
                     "",
                 ]
             ),
         )
 
         self.validator.validate_ci_workflow()
+
+    def test_action_security_rejects_mutable_tags_and_implicit_permissions(self) -> None:
+        path = self.root / ".github/workflows/validation.yml"
+        text = "uses: actions/checkout@v4\n"
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_action_security(text, path)
+
+    def test_action_security_rejects_permission_evasions_and_job_overrides(self) -> None:
+        path = self.root / ".github/workflows/validation.yml"
+        cases = (
+            "permissions: write-all\njobs:\n  build:\n    steps:\n      - run: |\n          contents: read\n",
+            "permissions:\n  contents: read\n  issues: write\n",
+            "permissions:\n  contents: read\njobs:\n  build:\n    permissions:\n      contents: write\n",
+        )
+
+        for text in cases:
+            with self.subTest(text=text), contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit):
+                    self.validator.validate_action_security(text, path)
+
+    def test_action_security_ignores_action_like_text_inside_block_scalars(self) -> None:
+        path = self.root / ".github/workflows/validation.yml"
+        text = "\n".join(
+            [
+                "permissions:",
+                "  contents: read",
+                "jobs:",
+                "  build:",
+                "    steps:",
+                "      - run: |",
+                "          uses: actions/checkout@v4",
+                "          permissions: write-all",
+                "",
+            ]
+        )
+
+        self.validator.validate_action_security(text, path)
+
+    def test_action_security_parses_spaced_uses_and_flow_permissions(self) -> None:
+        path = self.root / ".github/workflows/validation.yml"
+        text = "permissions: { contents: read }\njobs:\n  build:\n    steps:\n      - uses : actions/checkout@v4\n"
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_action_security(text, path)
+
+        pinned = text.replace("@v4", "@" + "a" * 40)
+        self.validator.validate_action_security(pinned, path)
+
+    def test_action_security_rejects_nested_flow_style_bypasses(self) -> None:
+        path = self.root / ".github/workflows/validation.yml"
+        cases = (
+            "permissions: {contents: read}\njobs:\n  build:\n    steps: [{ uses: actions/checkout@v4 }]\n",
+            "permissions: {contents: read}\njobs: {build: {permissions: write-all}}\n",
+        )
+
+        for text in cases:
+            with self.subTest(text=text), contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit):
+                    self.validator.validate_action_security(text, path)
+
+    def test_ci_workflow_scans_yaml_extension_files(self) -> None:
+        source_workflow = SCRIPT.parents[1] / ".github" / "workflows" / "validation.yml"
+        self.write(".github/workflows/validation.yml", source_workflow.read_text(encoding="utf-8"))
+        self.write(
+            ".github/workflows/unpinned.yaml",
+            "permissions:\n  contents: read\njobs:\n  build:\n    steps:\n      - uses: actions/checkout@v4\n",
+        )
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_ci_workflow()
+
+    def test_opencode_requires_every_bootstrap_placeholder_to_be_rendered(self) -> None:
+        self.write(
+            "package.json",
+            json.dumps(
+                {
+                    "name": "staff-engineer-mode",
+                    "version": "0.0.0",
+                    "description": "test",
+                    "main": ".opencode/plugins/staff-engineer-mode.js",
+                }
+            ),
+        )
+        self.write_valid_bootstrap_context()
+        plugin = "\n".join(
+            [
+                "const skillsDir = 'skills';",
+                "const specialistsDir = 'specialists';",
+                "const routerPath = 'router';",
+                "const toolMapping = 'tools';",
+                "config.skills.paths = [skillsDir];",
+                "experimental.chat.messages.transform",
+                "staff-engineer-mode",
+                "SPECIALIST_ROOT: specialistsDir,",
+                "ROUTER_PATH: routerPath,",
+                "EVENT_HOOK: 'hook',",
+                "CURRENT_REPO: '',",
+                "TOOL_MAPPING: toolMapping,",
+                "",
+            ]
+        )
+        self.write(".opencode/plugins/staff-engineer-mode.js", plugin)
+
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.validator.validate_opencode()
+
+        self.write(
+            ".opencode/plugins/staff-engineer-mode.js",
+            plugin + "const templatesDir = 'templates';\nTEMPLATE_ROOT: templatesDir,\n",
+        )
+        self.validator.validate_opencode()
 
 
 if __name__ == "__main__":

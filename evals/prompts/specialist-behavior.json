@@ -1,0 +1,100 @@
+[
+  {
+    "id": "database-online-migration",
+    "specialist": "database-operations",
+    "prompt": "Give me a safe online migration sequence for a hot table while old and new application versions write concurrently. Include failure recovery.",
+    "required": ["dual-write|change capture", "backfill", "reconcile|reconciliation", "forward-fix|point of no simple rollback"],
+    "forbidden": ["every pre-contract phase is rollback-safe"]
+  },
+  {
+    "id": "crypto-use-specific-rotation",
+    "specialist": "cryptography-and-key-lifecycle",
+    "prompt": "Design rotation for encryption keys and signing keys, including old-data access and emergency compromise.",
+    "required": ["encrypt*|decrypt*", "sign|signed|signing|signature|verify|verification", "retain", "confidentiality|exposed plaintext|plaintext exposure", "compromise"],
+    "forbidden": ["signature material exposed to harvest-now-decrypt-later"]
+  },
+  {
+    "id": "container-readiness-resources",
+    "specialist": "container-runtime-and-orchestration",
+    "prompt": "Set readiness and resource policies for a latency-sensitive replicated service whose shared dependency can fail fleet-wide.",
+    "required": ["local ability|locally able|local serving|local listener|local init*|local queue*|listener accepting|listener bind|local-only", "capacity floor|fleet", "oom|out of memory|out-of-memory|memory limit termination|memory-limit termination", "eviction", "cpu"],
+    "forbidden": ["every workload must have both a request and limit"]
+  },
+  {
+    "id": "client-credential-boundary",
+    "specialist": "client-application-security",
+    "prompt": "Decide what credentials a native client may hold and how to treat embedded, short-lived, and hardware-backed material.",
+    "required": ["embedded credential*|embedded reusable|embedded shared|embed reusable|embed shared|reusable credential|binary secrecy|shipped binary|never ship|do not ship|never embed|do not embed|out of the binary|no reusable secret", "short-lived", "hardware-backed|non-exportable", "server-side|server enforces authorization|authorization on the server|server authorization"],
+    "forbidden": ["every secret it holds is already disclosed"]
+  },
+  {
+    "id": "experiment-triggered-analysis",
+    "specialist": "experimentation-and-metric-guardrails",
+    "prompt": "Define the primary estimate and a safe triggered analysis when treatment can change whether exposure occurs.",
+    "required": ["predeclared|pre-specified", "primary estimate|decision estimand|primary estimand|triggered primary|triggered estimand", "counterfactual trigger|pre-treatment trigger", "complement", "dilut*|ship population"],
+    "forbidden": ["exposure-based analysis is the default"]
+  },
+  {
+    "id": "multi-region-recoverable-point",
+    "specialist": "multi-region-and-data-residency",
+    "prompt": "Define evidence that asynchronous regional failover meets the data RPO; replication lag is available but may be stale.",
+    "required": ["required rpo", "lag signal|lag metric", "recoverable point|durable checkpoint", "acknowledged write", "fenc*"],
+    "forbidden": ["data loss equal to replication lag"]
+  },
+  {
+    "id": "persistent-connection-resume-auth",
+    "specialist": "persistent-connection-systems",
+    "prompt": "Design reconnect/resume and security behavior for long-lived subscriptions across token revocation and expired replay history.",
+    "required": ["authentication", "authorization", "revocation", "cursor epoch|cursor scope", "retention", "dedup*|idempoten*", "snapshot|resync"],
+    "forbidden": ["resume-from-cursor makes reconnect not replay or skip messages"]
+  },
+  {
+    "id": "tenant-context-provenance",
+    "specialist": "tenant-isolation",
+    "prompt": "Specify how tenant context enters the request and survives cache, event, job, and storage boundaries.",
+    "required": ["authenticated principal|authenticated identity|verified principal|trusted mapping", "conflict*|mismatch*|caller-overrid*", "integrity", "cache", "event", "storage"],
+    "forbidden": []
+  },
+  {
+    "id": "lease-fencing-and-seeds",
+    "specialist": "state-machine-correctness",
+    "prompt": "Design correctness evidence for a lease holder that can pause past expiry, plus repeatable and ongoing concurrency exploration.",
+    "required": ["fencing", "generation|sequencer", "stale holder|stale-holder", "fresh seed|rotating seed|exploration seed", "regression seed|recorded failing seed"],
+    "forbidden": ["pin a single recorded seed"]
+  },
+  {
+    "id": "llm-cache-authorization",
+    "specialist": "llm-serving-cost-and-latency",
+    "prompt": "Define a semantic response-cache key and hit policy for users whose permissions and accessible retrieval data change.",
+    "required": ["principal|user", "permission version|entitlement", "data classification|sensitivity", "reauthoriz*", "invalidat*"],
+    "forbidden": ["per-tenant scope is sufficient"]
+  },
+  {
+    "id": "upload-and-path-defense",
+    "specialist": "input-validation-and-injection-defense",
+    "prompt": "Create the upload and local-path control matrix for user archives and permitted rich HTML.",
+    "required": ["safe sink|sanitiz*", "archive traversal", "decompression", "quarantine|scan", "authorization", "symlink|race-safe"],
+    "forbidden": ["content type and size are sufficient"]
+  },
+  {
+    "id": "decommission-names-and-data",
+    "specialist": "service-decommission-and-sunset",
+    "prompt": "Plan terminal teardown for a service with old DNS aliases, reclaimable provider names, and retained data media.",
+    "required": ["references before|remove references|repoint", "retain|reserve", "sanitization", "verification"],
+    "forbidden": ["release every name"]
+  },
+  {
+    "id": "trust-domain-verifier-first-transition",
+    "specialist": "internal-service-networking",
+    "prompt": "Plan a zero-downtime trust-domain and peer-identity rename across independently rolled callers and servers. Bound authorization compatibility and include rollback and retirement evidence.",
+    "required": ["presented identity|asserted identity", "expected peer identity|accepted peer identity|accept set", "verifier first|verifiers first|verifier before|verifier config first|server verifier* first|deploy verifier* accepting|stage 1 deploy verifier*|peer verifier* are dual-accepting|accept* before|deploy* all caller* first to accept|deploy* all server* first to accept", "mixed-peer|mixed peer*|mixed-version peer*", "dual-acceptance expiry|compatibility expiry|compatibility deadline", "mismatch", "retired-identity negative|retired identity negative|old identity is rejected|old identity rejected|retired identity is rejected|retired identity rejected", "last safe rollback|rollback boundary|rollback limit"],
+    "forbidden": ["permanently accept both identities"]
+  },
+  {
+    "id": "migration-terminal-decommission-handoff",
+    "specialist": "migration-and-deprecation",
+    "prompt": "Plan moving many consumers off a legacy service. Define completion evidence, where migration ends, and what must be handed to terminal decommission without performing destructive teardown.",
+    "required": ["no-new-usage|backsliding", "drive-off|drive off", "disable and observe|disable-and-observe", "escape hatch|rollback", "terminal decommission|terminal-decommission", "handoff", "residual surface|residual asset*|residual data", "resurrection path|resurrection inventory|resurrection vector*"],
+    "forbidden": ["migration performs final disposal", "migration proves no-resurrection|migration provides no-resurrection evidence|migration completes no-resurrection proof"]
+  }
+]

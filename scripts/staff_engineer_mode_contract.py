@@ -8,8 +8,8 @@ platform validators, skill-pack validation, and brand linting cannot drift.
 from __future__ import annotations
 
 CANONICAL_PLUGIN_DESCRIPTION = (
-    "Major outage lessons baked into AI agents trained by thousands of "
-    "engineer-years of production knowledge."
+    "Applies engineering best practices to reliability, security, delivery, "
+    "data, and architecture work."
 )
 
 CLAUDE_PLUGIN_DESCRIPTION = (
@@ -21,7 +21,7 @@ CODEX_INTERFACE_SHORT_DESCRIPTION = (
 )
 
 CODEX_INTERFACE_LONG_DESCRIPTION = (
-    "Technology-agnostic guidance for applying large-scale engineering practices "
+    "Technology-agnostic guidance for applying engineering best practices "
     "to architecture, reliability, resilience, delivery, operations, security, "
     "privacy, data, platform, client, and cost-aware reliability work. The router "
     "automatically selects the smallest useful routed specialist set from natural-"
@@ -48,7 +48,6 @@ ROUTER_EVAL_CHECKS: tuple[str, ...] = (
     "ambiguity_check",
     "intent_inference",
     "no_skill_invoke",
-    "read_load",
 )
 
 ROUTER_ROUTING_CHECKS: tuple[str, ...] = (

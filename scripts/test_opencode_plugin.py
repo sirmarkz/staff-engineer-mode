@@ -26,6 +26,7 @@ class OpenCodePluginTests(unittest.TestCase):
         source = textwrap.dedent(
             f"""
             import assert from "node:assert/strict";
+            import path from "node:path";
             import pluginFactory from {PLUGIN.as_uri()!r};
 
             const plugin = await pluginFactory();
@@ -37,11 +38,32 @@ class OpenCodePluginTests(unittest.TestCase):
               ],
             }};
 
-            await plugin["experimental.chat.messages.transform"]({{}}, output);
+            const transform = plugin["experimental.chat.messages.transform"];
+            await transform({{}}, output);
+            await transform({{}}, output);
 
             const user = output.messages[2];
+            assert.equal(user.parts.length, 2);
             assert.equal(user.parts[0].type, "text");
-            assert.match(user.parts[0].text, /You have staff-engineer-mode/);
+            const bootstrap = user.parts[0].text;
+            const fields = Object.fromEntries(
+              bootstrap
+                .split("\\n")
+                .filter((line) => /^[A-Z_]+=/.test(line))
+                .map((line) => [
+                  line.slice(0, line.indexOf("=")),
+                  line.slice(line.indexOf("=") + 1),
+                ]),
+            );
+            assert.deepEqual(
+              Object.keys(fields).sort(),
+              ["CURRENT_REPO", "EVENT_HOOK", "ROUTER_PATH", "SPECIALIST_ROOT", "TEMPLATE_ROOT"],
+            );
+            assert.equal(path.basename(fields.ROUTER_PATH), "SKILL.md");
+            assert.equal(path.basename(fields.SPECIALIST_ROOT), "specialists");
+            assert.equal(path.basename(fields.TEMPLATE_ROOT), "templates");
+            assert.equal(fields.CURRENT_REPO, "");
+            assert.doesNotMatch(bootstrap, /\{{\{{[^}}]+\}}\}}/);
             assert.equal(user.parts[1].text, "build this");
             """
         )
@@ -79,10 +101,14 @@ class OpenCodePluginTests(unittest.TestCase):
               ],
             }};
 
-            await plugin["experimental.chat.messages.transform"]({{}}, output);
+            const transform = plugin["experimental.chat.messages.transform"];
+            await transform({{}}, output);
+            await transform({{}}, output);
 
             const user = output.messages[0];
-            assert.match(user.parts[0].text, /You have staff-engineer-mode/);
+            assert.equal(user.parts.length, 2);
+            assert.equal(user.parts[0].type, "text");
+            assert.equal(typeof user.parts[0].text, "string");
             assert.equal(user.parts[1].text, 42);
             """
         )

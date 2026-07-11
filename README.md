@@ -1,7 +1,7 @@
 # Staff Engineer Mode
 
-Staff Engineer Mode gives coding agents the judgement of senior staff-level
-engineers.
+Staff Engineer Mode routes coding agents to focused operational guidance for
+building, securing, shipping, and maintaining complex software systems.
 
 Give it a design, diff, rollout, incident, migration, or maintenance problem.
 The router picks the right specialist and makes the agent reason through
@@ -9,8 +9,8 @@ availability, correctness, resilience, release safety, observability,
 performance, privacy, recovery, and maintainability before the work ships or
 changes production.
 
-The specialists also carry built-in lessons from real outages, so the agent
-checks failure modes that have broken production systems before.
+The specialists synthesize public engineering practices and incident lessons so
+the agent checks relevant failure modes before work ships.
 
 ## Sources
 
@@ -25,8 +25,9 @@ summaries, Azure post-incident reviews, Google Cloud and Google Workspace
 incident reports, Meta's outage writeups, and Netflix's AWS-outage analysis.
 
 See the [source index](skills/_shared/references/source-index.md) for the full
-reference set. Staff Engineer Mode is independent and is not endorsed by or
-affiliated with these organizations.
+reference set. Runtime specialist files omit citations by design; the index owns
+reference maintenance. Staff Engineer Mode is independent and is not endorsed
+by or affiliated with these organizations.
 
 ## How It Works
 
@@ -136,12 +137,14 @@ One native router skill: `staff-engineer-mode`. It routes to 64 specialist
 files under `specialists/`; those files are not installed or listed as separate
 native skills.
 
-Specialists by surface:
+Specialists by engineering concern:
 
-| Surface | Specialist files |
+These concern groups are a browsing aid; routing still follows the requested artifact, phase, surface, and risk.
+
+| Engineering concern | Specialist files |
 | --- | --- |
 | Architecture & interfaces | [`architecture-decisions`](specialists/architecture-decisions.md), [`api-design-and-compatibility`](specialists/api-design-and-compatibility.md), [`data-contracts`](specialists/data-contracts.md), [`event-workflows`](specialists/event-workflows.md), [`resilience-requirements`](specialists/resilience-requirements.md), [`persistent-connection-systems`](specialists/persistent-connection-systems.md) |
-| Correctness & testing | [`state-machine-correctness`](specialists/state-machine-correctness.md), [`testing-and-quality-gates`](specialists/testing-and-quality-gates.md), [`test-data-engineering`](specialists/test-data-engineering.md) |
+| Verification & evaluation | [`state-machine-correctness`](specialists/state-machine-correctness.md), [`testing-and-quality-gates`](specialists/testing-and-quality-gates.md), [`test-data-engineering`](specialists/test-data-engineering.md), [`agent-pr-review`](specialists/agent-pr-review.md), [`experimentation-and-metric-guardrails`](specialists/experimentation-and-metric-guardrails.md) |
 | Reliability & resilience | [`slo-and-error-budgets`](specialists/slo-and-error-budgets.md), [`high-availability-design`](specialists/high-availability-design.md), [`dependency-resilience`](specialists/dependency-resilience.md), [`backup-and-recovery`](specialists/backup-and-recovery.md), [`resilience-experiments`](specialists/resilience-experiments.md), [`performance-and-capacity`](specialists/performance-and-capacity.md), [`cost-aware-reliability`](specialists/cost-aware-reliability.md), [`multi-region-and-data-residency`](specialists/multi-region-and-data-residency.md), [`scheduled-job-reliability`](specialists/scheduled-job-reliability.md) |
 | Data, storage & privacy | [`distributed-data-and-consistency`](specialists/distributed-data-and-consistency.md), [`database-operations`](specialists/database-operations.md), [`data-pipeline-reliability`](specialists/data-pipeline-reliability.md), [`caching-and-derived-data`](specialists/caching-and-derived-data.md), [`privacy-and-data-lifecycle`](specialists/privacy-and-data-lifecycle.md), [`data-lineage-and-provenance`](specialists/data-lineage-and-provenance.md) |
 | Delivery & change safety | [`progressive-delivery`](specialists/progressive-delivery.md), [`feature-flag-lifecycle`](specialists/feature-flag-lifecycle.md), [`release-build-reproducibility`](specialists/release-build-reproducibility.md), [`fleet-upgrades`](specialists/fleet-upgrades.md), [`migration-and-deprecation`](specialists/migration-and-deprecation.md), [`configuration-and-automation-safety`](specialists/configuration-and-automation-safety.md), [`dev-environment-parity`](specialists/dev-environment-parity.md), [`service-decommission-and-sunset`](specialists/service-decommission-and-sunset.md) |
@@ -149,15 +152,17 @@ Specialists by surface:
 | Operations & incident response | [`observability-and-alerting`](specialists/observability-and-alerting.md), [`incident-response-and-postmortems`](specialists/incident-response-and-postmortems.md), [`oncall-health`](specialists/oncall-health.md), [`operational-ownership-transfer`](specialists/operational-ownership-transfer.md) |
 | Security | [`secure-sdlc-and-threat-modeling`](specialists/secure-sdlc-and-threat-modeling.md), [`identity-and-secrets`](specialists/identity-and-secrets.md), [`cryptography-and-key-lifecycle`](specialists/cryptography-and-key-lifecycle.md), [`software-supply-chain-security`](specialists/software-supply-chain-security.md), [`vulnerability-management`](specialists/vulnerability-management.md), [`tenant-isolation`](specialists/tenant-isolation.md), [`edge-traffic-and-ddos-defense`](specialists/edge-traffic-and-ddos-defense.md), [`llm-application-security`](specialists/llm-application-security.md), [`input-validation-and-injection-defense`](specialists/input-validation-and-injection-defense.md), [`client-application-security`](specialists/client-application-security.md) |
 | Platform & infrastructure | [`infrastructure-and-policy-as-code`](specialists/infrastructure-and-policy-as-code.md), [`internal-service-networking`](specialists/internal-service-networking.md), [`platform-golden-paths`](specialists/platform-golden-paths.md), [`container-runtime-and-orchestration`](specialists/container-runtime-and-orchestration.md) |
-| Client & frontend | [`web-release-gates`](specialists/web-release-gates.md), [`mobile-release-engineering`](specialists/mobile-release-engineering.md), [`accessibility-gates`](specialists/accessibility-gates.md) |
-| AI/ML systems | [`llm-evaluation`](specialists/llm-evaluation.md), [`ml-reliability-and-evaluation`](specialists/ml-reliability-and-evaluation.md), [`llm-serving-cost-and-latency`](specialists/llm-serving-cost-and-latency.md) |
-| Governance & readiness | [`agent-pr-review`](specialists/agent-pr-review.md), [`ai-coding-governance`](specialists/ai-coding-governance.md), [`documentation-lifecycle`](specialists/documentation-lifecycle.md), [`engineering-control-evidence`](specialists/engineering-control-evidence.md), [`production-readiness-review`](specialists/production-readiness-review.md), [`experimentation-and-metric-guardrails`](specialists/experimentation-and-metric-guardrails.md) |
+| Client applications & accessibility | [`web-release-gates`](specialists/web-release-gates.md), [`mobile-release-engineering`](specialists/mobile-release-engineering.md), [`accessibility-gates`](specialists/accessibility-gates.md) |
+| AI/ML evaluation & serving | [`llm-evaluation`](specialists/llm-evaluation.md), [`ml-reliability-and-evaluation`](specialists/ml-reliability-and-evaluation.md), [`llm-serving-cost-and-latency`](specialists/llm-serving-cost-and-latency.md) |
+| Engineering controls & readiness | [`ai-coding-governance`](specialists/ai-coding-governance.md), [`documentation-lifecycle`](specialists/documentation-lifecycle.md), [`engineering-control-evidence`](specialists/engineering-control-evidence.md), [`production-readiness-review`](specialists/production-readiness-review.md) |
 
 ## Contributing
 
 Patches welcome, especially practices from authoritative sources: first-party engineering publications, official documentation, standards bodies, peer-reviewed papers, or widely cited practitioner references.
 
-New specialist files must be technology-agnostic, cite source-index references, and avoid vendor endorsement. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. The voice is enforced.
+New specialist files must be technology-agnostic, keep runtime prose citation-free,
+and avoid vendor endorsement. Maintain authoritative sources in the shared index,
+and read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR. The voice is enforced.
 
 ## License
 

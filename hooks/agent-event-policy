@@ -166,26 +166,66 @@ command_stages_before_commit() {
 
 classify_command() {
   local command_text="$1"
+  local command_start='(^[[:space:]]*|[;|&(){}][[:space:]]*)'
+  local command_wrapper_prefix='(((if|then|elif|else|while|until|do|command|exec|nohup|!)[[:space:]]+)|(time([[:space:]]+-[^[:space:];|&()]+)*[[:space:]]+))*'
+  local executable_path='([^[:space:];|&()]+/)?'
+  local assignment_token='[A-Za-z_][A-Za-z0-9_]*=[^[:space:];|&()]+'
+  local env_option='(-i|--ignore-environment|-u[[:space:]]+[A-Za-z_][A-Za-z0-9_]*|--unset[[:space:]]+[A-Za-z_][A-Za-z0-9_]*|--unset=[A-Za-z_][A-Za-z0-9_]*|--)'
+  local env_prefix="(env[[:space:]]+((${env_option}|${assignment_token})[[:space:]]+)*)?"
+  local executable_prefix="${command_start}${command_wrapper_prefix}(${assignment_token}[[:space:]]+)*${env_prefix}"
   local gh_selector_flag='(--repo([[:space:]]+|=)[^[:space:]]+|-R([[:space:]]+|=)?[^[:space:]]+|--hostname([[:space:]]+|=)[^[:space:]]+)'
-  local gh_env_selector='(^|[[:space:];|&])([A-Z_][A-Z0-9_]*=[^[:space:];|&]+[[:space:]]+)*(GH_REPO|GH_HOST)=[^[:space:];|&]+([[:space:]]+[A-Z_][A-Z0-9_]*=[^[:space:];|&]+)*[[:space:]]+gh[[:space:]]'
+  local gh_env_selector="${command_start}${command_wrapper_prefix}((env[[:space:]]+)?(${assignment_token}[[:space:]]+)*)(GH_REPO|GH_HOST)=[^[:space:];|&]+([[:space:]]+${assignment_token})*[[:space:]]+gh[[:space:]]"
   local gh_action='(create|edit|upload|delete|delete-asset)'
-  local gh_mutating_release="(^|[[:space:];|&])gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]]|$)"
-  local gh_remote_selector_before_release="(^|[[:space:];|&])gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)+release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]]|[;|&]|$)"
-  local gh_remote_selector_before_action="(^|[[:space:];|&])gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)+${gh_action}([[:space:]]|[;|&]|$)"
-  local gh_remote_selector_after_action="(^|[[:space:];|&])gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]][^;|&]*)?${gh_selector_flag}([[:space:]]|[;|&]|$)"
+  local gh_mutating_release="${executable_prefix}${executable_path}gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]]|$)"
+  local gh_remote_selector_before_release="${executable_prefix}${executable_path}gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)+release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]]|[;|&]|$)"
+  local gh_remote_selector_before_action="${executable_prefix}${executable_path}gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)+${gh_action}([[:space:]]|[;|&]|$)"
+  local gh_remote_selector_after_action="${executable_prefix}${executable_path}gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]][^;|&]*)?${gh_selector_flag}([[:space:]]|[;|&]|$)"
   local gh_remote_mutating_release="${gh_remote_selector_before_release}|${gh_remote_selector_before_action}|${gh_remote_selector_after_action}"
   local version_tag_ref='v?[0-9]+([.][0-9]+){1,3}([-+][A-Za-z0-9_.-]+)?'
   local tag_name='[A-Za-z0-9][A-Za-z0-9_.-]*'
   local git_global_option='(-C([^[:space:];|&]+|[[:space:]]+[^[:space:];|&]+)|-c[[:space:]]+[^[:space:];|&]+|--git-dir([[:space:]]+|=)[^[:space:];|&]+|--work-tree([[:space:]]+|=)[^[:space:];|&]+|--namespace([[:space:]]+|=)[^[:space:];|&]+)'
-  local git_command_prefix="(^|[[:space:];|&])git[[:space:]]+(${git_global_option}[[:space:]]+)*"
+  local git_unsafe_global_selector='(-c([[:space:]]+[^[:space:];|&]+|[^[:space:];|&]+)|--(bare|config-env|exec-path|git-dir|namespace|work-tree)([[:space:]]+|=)[^[:space:];|&]+|--bare)'
+  local git_unsafe_env_selector='GIT_(ALTERNATE_OBJECT_DIRECTORIES|COMMON_DIR|CONFIG_(COUNT|PARAMETERS|KEY_[0-9]+|VALUE_[0-9]+)|DIR|INDEX_FILE|NAMESPACE|OBJECT_DIRECTORY|WORK_TREE)=[^[:space:];|&]+'
+  local git_command_prefix="${executable_prefix}${executable_path}git[[:space:]]+(${git_global_option}[[:space:]]+)*"
   local git_add_command="${git_command_prefix}add([[:space:];|&]|$)"
-  local git_commit_command="${git_command_prefix}commit([[:space:];|&]|$)"
+  local git_commit_prefix="${git_command_prefix}commit"
+  local git_commit_command="${git_commit_prefix}([[:space:];|&]|$)"
+  local git_push_command="${git_command_prefix}push([[:space:];|&]|$)"
+  local git_redirected_protected="${executable_prefix}git[[:space:]]+[^;|&]*-C([^[:space:];|&]+|[[:space:]]+[^[:space:];|&]+)[^;|&]*(commit|tag|push)([[:space:];|&]|$)"
+  local git_commit_implicit="${git_commit_prefix}[[:space:]]+[^;|&]*(--(all|include|interactive|only|patch|pathspec-file-nul|pathspec-from-file)([=[:space:];|&]|$)|-[A-Za-z]*[aiop][A-Za-z]*)"
+  local shell_arg='("[^"]*"|[^[:space:];|&]+)'
+  local git_commit_pathspec="(${git_commit_prefix}[[:space:]]+[^-[:space:];|&]|${git_commit_prefix}[[:space:]]+[^;|&]*[[:space:]]--[[:space:]]+${shell_arg}|${git_commit_prefix}[[:space:]]+[^;|&]*(-m|--message)([=[:space:]]+)${shell_arg}[[:space:]]+[^-[:space:];|&][^[:space:];|&]*)"
   local git_tag_mutating_flag='(-[A-Za-z]*[asufdmF][A-Za-z]*|--(annotate|sign|local-user|force|delete|message|file|cleanup|edit)([=[:space:];|&]|$))'
   local git_tag_command="${git_command_prefix}tag[[:space:]]+(${git_tag_mutating_flag}|${tag_name})([[:space:];|&]|$)"
-  local git_push_tag_command="${git_command_prefix}push([^;|&]*[[:space:]])(--tags|--follow-tags|${version_tag_ref})([[:space:];|&]|$)"
+  local git_push_tag_command="${git_command_prefix}push[^;|&]*(--tags|--follow-tags|--mirror|refs/tags/|[[:space:]]tag[[:space:]]+${tag_name}|${version_tag_ref})([[:space:];|&]|$)"
+  local release_script_name='(bump-version|version|package|release|publish|promote|publish-release|promote-artifact|cut-release)([.](sh|py|js|ts))?'
+  local release_exec_prefix="${command_wrapper_prefix}(${assignment_token}[[:space:]]+)*${env_prefix}(${executable_path}(bash|sh|python([0-9]+([.][0-9]+)*)?|node)([[:space:]]+-[^[:space:];|&()]+)*[[:space:]]+)?(([.]/)|([.][.]/)+)?(scripts|tools|bin)/([.]/)*"
+  local repo_release_script="${command_start}${release_exec_prefix}${release_script_name}([[:space:];|&()]|$)"
+  local repo_release_read_only="^[[:space:]]*${release_exec_prefix}bump-version([.](sh|py|js|ts))?[[:space:]]+--(check|audit)[[:space:]]*$"
+  local release_command_pattern="${git_tag_command}|${git_push_tag_command}|${repo_release_script}|${gh_mutating_release}"
+  local bare_git_protected="${command_wrapper_prefix}(${assignment_token}[[:space:]]+)*${env_prefix}${executable_path}git[[:space:]]+(${git_global_option}[[:space:]]+)*(commit|tag|push)([[:space:]]|$)"
+  local bare_gh_release="${command_wrapper_prefix}(${assignment_token}[[:space:]]+)*${env_prefix}${executable_path}gh[[:space:]]+(${gh_selector_flag}[[:space:]]+)*release[[:space:]]+(${gh_selector_flag}[[:space:]]+)*${gh_action}([[:space:]]|$)"
+  local bare_release_script="${release_exec_prefix}${release_script_name}([[:space:];|&()]|$)"
+  local bare_protected="(${bare_git_protected}|${bare_gh_release}|${bare_release_script})"
+  local protected_after_separator="[;|&][;|&]?[[:space:]]*${bare_protected}"
+  local cd_only_protected="^[[:space:]]*(cd[[:space:]]+[^;|&]+[[:space:]]*([;]|&&)[[:space:]]*)+${bare_protected}"
+  local nested_shell_protected="${command_start}${command_wrapper_prefix}${executable_path}(bash|sh)[[:space:]]+[^;|&]*(-[A-Za-z]*c[A-Za-z]*|--command)[[:space:]]+[^;|&]*((${executable_path}git[[:space:]]+[^;|&]*(commit|tag|push))|(${executable_path}gh[[:space:]]+[^;|&]*release[[:space:]]+${gh_action})|((scripts|tools|bin)/([.]/)*${release_script_name}))"
+  local env_chdir_protected="${command_start}${command_wrapper_prefix}env[[:space:]]+[^;|&]*(-C[[:space:]]+|--chdir([=[:space:]]+))[^;|&]*((${executable_path}git[[:space:]]+[^;|&]*(commit|tag|push))|(${executable_path}gh[[:space:]]+[^;|&]*release[[:space:]]+${gh_action})|((scripts|tools|bin)/([.]/)*${release_script_name}))"
   local gh_inherited_selector=false
   if [ -n "${GH_REPO:-}" ] || [ -n "${GH_HOST:-}" ]; then
     gh_inherited_selector=true
+  fi
+  local git_inherited_selector=false
+  if [ -n "${GIT_ALTERNATE_OBJECT_DIRECTORIES:-}" ] \
+    || [ -n "${GIT_COMMON_DIR:-}" ] \
+    || [ -n "${GIT_CONFIG_COUNT:-}" ] \
+    || [ -n "${GIT_CONFIG_PARAMETERS:-}" ] \
+    || [ -n "${GIT_DIR:-}" ] \
+    || [ -n "${GIT_INDEX_FILE:-}" ] \
+    || [ -n "${GIT_NAMESPACE:-}" ] \
+    || [ -n "${GIT_OBJECT_DIRECTORY:-}" ] \
+    || [ -n "${GIT_WORK_TREE:-}" ]; then
+    git_inherited_selector=true
   fi
 
   if command -v python3 >/dev/null 2>&1; then
@@ -196,9 +236,68 @@ import re
 import shlex
 
 command = os.environ["COMMAND_TEXT"]
+
+def strip_shell_comments_preserving_newlines(value):
+    output = []
+    quote = None
+    escaped = False
+    in_comment = False
+    word_start = True
+    command_boundaries = ";|&(){}<>\n"
+
+    for character in value:
+        if in_comment:
+            if character == "\n":
+                output.append(character)
+                in_comment = False
+                word_start = True
+            continue
+        if escaped:
+            output.append(character)
+            escaped = False
+            word_start = False
+            continue
+        if quote == "'":
+            output.append(character)
+            if character == quote:
+                quote = None
+            continue
+        if quote == '"':
+            output.append(character)
+            if character == "\\":
+                escaped = True
+            elif character == quote:
+                quote = None
+            continue
+        if character == "\\":
+            output.append(character)
+            escaped = True
+            continue
+        if character in {"'", '"'}:
+            output.append(character)
+            quote = character
+            word_start = False
+            continue
+        if character == "#" and word_start:
+            in_comment = True
+            continue
+        output.append(character)
+        word_start = character.isspace() or character in command_boundaries
+
+    return "".join(output)
+
 try:
-    lexer = shlex.shlex(command, posix=True, punctuation_chars=True)
+    # Newlines are shell command separators, not ordinary whitespace. Keep
+    # them as tokens so a read-only command cannot hide a protected command on
+    # the following line. Quoted newlines remain part of the quoted token.
+    lexer = shlex.shlex(
+        strip_shell_comments_preserving_newlines(command),
+        posix=True,
+        punctuation_chars="();<>|&\n",
+    )
+    lexer.whitespace = " \t\r"
     lexer.whitespace_split = True
+    lexer.commenters = ""
     tokens = list(lexer)
 except ValueError:
     tokens = command.split()
@@ -213,10 +312,33 @@ def emit(event, cwd="."):
 def is_version_tag(value):
     return bool(re.match(r"^v?\d+(?:\.\d+){1,3}(?:[-+][A-Za-z0-9_.-]+)?$", value))
 
-env_assignment = re.compile(r"^([A-Z_][A-Z0-9_]*)=")
+env_assignment = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)=")
 mutating_gh_release_actions = {"create", "edit", "upload", "delete", "delete-asset"}
-shell_separators = {";", "&&", "||", "|", "|&", "&"}
-selector_names = {"GH_REPO", "GH_HOST"}
+shell_separators = {";", "&&", "||", "|", "|&", "&", "(", ")", "\n"}
+gh_selector_names = {"GH_REPO", "GH_HOST"}
+git_selector_names = {
+    "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+    "GIT_COMMON_DIR",
+    "GIT_CONFIG_COUNT",
+    "GIT_CONFIG_PARAMETERS",
+    "GIT_DIR",
+    "GIT_INDEX_FILE",
+    "GIT_NAMESPACE",
+    "GIT_OBJECT_DIRECTORY",
+    "GIT_WORK_TREE",
+}
+selector_names = gh_selector_names | git_selector_names
+leading_shell_words = {"!", "{", "}", "if", "then", "elif", "else", "while", "until", "do"}
+
+def is_git_selector_name(name):
+    return name in git_selector_names or name.startswith("GIT_CONFIG_KEY_") or name.startswith("GIT_CONFIG_VALUE_")
+
+def command_name(token):
+    return os.path.basename(token) if "/" in token else token
+
+def resolve_cwd(current, target):
+    expanded = os.path.expanduser(target)
+    return expanded if os.path.isabs(expanded) else os.path.normpath(os.path.join(current, expanded))
 
 def command_args(start):
     args = []
@@ -226,33 +348,204 @@ def command_args(start):
         args.append(token)
     return args
 
+def git_invocation(index, default_cwd="."):
+    cursor = index + 1
+    cwd = default_cwd
+    unsafe_selector = False
+    while cursor < len(tokens):
+        current = tokens[cursor]
+        if current in shell_separators:
+            return None, [], cwd, unsafe_selector
+        if current == "-C" and cursor + 1 < len(tokens):
+            target = tokens[cursor + 1]
+            cwd = target if os.path.isabs(target) else os.path.normpath(os.path.join(cwd, target))
+            cursor += 2
+            continue
+        if current.startswith("-C") and len(current) > 2:
+            target = current[2:]
+            cwd = target if os.path.isabs(target) else os.path.normpath(os.path.join(cwd, target))
+            cursor += 1
+            continue
+        if current in {
+            "-c",
+            "--config-env",
+            "--exec-path",
+            "--git-dir",
+            "--namespace",
+            "--work-tree",
+        } and cursor + 1 < len(tokens):
+            unsafe_selector = True
+            cursor += 2
+            continue
+        if current == "--bare" or (current.startswith("-c") and len(current) > 2):
+            unsafe_selector = True
+            cursor += 1
+            continue
+        if current.startswith(
+            ("--config-env=", "--exec-path=", "--git-dir=", "--namespace=", "--work-tree=")
+        ):
+            unsafe_selector = True
+            cursor += 1
+            continue
+        if current.startswith("-"):
+            cursor += 1
+            continue
+        return current, command_args(cursor + 1), cwd, unsafe_selector
+    return None, [], cwd, unsafe_selector
+
 def assignment_parts(token):
     match = env_assignment.match(token)
     if match:
         return match.group(1), token[match.end():]
     return None, None
 
-def gh_command_has_selector(index):
-    active_selectors = {name for name in selector_names if os.environ.get(name)}
+def command_segment_start(index):
     start = index
     while start > 0 and tokens[start - 1] not in shell_separators:
         start -= 1
-    cursor = start
-    while cursor < index:
-        name, value = assignment_parts(tokens[cursor])
-        if name is None:
-            break
-        if name in selector_names:
-            if value:
-                active_selectors.add(name)
-            else:
-                active_selectors.discard(name)
-        cursor += 1
-    return bool(active_selectors)
+    return start
 
-def gh_release_event(index):
+def update_selector(active_selectors, token):
+    name, value = assignment_parts(token)
+    if name not in selector_names and not (name and is_git_selector_name(name)):
+        return
+    if value:
+        active_selectors.add(name)
+    else:
+        active_selectors.discard(name)
+
+def command_prefix_state(index, default_cwd="."):
+    start = command_segment_start(index)
+    cursor = start
+    active_selectors = {
+        name
+        for name, value in os.environ.items()
+        if value and (name in selector_names or is_git_selector_name(name))
+    }
+    effective_cwd = default_cwd
+
+    while cursor < index and tokens[cursor] in leading_shell_words:
+        cursor += 1
+
+    while cursor < index and env_assignment.match(tokens[cursor]):
+        update_selector(active_selectors, tokens[cursor])
+        cursor += 1
+
+    while cursor < index:
+        wrapper = command_name(tokens[cursor])
+        if wrapper in leading_shell_words:
+            cursor += 1
+            continue
+        if wrapper == "command":
+            cursor += 1
+            while cursor < index and tokens[cursor] in {"-p", "-v", "-V", "--"}:
+                cursor += 1
+            continue
+        if wrapper == "env":
+            cursor += 1
+            parse_options = True
+            while cursor < index:
+                arg = tokens[cursor]
+                if parse_options and arg == "--":
+                    parse_options = False
+                    cursor += 1
+                    continue
+                if parse_options and arg in {"-i", "--ignore-environment"}:
+                    active_selectors.clear()
+                    cursor += 1
+                    continue
+                if parse_options and arg in {"-u", "--unset"} and cursor + 1 < index:
+                    active_selectors.discard(tokens[cursor + 1])
+                    cursor += 2
+                    continue
+                if parse_options and (arg.startswith("--unset=") or (arg.startswith("-u") and len(arg) > 2)):
+                    active_selectors.discard(arg.split("=", 1)[1] if "=" in arg else arg[2:])
+                    cursor += 1
+                    continue
+                if parse_options and arg in {"-C", "--chdir"} and cursor + 1 < index:
+                    effective_cwd = resolve_cwd(effective_cwd, tokens[cursor + 1])
+                    cursor += 2
+                    continue
+                if parse_options and arg.startswith("--chdir="):
+                    effective_cwd = resolve_cwd(effective_cwd, arg.split("=", 1)[1])
+                    cursor += 1
+                    continue
+                if parse_options and arg in {"-S", "--split-string"} and cursor + 1 < index:
+                    cursor += 2
+                    continue
+                if parse_options and arg.startswith("--split-string="):
+                    cursor += 1
+                    continue
+                if parse_options and arg.startswith("-"):
+                    cursor += 1
+                    continue
+                if env_assignment.match(arg):
+                    update_selector(active_selectors, arg)
+                    cursor += 1
+                    continue
+                break
+            continue
+        if wrapper == "exec":
+            cursor += 1
+            while cursor < index:
+                arg = tokens[cursor]
+                if arg in {"-a"} and cursor + 1 < index:
+                    cursor += 2
+                    continue
+                if arg in {"-c", "-l", "--"}:
+                    cursor += 1
+                    continue
+                break
+            continue
+        if wrapper == "nohup":
+            cursor += 1
+            if cursor < index and tokens[cursor] == "--":
+                cursor += 1
+            continue
+        if wrapper == "nice":
+            cursor += 1
+            while cursor < index:
+                arg = tokens[cursor]
+                if arg in {"-n", "--adjustment"} and cursor + 1 < index:
+                    cursor += 2
+                    continue
+                if arg.startswith("--adjustment=") or re.match(r"^-[0-9]+$", arg):
+                    cursor += 1
+                    continue
+                if arg == "--":
+                    cursor += 1
+                    continue
+                break
+            continue
+        if wrapper == "time":
+            cursor += 1
+            while cursor < index:
+                arg = tokens[cursor]
+                if arg in {"-f", "--format", "-o", "--output"} and cursor + 1 < index:
+                    cursor += 2
+                    continue
+                if arg.startswith("--format=") or arg.startswith("--output="):
+                    cursor += 1
+                    continue
+                if arg in {"-a", "--append", "-p", "--portability", "-v", "--verbose", "--quiet", "-q", "--"}:
+                    cursor += 1
+                    continue
+                break
+            continue
+        break
+    return cursor == index, active_selectors, effective_cwd
+
+def is_command_token(index, default_cwd="."):
+    is_command, _selectors, _effective_cwd = command_prefix_state(index, default_cwd)
+    return is_command
+
+def gh_command_has_selector(index, default_cwd="."):
+    _is_command, active_selectors, _effective_cwd = command_prefix_state(index, default_cwd)
+    return bool(active_selectors & gh_selector_names)
+
+def gh_release_event(index, default_cwd="."):
     cursor = index + 1
-    has_repo_flag = gh_command_has_selector(index)
+    has_repo_flag = gh_command_has_selector(index, default_cwd)
     # Step 1: skip leading global flags to find the gh subcommand.
     while cursor < len(tokens):
         arg = tokens[cursor]
@@ -382,78 +675,340 @@ def git_tag_is_mutation(args):
 
     return False
 
-for index, token in enumerate(tokens):
-    if token == "gh" and gh_release_event(index) == "release_remote":
-        emit("release_remote")
+def git_commit_has_implicit_staging(args):
+    implicit_long = {
+        "--all",
+        "--include",
+        "--interactive",
+        "--only",
+        "--patch",
+        "--pathspec-file-nul",
+        "--pathspec-from-file",
+    }
+    long_value_options = {
+        "--author",
+        "--cleanup",
+        "--date",
+        "--file",
+        "--fixup",
+        "--gpg-sign",
+        "--message",
+        "--reedit-message",
+        "--reuse-message",
+        "--squash",
+        "--template",
+        "--trailer",
+    }
+    short_value_options = {"C", "F", "c", "m", "t"}
+    implicit_short = {"a", "i", "o", "p"}
+    cursor = 0
+    literal_args = False
+    while cursor < len(args):
+        arg = args[cursor]
+        if literal_args:
+            return True
+        if arg == "--":
+            literal_args = True
+            cursor += 1
+            continue
+        if arg.startswith("--"):
+            option = arg.split("=", 1)[0]
+            if option in implicit_long:
+                return True
+            if option in long_value_options and "=" not in arg:
+                cursor += 2
+            else:
+                cursor += 1
+            continue
+        if arg.startswith("-") and arg != "-":
+            cluster = arg[1:]
+            while cluster:
+                flag = cluster[0]
+                cluster = cluster[1:]
+                if flag in implicit_short:
+                    return True
+                if flag in short_value_options:
+                    if not cluster:
+                        cursor += 1
+                    cluster = ""
+            cursor += 1
+            continue
+        return True
+    return False
 
-shell_cwd = "."
-staged_repos = set()
+def git_push_is_release(args):
+    if any(arg in {"--tags", "--follow-tags", "--mirror"} for arg in args):
+        return True
+    for index, arg in enumerate(args):
+        normalized = arg.lstrip("+")
+        if "refs/tags/" in normalized:
+            return True
+        if is_version_tag(normalized):
+            return True
+        if arg == "tag" and index + 1 < len(args):
+            return True
+    return False
+
+def interpreter_script(executable, args):
+    name = os.path.basename(executable)
+    is_python = re.fullmatch(r"python(?:\d+(?:\.\d+)*)?", name) is not None
+    if name not in {"bash", "sh", "node"} and not is_python:
+        return executable, args
+
+    cursor = 0
+    while cursor < len(args):
+        arg = args[cursor]
+        if arg == "--":
+            cursor += 1
+            break
+        if name in {"bash", "sh"} and arg in {"-c", "--command"}:
+            return None, []
+        if is_python and arg in {"-c", "-m"}:
+            return None, []
+        if name == "node" and arg in {"-e", "--eval", "-p", "--print"}:
+            return None, []
+        option_has_value = (
+            (name in {"bash", "sh"} and arg in {"-O", "-o", "--rcfile", "--init-file"})
+            or (is_python and arg in {"-W", "-X", "--check-hash-based-pycs"})
+            or (name == "node" and arg in {"--require", "-r", "--import"})
+        )
+        if option_has_value and cursor + 1 < len(args):
+            cursor += 2
+            continue
+        if arg.startswith("-"):
+            cursor += 1
+            continue
+        break
+    if cursor >= len(args):
+        return None, []
+    return args[cursor], args[cursor + 1 :]
+
+def repo_release_script_event(executable, args, shell_cwd):
+    script, script_args = interpreter_script(executable, args)
+    if not script:
+        return None
+    candidate = script if os.path.isabs(script) else os.path.join(shell_cwd, script)
+    normalized = os.path.normpath(candidate)
+    parent = os.path.basename(os.path.dirname(normalized))
+    if parent not in {"scripts", "tools", "bin"}:
+        return None
+    name = os.path.basename(normalized)
+    for suffix in (".sh", ".py", ".js", ".ts"):
+        if name.endswith(suffix):
+            name = name[: -len(suffix)]
+            break
+    mutating_names = {
+        "bump-version",
+        "version",
+        "package",
+        "release",
+        "publish",
+        "promote",
+        "publish-release",
+        "promote-artifact",
+        "cut-release",
+    }
+    if name not in mutating_names:
+        return None
+    if name == "bump-version" and script_args in (["--check"], ["--audit"]):
+        return None
+    repo_hint = os.path.dirname(os.path.dirname(normalized))
+    return repo_hint
+
+def nested_shell_command(executable, args):
+    if command_name(executable) not in {"bash", "sh"}:
+        return None
+    cursor = 0
+    while cursor < len(args):
+        arg = args[cursor]
+        if arg in {"-c", "--command"} and cursor + 1 < len(args):
+            return args[cursor + 1]
+        if arg.startswith("-") and not arg.startswith("--") and "c" in arg[1:] and cursor + 1 < len(args):
+            return args[cursor + 1]
+        if arg == "--":
+            return None
+        if not arg.startswith("-"):
+            return None
+        cursor += 1
+    return None
+
+def nested_shell_has_protected_command(value):
+    executable = r"(?:[^ \t\r\n;|&(){}]+/)*"
+    boundary = r"(?:^|[;|&(){}\n][ \t]*)"
+    wrappers = (
+        r"(?:(?:(?:command|exec|nohup|time|env|if|then|elif|else|while|until|do)"
+        r"(?:[ \t]+-[^ \t;|&(){}]+)*[ \t]+)|"
+        r"(?:[A-Za-z_][A-Za-z0-9_]*=[^ \t;|&(){}]+[ \t]+))*"
+    )
+    protected = (
+        rf"{boundary}{wrappers}{executable}git[ \t]+[^;|&\n]*\b(?:commit|tag|push)\b"
+        rf"|{boundary}{wrappers}{executable}gh[ \t]+[^;|&\n]*\brelease\b[ \t]+(?:create|edit|upload|delete|delete-asset)\b"
+        rf"|{boundary}{wrappers}{executable}(?:scripts|tools|bin)/(?:\./)*(?:bump-version|version|package|release|publish|promote|publish-release|promote-artifact|cut-release)(?:\.(?:sh|py|js|ts))?\b"
+    )
+    return re.search(protected, value) is not None
+
+shell_cwd = os.getcwd()
+protected_events = []
+has_add = False
+has_commit = False
+has_implicit_commit = False
+has_mutating_tag = False
+has_push = False
+prior_command = False
+protected_has_prelude = False
+prefix_executables = {
+    "!",
+    "{",
+    "}",
+    "command",
+    "do",
+    "elif",
+    "else",
+    "env",
+    "exec",
+    "if",
+    "nice",
+    "nohup",
+    "then",
+    "time",
+    "until",
+    "while",
+}
+
 # Subshell-scoped `cd` is intentionally treated as outer-scope: over-blocking
 # is the safe direction when shell scope is ambiguous from tokens alone.
 for index, token in enumerate(tokens):
-    if token == "cd" and index + 1 < len(tokens):
-        next_cd = tokens[index + 1]
-        if os.path.isabs(next_cd):
-            shell_cwd = next_cd
-        else:
-            shell_cwd = os.path.normpath(os.path.join(shell_cwd, next_cd))
+    if token in shell_separators:
+        continue
+    is_command, active_selectors, effective_cwd = command_prefix_state(index, shell_cwd)
+    if not is_command:
         continue
 
-    if token == "git":
-        cursor = index + 1
-        cwd = shell_cwd
-        while cursor < len(tokens):
-            current = tokens[cursor]
-            if current == "-C" and cursor + 1 < len(tokens):
-                cwd = tokens[cursor + 1]
-                cursor += 2
-                continue
-            if current.startswith("-C") and len(current) > 2:
-                cwd = current[2:]
-                cursor += 1
-                continue
-            if current in {"-c", "--git-dir", "--work-tree", "--namespace"} and cursor + 1 < len(tokens):
-                cursor += 2
-                continue
-            if current.startswith("-"):
-                cursor += 1
-                continue
-            break
-        if cursor >= len(tokens):
+    args = command_args(index + 1)
+    executable = command_name(token)
+    if executable == "cd":
+        cd_args = [arg for arg in args if arg != "--"]
+        if cd_args:
+            shell_cwd = resolve_cwd(effective_cwd, cd_args[0])
+        continue
+
+    if executable == "git":
+        subcommand, rest, cwd, unsafe_global_selector = git_invocation(index, effective_cwd)
+        if subcommand is None:
             continue
-
-        subcommand = tokens[cursor]
-        rest = command_args(cursor + 1)
+        unsafe_selector = unsafe_global_selector or any(
+            is_git_selector_name(name) for name in active_selectors
+        )
         if subcommand == "add":
-            staged_repos.add(cwd)
-        if subcommand == "commit":
-            emit("commit", cwd)
-        if subcommand == "tag":
-            if git_tag_is_mutation(rest):
-                emit("release", cwd)
-        if subcommand == "push":
-            if any(arg in {"--tags", "--follow-tags"} for arg in rest) or any(is_version_tag(arg) for arg in rest):
-                emit("release", cwd)
+            has_add = True
+            prior_command = True
+        elif subcommand == "commit":
+            has_commit = True
+            has_implicit_commit = has_implicit_commit or git_commit_has_implicit_staging(rest)
+            protected_has_prelude = protected_has_prelude or prior_command
+            protected_events.append(("protected_git_selector" if unsafe_selector else "commit", cwd))
+        elif subcommand == "tag" and git_tag_is_mutation(rest):
+            has_mutating_tag = True
+            protected_has_prelude = protected_has_prelude or prior_command
+            protected_events.append(("protected_git_selector" if unsafe_selector else "release", cwd))
+        elif subcommand == "push":
+            has_push = True
+            if git_push_is_release(rest):
+                protected_has_prelude = protected_has_prelude or prior_command
+                protected_events.append(("protected_git_selector" if unsafe_selector else "release", cwd))
+            else:
+                prior_command = True
+        else:
+            prior_command = True
+        continue
 
-    if token == "gh":
-        event = gh_release_event(index)
-        if event == "release_remote":
-            emit("release_remote", shell_cwd)
-        if event == "release":
-            emit("release", shell_cwd)
+    if executable == "gh":
+        event = gh_release_event(index, shell_cwd)
+        if event:
+            protected_has_prelude = protected_has_prelude or prior_command
+            protected_events.append((event, effective_cwd))
+        else:
+            prior_command = True
+        continue
+
+    nested_command = nested_shell_command(token, args)
+    if nested_command is not None and nested_shell_has_protected_command(nested_command):
+        emit("protected_nested_shell", effective_cwd)
+
+    repo_hint = repo_release_script_event(token, args, effective_cwd)
+    if repo_hint is not None:
+        protected_has_prelude = protected_has_prelude or prior_command
+        protected_events.append(("release", repo_hint))
+        continue
+
+    if (
+        executable not in prefix_executables
+        and env_assignment.match(token) is None
+        and command_segment_start(index) == index
+    ):
+        prior_command = True
+
+# Receipt checks bind one reviewed operation. Reject protected compositions
+# before selecting an individual event so the first receipt can never authorize
+# a later protected phase in the same shell command.
+if any(event == "protected_git_selector" for event, _cwd in protected_events):
+    emit("protected_git_selector")
+if has_commit and has_push:
+    emit("combined_commit_push")
+if has_mutating_tag and has_push:
+    emit("combined_tag_push")
+if has_add and has_commit:
+    emit("combined_stage_commit", next(cwd for event, cwd in protected_events if event == "commit"))
+if has_implicit_commit:
+    emit("commit_implicit_stage", next(cwd for event, cwd in protected_events if event == "commit"))
+if any(event == "release_remote" for event, _cwd in protected_events):
+    emit("release_remote")
+if len(protected_events) > 1:
+    emit("combined_protected")
+if protected_has_prelude:
+    emit("protected_with_prelude")
+if protected_events:
+    emit(*protected_events[0])
 PY
     return
   fi
 
-  if printf '%s\n' "$command_text" | grep -Eq "$gh_mutating_release" \
+  if { [ "$git_inherited_selector" = true ] \
+      || printf '%s\n' "$command_text" | grep -Eq "${git_unsafe_global_selector}|${git_unsafe_env_selector}"; } \
+    && printf '%s\n' "$command_text" | grep -Eq "${git_commit_command}|${git_tag_command}|${git_push_tag_command}"; then
+    printf 'protected_git_selector\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$nested_shell_protected"; then
+    printf 'protected_nested_shell\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$env_chdir_protected"; then
+    printf 'protected_unresolved_repo\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$gh_mutating_release" \
     && { [ "$gh_inherited_selector" = true ] \
       || printf '%s\n' "$command_text" | grep -Eq "${gh_env_selector}|${gh_remote_mutating_release}"; }; then
     printf 'release_remote\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$git_redirected_protected"; then
+    printf 'protected_unresolved_repo\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$git_commit_command" \
+    && printf '%s\n' "$command_text" | grep -Eq "$git_push_command"; then
+    printf 'combined_commit_push\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$git_tag_command" \
+    && printf '%s\n' "$command_text" | grep -Eq "$git_push_command"; then
+    printf 'combined_tag_push\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$git_commit_command" \
+    && printf '%s\n' "$command_text" | grep -Eq "$release_command_pattern"; then
+    printf 'combined_protected\t.\n'
   elif printf '%s\n' "$command_text" | grep -Eq "$git_add_command.*$git_commit_command"; then
-    printf 'commit\t.\n'
+    printf 'combined_stage_commit\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "${git_commit_implicit}|${git_commit_pathspec}"; then
+    printf 'commit_implicit_stage\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$protected_after_separator" \
+    && ! printf '%s\n' "$command_text" | grep -Eq "$cd_only_protected"; then
+    printf 'protected_with_prelude\t.\n'
   elif printf '%s\n' "$command_text" | grep -Eq "$git_commit_command"; then
     printf 'commit\t.\n'
   elif printf '%s\n' "$command_text" | grep -Eq "$git_tag_command|$git_push_tag_command"; then
+    printf 'release\t.\n'
+  elif printf '%s\n' "$command_text" | grep -Eq "$repo_release_script" \
+    && ! printf '%s\n' "$command_text" | grep -Eq "$repo_release_read_only"; then
     printf 'release\t.\n'
   # gh release detection (degraded path, python3 unavailable): require release
   # to be the gh subcommand, optionally preceded by recognized global flags so
@@ -472,6 +1027,11 @@ Staff Engineer Mode PreToolUse protected commands:
 - release: git push tags
 - release: gh release create|edit|upload|delete|delete-asset ... for the current checkout
 - release_remote: gh release create|edit|upload|delete|delete-asset ... with --repo, -R, --hostname, GH_REPO, or GH_HOST
+- release: repo-local scripts/{bump-version,version,package,release,publish,promote} commands and the supported compound variants; only bump-version --check and --audit remain read-only
+- invalid composition: multiple protected operations, implicit commit staging/pathspecs, git commit plus git push, or a mutating git tag plus git push, in one shell command
+- invalid prelude: a protected operation after another command that may change receipt-bound state; a literal cd to the target checkout is allowed
+- invalid indirection: protected operations hidden inside nested shell command strings, where the hook cannot bind a receipt to the exact operation state
+- invalid Git state selector: protected Git operations that override the checkout, worktree, namespace, index, object storage, or configuration used by the receipt
 EOF
 }
 
@@ -496,14 +1056,33 @@ git_dir() {
 
 commit_key() {
   local repo="$1"
-  git -C "$repo" diff --cached --binary | hash_stdin
+  {
+    printf 'head\0'
+    git -C "$repo" rev-parse HEAD 2>/dev/null || printf 'no-head\n'
+    printf '\0staged\0'
+    git -C "$repo" diff --cached --binary
+  } | hash_stdin
 }
 
 release_key() {
   local repo="$1"
   {
+    printf 'head\0'
     git -C "$repo" rev-parse HEAD 2>/dev/null || printf 'no-head\n'
+    printf '\0staged\0'
     git -C "$repo" diff --cached --binary
+    printf '\0unstaged\0'
+    git -C "$repo" diff --binary
+    printf '\0untracked\0'
+    while IFS= read -r -d '' path; do
+      printf '%s\0' "$path"
+      if [ -x "$repo/$path" ]; then
+        printf 'executable\0'
+      else
+        printf 'non-executable\0'
+      fi
+      git -C "$repo" hash-object -- "$path" 2>/dev/null || printf 'unreadable\n'
+    done < <(git -C "$repo" ls-files --others --exclude-standard -z)
   } | hash_stdin
 }
 
@@ -618,7 +1197,44 @@ pretooluse() {
     block_tool "Staff Engineer Mode before_release policy: gh --repo / -R / --hostname / GH_REPO / GH_HOST targets a remote repository or host, not just the local checkout. A local release receipt cannot authorize a cross-repo release. To proceed, remove the remote repo or host selector and run gh release from the target repository's checkout (so the local release-build-reproducibility and production-readiness-review checks plus release receipt apply), or temporarily disable this hook with explicit user authorization."
   fi
 
-  repo="$(repo_root "$repo_hint")" || repo="$(repo_root ".")" || exit 0
+  if [ "$event" = "protected_git_selector" ]; then
+    block_tool "Staff Engineer Mode event policy cannot bind a commit or release receipt when Git repository, worktree, namespace, index, object storage, or configuration selectors override the checkout state. Remove alternate Git flags and GIT_* selector variables, enter the intended checkout normally, refresh the matching review and receipt there, and run the protected Git command directly."
+  fi
+
+  if [ "$event" = "combined_commit_push" ]; then
+    block_tool "Staff Engineer Mode before_commit policy requires commit and push commands to run as separate shell commands. A commit review receipt authorizes only the commit operation; it never authorizes a push composed into the same command. Run the reviewed commit first, inspect its result, then run push separately if the user has requested it."
+  fi
+
+  if [ "$event" = "combined_tag_push" ]; then
+    block_tool "Staff Engineer Mode before_release policy requires tag and push commands to run as separate shell commands. A release review receipt authorizes only one release phase at a time; it never authorizes creating and pushing a tag in the same command. Create the reviewed tag first, inspect its result, then push the tag separately."
+  fi
+
+  if [ "$event" = "combined_protected" ]; then
+    block_tool "Staff Engineer Mode event policy blocks multiple protected operations in one shell command. Review and run commit, tag, package, promotion, and release operations as separate shell commands so each operation is checked against the exact local state it will consume."
+  fi
+
+  if [ "$event" = "protected_with_prelude" ]; then
+    block_tool "Staff Engineer Mode event policy cannot authorize a protected operation after a preceding command in the same shell invocation because that command may change the state bound to the receipt. Each operation must run in its own shell command: inspect the first result, refresh the matching review and receipt if state changed, then run the commit, tag, package, promotion, or release operation directly. Do not combine the ack command with the commit command. Do not combine the ack command with the release command. Run the operations as separate shell commands. A literal cd to the target checkout may remain in the protected invocation."
+  fi
+
+  if [ "$event" = "protected_unresolved_repo" ]; then
+    block_tool "Staff Engineer Mode event policy cannot safely resolve a protected command's target repository without Python shell parsing. Run cd to the intended checkout as a separate shell command, then retry the commit, tag, or push without git -C so the receipt is checked against the correct repository."
+  fi
+
+  if [ "$event" = "protected_nested_shell" ]; then
+    block_tool "Staff Engineer Mode event policy cannot safely bind a receipt to a protected operation hidden inside a nested shell command. Run the commit, tag, push, package, promotion, or release command directly in its own shell invocation so the hook can resolve the target checkout and exact state."
+  fi
+
+  if repo="$(repo_root "$repo_hint")"; then
+    :
+  else
+    local physical_pwd
+    physical_pwd="$(pwd -P 2>/dev/null || printf '%s\n' "$PWD")"
+    if [ "$repo_hint" != "." ] && [ "$repo_hint" != "$PWD" ] && [ "$repo_hint" != "$physical_pwd" ]; then
+      block_tool "Staff Engineer Mode event policy cannot safely resolve the protected command's target repository (${repo_hint}). Use a literal checkout path, run cd as a separate shell command when the path depends on shell expansion, and retry so the receipt is checked against the repository the command will actually modify."
+    fi
+    repo="$(repo_root ".")" || exit 0
+  fi
   local quoted_repo
   quoted_repo="$(shell_quote "$repo")"
   local has_ai_attribution=false
@@ -629,11 +1245,14 @@ pretooluse() {
   fi
 
   case "$event" in
-    commit)
+    commit|combined_stage_commit|commit_implicit_stage)
       if [ "$has_ai_attribution" = true ]; then
         block_tool "Staff Engineer Mode before_commit policy blocks AI assistant co-author or attribution trailers in commit messages. Remove the AI co-author or attribution, then retry through the normal user-visible agent-pr-review and ack commit flow for ${repo}."
       fi
-      if command_stages_before_commit "$command_text"; then
+      if [ "$event" = "commit_implicit_stage" ]; then
+        block_tool "Staff Engineer Mode before_commit policy requires agent-pr-review and cannot authorize implicit staging or commit pathspecs from a staged-diff receipt. You must stage intended changes separately, review the exact staged diff for ${repo}, record a matching commit receipt, and then run a plain git commit command without --all, --include, --only, --interactive, --patch, or path arguments."
+      fi
+      if [ "$event" = "combined_stage_commit" ] || command_stages_before_commit "$command_text"; then
         block_tool "Staff Engineer Mode before_commit policy requires agent-pr-review before running git commit. Stage intended files explicitly in a separate shell command, read ${PLUGIN_ROOT}/specialists/agent-pr-review.md, and review the exact staged diff for ${repo}; inspecting git diff --cached or reading CLAUDE.md / SKILL.md alone is not enough. Show the structured review artifact to the user before any receipt. If the review is clean, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} as its own shell command. Do not combine staging, ack, or git commit in one shell command; the PreToolUse hook checks the whole shell command before any subcommand can run. If the user explicitly accepts unresolved gaps after they are shown, run \"${PLUGIN_ROOT}/hooks/agent-event-policy\" ack commit --repo ${quoted_repo} --override \"<rationale>\" as its own shell command. Then retry git commit in a separate shell command."
       fi
       local key

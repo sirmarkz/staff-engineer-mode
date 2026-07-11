@@ -6,6 +6,7 @@ import json
 import os
 import queue
 import re
+import signal
 import shlex
 import shutil
 import subprocess
@@ -62,6 +63,20 @@ class CommandAttempt:
 class CodexProbeEnvironment:
     env: dict[str, str]
     root: Path
+    sensitive_values: tuple[str, ...] = ()
+
+
+def terminate_process_group(process: subprocess.Popen[str]) -> None:
+    try:
+        if os.name == "posix":
+            # A child may keep inherited pipes open after the session leader
+            # exits, so kill the process group even when poll() reports the
+            # direct process has already finished.
+            os.killpg(process.pid, signal.SIGKILL)
+        elif process.poll() is None:
+            process.kill()
+    except ProcessLookupError:
+        pass
 
 
 def run(
@@ -75,16 +90,32 @@ def run(
     process_env = os.environ.copy()
     if env is not None:
         process_env.update(env)
-    return subprocess.run(
+    process = subprocess.Popen(
         args,
         cwd=cwd,
         env=process_env,
-        input=input_text,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
         text=True,
-        capture_output=True,
-        check=False,
-        timeout=timeout,
+        start_new_session=os.name == "posix",
     )
+    try:
+        stdout, stderr = process.communicate(input=input_text, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        terminate_process_group(process)
+        stdout, stderr = process.communicate()
+        raise subprocess.TimeoutExpired(
+            args,
+            timeout,
+            output=stdout,
+            stderr=stderr,
+        ) from None
+    except BaseException:
+        terminate_process_group(process)
+        process.communicate()
+        raise
+    return subprocess.CompletedProcess(args, process.returncode, stdout, stderr)
 
 
 def git(repo: Path, *args: str) -> str:
@@ -95,6 +126,7 @@ def git(repo: Path, *args: str) -> str:
 
 
 def make_repo(root: Path, event: str) -> Path:
+    root = root.expanduser().resolve()
     repo = root / "repo"
     git_root = repo
     run(["git", "init", "-b", "main", str(repo)], cwd=root, timeout=30)
@@ -201,10 +233,36 @@ def codex_agent_message_block_command(text: str) -> str | None:
     return None
 
 
+def unwrap_shell_command(command: str) -> str:
+    try:
+        argv = shlex.split(command)
+    except ValueError:
+        return command
+    if len(argv) >= 3 and Path(argv[0]).name in {"bash", "sh"} and argv[1] in {"-lc", "-c"}:
+        return argv[2]
+    return command
+
+
 def command_attempts_from_log(text: str) -> list[CommandAttempt]:
     by_item_id: dict[str, CommandAttempt] = {}
     order: list[str] = []
     has_sem_marker = '"sem_hook_probe_denials"' in text
+    native_denial_commands: set[str] = set()
+
+    for line in text.splitlines():
+        try:
+            value = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(value, dict):
+            continue
+        for denial in value.get("permission_denials", []):
+            if not isinstance(denial, dict):
+                continue
+            tool_input = denial.get("tool_input")
+            command = tool_input.get("command") if isinstance(tool_input, dict) else None
+            if isinstance(command, str):
+                native_denial_commands.add(unwrap_shell_command(command))
 
     def ensure_attempt(item_id: str, command: str) -> CommandAttempt:
         if item_id not in by_item_id:
@@ -248,12 +306,16 @@ def command_attempts_from_log(text: str) -> list[CommandAttempt]:
                     tool_use_id = content.get("tool_use_id")
                     if isinstance(tool_use_id, str) and content.get("is_error") is True:
                         mark_failed(tool_use_id, blocked=True)
-            for denial in [*value.get("permission_denials", []), *value.get("sem_hook_probe_denials", [])]:
-                if not isinstance(denial, dict):
-                    continue
-                tool_input = denial.get("tool_input")
-                command = tool_input.get("command") if isinstance(tool_input, dict) else None
-                if isinstance(denial.get("tool_use_id"), str) and isinstance(command, str):
+            for key in ("permission_denials", "sem_hook_probe_denials"):
+                for denial in value.get(key, []):
+                    if not isinstance(denial, dict):
+                        continue
+                    tool_input = denial.get("tool_input")
+                    command = tool_input.get("command") if isinstance(tool_input, dict) else None
+                    if not isinstance(command, str) or not isinstance(denial.get("tool_use_id"), str):
+                        continue
+                    if key == "sem_hook_probe_denials" and unwrap_shell_command(command) in native_denial_commands:
+                        continue
                     ensure_attempt(denial["tool_use_id"], command)
                     mark_failed(denial["tool_use_id"], blocked=True)
             item = value.get("item")
@@ -278,16 +340,6 @@ def command_attempts_from_log(text: str) -> list[CommandAttempt]:
 
 def commands_from_log(text: str) -> list[str]:
     return [attempt.command for attempt in command_attempts_from_log(text)]
-
-
-def unwrap_shell_command(command: str) -> str:
-    try:
-        argv = shlex.split(command)
-    except ValueError:
-        return command
-    if len(argv) >= 3 and Path(argv[0]).name in {"bash", "sh"} and argv[1] in {"-lc", "-c"}:
-        return argv[2]
-    return command
 
 
 def command_matches_expected(observed: str, expected: str) -> bool:
@@ -341,7 +393,7 @@ def is_allowed_sem_file_read(argv: list[str], allowed_paths: list[str]) -> bool:
         return (
             len(argv) >= 4
             and argv[1] == "-n"
-            and re.fullmatch(r"\d+(?:,\d+)?p", argv[2]) is not None
+            and re.fullmatch(r"\d+(?:,(?:\d+|\$))?p", argv[2]) is not None
             and all(is_allowed_path_arg(arg, allowed_paths) for arg in argv[3:])
         )
     if tool == "wc":
@@ -363,7 +415,8 @@ def is_allowed_sem_file_read(argv: list[str], allowed_paths: list[str]) -> bool:
 
 def is_allowed_sem_prelude(command: str, probe: Probe) -> bool:
     command = unwrap_shell_command(command)
-    if any(marker in command for marker in ("|", "`", "$", "<", "\n", "{", "}", "*", "?", "~", "[", "]")):
+    syntax_check = command.replace("1,$p", "")
+    if any(marker in syntax_check for marker in ("|", "`", "$", "<", "\n", "{", "}", "*", "?", "~", "[", "]")):
         return False
     if probe.event == "commit":
         allowed_paths = [
@@ -643,6 +696,7 @@ def app_server_request(
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
+        start_new_session=os.name == "posix",
     )
     assert process.stdin is not None
     assert process.stdout is not None
@@ -667,24 +721,27 @@ def app_server_request(
         process.stdin.write(json.dumps(message) + "\n")
         process.stdin.flush()
 
-    send(
-        {
-            "id": init_id,
-            "method": "initialize",
-            "params": {
-                "clientInfo": {"name": "sem-live-hook-probes", "title": "SEM Live Hook Probes", "version": "0"},
-                "capabilities": {
-                    "experimentalApi": True,
-                    "requestAttestation": False,
-                    "optOutNotificationMethods": [],
-                },
-            },
-        }
-    )
-
     sent_request = False
     deadline = time.monotonic() + timeout
     try:
+        send(
+            {
+                "id": init_id,
+                "method": "initialize",
+                "params": {
+                    "clientInfo": {
+                        "name": "sem-live-hook-probes",
+                        "title": "SEM Live Hook Probes",
+                        "version": "0",
+                    },
+                    "capabilities": {
+                        "experimentalApi": True,
+                        "requestAttestation": False,
+                        "optOutNotificationMethods": [],
+                    },
+                },
+            }
+        )
         while time.monotonic() < deadline:
             try:
                 stream_name, line = lines.get(timeout=0.1)
@@ -721,13 +778,16 @@ def app_server_request(
             process.stdin.close()
         except OSError:
             pass
-        if process.poll() is None:
-            process.terminate()
-            try:
-                process.wait(timeout=2)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait(timeout=2)
+        terminate_process_group(process)
+        try:
+            process.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=2)
+        stdout_thread.join(timeout=2)
+        stderr_thread.join(timeout=2)
+        process.stdout.close()
+        process.stderr.close()
 
 
 def codex_plugin_hooks(env: dict[str, str], *, cwd: Path, timeout: int) -> list[dict[str, object]]:
@@ -785,47 +845,131 @@ def checked_run(
     return completed
 
 
+def auth_sensitive_values(value: object) -> tuple[str, ...]:
+    values: set[str] = set()
+
+    def collect(current: object) -> None:
+        if isinstance(current, str):
+            if current:
+                values.add(current)
+        elif isinstance(current, dict):
+            for child in current.values():
+                collect(child)
+        elif isinstance(current, list):
+            for child in current:
+                collect(child)
+
+    collect(value)
+    return tuple(sorted(values, key=lambda item: (-len(item), item)))
+
+
+def redact_sensitive_text(text: str, sensitive_values: tuple[str, ...]) -> str:
+    for value in sensitive_values:
+        if value:
+            text = text.replace(value, "[REDACTED]")
+    return text
+
+
+def remove_probe_root_without_following(root: Path) -> None:
+    if not os.path.lexists(root):
+        return
+    if root.is_symlink() or not root.is_dir():
+        root.unlink()
+    else:
+        shutil.rmtree(root)
+
+
+def remove_copied_codex_auth(root: Path) -> None:
+    """Remove copied Codex credentials without traversing a replaced symlink."""
+    if not os.path.lexists(root):
+        return
+    home = root / "home"
+    codex_home = home / ".codex"
+    if root.is_symlink() or home.is_symlink() or codex_home.is_symlink():
+        remove_probe_root_without_following(root)
+        return
+
+    directory_flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+    descriptors: list[int] = []
+    try:
+        root_fd = os.open(root, directory_flags)
+        descriptors.append(root_fd)
+        home_fd = os.open("home", directory_flags, dir_fd=root_fd)
+        descriptors.append(home_fd)
+        codex_fd = os.open(".codex", directory_flags, dir_fd=home_fd)
+        descriptors.append(codex_fd)
+        try:
+            os.unlink("auth.json", dir_fd=codex_fd)
+        except FileNotFoundError:
+            return
+    except FileNotFoundError:
+        return
+    except OSError as exc:
+        # Diagnostics are expendable; a copied credential is not. If direct
+        # removal fails, remove the entire probe home rather than retain it.
+        remove_probe_root_without_following(root)
+        if os.path.lexists(root):
+            raise RuntimeError(f"could not remove copied Codex credential under: {root}") from exc
+    finally:
+        for descriptor in reversed(descriptors):
+            os.close(descriptor)
+
+
 def prepare_codex_probe_environment(work_root: Path, *, timeout: int) -> CodexProbeEnvironment:
     root = codex_probe_root(work_root)
     user_home = root / "home"
     codex_home = user_home / ".codex"
     marketplace_root = root / "marketplace"
-    codex_home.mkdir(parents=True, exist_ok=True)
-    auth = source_codex_home() / "auth.json"
-    if auth.exists():
-        shutil.copy2(auth, codex_home / "auth.json")
-    fallback_install = codex_home / "staff-engineer-mode"
+    sensitive_values: tuple[str, ...] = ()
     try:
-        os.symlink(ROOT, fallback_install, target_is_directory=True)
-    except OSError:
-        if not fallback_install.exists():
-            shutil.copytree(
-                ROOT,
-                fallback_install,
-                ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache", ".mypy_cache"),
-            )
+        codex_home.mkdir(parents=True, exist_ok=True)
+        auth = source_codex_home() / "auth.json"
+        if auth.exists():
+            try:
+                auth_data = json.loads(auth.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as exc:
+                raise RuntimeError(f"could not safely read Codex auth data from {auth}") from exc
+            sensitive_values = auth_sensitive_values(auth_data)
+            shutil.copy2(auth, codex_home / "auth.json")
+        fallback_install = codex_home / "staff-engineer-mode"
+        try:
+            os.symlink(ROOT, fallback_install, target_is_directory=True)
+        except OSError:
+            if not fallback_install.exists():
+                shutil.copytree(
+                    ROOT,
+                    fallback_install,
+                    ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache", ".mypy_cache"),
+                )
 
-    write_codex_local_marketplace(marketplace_root)
-    env = {"HOME": str(user_home), "CODEX_HOME": str(codex_home)}
-    checked_run(
-        ["codex", "plugin", "marketplace", "add", str(marketplace_root)],
-        cwd=ROOT,
-        env=env,
-        timeout=timeout,
-        label="codex local marketplace setup",
-    )
-    checked_run(
-        ["codex", "plugin", "add", "staff-engineer-mode@staff-engineer-mode"],
-        cwd=ROOT,
-        env=env,
-        timeout=timeout,
-        label="codex local plugin install",
-    )
-    hooks = codex_plugin_hooks(env, cwd=ROOT, timeout=timeout)
-    trusted = append_codex_hook_trust(codex_home / "config.toml", hooks)
-    if not any("pre_tool_use" in key for key in trusted):
-        raise RuntimeError("codex local plugin install did not expose a trusted PreToolUse hook")
-    return CodexProbeEnvironment(env=env, root=root)
+        write_codex_local_marketplace(marketplace_root)
+        env = {"HOME": str(user_home), "CODEX_HOME": str(codex_home)}
+        checked_run(
+            ["codex", "plugin", "marketplace", "add", str(marketplace_root)],
+            cwd=ROOT,
+            env=env,
+            timeout=timeout,
+            label="codex local marketplace setup",
+        )
+        checked_run(
+            ["codex", "plugin", "add", "staff-engineer-mode@staff-engineer-mode"],
+            cwd=ROOT,
+            env=env,
+            timeout=timeout,
+            label="codex local plugin install",
+        )
+        hooks = codex_plugin_hooks(env, cwd=ROOT, timeout=timeout)
+        trusted = append_codex_hook_trust(codex_home / "config.toml", hooks)
+        if not any("pre_tool_use" in key for key in trusted):
+            raise RuntimeError("codex local plugin install did not expose a trusted PreToolUse hook")
+        return CodexProbeEnvironment(env=env, root=root, sensitive_values=sensitive_values)
+    except BaseException as exc:
+        remove_copied_codex_auth(root)
+        if isinstance(exc, Exception) and sensitive_values:
+            sanitized = redact_sensitive_text(str(exc), sensitive_values)
+            if sanitized != str(exc):
+                raise RuntimeError(sanitized) from None
+        raise
 
 
 def run_codex(
@@ -858,23 +1002,43 @@ def run_probe(
     args: argparse.Namespace,
     work_root: Path,
     codex_base_env: dict[str, str] | None = None,
+    sensitive_values: tuple[str, ...] = (),
 ) -> ProbeResult:
     probe_root = work_root / probe.name.replace(":", "-").replace(".", "_")
     probe_root.mkdir(parents=True, exist_ok=True)
     repo = make_repo(probe_root, probe.event)
     commands = shell_for_probe(repo, probe.event, probe.probe)
     prompt = prompt_for(commands, probe, repo)
-
-    if probe.host == "claude":
-        completed = run_claude(probe, repo, prompt, args)
-    else:
-        completed = run_codex(probe, repo, prompt, args, codex_base_env)
-
     log_path = probe_root / f"{probe.host}.log"
+
+    try:
+        if probe.host == "claude":
+            completed = run_claude(probe, repo, prompt, args)
+        else:
+            completed = run_codex(probe, repo, prompt, args, codex_base_env)
+    except subprocess.TimeoutExpired as exc:
+        def timeout_text(value: str | bytes | None) -> str:
+            if value is None:
+                return ""
+            if isinstance(value, bytes):
+                return value.decode("utf-8", errors="replace")
+            return value
+
+        text = timeout_text(exc.stdout) + timeout_text(exc.stderr)
+        marker_log = marker_denial_log(repo)
+        if marker_log:
+            text = f"{text}\n{marker_log}\n"
+        log_path.write_text(
+            redact_sensitive_text(text, sensitive_values),
+            encoding="utf-8",
+        )
+        return ProbeResult(probe, False, f"host timed out after {exc.timeout} seconds", log_path)
+
     text = completed.stdout + completed.stderr
     marker_log = marker_denial_log(repo)
     if marker_log:
         text = f"{text}\n{marker_log}\n"
+    text = redact_sensitive_text(text, sensitive_values)
     log_path.write_text(text, encoding="utf-8")
     if completed.returncode not in {0, 1}:
         return ProbeResult(probe, False, f"host exited {completed.returncode}", log_path)
@@ -898,7 +1062,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Run live Claude and Codex probes for Staff Engineer Mode commit/release hooks. "
-            "Defaults: Claude Opus 4.8 and Codex gpt-5.5 at high effort."
+            "Defaults: Claude Opus 4.8 and Codex gpt-5.6-terra at high effort."
         ),
     )
     parser.add_argument("--host", choices=("all", "claude", "codex"), default="all")
@@ -906,7 +1070,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--probe", choices=("all", "block", "allow"), default="all")
     parser.add_argument("--claude-model", default="claude-opus-4-8")
     parser.add_argument("--claude-effort", default="high")
-    parser.add_argument("--codex-model", default="gpt-5.5")
+    parser.add_argument("--codex-model", default="gpt-5.6-terra")
     parser.add_argument("--codex-effort", default="high")
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--work-dir", type=Path, default=None)
@@ -916,6 +1080,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if args.timeout < 1:
+        print("--timeout must be positive", file=sys.stderr)
+        return 2
     if not HOOK.exists():
         print(f"missing hook: {HOOK}", file=sys.stderr)
         return 2
@@ -931,7 +1098,7 @@ def main() -> int:
         work_root = Path(tempfile.mkdtemp(prefix="sem-live-hook-probes."))
         remove_work_root = True
     else:
-        work_root = args.work_dir
+        work_root = args.work_dir.expanduser().resolve()
         work_root.mkdir(parents=True, exist_ok=True)
 
     probes: list[Probe] = []
@@ -945,39 +1112,45 @@ def main() -> int:
                         probes.append(Probe(host, event, probe, model, effort))
 
     codex_probe_env: CodexProbeEnvironment | None = None
-    if any(probe.host == "codex" for probe in probes):
-        codex_probe_env = prepare_codex_probe_environment(work_root, timeout=args.timeout)
+    failed = True
+    try:
+        if any(probe.host == "codex" for probe in probes):
+            codex_probe_env = prepare_codex_probe_environment(work_root, timeout=args.timeout)
 
-    print(f"live hook probe work dir: {work_root}")
-    results = [
-        run_probe(
-            probe,
-            args,
-            work_root,
-            codex_probe_env.env if codex_probe_env is not None and probe.host == "codex" else None,
-        )
-        for probe in probes
-    ]
+        print(f"live hook probe work dir: {work_root}")
+        results = [
+            run_probe(
+                probe,
+                args,
+                work_root,
+                codex_probe_env.env if codex_probe_env is not None and probe.host == "codex" else None,
+                codex_probe_env.sensitive_values
+                if codex_probe_env is not None and probe.host == "codex"
+                else (),
+            )
+            for probe in probes
+        ]
 
-    failed = False
-    for result in results:
-        status = "PASS" if result.ok else "FAIL"
-        print(f"{status} {result.probe.name}: {result.details} (log: {result.log_path})")
-        failed = failed or not result.ok
+        failed = False
+        for result in results:
+            status = "PASS" if result.ok else "FAIL"
+            print(f"{status} {result.probe.name}: {result.details} (log: {result.log_path})")
+            failed = failed or not result.ok
 
-    keep_artifacts = args.keep_temp or failed
-    if codex_probe_env is not None:
-        if keep_artifacts:
-            print(f"kept codex probe home: {codex_probe_env.root}")
-        else:
-            shutil.rmtree(codex_probe_env.root, ignore_errors=True)
+        return 1 if failed else 0
+    finally:
+        keep_artifacts = args.keep_temp or failed
+        if codex_probe_env is not None:
+            remove_copied_codex_auth(codex_probe_env.root)
+            if keep_artifacts and codex_probe_env.root.exists():
+                print(f"kept codex probe home: {codex_probe_env.root}")
+            elif not keep_artifacts:
+                shutil.rmtree(codex_probe_env.root, ignore_errors=True)
 
-    if remove_work_root and (args.keep_temp or failed):
-        print(f"kept probe work dir: {work_root}")
-    elif remove_work_root:
-        shutil.rmtree(work_root)
-
-    return 1 if failed else 0
+        if remove_work_root and keep_artifacts:
+            print(f"kept probe work dir: {work_root}")
+        elif remove_work_root:
+            shutil.rmtree(work_root)
 
 
 if __name__ == "__main__":

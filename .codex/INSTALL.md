@@ -66,9 +66,9 @@ surfaces where lifecycle hooks are unavailable. The host PreToolUse hook is the
 command-interception layer; `hooks/agent-event-policy ack ...` records receipts
 and does not self-fail when command hooks are bypassed.
 
-Before creating or amending commits, the agent must stage separately, inspect
-the exact staged diff, read `agent-pr-review`, review the staged change, record
-the commit receipt, and then commit. Before tags, version bumps, hosted release
+Before creating or amending commits, the agent must read `agent-pr-review`,
+stage separately, inspect and review the exact staged diff, record the commit
+receipt, and then commit. Before tags, version bumps, hosted release
 records, packages, artifact publication, or promotion, the agent must read and
 apply both `release-build-reproducibility` and `production-readiness-review`,
 record the release receipt, and then run the release command.
@@ -78,9 +78,8 @@ record the release receipt, and then run the release command.
 To refresh to the latest marketplace metadata:
 
 ```bash
+codex plugin marketplace upgrade staff-engineer-mode
 codex plugin remove staff-engineer-mode@staff-engineer-mode
-codex plugin marketplace remove staff-engineer-mode
-codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 codex plugin add staff-engineer-mode@staff-engineer-mode
 ```
 

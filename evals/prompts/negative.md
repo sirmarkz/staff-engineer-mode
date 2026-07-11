@@ -344,7 +344,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 ### `privacy-and-data-lifecycle`
 
-- "Prove tenant-boundary isolation with cross-tenant access tests and blast-radius checks." (-> `tenant-isolation`)
+- "Verify that an authenticated support session cannot select another tenant by changing a caller-supplied identifier." (-> `tenant-isolation`)
 - "Draft a public blog post about privacy culture without engineering retention or deletion controls." (-> `none`)
 - "Define producer and consumer compatibility for a customer-profile event payload." (-> `data-contracts`)
 - "Model cross-tenant access tests for support tooling, with no retention or deletion scope." (-> `tenant-isolation`)
@@ -498,7 +498,7 @@ Prompts are grouped by the specialist that must not fire. The suffix gives the c
 
 ### `mobile-release-engineering`
 
-- "Plan browser release checks for loading, responsiveness, layout stability, runtime errors, and payload growth." (-> `web-release-gates`)
+- "Set browser journey budgets for loading, interaction readiness, layout shift, client errors, and bundle growth." (-> `web-release-gates`)
 - "Update the company phone reimbursement policy for employees." (-> `none`)
 - "Plan staged production exposure for a backend feature using canary metrics and rollback criteria." (-> `progressive-delivery`)
 - "Run app accessibility checks for a sign-in flow with screen reader blockers before release." (-> `accessibility-gates`)

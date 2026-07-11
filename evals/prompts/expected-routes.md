@@ -442,7 +442,7 @@ diffs.
 - "Inspect this reporting pipeline for figures with no designated authoritative source and lineage that stops at a system boundary."
 - "Trace where this dashboard number comes from end to end and tell me what must be recomputed if the upstream source was wrong."
 - "An auditor asks how this regulated metric was produced; build the lineage record from the figure back to its authoritative source."
-- "Test the restatement path after a bad upstream feed corrupted a source table; map the blast radius across the derived datasets, reports, and models."
+- "Build the provenance and recomputation blast-radius map for a restatement: authoritative source, derivation edges, downstream datasets, reports, and models."
 
 ### `ml-reliability-and-evaluation`
 

@@ -6,8 +6,7 @@ Operational rules for AI coding agents working in this repository.
 
 This repository publishes one native router skill and routed specialist files
 that guide engineering lifecycle, DevOps, operations, reliability, security,
-stability, and architecture work toward high-quality practices drawn from
-large-scale engineering organizations and public standards.
+stability, and architecture work using engineering best practices.
 
 The repository is not a generic process handbook. The router and specialist
 files should stay focused on building, shipping, securing, operating, and
@@ -19,7 +18,8 @@ maintaining complex software systems.
 | --- | --- |
 | `skills/staff-engineer-mode/SKILL.md` | The only native skill entrypoint exposed to plugin discovery. |
 | `specialists/<specialist-name>.md` | Routed specialist reference files loaded only after the router selects one. |
-| `skills/_shared/references/` | Shared source index, contract, synthesis notes, and other reusable reference material. |
+| `skills/_shared/references/` | Shared source index, skill contract, and reusable reference material. Runtime specialist prose intentionally omits citations. |
+| `DOCUMENTATION-LIFECYCLE.md` | Responsibility, source-of-truth, freshness, and staleness rules for critical repository documentation. |
 | `skills/_shared/assets/` | Reusable templates, checklists, and scaffolds used by skills. Template ownership is listed in `skills/_shared/assets/templates/README.md`. |
 | `evals/` | Router eval catalogs, adapter docs, and live harness entrypoints. These paths are not runtime skill guidance. |
 | `scripts/` | Deterministic validation and packaging helpers. No scripts may generate final skill prose. |
@@ -44,14 +44,17 @@ maintaining complex software systems.
   bodies from templates, tables, scripts, LLM batch output, or search summaries.
   Scripts may validate, move, package, or review skills, but must not be the
   source of truth for skill content.
-- Each specialist file must synthesize the relevant references. Read the source notes
-  and theme guidance, reconcile the tradeoffs, and write unambiguous operational
-  instructions a future agent can follow without guessing.
+- Each specialist file must reconcile relevant practices into unambiguous
+  operational instructions a future agent can follow without guessing. Runtime
+  prose intentionally omits citations and does not depend on unpublished source
+  notes or one-to-one claim mappings.
 - Keep only the router in the native `skills/` discovery namespace. Specialist
   guidance lives under `specialists/<specialist-name>.md` and is loaded by
   router instruction, not by plugin registry auto-discovery. Preserve thematic
   grouping through names, router language, and shared references rather than
   nested directories.
+- Treat released specialist slugs as compatibility interfaces. Prefer clarifying display titles, trigger descriptions, or README concern placement over renaming a slug. A released slug rename requires a major-version alias design, continued old-path support outside canonical specialist discovery, and a complete router, template, eval, documentation, and cross-host migration.
+- Treat README concern groups as browsing aids, not a router hierarchy. Runtime routing continues to use artifact, phase, surface, and risk.
 - Keep root tool context files thin. `CLAUDE.md` and `GEMINI.md` should
   reference this file and `skills/staff-engineer-mode/SKILL.md`, not duplicate
   routing, specialist-loading, or event-policy rules.
@@ -63,7 +66,7 @@ maintaining complex software systems.
 - Individual specialist files should state when not to use them, info to gather, workflow,
   synthesized defaults, exceptions, required outputs, checks before moving on, red flags,
   and common mistakes.
-- Normalize competing large-scale engineering practices into one blended default
+- Normalize competing engineering best practices into one blended default
   unless the context requires a named exception.
 - Do not force users to invoke individual specialists by name. The router must
   choose automatically from user intent, with conservative fallback behavior.
@@ -78,7 +81,8 @@ maintaining complex software systems.
 
 - Write docs for someone who has never seen the repository.
 - Keep documentation plain, direct, and technically accurate.
-- Cite source-index references from `skills/_shared/references/source-index.md`.
+- Maintain authoritative sources in `skills/_shared/references/source-index.md`.
+  Do not add citation or bibliography sections to runtime specialists.
 - Use authoritative sources: first-party engineering publications, official
   documentation, standards bodies, peer-reviewed papers, or widely cited
   practitioner references that originated the named pattern. Do not cite
@@ -89,16 +93,21 @@ maintaining complex software systems.
 
 ## Tests And Validation
 
-- Validation protects supported skill contracts, routing behavior, references,
-  source-index citations, templates, and artifact shape.
+- Validation protects supported skill contracts, routing behavior, source-index
+  freshness, templates, and artifact shape.
 - Avoid tests that only pin incidental wording, heading prose, bootstrap prose, or
   implementation churn with no supported contract. For hooks and bootstrap
   context, prefer behavioral checks such as clean exit, no stderr, valid
   structured output, routing surface, and protected-command effects over exact
   literal text assertions.
+- Unit tests must not use prose or arbitrary string constants as the behavior
+  under test. Assert parsed structure, stable identifiers, exit status, state
+  transitions, side effects, security properties, and failure classifications.
+  Exact wire tokens, canonical slugs, schema keys, and CLI options are allowed
+  only when changing the literal would break a supported compatibility contract.
 - Run repo-local validation scripts before committing skill changes.
 - Run `python3 scripts/validate_source_quality.py` before committing source-index
-  or citation changes.
+  changes.
 - Run `python3 scripts/validate_platform_support.py` before committing plugin
   manifest, install, README, LICENSE, or cross-tool packaging changes.
 - Router eval cases come from `evals/prompts/expected-routes.md` and
@@ -119,6 +128,9 @@ maintaining complex software systems.
 - Do not make live model evals a default CI or routine merge gate. Run them
   manually only when a change needs model-backed evidence, the user explicitly
   asks for them, or the release gate below applies.
+- Treat the specialist response harness as manual, non-gating lexical smoke
+  evidence. Review representative passing responses and every failing response;
+  do not promote lexical scores to semantic or release-gate evidence.
 - Any change to `hooks/`, hook manifests, event-policy guidance, or specialists
   that control commit/release behavior must clear live Claude and Codex hook
   probes before release. Test commit and release block paths plus
@@ -132,10 +144,10 @@ maintaining complex software systems.
 
 - Before tagging or publishing a release, run the one-command live release gate
   manually from the release checkout. Do not add this live gate to GitHub
-  Actions. It runs the hook probes once at high effort and 5 seeded random
-  specialist cases from the specialist portion of the 220-case router catalog
-  for Claude Opus 4.8 high and Codex `gpt-5.5` high. Any hook failure or
-  random-specialist eval failure aborts the release:
+  Actions. It runs hook probes plus seeded positive-route, boundary-category,
+  and router-contract slices for Claude Opus 4.8 high and Codex
+  `gpt-5.6-terra` high.
+  Any hook or eval failure aborts the release:
 
   ```bash
   python3 scripts/run_release_live_checks.py
@@ -176,10 +188,10 @@ maintaining complex software systems.
   `RELEASE-NOTES.md` with a concise summary of the user-facing delta since the
   last release. Do not list every commit.
 - When completing a user-requested release, do not stop after creating the
-  tag. After the tag exists, create the hosted release page for that tag from
-  the release notes summary, commit and push the marketplace SHA/docs refresh,
-  and verify that fresh Claude, Codex, OpenCode, and fallback install checks
-  resolve the intended version from clean temporary config/cache directories.
+  tag. After the tag exists, commit and push the marketplace SHA/docs refresh,
+  verify that fresh Claude, Codex, OpenCode, and fallback install checks resolve
+  the intended version from clean temporary config/cache directories, then
+  create the hosted release page for that tag from the release notes summary.
 - Do not add AI assistants, automation, or tools as co-authors or attribution in
   commit messages, file headers, docs, or release notes.
 - Do not commit secrets, local `.env` files, private keys, machine-specific
@@ -200,9 +212,9 @@ maintaining complex software systems.
 ## Bar A Change Must Clear
 
 1. Repo-local validation scripts pass.
-2. Skills, source-index citations, templates, template ownership, and router fixtures are internally consistent.
-3. Cross-tool manifests still support Claude Code, Codex, Cursor, OpenCode, and
-   Gemini CLI when packaging artifacts change.
+2. Skills, source-index freshness, templates, template ownership, and router fixtures are internally consistent.
+3. Cross-tool manifests still support Claude Code, Codex, Cursor, OpenCode,
+   GitHub Copilot CLI, and Gemini CLI when packaging artifacts change.
 4. Relevant docs, references, templates, and router fixtures are updated.
 5. Staged secret scan passes before each commit, or a fallback scan is run when
    the hook is unavailable.

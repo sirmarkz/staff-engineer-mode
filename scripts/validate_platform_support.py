@@ -17,6 +17,9 @@ from staff_engineer_mode_contract import MANIFEST_DESCRIPTION_FIELDS
 NAME = "staff-engineer-mode"
 BOOTSTRAP_TEMPLATE_RELATIVE = Path("skills/staff-engineer-mode/references/bootstrap-context.md")
 PRE_RELEASE_VERSION = ".".join(("0", "0", "0"))
+YAML_MAPPING_RE = re.compile(
+    r"^(?P<key>\"(?:[^\"\\]|\\.)*\"|'(?:[^']|'')*'|[A-Za-z_][A-Za-z0-9_.-]*)\s*:\s*(?P<value>.*)$"
+)
 
 
 def package_version() -> str:
@@ -292,10 +295,20 @@ def validate_opencode() -> None:
         fail("OpenCode plugin must register skillsDir in config.skills.paths")
     if "specialistsDir" not in text or "<slug>.md" not in (text + bootstrap_text):
         fail("OpenCode plugin must route to hidden specialist reference files")
+    if "templatesDir" not in text or re.search(r"\bTEMPLATE_ROOT\s*:\s*templatesDir\b", text) is None:
+        fail("OpenCode plugin must render TEMPLATE_ROOT from the bundled templates directory")
     if "experimental.chat.messages.transform" not in text or "staff-engineer-mode" not in text:
         fail("OpenCode plugin must inject the router bootstrap")
     if "Keep guidance technology-agnostic by default" not in bootstrap_text:
         fail("OpenCode plugin must require technology-agnostic guidance by default")
+    rendered_bootstrap = bootstrap_text
+    placeholders = set(re.findall(r"{{([A-Z][A-Z0-9_]*)}}", bootstrap_text))
+    for placeholder in placeholders:
+        if re.search(rf"\b{re.escape(placeholder)}\s*:", text) is None:
+            fail(f"OpenCode plugin must render bootstrap placeholder {placeholder}")
+        rendered_bootstrap = rendered_bootstrap.replace(f"{{{{{placeholder}}}}}", f"/{placeholder.lower()}")
+    if re.search(r"{{[^{}]+}}", rendered_bootstrap):
+        fail("OpenCode plugin bootstrap rendering leaves unresolved placeholders")
     if not (ROOT / ".opencode" / "INSTALL.md").exists():
         fail("missing .opencode/INSTALL.md")
 
@@ -343,6 +356,19 @@ def validate_hooks() -> None:
     for command in run_hook_commands:
         if "${PLUGIN_ROOT:-${CLAUDE_PLUGIN_ROOT}}" not in command:
             fail("hooks/hooks.json run-hook commands must support PLUGIN_ROOT with CLAUDE_PLUGIN_ROOT fallback")
+    cursor_hooks_path = ROOT / "hooks" / "hooks-cursor.json"
+    cursor_hooks = read_json(cursor_hooks_path)
+    if cursor_hooks.get("version") != 1:
+        fail("hooks/hooks-cursor.json version must be 1")
+    cursor_events = cursor_hooks.get("hooks")
+    if not isinstance(cursor_events, dict):
+        fail("hooks/hooks-cursor.json hooks must be an object")
+    cursor_session_start = cursor_events.get("sessionStart")
+    if not isinstance(cursor_session_start, list) or not cursor_session_start:
+        fail("hooks/hooks-cursor.json must declare at least one sessionStart hook")
+    for hook in cursor_session_start:
+        if not isinstance(hook, dict) or hook.get("command") != "./hooks/run-hook.cmd session-start":
+            fail("Cursor sessionStart hooks must invoke ./hooks/run-hook.cmd session-start")
     agent_event_policy = (ROOT / "hooks" / "agent-event-policy").read_text()
     for term in [
         "before_commit",
@@ -365,6 +391,7 @@ def validate_hooks() -> None:
         "skills/staff-engineer-mode/SKILL.md",
         "specialists",
         "ROUTER_PATH",
+        "TEMPLATE_ROOT",
         "EVENT_HOOK",
         "CURRENT_REPO",
     ]:
@@ -372,6 +399,7 @@ def validate_hooks() -> None:
             fail(f"hooks/session-start missing {term}")
     for term in [
         "SPECIALIST_ROOT={{SPECIALIST_ROOT}}",
+        "TEMPLATE_ROOT={{TEMPLATE_ROOT}}",
         "ROUTER_PATH={{ROUTER_PATH}}",
         "EVENT_HOOK={{EVENT_HOOK}}",
         "CURRENT_REPO={{CURRENT_REPO}}",
@@ -379,6 +407,7 @@ def validate_hooks() -> None:
         "Read `${ROUTER_PATH}`",
         "Router load alone is not enough",
         "Read `${SPECIALIST_ROOT}/<slug>.md`",
+        "Read `${TEMPLATE_ROOT}/README.md`",
         "before any repo file",
         "Do not parallel-load router and repo files",
         "never call `Skill staff-engineer-mode:<slug>`",
@@ -428,6 +457,189 @@ def validate_version_metadata() -> None:
         fail(f"RELEASE-NOTES.md must include a release entry for {version}")
 
 
+def strip_yaml_comment(value: str) -> str:
+    quote: str | None = None
+    escaped = False
+    for index, character in enumerate(value):
+        if quote == '"':
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == quote:
+                quote = None
+            continue
+        if quote == "'":
+            if character == quote:
+                if index + 1 < len(value) and value[index + 1] == quote:
+                    continue
+                quote = None
+            continue
+        if character in {'"', "'"}:
+            quote = character
+            continue
+        if character == "#" and (index == 0 or value[index - 1].isspace()):
+            return value[:index].rstrip()
+    return value.rstrip()
+
+
+def yaml_scalar(value: str) -> str:
+    value = value.strip()
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+        if value[0] == "'":
+            return value[1:-1].replace("''", "'")
+        try:
+            decoded = json.loads(value)
+        except json.JSONDecodeError:
+            return value[1:-1]
+        return decoded if isinstance(decoded, str) else value
+    return value
+
+
+def split_yaml_flow(value: str) -> list[str]:
+    parts: list[str] = []
+    start = 0
+    quote: str | None = None
+    escaped = False
+    depth = 0
+    for index, character in enumerate(value):
+        if quote == '"':
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == quote:
+                quote = None
+            continue
+        if quote == "'":
+            if character == quote:
+                quote = None
+            continue
+        if character in {'"', "'"}:
+            quote = character
+        elif character in "[{(":
+            depth += 1
+        elif character in "]})":
+            depth = max(0, depth - 1)
+        elif character == "," and depth == 0:
+            parts.append(value[start:index].strip())
+            start = index + 1
+    parts.append(value[start:].strip())
+    return [part for part in parts if part]
+
+
+def yaml_flow_has_mapping_key(value: str, expected: str) -> bool:
+    index = 0
+    while index < len(value):
+        character = value[index]
+        if character in {'"', "'"}:
+            quote = character
+            start = index
+            index += 1
+            escaped = False
+            while index < len(value):
+                current = value[index]
+                if quote == '"' and escaped:
+                    escaped = False
+                elif quote == '"' and current == "\\":
+                    escaped = True
+                elif current == quote:
+                    if quote == "'" and index + 1 < len(value) and value[index + 1] == quote:
+                        index += 2
+                        continue
+                    index += 1
+                    break
+                index += 1
+            end = index
+            while index < len(value) and value[index].isspace():
+                index += 1
+            if index < len(value) and value[index] == ":" and yaml_scalar(value[start:end]) == expected:
+                return True
+            continue
+        match = re.match(r"[A-Za-z_][A-Za-z0-9_.-]*", value[index:])
+        if match is None:
+            index += 1
+            continue
+        key = match.group(0)
+        index += len(key)
+        while index < len(value) and value[index].isspace():
+            index += 1
+        if index < len(value) and value[index] == ":" and key == expected:
+            return True
+    return False
+
+
+def workflow_mapping_entries(text: str) -> list[tuple[int, int, str, str, tuple[str, ...]]]:
+    """Return YAML mapping entries while excluding literal/folded scalar bodies."""
+    entries: list[tuple[int, int, str, str, tuple[str, ...]]] = []
+    stack: list[tuple[int, str]] = []
+    block_parent_indent: int | None = None
+
+    for line_number, raw_line in enumerate(text.splitlines(), start=1):
+        if not raw_line.strip():
+            continue
+        if "\t" in raw_line[: len(raw_line) - len(raw_line.lstrip())]:
+            fail(f"workflow YAML line {line_number} must not indent with tabs")
+        indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if block_parent_indent is not None:
+            if indent > block_parent_indent:
+                continue
+            block_parent_indent = None
+
+        content = strip_yaml_comment(raw_line[indent:]).strip()
+        if not content or content in {"---", "..."}:
+            continue
+        effective_indent = indent
+        if content.startswith("-") and (len(content) == 1 or content[1].isspace()):
+            content = content[1:].lstrip()
+            effective_indent += 2
+            if not content:
+                continue
+
+        while stack and stack[-1][0] >= effective_indent:
+            stack.pop()
+        parents = tuple(key for _parent_indent, key in stack)
+
+        candidate_mappings = [content]
+        if content.startswith("{") and content.endswith("}"):
+            candidate_mappings = split_yaml_flow(content[1:-1])
+
+        parsed_entries: list[tuple[str, str]] = []
+        for candidate in candidate_mappings:
+            match = YAML_MAPPING_RE.match(candidate)
+            if match is None:
+                continue
+            key = yaml_scalar(match.group("key"))
+            value = match.group("value").strip()
+            parsed_entries.append((key, value))
+            entries.append((line_number, effective_indent, key, value, parents))
+
+        if len(parsed_entries) != 1:
+            continue
+        key, value = parsed_entries[0]
+        if re.match(r"^[|>][0-9+-]*(?:\s|$)", value):
+            block_parent_indent = indent
+        elif not value:
+            stack.append((effective_indent, key))
+
+    return entries
+
+
+def valid_top_level_permissions(value: str) -> bool:
+    value = value.strip()
+    if not (value.startswith("{") and value.endswith("}")):
+        return False
+    pairs = split_yaml_flow(value[1:-1])
+    if len(pairs) != 1:
+        return False
+    match = YAML_MAPPING_RE.match(pairs[0])
+    return bool(
+        match
+        and yaml_scalar(match.group("key")) == "contents"
+        and yaml_scalar(match.group("value")) == "read"
+    )
+
+
 def validate_ci_workflow() -> None:
     workflow = ROOT / ".github" / "workflows" / "validation.yml"
     if not workflow.exists():
@@ -441,6 +653,7 @@ def validate_ci_workflow() -> None:
         "bash -n hooks/session-start",
         "bash -n hooks/run-hook.cmd",
         "bash -n evals/adapters/codex-router.sh",
+        "bash -n evals/adapters/codex-specialist.sh",
         "bash -n evals/adapters/claude-router.sh",
         "bash -n scripts/bump-version.sh",
         "python3 -m unittest discover -s scripts -p 'test_*.py'",
@@ -450,11 +663,53 @@ def validate_ci_workflow() -> None:
         "python3 scripts/validate_skill_pack.py",
         "python3 scripts/validate_router_eval.py",
         "python3 scripts/validate_platform_support.py",
+        "python3 scripts/validate_markdown_links.py",
         "node --check .opencode/plugins/staff-engineer-mode.js",
         "git grep -nI '[[:blank:]]$' -- .",
     ]:
         if term not in text:
             fail(f".github/workflows/validation.yml missing {term}")
+    workflow_root = ROOT / ".github" / "workflows"
+    workflow_paths = set(workflow_root.glob("*.yml")) | set(workflow_root.glob("*.yaml"))
+    for path in sorted(workflow_paths):
+        validate_action_security(path.read_text(), path)
+
+
+def validate_action_security(text: str, path: Path) -> None:
+    entries = workflow_mapping_entries(text)
+    top_permissions = [entry for entry in entries if entry[1] == 0 and entry[2] == "permissions"]
+    if len(top_permissions) != 1:
+        fail(f"{path.relative_to(ROOT)} must declare one top-level permissions mapping")
+    _line, _indent, _key, permission_value, _parents = top_permissions[0]
+    if permission_value:
+        if not valid_top_level_permissions(permission_value):
+            fail(f"{path.relative_to(ROOT)} top-level permissions must be exactly contents: read")
+    else:
+        permission_children = [
+            entry for entry in entries if entry[4] == ("permissions",)
+        ]
+        if len(permission_children) != 1 or permission_children[0][2] != "contents" or yaml_scalar(
+            permission_children[0][3]
+        ) != "read":
+            fail(f"{path.relative_to(ROOT)} top-level permissions must be exactly contents: read")
+
+    for line_number, indent, key, value, _parents in entries:
+        if key == "permissions" and indent != 0:
+            fail(f"{path.relative_to(ROOT)}:{line_number} job-level permissions overrides are not allowed")
+        if key != "permissions" and yaml_flow_has_mapping_key(value, "permissions"):
+            fail(f"{path.relative_to(ROOT)}:{line_number} nested permissions overrides are not allowed")
+        if key != "uses" and yaml_flow_has_mapping_key(value, "uses"):
+            fail(f"{path.relative_to(ROOT)}:{line_number} action references must use block-style uses entries")
+        if key != "uses":
+            continue
+        reference = yaml_scalar(value)
+        if reference.startswith("./"):
+            continue
+        if not re.search(r"@[0-9a-f]{40}$", reference):
+            fail(
+                f"{path.relative_to(ROOT)}:{line_number} action reference must use a full commit SHA: "
+                f"{reference}"
+            )
 
 
 def validate_docs() -> None:

@@ -17,6 +17,7 @@ venv/
 *.log
 tmp/
 temp/
+evals/runs/
 
 # Local docs scratchpad (not part of the skill pack)
 docs/

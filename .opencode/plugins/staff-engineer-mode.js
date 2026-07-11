@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const skillsDir = path.resolve(__dirname, "..", "..", "skills");
 const specialistsDir = path.resolve(__dirname, "..", "..", "specialists");
+const templatesDir = path.resolve(__dirname, "..", "..", "skills", "_shared", "assets", "templates");
 const routerPath = path.join(skillsDir, "staff-engineer-mode", "SKILL.md");
 const bootstrapTemplatePath = path.join(skillsDir, "staff-engineer-mode", "references", "bootstrap-context.md");
 
@@ -37,6 +38,7 @@ Use OpenCode's native \`skill\` tool only for the router. After routing, read th
 
   return renderTemplate(bootstrapTemplate, {
     SPECIALIST_ROOT: specialistsDir,
+    TEMPLATE_ROOT: templatesDir,
     ROUTER_PATH: routerPath,
     EVENT_HOOK: path.resolve(__dirname, "..", "..", "hooks", "agent-event-policy"),
     CURRENT_REPO: "",

@@ -16,6 +16,17 @@ RUN_HOOK = ROOT / "hooks" / "run-hook.cmd"
 
 
 class SessionStartHookTests(unittest.TestCase):
+    @staticmethod
+    def context_fields(context: str) -> dict[str, str]:
+        return {
+            key: value
+            for key, value in (
+                (part.strip() for part in line.split("=", 1))
+                for line in context.splitlines()
+                if "=" in line
+            )
+        }
+
     def run_session_start(
         self,
         script: Path = SESSION_START,
@@ -52,12 +63,19 @@ class SessionStartHookTests(unittest.TestCase):
         context = output["additionalContext"]
         collapsed = context.replace("\n", "")
 
-        self.assertRegex(collapsed, r"SPECIALIST_ROOT=.* ROUTER_PATH=")
-        self.assertRegex(collapsed, r"ROUTER_PATH=.* EVENT_HOOK=")
-        self.assertRegex(collapsed, r"EVENT_HOOK=.* CURRENT_REPO=")
-        self.assertRegex(collapsed, r"specialist\. +This precedence")
-        self.assertRegex(collapsed, r"first\. +Direct commit/amend")
-        self.assertRegex(collapsed, r"guidance\. +Do not parallel-load")
+        fields = self.context_fields(context)
+        self.assertEqual(
+            set(fields),
+            {"SPECIALIST_ROOT", "TEMPLATE_ROOT", "ROUTER_PATH", "EVENT_HOOK", "CURRENT_REPO"},
+        )
+        for key, value in fields.items():
+            self.assertIn(f"{key}={value}", collapsed)
+        self.assertTrue(
+            all(line.endswith(" ") for line in context.splitlines()[:-1]),
+            "every removed line break must leave a token separator",
+        )
+        self.assertNotIn("{{", context)
+        self.assertNotIn("}}", context)
 
     def test_session_start_missing_template_exits_cleanly_with_fallback_context(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -96,19 +114,53 @@ class SessionStartHookTests(unittest.TestCase):
         self.assertEqual(result.stderr, "")
         output = json.loads(result.stdout)
         context = output["additionalContext"]
-        fields = {
-            key: value
-            for key, value in (
-                (part.strip() for part in line.split("=", 1))
-                for line in context.splitlines()
-                if "=" in line
-            )
-        }
+        fields = self.context_fields(context)
         self.assertEqual(fields["ROUTER_PATH"], str(router_path))
         self.assertEqual(fields["SPECIALIST_ROOT"], str(specialists_dir))
+        self.assertEqual(
+            fields["TEMPLATE_ROOT"],
+            str(plugin_root / "skills" / "_shared" / "assets" / "templates"),
+        )
         self.assertEqual(fields["ROUTER_STATUS"], "readable")
         self.assertEqual(fields["SPECIALIST_STATUS"], "readable")
         self.assertEqual(fields["BOOTSTRAP_STATUS"], "missing-or-unreadable")
+        self.assertEqual(fields["TEMPLATE_STATUS"], "missing-or-unreadable")
+
+    def test_session_start_falls_back_when_template_directory_is_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            plugin_root = Path(tmp)
+            hooks_dir = plugin_root / "hooks"
+            router_dir = plugin_root / "skills" / "staff-engineer-mode"
+            specialists_dir = plugin_root / "specialists"
+            bootstrap_dir = router_dir / "references"
+            hooks_dir.mkdir()
+            bootstrap_dir.mkdir(parents=True)
+            specialists_dir.mkdir()
+            script = hooks_dir / "session-start"
+            shutil.copy2(SESSION_START, script)
+            (router_dir / "SKILL.md").write_text("# Router\n", encoding="utf-8")
+            (bootstrap_dir / "bootstrap-context.md").write_text(
+                "SPECIALIST_ROOT={{SPECIALIST_ROOT}}\nTEMPLATE_ROOT={{TEMPLATE_ROOT}}\n"
+                "ROUTER_PATH={{ROUTER_PATH}}\nEVENT_HOOK={{EVENT_HOOK}}\n"
+                "CURRENT_REPO={{CURRENT_REPO}}\n{{TOOL_MAPPING}}\n",
+                encoding="utf-8",
+            )
+
+            result = self.run_session_start(script, cwd=plugin_root)
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, "")
+        context = json.loads(result.stdout)["additionalContext"]
+        fields = self.context_fields(context)
+        self.assertEqual(
+            fields["TEMPLATE_ROOT"],
+            str(plugin_root / "skills" / "_shared" / "assets" / "templates"),
+        )
+        self.assertEqual(fields["ROUTER_STATUS"], "readable")
+        self.assertEqual(fields["BOOTSTRAP_STATUS"], "readable")
+        self.assertEqual(fields["SPECIALIST_STATUS"], "readable")
+        self.assertEqual(fields["TEMPLATE_STATUS"], "missing-or-unreadable")
+        self.assertEqual(fields["EVENT_HOOK_STATUS"], "missing-or-unreadable")
 
     def test_run_hook_missing_script_exits_cleanly(self) -> None:
         result = subprocess.run(

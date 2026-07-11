@@ -93,8 +93,10 @@ Avoid:
 - Marketing adjectives: `powerful`, `comprehensive`, `world-class`,
   `industry-leading`, `seamless`, `cutting-edge`, `production-grade`,
   `game-changing`, `best-in-class`.
-- Vague hedges: `best practices`, `industry standards`, `modern engineering`,
-  `cloud-native`, unless the phrase is user-provided context being analyzed.
+- Vague hedges in operational guidance: `best practices`, `industry standards`,
+  `modern engineering`, `cloud-native`, unless the phrase is user-provided
+  context being analyzed. The exact canonical plugin metadata description in
+  `scripts/staff_engineer_mode_contract.py` is an intentional exception.
 - Logo name-dropping in openings. Name a source only when it supports a concrete
   rule.
 - Persona language. The skill is a reviewer, not a cast of characters.
@@ -106,15 +108,17 @@ Avoid:
 
 Use sources to support operational rules, not to borrow prestige.
 
-- Cite source-index references from
-  `skills/_shared/references/source-index.md`.
+- Maintain current authoritative sources in
+  `skills/_shared/references/source-index.md`. Published specialist prose
+  intentionally omits source, reference, citation, bibliography, and reading-list
+  sections.
 - Prefer authoritative sources: official documentation, standards bodies,
   peer-reviewed papers, first-party engineering publications, or widely cited
   practitioner references that originated the pattern.
 - Do not cite encyclopedias, forums, scraped mirrors, SEO summaries, anonymous
   content farms, or unofficial copies when a primary source exists.
-- Read the relevant source notes and reconcile tradeoffs into one blended
-  default.
+- Reconcile material tradeoffs into one blended default. Do not assume
+  unpublished source notes or one-to-one claim mappings exist.
 - Keep final prose technology-agnostic unless the skill's surface is explicitly
   technology-bound, such as frontend, mobile, ML, or LLM applications.
 - Do not paste source prose into skills. Synthesize.
@@ -143,6 +147,8 @@ prompts, and source references should match the router and specialist files.
 
 - Update docs when setup, CLI behavior, manifests, public paths, examples, or
   skill contracts change.
+- Use `DOCUMENTATION-LIFECYCLE.md` to identify the authoritative document,
+  responsibility path, freshness trigger, and staleness signal for critical docs.
 - Review `skills/_shared/assets/templates/README.md` before changing required
   outputs. Update the owning template and index when artifact fields change.
 - Verify command examples before presenting them as working.
@@ -156,8 +162,7 @@ prompts, and source references should match the router and specialist files.
 Run the relevant checks before asking for review.
 
 - Run repo-local validation for skill changes.
-- Run `python3 scripts/validate_source_quality.py` after source-index or
-  citation changes.
+- Run `python3 scripts/validate_source_quality.py` after source-index changes.
 - Run `python3 scripts/validate_platform_support.py` after plugin manifest,
   install, README, LICENSE, or cross-tool packaging changes.
 - Run `python3 scripts/lint_brand_voice.py` after public prose changes.
@@ -177,7 +182,7 @@ A style-compliant change should leave the reviewer able to answer:
 3. What concrete check shows the output is safe enough to use?
 4. What output artifact will the user receive?
 5. What is explicitly out of scope?
-6. Which sources support the rule, and where are they cited?
+6. Are material standards and named practices current in the shared source index?
 7. Does the prose work without vendor prestige, marketing language, or invented
    tooling?
 
