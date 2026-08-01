@@ -1,5 +1,14 @@
 # Staff Engineer Mode Release Notes
 
+## 3.0.1 - 2026-07-31
+
+macOS hook compatibility patch.
+
+- `run-hook.cmd` ignores inherited `BASH` paths and launches policy hooks with
+  a Bash interpreter instead of Apple system-shell POSIX mode.
+- Release-state hashing uses a pipe in place of process substitution, with a
+  live launcher preflight and macOS CI coverage for the affected shell path.
+
 ## 3.0.0 - 2026-07-10
 
 Lifecycle guidance and release-evidence hardening release.
