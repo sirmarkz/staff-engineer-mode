@@ -1074,7 +1074,7 @@ release_key() {
     printf '\0unstaged\0'
     git -C "$repo" diff --binary
     printf '\0untracked\0'
-    while IFS= read -r -d '' path; do
+    git -C "$repo" ls-files --others --exclude-standard -z | while IFS= read -r -d '' path; do
       printf '%s\0' "$path"
       if [ -x "$repo/$path" ]; then
         printf 'executable\0'
@@ -1082,7 +1082,7 @@ release_key() {
         printf 'non-executable\0'
       fi
       git -C "$repo" hash-object -- "$path" 2>/dev/null || printf 'unreadable\n'
-    done < <(git -C "$repo" ls-files --others --exclude-standard -z)
+    done
   } | hash_stdin
 }
 

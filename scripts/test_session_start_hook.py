@@ -5,6 +5,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -13,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SESSION_START = ROOT / "hooks" / "session-start"
 RUN_HOOK = ROOT / "hooks" / "run-hook.cmd"
+AGENT_EVENT_POLICY = ROOT / "hooks" / "agent-event-policy"
 
 
 class SessionStartHookTests(unittest.TestCase):
@@ -189,6 +191,70 @@ class SessionStartHookTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertEqual(result.stderr, "")
         self.assertEqual(result.stdout, "")
+
+    def test_run_hook_ignores_posix_shell_from_bash_environment(self) -> None:
+        env = os.environ.copy()
+        env["BASH"] = "/bin/sh"
+        result = subprocess.run(
+            ["/bin/sh", str(RUN_HOOK), "agent-event-policy", "pretooluse"],
+            cwd=ROOT,
+            env=env,
+            input='{"tool_input":{"command":"echo ok"}}',
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, "")
+        self.assertEqual(result.stdout, "")
+
+    def test_run_hook_ignores_shell_candidates_from_bash_environment(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            hooks_dir = Path(tmp)
+            wrapper = hooks_dir / "run-hook.cmd"
+            probe = hooks_dir / "probe"
+            non_bash = hooks_dir / "not-bash"
+            shutil.copy2(RUN_HOOK, wrapper)
+            probe.write_text(
+                "[ -n \"${BASH_VERSION:-}\" ] || exit 70\n"
+                "case \"${BASH:-}\" in \"\"|sh|*/sh) exit 71 ;; esac\n"
+                "if shopt -qo posix; then exit 72; fi\n"
+                "printf 'normal-bash\\n'\n",
+                encoding="utf-8",
+            )
+            non_bash.write_text("#!/bin/sh\nexit 73\n", encoding="utf-8")
+            non_bash.chmod(0o755)
+
+            for candidate in ("/bin/sh", str(non_bash)):
+                with self.subTest(candidate=candidate):
+                    env = os.environ.copy()
+                    env["BASH"] = candidate
+                    result = subprocess.run(
+                        ["/bin/sh", str(wrapper), "probe"],
+                        cwd=ROOT,
+                        env=env,
+                        text=True,
+                        capture_output=True,
+                        check=False,
+                    )
+
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    self.assertEqual(result.stderr, "")
+                    self.assertEqual(result.stdout, "normal-bash\n")
+
+    @unittest.skipUnless(sys.platform == "darwin", "requires the macOS system shell")
+    def test_agent_event_policy_parses_with_macos_system_shell(self) -> None:
+        result = subprocess.run(
+            ["/bin/sh", "-n", str(AGENT_EVENT_POLICY)],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, "")
 
     def test_run_hook_session_start_exits_cleanly_when_path_cannot_find_shell_helpers(self) -> None:
         result = subprocess.run(

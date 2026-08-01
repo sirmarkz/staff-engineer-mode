@@ -21,6 +21,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 HOOK = ROOT / "hooks" / "agent-event-policy"
+RUN_HOOK = ROOT / "hooks" / "run-hook.cmd"
 
 
 @dataclass(frozen=True)
@@ -116,6 +117,60 @@ def run(
         process.communicate()
         raise
     return subprocess.CompletedProcess(args, process.returncode, stdout, stderr)
+
+
+def verify_posix_hook_launcher(*, timeout: int) -> None:
+    if os.name != "posix":
+        return
+
+    posix_shell = Path("/bin/sh")
+    if not posix_shell.exists():
+        raise RuntimeError("POSIX hook launcher preflight requires /bin/sh")
+
+    if sys.platform == "darwin":
+        try:
+            parse_check = run(
+                [str(posix_shell), "-n", str(HOOK)],
+                cwd=ROOT,
+                timeout=timeout,
+            )
+        except subprocess.TimeoutExpired as exc:
+            raise RuntimeError("macOS system-shell hook parse check timed out") from exc
+        if parse_check.returncode != 0:
+            detail = parse_check.stderr.strip() or parse_check.stdout.strip() or "no output"
+            raise RuntimeError(f"macOS system-shell hook parse check failed: {detail}")
+
+    payload = {
+        "tool_name": "Bash",
+        "tool_input": {"command": "git add README.md && git commit -m hook-launcher-preflight"},
+    }
+    try:
+        completed = run(
+            [str(posix_shell), str(RUN_HOOK), "agent-event-policy", "pretooluse"],
+            cwd=ROOT,
+            env={"BASH": str(posix_shell)},
+            input_text=json.dumps(payload),
+            timeout=timeout,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError("POSIX hook launcher preflight timed out") from exc
+
+    detail = completed.stderr.strip() or completed.stdout.strip()
+    if completed.returncode != 0:
+        raise RuntimeError(
+            f"POSIX hook launcher preflight exited {completed.returncode}: {detail or 'no output'}"
+        )
+    if completed.stderr:
+        raise RuntimeError(f"POSIX hook launcher preflight wrote to stderr: {completed.stderr.strip()}")
+    try:
+        response = json.loads(completed.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(
+            f"POSIX hook launcher preflight returned invalid hook output: {detail or 'no output'}"
+        ) from exc
+    hook_output = response.get("hookSpecificOutput")
+    if not isinstance(hook_output, dict) or hook_output.get("permissionDecision") != "deny":
+        raise RuntimeError("POSIX hook launcher preflight did not execute the policy hook")
 
 
 def git(repo: Path, *args: str) -> str:
@@ -1085,6 +1140,14 @@ def main() -> int:
         return 2
     if not HOOK.exists():
         print(f"missing hook: {HOOK}", file=sys.stderr)
+        return 2
+    if not RUN_HOOK.exists():
+        print(f"missing hook launcher: {RUN_HOOK}", file=sys.stderr)
+        return 2
+    try:
+        verify_posix_hook_launcher(timeout=args.timeout)
+    except RuntimeError as exc:
+        print(str(exc), file=sys.stderr)
         return 2
     if "claude" in expand(args.host, ("claude", "codex")) and shutil.which("claude") is None:
         print("claude CLI not found", file=sys.stderr)

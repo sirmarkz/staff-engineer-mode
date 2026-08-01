@@ -332,6 +332,14 @@ class AgentEventPolicyHookTests(unittest.TestCase):
         self.assertEqual(commit.returncode, 0, commit.stderr)
         self.assertEqual(self.commit_count(), 2)
 
+    def test_live_probe_preflight_exercises_posix_hook_launcher(self) -> None:
+        live_probes = load_live_probes()
+        preflight = getattr(live_probes, "verify_posix_hook_launcher", None)
+
+        self.assertIsNotNone(preflight, "live hook probes must verify the POSIX launcher path")
+        assert preflight is not None
+        preflight(timeout=30)
+
     def test_live_probe_rejects_retry_after_block_even_when_later_commit_succeeds(self) -> None:
         live_probes = load_live_probes()
         self.stage_change("initial\nchanged\n")
@@ -901,6 +909,40 @@ class AgentEventPolicyHookTests(unittest.TestCase):
 
         self.assertEqual(status, 2)
         self.assertTrue(stderr.getvalue())
+
+    def test_live_probe_runs_posix_launcher_preflight_before_host_checks(self) -> None:
+        live_probes = load_live_probes()
+        args = type(
+            "Args",
+            (),
+            {
+                "host": "claude",
+                "event": "commit",
+                "probe": "block",
+                "claude_model": "claude-opus-4-8",
+                "claude_effort": "high",
+                "codex_model": "gpt-5.6-terra",
+                "codex_effort": "high",
+                "timeout": 30,
+                "work_dir": None,
+                "keep_temp": False,
+            },
+        )()
+
+        with (
+            patch.object(live_probes, "parse_args", return_value=args),
+            patch.object(
+                live_probes,
+                "verify_posix_hook_launcher",
+                side_effect=RuntimeError("launcher preflight failed"),
+            ),
+            patch.object(live_probes.shutil, "which", return_value=None),
+            patch("sys.stderr", new_callable=io.StringIO) as stderr,
+        ):
+            status = live_probes.main()
+
+        self.assertEqual(status, 2)
+        self.assertEqual(stderr.getvalue(), "launcher preflight failed\n")
 
     def test_codex_probe_keep_temp_removes_copied_auth_before_retaining_diagnostics(self) -> None:
         live_probes = load_live_probes()

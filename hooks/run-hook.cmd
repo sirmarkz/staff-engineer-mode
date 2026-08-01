@@ -42,11 +42,6 @@ SCRIPT_PATH="${SCRIPT_DIR}/${SCRIPT_NAME}"
 [ -r "$SCRIPT_PATH" ] || exit 0
 
 find_bash() {
-  if [ -n "${BASH:-}" ] && [ -x "$BASH" ]; then
-    printf '%s\n' "$BASH"
-    return 0
-  fi
-
   for candidate in /usr/bin/bash /bin/bash /usr/local/bin/bash; do
     if [ -x "$candidate" ]; then
       printf '%s\n' "$candidate"
