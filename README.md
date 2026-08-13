@@ -59,6 +59,17 @@ codex plugin marketplace add https://github.com/sirmarkz/staff-engineer-mode.git
 codex plugin add staff-engineer-mode@staff-engineer-mode
 ```
 
+### ZCode
+
+The ZCode client discovers plugins from its bundled official marketplace and
+from any GitHub repository added as a marketplace. To add this repository as a
+marketplace, use the **`+`** button on **Settings → Plugin Management →
+Discover**, then install `staff-engineer-mode` from the marketplace.
+
+After installing, restart ZCode so the router skill is loaded, then verify in
+**Settings → Skills** (or the `/` menu) that `staff-engineer-mode` is
+available.
+
 ### Cursor
 
 Terminal:

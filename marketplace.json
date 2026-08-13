@@ -1,0 +1,23 @@
+{
+  "name": "staff-engineer-mode",
+  "description": "Applies engineering best practices to reliability, security, delivery, data, and architecture work.",
+  "owner": {
+    "name": "sirmarkz"
+  },
+  "plugins": [
+    {
+      "name": "staff-engineer-mode",
+      "description": "Applies engineering best practices to reliability, security, delivery, data, and architecture work.",
+      "version": "3.0.1",
+      "source": {
+        "source": "git",
+        "url": "https://github.com/sirmarkz/staff-engineer-mode.git",
+        "ref": "v3.0.1",
+        "sha": "ac8a3ce4d2b42ad768f0d602f391dcc686a5586e"
+      },
+      "author": {
+        "name": "sirmarkz"
+      }
+    }
+  ]
+}
